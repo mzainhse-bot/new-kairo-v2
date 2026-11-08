@@ -3,78 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NK- HSE Portal | New Kairo Project</title>
+<title>NK- HSE Portal</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;min-height:100vh;background:#000;color:#fff;overflow-x:hidden;position:relative}
-body:before{content:"";position:fixed;inset:0;background:
-radial-gradient(circle at 20% 10%,rgba(212,175,55,.35) 0%,transparent 40%),
-radial-gradient(circle at 85% 90%,rgba(212,175,55,.25) 0%,transparent 40%),
-linear-gradient(135deg,#0a0f1e 0%,#000 50%,#1a1400 100%);z-index:0}
-body:after{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+body{margin:0;min-height:100vh;background:#000;color:#fff;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,rgba(212,175,55,.35) 0%,transparent 40%),radial-gradient(circle at 85% 90%,rgba(212,175,55,.25) 0%,transparent 40%),linear-gradient(135deg,#0a0f1e 0%,#000 50%,#1a1400 100%);z-index:0}
 .wrap{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px 15px;flex-direction:column}
 .top-badge{background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.5);color:#f5d76e;padding:6px 18px;border-radius:30px;font-size:12px;letter-spacing:2px;margin-bottom:16px;backdrop-filter:blur(10px)}
-.card{width:100%;max-width:460px;background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.45);border-radius:26px;padding:30px 26px;text-align:center;backdrop-filter:blur(18px);box-shadow:0 25px 70px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.25);position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,transparent,#f5d76e,transparent)}
-.logo{width:84px;height:84px;margin:0 auto 12px;background:linear-gradient(135deg,#fff8d6,#f5d76e,#d4af37,#8a6d00);color:#000;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;box-shadow:0 10px 30px rgba(212,175,55,.5);transform:rotate(-3deg)}
-h1{margin:5px 0 2px;font-size:28px;letter-spacing:1px;background:linear-gradient(90deg,#fff,#f5d76e,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.proj{margin:0 0 6px;color:#ddd;font-size:14px}
-.proj b{color:#fff}
-.line{height:1px;background:linear-gradient(90deg,transparent,#d4af37,transparent);margin:18px 0}
-.tabs{display:flex;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:4px;margin-bottom:18px}
-.tabs button{flex:1;border:0;padding:12px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:15px;background:transparent;color:#ccc}
-.tabs button.active{background:linear-gradient(135deg,#f5d76e,#d4af37);color:#000;box-shadow:0 5px 15px rgba(212,175,55,.4)}
-label{display:block;text-align:right;margin:12px 0 5px;color:#f5d76e;font-weight:bold;font-size:13px}
-input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.95);color:#000;font-size:15px}
-input:focus{outline:2px solid #d4af37}
-.btn{width:100%;padding:14px;margin-top:18px;border:0;border-radius:13px;background:linear-gradient(135deg,#fff2a8,#f5d76e,#d4af37);color:#000;font-weight:900;font-size:16px;cursor:pointer;box-shadow:0 10px 25px rgba(212,175,55,.35)}
-.small{margin-top:12px;font-size:13px;color:#bbb}
+.card{width:100%;max-width:480px;background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.45);border-radius:26px;padding:28px 24px;text-align:center;backdrop-filter:blur(18px);box-shadow:0 25px 70px rgba(0,0,0,.7)}
+.logo{width:84px;height:84px;margin:0 auto 12px;background:linear-gradient(135deg,#fff8d6,#f5d76e,#d4af37,#8a6d00);color:#000;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;transform:rotate(-3deg)}
+h1{margin:5px 0 2px;font-size:28px;background:linear-gradient(90deg,#fff,#f5d76e,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tabs{display:flex;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:4px;margin:16px 0}
+.tabs button{flex:1;border:0;padding:12px;border-radius:10px;cursor:pointer;font-weight:bold;background:transparent;color:#ccc}
+.tabs button.active{background:linear-gradient(135deg,#f5d76e,#d4af37);color:#000}
+label{display:block;text-align:right;margin:10px 0 5px;color:#f5d76e;font-weight:bold;font-size:13px}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.95);color:#000;font-size:15px}
+.btn{width:100%;padding:14px;margin-top:16px;border:0;border-radius:13px;background:linear-gradient(135deg,#fff2a8,#f5d76e,#d4af37);color:#000;font-weight:900;font-size:16px;cursor:pointer}
+.btn2{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:10px;border-radius:10px;cursor:pointer;width:100%;margin-top:10px}
 .msg{display:none;margin-top:12px;padding:11px;border-radius:10px;font-size:14px;font-weight:bold}
 .msg.ok{display:block;background:#1db954;color:#fff}
 .msg.err{display:block;background:#ff4444;color:#fff}
-.footer{margin-top:18px;font-size:12px;color:#999;text-align:center;line-height:1.7}
-.gold{color:#f5d76e}
+.dash{display:none;width:100%;max-width:900px}
+.dash-card{background:rgba(255,255,255,.08);border:1px solid rgba(212,175,55,.45);border-radius:20px;padding:20px;backdrop-filter:blur(18px);margin-bottom:15px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.nav button{border:1px solid rgba(212,175,55,.5);background:rgba(0,0,0,.4);color:#fff;padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:bold}
+.nav button.active{background:linear-gradient(135deg,#f5d76e,#d4af37);color:#000}
+.user-row{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px;margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.user-row select{width:160px}
+.stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.stat div{background:rgba(0,0,0,.4);border:1px solid rgba(212,175,55,.4);border-radius:14px;padding:14px}
+.stat b{font-size:22px;color:#f5d76e;display:block}
+.footer{margin-top:15px;font-size:12px;color:#999;text-align:center}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="authWrap">
 <div class="top-badge">✦ NEW KAIRO PROJECT • SAFETY FIRST ✦</div>
-<div class="card">
+<div class="card" id="authCard">
 <div class="logo">NK</div>
 <h1>NK- HSE Portal</h1>
-<p class="proj"><b>New Kairo Project</b><br>بوابة السلامة والصحة المهنية</p>
-<div class="line"></div>
+<p>New Kairo Project<br>بوابة السلامة والصحة المهنية</p>
 <div class="tabs">
 <button id="tabLogin" class="active" onclick="showLogin()">تسجيل الدخول</button>
 <button id="tabSignup" onclick="showSignup()">اشتراك جديد</button>
 </div>
 <div id="loginBox">
-<label>البريد الإلكتروني</label>
-<input id="loginEmail" type="email" placeholder="example@email.com">
-<label>كلمة السر</label>
-<input id="loginPass" type="password" placeholder="••••••••">
+<label>البريد الإلكتروني</label><input id="loginEmail" type="email" placeholder="example@email.com">
+<label>كلمة السر</label><input id="loginPass" type="password" placeholder="••••••••">
 <button class="btn" onclick="login()">دخول للبوابة →</button>
-<p class="small">نسيت كلمة السر؟ تواصل مع إدارة السلامة</p>
 </div>
 <div id="signupBox" style="display:none">
 <label>الاسم بالكامل</label><input id="suName" placeholder="مثال: أحمد محمد">
 <label>البريد الإلكتروني</label><input id="suEmail" type="email" placeholder="example@email.com">
 <label>رقم التليفون</label><input id="suPhone" placeholder="01xxxxxxxxx">
 <label>المهنة</label><input id="suJob" placeholder="حداد / نجار / كهربائي">
-<label>كلمة السر</label><input id="suPass" type="password" placeholder="اختر كلمة سر قوية">
-<label>تأكيد كلمة السر</label><input id="suPass2" type="password" placeholder="اكتبها تاني">
+<label>كلمة السر</label><input id="suPass" type="password">
+<label>تأكيد كلمة السر</label><input id="suPass2" type="password">
 <button class="btn" onclick="signup()">إنشاء حساب جديد</button>
 </div>
 <div id="msg" class="msg"></div>
 </div>
-<div class="footer">© 2026 <span class="gold">New Kairo Project</span> - NK HSE Portal<br>رواد الهندسة الحديثة • السلامة أولاً</div>
+
+<div class="dash" id="dash">
+<div class="dash-card" style="text-align:center">
+<h2 id="welcome" style="margin:0">أهلا بيك</h2>
+<p id="roleShow" style="color:#f5d76e"></p>
+<button class="btn2" onclick="logout()">تسجيل خروج</button>
 </div>
+<div class="nav">
+<button class="active" onclick="showTab('home',this)">🏠 الرئيسية</button>
+<button onclick="showTab('users',this)">👥 العمال / المستخدمين</button>
+<button onclick="showTab('roles',this)" id="rolesBtn">⚙️ إدارة الأدوار</button>
+<button onclick="showTab('cards',this)">🪪 الكارنيهات</button>
+<button onclick="showTab('lectures',this)">📚 المحاضرات</button>
+<button onclick="showTab('reports',this)">📊 التقارير</button>
+</div>
+
+<div id="tab-home" class="dash-card">
+<h3>نظرة عامة</h3>
+<div class="stat">
+<div><b id="totalUsers">0</b>إجمالي المستخدمين</div>
+<div><b>0</b>كارنيهات</div>
+<div><b>0</b>محاضرات</div>
+</div>
+<p style="color:#ccc;margin-top:15px">مرحبا بيك في لوحة تحكم السلامة - New Kairo Project. من هنا هتدير كل حاجة.</p>
+</div>
+
+<div id="tab-users" class="dash-card" style="display:none">
+<h3>المستخدمين المسجلين</h3>
+<div id="usersList"></div>
+</div>
+
+<div id="tab-roles" class="dash-card" style="display:none">
+<h3>إدارة الأدوار - المدير فقط</h3>
+<p style="color:#ccc;font-size:13px">انت كمدير تقدر تحدد دور كل واحد. أول واحد سجل هو المدير.</p>
+<div id="rolesList"></div>
+</div>
+
+<div id="tab-cards" class="dash-card" style="display:none"><h3>الكارنيهات</h3><p>قريبا - هنعمل تصميم الكارنيه هنا.</p></div>
+<div id="tab-lectures" class="dash-card" style="display:none"><h3>المحاضرات</h3><p>قريبا - محاضرات التوعية.</p></div>
+<div id="tab-reports" class="dash-card" style="display:none"><h3>التقارير</h3><p>قريبا - تقارير السلامة.</p></div>
+</div>
+<div class="footer">© 2026 New Kairo Project - NK HSE Portal</div>
+</div>
+
 <script>
 function showLogin(){document.getElementById('loginBox').style.display='block';document.getElementById('signupBox').style.display='none';document.getElementById('tabLogin').classList.add('active');document.getElementById('tabSignup').classList.remove('active');}
 function showSignup(){document.getElementById('loginBox').style.display='none';document.getElementById('signupBox').style.display='block';document.getElementById('tabLogin').classList.remove('active');document.getElementById('tabSignup').classList.add('active');}
 function showMsg(t,ok){let m=document.getElementById('msg');m.innerText=t;m.className='msg '+(ok?'ok':'err');}
-function signup(){let n=document.getElementById('suName').value.trim();let e=document.getElementById('suEmail').value.trim();let ph=document.getElementById('suPhone').value.trim();let j=document.getElementById('suJob').value.trim();let p=document.getElementById('suPass').value;let p2=document.getElementById('suPass2').value;if(!n||!e||!ph||!p){showMsg('من فضلك املأ كل البيانات',false);return;}if(p!==p2){showMsg('كلمة السر مش متطابقة',false);return;}let users=JSON.parse(localStorage.getItem('nk_users')||'[]');if(users.find(u=>u.email===e)){showMsg('الإيميل ده متسجل قبل كده، سجل دخول',false);return;}users.push({name:n,email:e,phone:ph,job:j,pass:p});localStorage.setItem('nk_users',JSON.stringify(users));showMsg('تم إنشاء الحساب بنجاح! سجل دخول دلوقتي',true);showLogin();}
-function login(){let e=document.getElementById('loginEmail').value.trim();let p=document.getElementById('loginPass').value;let users=JSON.parse(localStorage.getItem('nk_users')||'[]');let u=users.find(x=>x.email===e && x.pass===p);if(u){showMsg('أهلا بيك يا '+u.name+' - تم الدخول بنجاح! الخطوة الجاية: الصفحة الرئيسية',true);}else{showMsg('الإيميل أو كلمة السر غلط، لو لسه معندكش حساب دوس اشتراك جديد',false);}}
+function getUsers(){return JSON.parse(localStorage.getItem('nk_users')||'[]')}
+function saveUsers(u){localStorage.setItem('nk_users',JSON.stringify(u))}
+function signup(){let n=document.getElementById('suName').value.trim();let e=document.getElementById('suEmail').value.trim();let ph=document.getElementById('suPhone').value.trim();let j=document.getElementById('suJob').value.trim();let p=document.getElementById('suPass').value;let p2=document.getElementById('suPass2').value;if(!n||!e||!ph||!p){showMsg('من فضلك املأ كل البيانات',false);return;}if(p!==p2){showMsg('كلمة السر مش متطابقة',false);return;}let users=getUsers();if(users.find(u=>u.email===e)){showMsg('الإيميل ده متسجل قبل كده',false);return;}let role = users.length===0 ? 'مدير' : 'بدون دور - في انتظار تحديد المدير';users.push({name:n,email:e,phone:ph,job:j,pass:p,role:role});saveUsers(users);showMsg('تم إنشاء الحساب بنجاح! سجل دخول دلوقتي',true);showLogin();}
+function login(){let e=document.getElementById('loginEmail').value.trim();let p=document.getElementById('loginPass').value;let users=getUsers();let u=users.find(x=>x.email===e && x.pass===p);if(u){localStorage.setItem('nk_current',JSON.stringify(u));openDash(u);}else{showMsg('الإيميل أو كلمة السر غلط',false);}}
+function openDash(u){document.getElementById('authCard').style.display='none';document.getElementById('dash').style.display='block';document.getElementById('welcome').innerText='أهلا بيك يا '+u.name;document.getElementById('roleShow').innerText='دورك: '+(u.role||'بدون دور')+' | المهنة: '+(u.job||'');let users=getUsers();document.getElementById('totalUsers').innerText=users.length;if(u.role!=='مدير'){document.getElementById('rolesBtn').style.display='none';}else{document.getElementById('rolesBtn').style.display='block';}renderUsers();renderRoles();}
+function renderUsers(){let users=getUsers();let h=users.map(u=>`<div class="user-row"><div><b>${u.name}</b><br><small>${u.email} - ${u.job} - ${u.phone}</small></div><span style="color:#f5d76e">${u.role}</span></div>`).join('')||'لسه مفيش مستخدمين';document.getElementById('usersList').innerHTML=h;}
+function renderRoles(){let users=getUsers();let cur=JSON.parse(localStorage.getItem('nk_current')||'{}');if(cur.role!=='مدير'){document.getElementById('rolesList').innerHTML='الصفحة دي للمدير فقط';return;}let h=users.map((u,i)=>`<div class="user-row"><div><b>${u.name}</b><br><small>${u.email}</small></div><select onchange="changeRole(${i},this.value)"><option ${u.role==='مدير'?'selected':''}>مدير</option><option ${u.role==='مشرف سلامة'?'selected':''}>مشرف سلامة</option><option ${u.role==='مهندس'?'selected':''}>مهندس</option><option ${u.role==='عامل'?'selected':''}>عامل</option><option ${u.role==='مقاول'?'selected':''}>مقاول</option><option ${u.role==='بدون دور - في انتظار تحديد المدير'?'selected':''}>بدون دور - في انتظار تحديد المدير</option></select></div>`).join('');document.getElementById('rolesList').innerHTML=h;}
+function changeRole(i,v){let users=getUsers();users[i].role=v;saveUsers(users);renderUsers();renderRoles();alert('تم تحديث دور '+users[i].name+' إلى '+v);}
+function showTab(id,btn){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['home','users','roles','cards','lectures','reports'].forEach(t=>{document.getElementById('tab-'+t).style.display = t===id?'block':'none'});}
+function logout(){localStorage.removeItem('nk_current');location.reload();}
+let cur=localStorage.getItem('nk_current');if(cur){let u=JSON.parse(cur);let users=getUsers();let fresh=users.find(x=>x.email===u.email);if(fresh) openDash(fresh);}
 </script>
 </body>
 </html>
