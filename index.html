@@ -3,14 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>موقعي</title>
+<title>NK- HSE Portal | New Kairo Project</title>
 <style>
-body{font-family:sans-serif;text-align:center;padding:50px;background:#f5f5f5}
-h1{color:#333}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2100 0%,#000 55%,#0a0f1e 100%);color:#fff;display:flex;align-items:center;justify-content:center;padding:15px}
+.card{width:100%;max-width:420px;background:rgba(17,26,48,.92);border:1px solid #d4af37;border-radius:22px;padding:28px 24px;text-align:center;box-shadow:0 20px 60px rgba(212,175,55,.25)}
+.logo{width:78px;height:78px;margin:0 auto 10px;background:linear-gradient(135deg,#f5d76e,#d4af37,#8a6d00);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;letter-spacing:1px}
+h1{margin:5px 0;color:#f5d76e;font-size:26px;letter-spacing:1px}
+p.proj{margin:0 0 20px;color:#ccc;font-size:14px}
+p.proj b{color:#fff}
+.tabs{display:flex;background:#000;border:1px solid #333;border-radius:12px;padding:4px;margin-bottom:20px}
+.tabs button{flex:1;border:0;padding:11px;border-radius:9px;cursor:pointer;font-weight:bold;font-size:15px;background:transparent;color:#ccc}
+.tabs button.active{background:#d4af37;color:#000}
+label{display:block;text-align:right;margin:12px 0 5px;color:#e8c766;font-weight:bold;font-size:14px}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#fff;color:#000;font-size:15px}
+input:focus{outline:2px solid #d4af37}
+.btn{width:100%;padding:13px;margin-top:18px;border:0;border-radius:11px;background:linear-gradient(135deg,#f5d76e,#d4af37);color:#000;font-weight:900;font-size:16px;cursor:pointer}
+.small{margin-top:12px;font-size:13px;color:#aaa}
+.msg{display:none;margin-top:12px;padding:10px;border-radius:9px;font-size:14px;font-weight:bold}
+.msg.ok{display:block;background:#1db954;color:#fff}
+.msg.err{display:block;background:#ff4444;color:#fff}
+.footer{margin-top:18px;font-size:12px;color:#888}
 </style>
 </head>
 <body>
-<h1>أهلا بيك في موقعي 🚀</h1>
-<p>الموقع شغال تمام</p>
+<div class="card">
+<div class="logo">NK</div>
+<h1>NK- HSE Portal</h1>
+<p class="proj"><b>New Kairo Project</b><br>بوابة السلامة والصحة المهنية</p>
+
+<div class="tabs">
+<button id="tabLogin" class="active" onclick="showLogin()">تسجيل الدخول</button>
+<button id="tabSignup" onclick="showSignup()">اشتراك جديد</button>
+</div>
+
+<!-- LOGIN -->
+<div id="loginBox">
+<label>البريد الإلكتروني</label>
+<input id="loginEmail" type="email" placeholder="example@email.com">
+<label>كلمة السر</label>
+<input id="loginPass" type="password" placeholder="••••••••">
+<button class="btn" onclick="login()">دخول للبوابة →</button>
+<p class="small">نسيت كلمة السر؟ تواصل مع إدارة السلامة</p>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupBox" style="display:none">
+<label>الاسم بالكامل</label>
+<input id="suName" placeholder="مثال: أحمد محمد">
+<label>البريد الإلكتروني</label>
+<input id="suEmail" type="email" placeholder="example@email.com">
+<label>رقم التليفون</label>
+<input id="suPhone" placeholder="01xxxxxxxxx">
+<label>المهنة</label>
+<input id="suJob" placeholder="حداد / نجار / كهربائي">
+<label>كلمة السر</label>
+<input id="suPass" type="password" placeholder="اختر كلمة سر قوية">
+<label>تأكيد كلمة السر</label>
+<input id="suPass2" type="password" placeholder="اكتبها تاني">
+<button class="btn" onclick="signup()">إنشاء حساب جديد</button>
+</div>
+
+<div id="msg" class="msg"></div>
+<div class="footer">© 2026 New Kairo Project - NK HSE Portal<br>رواد الهندسة الحديثة</div>
+</div>
+
+<script>
+function showLogin(){
+document.getElementById('loginBox').style.display='block';
+document.getElementById('signupBox').style.display='none';
+document.getElementById('tabLogin').classList.add('active');
+document.getElementById('tabSignup').classList.remove('active');
+}
+function showSignup(){
+document.getElementById('loginBox').style.display='none';
+document.getElementById('signupBox').style.display='block';
+document.getElementById('tabLogin').classList.remove('active');
+document.getElementById('tabSignup').classList.add('active');
+}
+function showMsg(t,ok){
+let m=document.getElementById('msg');
+m.innerText=t; m.className='msg '+(ok?'ok':'err');
+}
+function signup(){
+let n=document.getElementById('suName').value.trim();
+let e=document.getElementById('suEmail').value.trim();
+let ph=document.getElementById('suPhone').value.trim();
+let j=document.getElementById('suJob').value.trim();
+let p=document.getElementById('suPass').value;
+let p2=document.getElementById('suPass2').value;
+if(!n||!e||!ph||!p){showMsg('من فضلك املأ كل البيانات',false);return;}
+if(p!==p2){showMsg('كلمة السر مش متطابقة',false);return;}
+let users=JSON.parse(localStorage.getItem('nk_users')||'[]');
+if(users.find(u=>u.email===e)){showMsg('الإيميل ده متسجل قبل كده، سجل دخول',false);return;}
+users.push({name:n,email:e,phone:ph,job:j,pass:p});
+localStorage.setItem('nk_users',JSON.stringify(users));
+showMsg('تم إنشاء الحساب بنجاح! سجل دخول دلوقتي',true);
+showLogin();
+}
+function login(){
+let e=document.getElementById('loginEmail').value.trim();
+let p=document.getElementById('loginPass').value;
+let users=JSON.parse(localStorage.getItem('nk_users')||'[]');
+let u=users.find(x=>x.email===e && x.pass===p);
+if(u){showMsg('أهلا بيك يا '+u.name+' - تم الدخول بنجاح! الخطوة الجاية: الصفحة الرئيسية',true);}
+else{showMsg('الإيميل أو كلمة السر غلط، لو لسه معندكش حساب دوس اشتراك جديد',false);}
+}
+</script>
 </body>
 </html>
