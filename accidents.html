@@ -7,10 +7,37 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
-header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
-header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
-.container{max-width:1150px;margin:auto;padding:16px;}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -21,9 +48,6 @@ input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-
 textarea{min-height:60px;resize:vertical;}
 .btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
-.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
-.nav a.active{background:#0A1F44;color:#fff;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 .kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
@@ -42,28 +66,50 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<header>
-<div style="display:flex;align-items:center;gap:10px;">
-<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📋</span> عدم المطابقة NCR</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head">
 <div><h1>RMED <span>•</span> الحوادث</h1><small>Accidents Reports</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
-<a href="index.html">🏠 الرئيسية</a>
-</header>
+
 <div class="container">
-<div class="nav">
-<a href="index.html">🏠 الرئيسية</a>
-<a href="induction.html">📘 المحاضرة الأولية</a>
-<a href="workers.html">👥 الموظفين</a>
-<a href="train.html">🎓 التدريبات</a>
-<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
-<a href="permits.html">📋 التصاريح</a>
-<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
-<a href="violations.html">⚠️ مخالفات المقاولين</a>
-<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
-<a href="safety-observations.html">📋 ملاحظات السلامة</a>
-<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
-<a href="accidents.html" class="active">🚑 الحوادث</a>
-</div>
 
 <div class="user-bar">
 <span style="font-weight:bold;">🦺 مُعد التقرير:</span>
@@ -84,7 +130,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="card red">
 <h2 style="margin:0 0 5px;">🚑 تسجيل حادث جديد</h2>
-
 <div class="section-title">📅 بيانات الحادث</div>
 <div class="grid">
 <div><label>📅 التاريخ *</label><input type="date" id="ac-date"></div>
@@ -95,7 +140,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div style="grid-column:1/-1;"><label>⚡ الأسباب المباشرة *</label><textarea id="ac-direct" placeholder="مثال: سقوط من ارتفاع - عدم استخدام مهمات الوقاية..."></textarea></div>
 <div style="grid-column:1/-1;"><label>🔍 الأسباب الجذرية *</label><textarea id="ac-root" placeholder="مثال: عدم التدريب - عدم الإشراف - عدم توفير مهمات..."></textarea></div>
 </div>
-
 <div class="section-title">🏷️ تصنيف الحادث - اختار واحد أو أكتر</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
 <label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FFCC80;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حالة علاج طبي" class="ac-class" style="width:auto;"> 🩹 حالة علاج طبي</label>
@@ -105,7 +149,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FF9800;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حادث حريق" class="ac-class" style="width:auto;"> 🔥 حادث حريق</label>
 <label style="background:#E8F5E9;padding:10px 14px;border-radius:10px;border:1px solid #A5D6A7;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="ضرر في الممتلكات" class="ac-class" style="width:auto;"> 🏗️ ضرر في الممتلكات</label>
 </div>
-
 <div class="section-title">👤 بيانات المصاب</div>
 <div class="grid">
 <div><label>👤 اسم الشخص المصاب *</label><input id="ac-injured" placeholder="اكتب الاسم..." list="empNames" oninput="lookupInjured(this.value)"><datalist id="empNames"></datalist><small id="injHint" style="color:#2E7D32;font-size:11px;"></small></div>
@@ -115,30 +158,23 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>🩹 طبيعة الإصابة *</label><select id="ac-nature"><option value="">-- اختار طبيعة الإصابة --</option><option>جروح</option><option>كسور</option><option>حريق</option><option>سحجات</option><option>كدمات</option><option>أخرى</option></select></div>
 <div><label>📝 تفاصيل أخرى عن الإصابة - لو اخترت أخرى</label><input id="ac-body-other" placeholder="اكتب الجزء المصاب أو طبيعة الإصابة لو أخرى..."></div>
 </div>
-
 <div class="section-title">👁️ أسماء الشهود - لحد 5 أشخاص</div>
 <div id="witnesses"></div>
-
 <div class="section-title">✅ الإجراءات التصحيحية الواجب اتخاذها - لحد 10 إجراءات</div>
 <div id="correctiveList"></div>
 <button class="btn2" onclick="addCorrectiveField()" style="width:100%;padding:12px;margin-top:8px;">➕ إضافة إجراء تصحيحي آخر - باقي <span id="corrLeft">9</span></button>
-
 <div class="section-title">📸 صور الحادث - لحد 5 صور</div>
 <input type="file" id="ac-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident','incident')">
 <div class="thumbs" id="prev-incident"></div>
-
 <div class="section-title">📸 صور الإجراءات التصحيحية - لحد 10 صور</div>
 <input type="file" id="ac-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action','action')">
 <div class="thumbs" id="prev-action"></div>
-
 <div class="grid" style="margin-top:14px;">
 <div><label>🦺 مُعد التقرير - أوتوماتيك</label><input id="ac-reporter" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
 <div><label>📝 ملاحظات - اختياري</label><input id="ac-notes" placeholder="أي ملاحظات..."></div>
 </div>
-
 <button class="btn red" onclick="addAcc()">💾 حفظ تقرير الحادث</button>
 </div>
-
 <div class="card">
 <h2 style="margin:0 0 10px;">📋 سجل الحوادث</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -153,14 +189,34 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 </div>
+</div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
+  let fallbackName=localStorage.getItem('safetyUser')||'';
+  if(u.name||fallbackName){
+    document.getElementById('sideName').innerText=u.name||fallbackName;
+    document.getElementById('sideRole').innerText=u.role||u.job||'موظف';
+    if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo;
+    let t=document.getElementById('topUser'); if(t) t.innerText=u.name||fallbackName;
+  }
+})();
+
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
 if(!DB.accidents) DB.accidents=[];
 function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
-
 let tempIncident=[], tempAction=[];
 function previewImgs(input, prevId, type){
   let files=[...input.files].slice(0, type==='incident'?5:10);
@@ -173,14 +229,12 @@ function previewImgs(input, prevId, type){
     r.readAsDataURL(f);
   });
 }
-
 function getAllPeople(){
   let list=[];
   (DB.induction||[]).forEach(x=>list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}));
   (DB.workers||[]).forEach(x=>{ if(!list.find(p=>p.name===x.name)) list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
   return list;
 }
-
 function lookupInjured(name){
   let p=getAllPeople().find(x=>x.name===name.trim());
   if(p){
@@ -201,7 +255,6 @@ function lookupWitness(i, name){
     document.getElementById('wit-hint-'+i).innerText='⚠️ مش موجود - اكتب المهنة والتليفون يدوي';
   } else document.getElementById('wit-hint-'+i).innerText='';
 }
-
 function buildWitnesses(){
   let html='';
   for(let i=1;i<=5;i++){
@@ -225,7 +278,14 @@ function addCorrectiveField(){
   buildCorrective();
   vals.forEach((v,i)=>{ document.getElementById('corr-'+(i+1)).value=v; });
 }
-
+function getCurrentReporter(){
+  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
+  return u.name || localStorage.getItem('safetyUser')||'';
+}
+function getCurrentReporterCode(){
+  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
+  return u.code||u.id||'';
+}
 function addAcc(){
   if(!val('ac-date')) return alert('اختار التاريخ');
   if(!val('ac-time')) return alert('اختار الوقت');
@@ -250,7 +310,7 @@ function addAcc(){
     if(n) witnesses.push({name:n,job:document.getElementById('wit-job-'+i).value.trim(),phone:document.getElementById('wit-phone-'+i).value.trim()});
   }
   if(!witnesses.length) return alert('اكتب اسم شاهد واحد على الأقل');
-  let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter'),notes:val('ac-notes'),createdAt:new Date().toISOString()};
+  let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter')||getCurrentReporter(),reporterCode:getCurrentReporterCode(),reporterName:val('ac-reporter')||getCurrentReporter(),notes:val('ac-notes'),createdAt:new Date().toISOString(),status:'مفتوح'};
   DB.accidents.push(rec); save(); renderAcc();
   alert('✅ تم حفظ تقرير الحادث - '+rec.injured+' - '+classes.join(' + '));
   ['ac-company','ac-place','ac-desc','ac-direct','ac-root','ac-injured','ac-code','ac-job','ac-body-other','ac-notes'].forEach(id=>setVal(id,''));
@@ -263,7 +323,6 @@ function addAcc(){
   tempIncident=[]; tempAction=[];
   document.getElementById('injHint').innerText='';
 }
-
 function renderAcc(){
   let people=getAllPeople();
   document.getElementById('empNames').innerHTML=people.map(p=>`<option value="${p.name}">`).join('');
@@ -273,7 +332,6 @@ function renderAcc(){
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
   sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
   document.getElementById('placesList').innerHTML=[...new Set(all.map(x=>x.place))].map(p=>`<option value="${p}">`).join('');
-
   document.getElementById('k-total').innerText=all.length;
   document.getElementById('k-medical').innerText=all.filter(x=>x.classes.includes('حالة علاج طبي')).length;
   document.getElementById('k-restricted').innerText=all.filter(x=>x.classes.includes('حالة عمل مقيد')).length;
@@ -284,7 +342,6 @@ function renderAcc(){
   let byComp={}; all.forEach(x=>{ byComp[x.company]=(byComp[x.company]||0)+1; });
   let topComp=Object.keys(byComp).sort((a,b)=>byComp[b]-byComp[a])[0];
   document.getElementById('k-top-comp').innerText=topComp?topComp+' ('+byComp[topComp]+')':'-';
-
   let q=(document.getElementById('searchAc').value||'').toLowerCase();
   let fc=document.getElementById('filterClass').value;
   let fcomp=document.getElementById('filterCompany').value;
@@ -312,7 +369,7 @@ function exportAcc(){
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='accidents.csv'; a.click();
 }
 buildWitnesses(); buildCorrective();
-let savedUser=localStorage.getItem('safetyUser')||'';
+let savedUser=localStorage.getItem('safetyUser')||getCurrentReporter();
 document.getElementById('currentUser').value=savedUser;
 document.getElementById('ac-reporter').value=savedUser;
 document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
