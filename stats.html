@@ -1,14 +1,58 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إحصائيات الموقع - RMED</title>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.container{max-width:1100px;margin:auto;padding:16px}.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}.filter button{border:1px solid #CFD8DC;background:#ECEFF1;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}.filter button.active{background:#0A1F44;color:#fff}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}.kpi{background:#fff;border-radius:14px;padding:16px;text-align:center;border-bottom:4px solid #0A1F44;box-shadow:0 2px 10px rgba(0,0,0,.07)}.kpi b{font-size:24px;display:block}.kpi small{color:#78909C}.kpi.green{border-color:#2E7D32}.kpi.orange{border-color:#EF6C00}.kpi.red{border-color:#D32F2F}.kpi.blue{border-color:#1565C0}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:800px){.two{grid-template-columns:1fr}}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:900px){.three{grid-template-columns:1fr}}.ramadan{padding:10px 16px;border-radius:20px;border:none;font-weight:bold;cursor:pointer;background:#FFD54F}.ramadan.on{background:#2E7D32;color:#fff}table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}.btn{background:#0A1F44;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}canvas{max-width:260px;margin:auto;display:block}</style>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.container{max-width:1100px;margin:auto;padding:16px}
+.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.filter button{border:1px solid #CFD8DC;background:#ECEFF1;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
+.filter button.active{background:#0A1F44;color:#fff}
+.filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;cursor:pointer}
+.selector{background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.selector label{font-weight:bold}
+.selector select{padding:10px 12px;border-radius:10px;border:1px solid #FFB74D;font-weight:bold;background:#fff;min-width:140px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border-radius:14px;padding:16px;text-align:center;border-bottom:4px solid #0A1F44;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.kpi b{font-size:24px;display:block}.kpi small{color:#78909C}
+.kpi.green{border-color:#2E7D32}.kpi.orange{border-color:#EF6C00}.kpi.red{border-color:#D32F2F}.kpi.blue{border-color:#1565C0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:900px){.three{grid-template-columns:1fr}}
+.ramadan{padding:10px 16px;border-radius:20px;border:none;font-weight:bold;cursor:pointer;background:#FFD54F}
+.ramadan.on{background:#2E7D32;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
+.btn{background:#0A1F44;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px}
+canvas{max-width:260px;margin:auto;display:block}
+.print-head{display:none}
+@media print{
+  body{background:#fff}
+  header .no-print, .filter, .no-print{display:none !important}
+  .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
+  .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
+  .container{max-width:100%;padding:0}
+  .card,.kpi,.selector{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .three{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(4,1fr)}
+  @page{margin:12mm}
+}
+</style>
 </head>
 <body>
-<header><h2 style="margin:0;">📊 إحصائيات الموقع ككل - RMED</h2><div><button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="location.href='index.html'">🏗️ الرئيسية</button></div></header>
+<header><h2 style="margin:0;">📊 إحصائيات الموقع ككل - RMED</h2><div class="no-print"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="location.href='index.html'">🏗️ الرئيسية</button></div></header>
 <div class="container">
-<div class="filter"><b>📅 الفترة:</b>
+<div class="print-head"><h1>📊 تقرير إحصائيات السلامة - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
+
+<div class="filter"><b>📅 نوع الفترة:</b>
 <button data-period="month" onclick="setPeriod('month',this)" class="active">شهري</button><button data-period="quarter" onclick="setPeriod('quarter',this)">ربع سنوي</button><button data-period="half" onclick="setPeriod('half',this)">نصف سنوي</button><button data-period="year" onclick="setPeriod('year',this)">سنوي</button><button data-period="all" onclick="setPeriod('all',this)">من بداية المشروع</button>
-<span style="flex:1;"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 رمضان: متوقف</button><span id="periodLabel" style="font-weight:bold;"></span>
+<span style="flex:1;"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 رمضان: متوقف</button>
+</div>
+
+<!-- ✅ جديد: اختيار الفترة بالظبط - مش مرتبط بالشهر الحالي -->
+<div class="selector" id="selectorBox">
+<span id="selectorTitle" style="font-weight:bold;">🗓️ اختار الشهر:</span>
+<span id="selectorControls"></span>
+<span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
 </div>
 
 <div class="grid">
@@ -39,35 +83,109 @@
 </div>
 
 <div class="card"><h3 style="margin:0 0 10px;">📋 ملخص الفترة - <span id="summaryPeriod"></span></h3><div id="summary"></div></div>
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة التقرير</button><p style="color:#78909C;font-size:12px;">لما تدوس، اختار من نافذة الطباعة: Destination = Save as PDF</p></div>
 </div>
 
 <script>
 let PROJECT_START=new Date('2026-05-01');
 let period='month';
 let ramadan=localStorage.getItem('safetyRamadan')==='1';
+// ✅ الاختيارات الجديدة - بتبدأ بالشهر الحالي بس تقدر تغيرها
+let nowD=new Date();
+let selYear=nowD.getFullYear();
+let selMonth=nowD.getMonth(); // 0-11
+let selQuarter=Math.floor(nowD.getMonth()/3)+1; // 1-4
+let selHalf=nowD.getMonth()<6?1:2; // 1-2
 
 function setPeriod(p,btn){
   period=p;
-  // ✅ الإصلاح هنا: بنشيل active من زراير الفترة بس، مش من زرار رمضان
   document.querySelectorAll('[data-period]').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
+  buildSelector();
   render();
 }
 function toggleRamadan(){ ramadan=!ramadan; localStorage.setItem('safetyRamadan', ramadan?'1':'0'); render(); }
-
+function exportPDF(){
+  let r=getRange();
+  let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
+  let detail='';
+  if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear;
+  if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear;
+  if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear;
+  if(period==='year') detail=' - سنة '+selYear;
+  document.getElementById('printPeriod').innerText='الفترة: '+pName+detail+' - من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG')+' | رمضان: '+(ramadan?'شغال - ×6':'متوقف');
+  document.getElementById('printDate').innerText='تاريخ استخراج التقرير: '+new Date().toLocaleDateString('ar-EG')+' - '+new Date().toLocaleTimeString('ar-EG');
+  document.title='تقرير إحصائيات السلامة - '+pName+detail+' - RMED';
+  window.print();
+}
+function getMonthName(m){ return ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'][m]; }
+function yearOptions(selected){
+  let html=''; for(let y=2026;y<=2030;y++){ html+=`<option value="${y}" ${y==selected?'selected':''}>${y}</option>`; } return html;
+}
+// ✅ بناء اختيارات الفترة حسب النوع
+function buildSelector(){
+  let box=document.getElementById('selectorControls');
+  let title=document.getElementById('selectorTitle');
+  let selBox=document.getElementById('selectorBox');
+  if(period==='all'){ selBox.style.display='none'; return; }
+  selBox.style.display='flex';
+  if(period==='month'){
+    title.innerText='🗓️ اختار الشهر والسنة:';
+    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
+    <label>الشهر:</label><select id="inMonth" onchange="selMonth=+this.value;render();">${[0,1,2,3,4,5,6,7,8,9,10,11].map(m=>`<option value="${m}" ${m==selMonth?'selected':''}>${getMonthName(m)}</option>`).join('')}</select>`;
+  }
+  if(period==='quarter'){
+    title.innerText='🗓️ اختار الربع والسنة:';
+    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
+    <label>الربع:</label><select id="inQuarter" onchange="selQuarter=+this.value;render();">
+    <option value="1" ${selQuarter==1?'selected':''}>الربع الأول (يناير - مارس)</option>
+    <option value="2" ${selQuarter==2?'selected':''}>الربع الثاني (أبريل - يونيو)</option>
+    <option value="3" ${selQuarter==3?'selected':''}>الربع الثالث (يوليو - سبتمبر)</option>
+    <option value="4" ${selQuarter==4?'selected':''}>الربع الرابع (أكتوبر - ديسمبر)</option></select>`;
+  }
+  if(period==='half'){
+    title.innerText='🗓️ اختار النصف والسنة:';
+    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
+    <label>النصف:</label><select id="inHalf" onchange="selHalf=+this.value;render();">
+    <option value="1" ${selHalf==1?'selected':''}>النصف الأول (يناير - يونيو)</option>
+    <option value="2" ${selHalf==2?'selected':''}>النصف الثاني (يوليو - ديسمبر)</option></select>`;
+  }
+  if(period==='year'){
+    title.innerText='🗓️ اختار السنة:';
+    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>`;
+  }
+}
+// ✅ حساب الفترة من الاختيار مش من الشهر الحالي
 function getRange(){
-  let now=new Date(), start=new Date(now);
-  if(period==='month'){ start=new Date(now.getFullYear(), now.getMonth(), 1); }
-  if(period==='quarter'){ let q=Math.floor(now.getMonth()/3); start=new Date(now.getFullYear(), q*3, 1); }
-  if(period==='half'){ let h=now.getMonth()<6?0:6; start=new Date(now.getFullYear(), h, 1); }
-  if(period==='year'){ start=new Date(now.getFullYear(),0,1); }
-  if(period==='all'){ start=new Date(PROJECT_START); }
-  return {start, end: now};
+  let now=new Date(), start, end;
+  if(period==='month'){
+    start=new Date(selYear, selMonth, 1);
+    end=new Date(selYear, selMonth+1, 0, 23,59,59);
+    if(end>now) end=now; // لو اخترت الشهر الحالي، بنقف عند النهاردة
+  }
+  if(period==='quarter'){
+    let sm=(selQuarter-1)*3;
+    start=new Date(selYear, sm, 1);
+    end=new Date(selYear, sm+3, 0, 23,59,59);
+    if(end>now) end=now;
+  }
+  if(period==='half'){
+    let sm=selHalf===1?0:6;
+    start=new Date(selYear, sm, 1);
+    end=new Date(selYear, sm+6, 0, 23,59,59);
+    if(end>now) end=now;
+  }
+  if(period==='year'){
+    start=new Date(selYear,0,1);
+    end=new Date(selYear,11,31,23,59,59);
+    if(end>now) end=now;
+  }
+  if(period==='all'){ start=new Date(PROJECT_START); end=now; }
+  return {start, end};
 }
 function inRange(d, r){ if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false; return dt>=r.start && dt<=r.end; }
-// ✅ الإصلاح هنا: دي كانت الدالة اللي كسرت السكربت كله
 function sum(arr, key){ return (arr||[]).reduce((a,x)=>a+(parseFloat(x[key])||0),0); }
-function isClosed(x){ let s=(x.status||x.state||x.closed||'').toString().trim().toLowerCase(); return ['closed','done','مغلق','تم','تم الغلق','مغلقة','closed✅'].includes(s) || x.isClosed===true || x.closed===true; }
+function isClosed(x){ let s=(x.status||x.state||x.closed||'').toString().trim().toLowerCase(); return ['closed','done','مغلق','تم','تم الغلق','مغلقة'].includes(s) || x.isClosed===true || x.closed===true; }
 function drawPie(canvasId, closed, open){
   let c=document.getElementById(canvasId); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,260,260);
   let total=closed+open; if(total===0){ ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',130,130); return; }
@@ -82,22 +200,24 @@ function render(){
   let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
   let r=getRange();
   let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
+  let detail='';
+  if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear;
+  if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear;
+  if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear;
+  if(period==='year') detail=' - سنة '+selYear;
   document.getElementById('periodLabel').innerText='من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG');
-  document.getElementById('summaryPeriod').innerText=pName;
+  document.getElementById('summaryPeriod').innerText=pName+detail;
   let btn=document.getElementById('ramadanBtn'); btn.innerText=ramadan?'🌙 رمضان: شغال - اضرب في 6':'🌙 رمضان: متوقف'; btn.classList.toggle('on', ramadan);
-
   let daily=(DB.dailyWorkers||DB.workersDaily||DB.workers||[]).filter(x=>inRange(x.date||x.day, r));
   let avgWorkers=daily.length? daily.reduce((a,x)=>a+((+x.workers||+x.count||+x.total||+x.num||0)),0)/daily.length : 0;
   let workDays=0;
   if(period==='all'){ workDays=new Set(daily.map(x=>x.date||x.day)).size; if(workDays===0){ workDays=Math.ceil((r.end-r.start)/(1000*60*60*24))+1; } document.getElementById('workDaysNote').style.display='inline'; }
   else { workDays=new Set(daily.map(x=>x.date||x.day)).size; document.getElementById('workDaysNote').style.display='none'; }
-
   let safeHours=0; let map={}; daily.forEach(x=>{ let d=x.date||x.day; if(d) map[d]=+x.workers||+x.count||+x.total||+x.num||0; });
   let lastWorkers=avgWorkers; let cur=new Date(r.start); let end=new Date(r.end);
   while(cur<=end){ let key=cur.toISOString().slice(0,10); let w=map[key]||lastWorkers; if(map[key]) lastWorkers=map[key]; let day=cur.getDay();
     if(ramadan) safeHours+=w*6; else if(day===5) safeHours+=w*5; else safeHours+=w*12;
     cur.setDate(cur.getDate()+1); }
-
   let induction=(DB.induction||DB.inductions||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let weekly=(DB.weeklyLect||DB.weekly||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let weeklyAttend=weekly.reduce((a,x)=>a+((+x.attendance||+x.attendees||+x.present||0)),0);
@@ -106,22 +226,18 @@ function render(){
   let trainPeople=trains.reduce((a,x)=>a+((+x.trainees||+x.count||0)),0);
   if(trainPeople===0) trainPeople=trains.reduce((a,x)=>a+((x.traineesList||[]).length||0),0);
   let trainHours=sum(trains,'hours')||sum(trains,'totalHours');
-
   let nm=(DB.nearMiss||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let nmClosed=nm.filter(isClosed).length;
   let obs=(DB.observations||DB.safetyObservations||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let obsClosed=obs.filter(isClosed).length;
-  // ✅ جديد: حالات عدم المطابقة
   let ncr=(DB.ncr||DB.nonConformity||DB.ncrList||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let ncrClosed=ncr.filter(isClosed).length;
   let ncrRate=ncr.length? Math.round(ncrClosed/ncr.length*100):0;
-
   let cViol=(DB.violations||DB.contractorViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let cMoney=sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value');
   let eViol=(DB.empViolations||DB.employeeViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let acc=(DB.accidents||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let injuries=acc.filter(x=>x.hasInjury===true||x.injury==='نعم'||x.injury==='yes'||(+x.injuryCount||0)>0||x.injuries>0).length;
-
   document.getElementById('s-avgWorkers').innerText=Math.round(avgWorkers*10)/10;
   document.getElementById('s-workDays').innerText=workDays;
   document.getElementById('s-safeHours').innerText=Math.round(safeHours).toLocaleString('ar-EG');
@@ -140,11 +256,9 @@ function render(){
   document.getElementById('s-empViol').innerText=eViol.length;
   document.getElementById('s-ncrCount').innerText=ncr.length;
   document.getElementById('s-ncrRate').innerText=ncrRate+'%';
-
   document.getElementById('nm-count').innerText=nm.length; document.getElementById('nm-closed').innerText=nmClosed; document.getElementById('nm-open').innerText=nm.length-nmClosed; document.getElementById('nm-rate').innerText=nm.length? Math.round(nmClosed/nm.length*100)+'%':'0%';
   document.getElementById('obs-count').innerText=obs.length; document.getElementById('obs-closed').innerText=obsClosed; document.getElementById('obs-open').innerText=obs.length-obsClosed; document.getElementById('obs-rate').innerText=obs.length? Math.round(obsClosed/obs.length*100)+'%':'0%';
   document.getElementById('ncr-count2').innerText=ncr.length; document.getElementById('ncr-closed').innerText=ncrClosed; document.getElementById('ncr-open').innerText=ncr.length-ncrClosed; document.getElementById('ncr-rate2').innerText=ncrRate+'%';
-
   drawPie('nmChart', nmClosed, nm.length-nmClosed); drawPie('obsChart', obsClosed, obs.length-obsClosed); drawPie('ncrChart', ncrClosed, ncr.length-ncrClosed);
   document.getElementById('summary').innerHTML=`<table><tr><th>البند</th><th>القيمة</th><th>المعادلة</th></tr>
   <tr><td>متوسط العمال</td><td>${Math.round(avgWorkers*10)/10}</td><td>من إعداد العاملين اليومي</td></tr>
@@ -154,7 +268,9 @@ function render(){
   <tr><td>ساعات التدريبات</td><td>${trainHours.toFixed(1)}</td><td>مجموع الساعات المسجلة في صفحة التدريبات</td></tr>
   <tr><td>نسبة غلق الوشيكة</td><td>${nm.length?Math.round(nmClosed/nm.length*100):0}%</td><td>مغلق ÷ إجمالي ×100</td></tr>
   <tr><td>نسبة غلق الملاحظات</td><td>${obs.length?Math.round(obsClosed/obs.length*100):0}%</td><td>مغلق ÷ إجمالي ×100</td></tr>
-  <tr><td>نسبة غلق عدم المطابقة</td><td>${ncrRate}%</td><td>مغلق ÷ إجمالي ×100</td></tr></table>`;
+  <tr><td>نسبة غلق عدم المطابقة</td><td>${ncrRate}%</td><td>مغلق ÷ إجمالي ×100</td></tr></table>
+  <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:13px;"><span>توقيع مشرف السلامة: ....................</span><span>توقيع مدير المشروع: ....................</span></div>`;
 }
+buildSelector();
 render();
 </script></body></html>
