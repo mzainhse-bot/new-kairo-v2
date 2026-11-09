@@ -3,8 +3,37 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إحصائيات الموقع - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.container{max-width:1100px;margin:auto;padding:16px}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.page-head h2{margin:0;font-size:20px}
+.container{max-width:1100px;margin:auto;padding:0 16px 16px}
 .filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .filter button{border:1px solid #CFD8DC;background:#ECEFF1;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
 .filter button.active{background:#0A1F44;color:#fff}
@@ -27,7 +56,9 @@ canvas{max-width:260px;margin:auto;display:block}
 .print-head{display:none}
 @media print{
   body{background:#fff}
-  header .no-print, .filter, .no-print{display:none !important}
+  .sidebar,.topbar,.overlay,.page-head{display:none !important}
+  .main{margin:0}
+  .filter, .no-print{display:none !important}
   .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
   .container{max-width:100%;padding:0}
@@ -39,7 +70,48 @@ canvas{max-width:260px;margin:auto;display:block}
 </style>
 </head>
 <body>
-<header><h2 style="margin:0;">📊 إحصائيات الموقع ككل - RMED</h2><div class="no-print"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="location.href='index.html'">🏗️ الرئيسية</button></div></header>
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head"><h2>📊 إحصائيات الموقع ككل - RMED</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div></div>
 <div class="container">
 <div class="print-head"><h1>📊 تقرير إحصائيات السلامة - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 
@@ -48,7 +120,6 @@ canvas{max-width:260px;margin:auto;display:block}
 <span style="flex:1;"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 رمضان: متوقف</button>
 </div>
 
-<!-- ✅ جديد: اختيار الفترة بالظبط - مش مرتبط بالشهر الحالي -->
 <div class="selector" id="selectorBox">
 <span id="selectorTitle" style="font-weight:bold;">🗓️ اختار الشهر:</span>
 <span id="selectorControls"></span>
@@ -85,18 +156,36 @@ canvas{max-width:260px;margin:auto;display:block}
 <div class="card"><h3 style="margin:0 0 10px;">📋 ملخص الفترة - <span id="summaryPeriod"></span></h3><div id="summary"></div></div>
 <div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة التقرير</button><p style="color:#78909C;font-size:12px;">لما تدوس، اختار من نافذة الطباعة: Destination = Save as PDF</p></div>
 </div>
+</div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function getReporter(){
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
+  if(typeof u==='object' && u.name) return u.name;
+  return localStorage.getItem('safetyUser')||'';
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getReporter();
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+})();
+
 let PROJECT_START=new Date('2026-05-01');
 let period='month';
 let ramadan=localStorage.getItem('safetyRamadan')==='1';
-// ✅ الاختيارات الجديدة - بتبدأ بالشهر الحالي بس تقدر تغيرها
 let nowD=new Date();
 let selYear=nowD.getFullYear();
-let selMonth=nowD.getMonth(); // 0-11
-let selQuarter=Math.floor(nowD.getMonth()/3)+1; // 1-4
-let selHalf=nowD.getMonth()<6?1:2; // 1-2
-
+let selMonth=nowD.getMonth();
+let selQuarter=Math.floor(nowD.getMonth()/3)+1;
+let selHalf=nowD.getMonth()<6?1:2;
 function setPeriod(p,btn){
   period=p;
   document.querySelectorAll('[data-period]').forEach(b=>b.classList.remove('active'));
@@ -122,7 +211,6 @@ function getMonthName(m){ return ['يناير','فبراير','مارس','أبر
 function yearOptions(selected){
   let html=''; for(let y=2026;y<=2030;y++){ html+=`<option value="${y}" ${y==selected?'selected':''}>${y}</option>`; } return html;
 }
-// ✅ بناء اختيارات الفترة حسب النوع
 function buildSelector(){
   let box=document.getElementById('selectorControls');
   let title=document.getElementById('selectorTitle');
@@ -155,13 +243,12 @@ function buildSelector(){
     box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>`;
   }
 }
-// ✅ حساب الفترة من الاختيار مش من الشهر الحالي
 function getRange(){
   let now=new Date(), start, end;
   if(period==='month'){
     start=new Date(selYear, selMonth, 1);
     end=new Date(selYear, selMonth+1, 0, 23,59,59);
-    if(end>now) end=now; // لو اخترت الشهر الحالي، بنقف عند النهاردة
+    if(end>now) end=now;
   }
   if(period==='quarter'){
     let sm=(selQuarter-1)*3;
@@ -198,6 +285,11 @@ function drawPie(canvasId, closed, open){
 }
 function render(){
   let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+  // ✅ ملاحظات السلامة: اقرا من safety_obs كمان عشان الصفحة الأصلية بتحفظ هناك
+  let obsExtra=[]; try{ obsExtra=JSON.parse(localStorage.getItem('safety_obs')||'[]'); }catch(e){}
+  let obsAll=[...(DB.observations||DB.safetyObservations||[]), ...obsExtra];
+  // شيل التكرار
+  let seen=new Set(); obsAll=obsAll.filter(o=>{ let k=(o.date||'')+'|'+(o.reporter||'')+'|'+(o.desc||''); if(seen.has(k)) return false; seen.add(k); return true; });
   let r=getRange();
   let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
   let detail='';
@@ -228,7 +320,7 @@ function render(){
   let trainHours=sum(trains,'hours')||sum(trains,'totalHours');
   let nm=(DB.nearMiss||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let nmClosed=nm.filter(isClosed).length;
-  let obs=(DB.observations||DB.safetyObservations||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let obs=obsAll.filter(x=>inRange(x.date||x.createdAt, r));
   let obsClosed=obs.filter(isClosed).length;
   let ncr=(DB.ncr||DB.nonConformity||DB.ncrList||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let ncrClosed=ncr.filter(isClosed).length;
