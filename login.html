@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تسجيل الدخول - RMED</title>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1F44;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px}label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px}button{width:100%;background:#2E7D32;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}</style>
+<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1F44;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px}label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px}button{width:100%;background:#2E7D32;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}</style>
 </head>
 <body><div class="box">
-<h2 style="text-align:center;margin:0;">RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد</p>
+<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد</p>
 <label>📧 الإيميل</label><input id="l-email" type="email" placeholder="example@gmail.com">
-<label>🔒 الباسورد</label><input id="l-pass" type="password" placeholder="الباسورد">
+<label>🔒 الباسورد</label><input id="l-pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') doLogin()">
 <button onclick="doLogin()">🚀 دخول</button>
+<button class="btn2" onclick="loginAsVisitor()">👁️ دخول كزائر - عرض بس بدون تعديل</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 الرئيسية</button>
 <p style="text-align:center;font-size:13px;">معندكش حساب؟ <a href="register.html">سجل حساب جديد</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;"></p>
 </div>
 <script>
+// لو مسجل دخول أصلاً، روح على إنجازاتي على طول
+(function(){ let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser'); if(u){ try{ let o=JSON.parse(u); if(o && o.name) location.href='dashboard.html'; }catch(e){} } })();
 function doLogin(){
   let email=document.getElementById('l-email').value.trim().toLowerCase(), pass=document.getElementById('l-pass').value;
-  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); let user=(DB.users||[]).find(u=>u.email===email);
+  if(!email) return document.getElementById('msg').innerText='اكتب الإيميل';
+  if(!pass) return document.getElementById('msg').innerText='اكتب الباسورد';
+  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); let user=(DB.users||[]).find(u=>(u.email||'').toLowerCase()===email);
   if(!user) return document.getElementById('msg').innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
   if(user.pass!==pass) return document.getElementById('msg').innerText='الباسورد غلط';
   if(user.status==='pending') return document.getElementById('msg').innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
   if(user.status==='rejected') return document.getElementById('msg').innerText='❌ حسابك اترفض من المدير';
-  localStorage.setItem('safetyUser',JSON.stringify({email:user.email,name:user.name,job:user.job,role:user.role,photo:user.photo}));
+  // ✅ بنحفظ في الاتنين عشان الشريط يقرا صح في كل الصفحات
+  let session={email:user.email,name:user.name,job:user.job,role:user.role,photo:user.photo,img:user.photo,code:user.code||user.id||''};
+  localStorage.setItem('safetyUser',JSON.stringify(session));
+  localStorage.setItem('currentUser',JSON.stringify(session));
+  localStorage.setItem('safetyUserName',user.name);
+  location.href='dashboard.html';
+}
+function loginAsVisitor(){
+  let session={email:'visitor@rmed.com',name:'زائر',job:'زائر',role:'visitor',photo:'',img:''};
+  localStorage.setItem('safetyUser',JSON.stringify(session));
+  localStorage.setItem('currentUser',JSON.stringify(session));
   location.href='dashboard.html';
 }
 </script></body></html>
