@@ -2,132 +2,275 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>نظام السلامة - رواد RME</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة السلامة - ROAAD</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init("YOUR_PUBLIC_KEY");</script>
 <style>
-*{box-sizing:border-box;font-family:system-ui,Tahoma} body{margin:0;background:#f1f3f6;color:#111}
-header{background:#0f2a44;color:#fff;padding:10px 16px;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px}
-header img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:10px;padding:4px}
-header h1{margin:0;font-size:18px} header p{margin:4px 0 0;opacity:.8;font-size:13px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:10px;background:#fff;position:sticky;top:72px;z-index:9;border-bottom:1px solid #ddd}
-nav button{white-space:nowrap;border:1px solid #ddd;background:#f8f9fa;padding:9px 12px;border-radius:20px;cursor:pointer}
-nav button.active{background:#0f2a44;color:#fff}
-main{padding:14px;max-width:1100px;margin:auto}
-.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px #0001}
-h2{margin:0 0 10px;font-size:17px} h3{margin:14px 0 8px;font-size:15px}
-label{display:block;font-size:13px;margin:10px 0 4px;font-weight:600}
-input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;font-size:14px}
-textarea{min-height:70px} .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:650px){.row{grid-template-columns:1fr}}
-.btn{background:#0f2a44;color:#fff;border:0;padding:12px;border-radius:10px;width:100%;font-size:15px;cursor:pointer;margin-top:12px}
-.btn2{background:#e8f0ff;color:#0f2a44} .btnRed{background:#c0392b}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px} th,td{border:1px solid #eee;padding:8px;text-align:right} th{background:#f8f9fa}
-.badge{padding:3px 8px;border-radius:20px;font-size:12px} .open{background:#ffe1e1;color:#a00} .closed{background:#d9f7d9;color:#0a6}
-.excluded{background:#000;color:#fff} .small{font-size:12px;color:#666}
-.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px} @media(max-width:650px){.kpi{grid-template-columns:1fr 1fr}}
-.kpi div{background:#0f2a44;color:#fff;padding:12px;border-radius:12px} .kpi b{font-size:20px;display:block}
-#toast{position:fixed;bottom:16px;left:16px;right:16px;background:#111;color:#fff;padding:12px;border-radius:12px;display:none;text-align:center;z-index:99}
-.logoPreview{width:90px;height:90px;object-fit:contain;background:#f8f8f8;border:1px dashed #ccc;border-radius:12px;padding:6px}
+:root{ --gold:#D4AF37; --gold2:#FFD700; --black:#0A0A0A; --dark:#1A1A1A; }
+*{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial; }
+body{ background:var(--black); color:#fff; margin:0; }
+header{ background:var(--dark); border-bottom:2px solid var(--gold); padding:14px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
+header h1{ margin:0; color:var(--gold); font-size:22px; }
+nav{ display:flex; gap:6px; flex-wrap:wrap; padding:10px; background:#111; position:sticky; top:76px; z-index:9; }
+nav button{ background:#222; color:#fff; border:1px solid var(--gold); padding:8px 11px; border-radius:8px; cursor:pointer; font-size:13px; }
+nav button.active, nav button:hover{ background:var(--gold); color:#000; font-weight:bold; }
+.container{ padding:14px; max-width:1100px; margin:auto; }
+.card{ background:var(--dark); border:1px solid var(--gold); border-radius:14px; padding:14px; margin-bottom:14px; }
+.card h2{ color:var(--gold); margin:0 0 12px; font-size:18px; }
+label{ display:block; margin:10px 0 4px; font-size:14px; }
+input,select,textarea{ width:100%; background:#111; color:#fff; border:1px solid var(--gold); border-radius:8px; padding:9px; }
+textarea{ min-height:60px; }
+.btn{ background:var(--gold); color:#000; font-weight:bold; border:none; border-radius:8px; padding:11px 18px; cursor:pointer; margin-top:12px; width:100%; font-size:16px; }
+.btn2{ background:#333; color:#fff; border:1px solid var(--gold); padding:7px 10px; border-radius:7px; cursor:pointer; }
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:700px){ .grid{ grid-template-columns:1fr; } nav{ top:110px; } }
+table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+table th{ background:var(--gold); color:#000; padding:8px; }
+table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
+table a{ color:var(--gold2); }
+.hidden{ display:none; }
+.badge{ background:var(--gold); color:#000; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; display:inline-block; margin:3px; }
+.statBox{ background:#111; border:1px solid var(--gold); border-radius:12px; padding:12px; margin:8px 0; }
+.statBox b{ color:var(--gold2); font-size:18px; }
+.idcard{ width:320px; max-width:100%; margin:10px auto; border:2px solid var(--gold); border-radius:14px; overflow:hidden; background:#fff; color:#000; }
+.idcard .front{ padding:14px; text-align:center; }
+.idcard .back{ background:var(--black); color:#fff; padding:12px; font-size:12px; text-align:right; }
+.flex{ display:flex; gap:8px; flex-wrap:wrap; }
+.tabs2{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.tabs2 button{ background:#222; color:#fff; border:1px solid var(--gold); padding:7px 10px; border-radius:20px; cursor:pointer; font-size:12px; }
+.tabs2 button.active{ background:var(--gold); color:#000; font-weight:bold; }
 </style>
 </head>
 <body>
-<header><img id="hdrLogo" src="" style="display:none"><div><h1>🦺 نظام السلامة - ROWAD RME</h1><p>الميل الثابت: mohamed.zain@rowad-rme.com | إشعار فوري للمدير</p></div></header>
-<nav id="nav"></nav>
-<main id="app"></main>
-<div id="toast"></div>
-<script>
-const MANAGER_EMAIL="mohamed.zain@rowad-rme.com";
-let DB=JSON.parse(localStorage.getItem('rowad_safety_v1')||'{}');
-DB.workers=DB.workers||[]; DB.orient=DB.orient||[]; DB.train=DB.train||[]; DB.empViol=DB.empViol||[];
-DB.permits=DB.permits||[]; DB.daily=DB.daily||[]; DB.contViol=DB.contViol||[]; DB.obs=DB.obs||[];
-DB.near=DB.near||[]; DB.acc=DB.acc||[]; DB.settings=DB.settings||{ramadanFrom:'',ramadanTo:'',logo:''};
-function save(){localStorage.setItem('rowad_safety_v1',JSON.stringify(DB)); updateHeaderLogo(); toast('تم الحفظ ✅')}
-function toast(m){let t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3500)}
-function updateHeaderLogo(){let img=document.getElementById('hdrLogo'); if(DB.settings.logo){img.src=DB.settings.logo; img.style.display='block'} else img.style.display='none'}
-
-// ===== إرسال ميل فعلي =====
-async function notifyEmail(subject,body){
-  toast('📧 جاري إرسال إشعار للمدير...');
-  try{
-    let res=await fetch(`https://formsubmit.co/ajax/${MANAGER_EMAIL}`,{
-      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({subject: subject, message: body, _template:'table', _captcha:'false'})
-    });
-    if(res.ok){ toast('📧 تم إرسال الميل للمدير بنجاح ✅'); }
-    else { toast('⚠️ الميل اتجهز بس محتاج تفعيل - افتح ميل التفعيل ودوس Confirm'); }
-  }catch(e){
-    // fallback: يفتح برنامج الميل
-    toast('⚠️ النت ضعيف - هيفتح برنامج الميل');
-    window.location.href=`mailto:${MANAGER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
-}
-function workerByName(n){return DB.workers.find(w=>w.name===n)}
-function daysWorked(w){ if(!w) return 0; let end=w.excluded? new Date(w.excludedDate): new Date(); let s=new Date(w.regDate||Date.now()); return Math.max(0,Math.ceil((end-s)/86400000)) }
-function safeHours(){ let total=0; DB.daily.forEach(d=>{ let dt=new Date(d.date); let isFri=dt.getDay()===5; let isRam=DB.settings.ramadanFrom && d.date>=DB.settings.ramadanFrom && d.date<=DB.settings.ramadanTo; let mult=isRam?6:(isFri?5:12); total+=(d.total||0)*mult; }); return total; }
-const COMPANIES=["رواد","المقاول العام","مقاول كهرباء","مقاول ميكانيكا","مقاول مدني","أخرى"];
-const JOBS=["مدير مشروع","مدير تنفيذ","مدير موقع","مكتب فني","مهندس موقع","مهندس جودة","قسم السلامة","مهندس كهرباء","مشرف كهرباء","مسئول مستندات","امين مخزن","مشرف تنفيذ","مساح","مساعد مساح","سائق","امن","مهندس ميكانيكا","مشرف ميكانيكا","نجار","حداد","فني شدة","كهربائي","فورمجي خرسانه","مبيض محارة","بناء","وناش","بحري"];
-function baseFields(){return `<div class="row"><div><label>شركة معد التقرير *</label><select class="f-company">${COMPANIES.map(c=>`<option>${c}</option>`).join('')}</select></div><div><label>مكان التقرير</label><input class="f-place" placeholder="مثال: مبنى A - الدور 3"></div></div><div class="row"><div><label>اسم معد التقرير</label><input class="f-reporter"></div><div><label>التاريخ</label><input type="date" class="f-date" value="${new Date().toISOString().slice(0,10)}"></div></div>`}
-function getBase(root){return {reporterCompany:root.querySelector('.f-company')?.value||'',place:root.querySelector('.f-place')?.value||'',reporter:root.querySelector('.f-reporter')?.value||'',date:root.querySelector('.f-date')?.value||''}}
-function table(h,rows){return `<table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')||'<tr><td colspan="10">لا يوجد بيانات</td></tr>'}</table>`}
-const TABS=[{id:'workers',t:'👷 العاملين / الكارنيه'},{id:'orient',t:'📋 محاضرة التوعية'},{id:'train',t:'🎓 تدريبات'},{id:'empViol',t:'⚠️ مخالفات موظفين'},{id:'permits',t:'📄 تصاريح العمل'},{id:'daily',t:'👥 إعداد العاملين اليومي'},{id:'contViol',t:'🏗️ مخالفات مقاولين'},{id:'obs',t:'👁️ ملاحظات سلامة'},{id:'near',t:'⚡ حوادث وشيكة'},{id:'acc',t:'🚨 الحوادث'},{id:'stats',t:'📊 الإحصائيات'},{id:'settings',t:'⚙️ الإعدادات'}];
-let cur='workers';
-function renderNav(){document.getElementById('nav').innerHTML=TABS.map(x=>`<button class="${x.id===cur?'active':''}" onclick="go('${x.id}')">${x.t}</button>`).join('')}
-function go(id){cur=id;renderNav();render()}
-function render(){
- let el=document.getElementById('app');
- if(cur==='workers') el.innerHTML=`<div class="card"><h2>إضافة عامل + الكارنيه</h2><div class="row"><div><label>الاسم</label><input id="w-name"></div><div><label>الكود</label><input id="w-code"></div></div><div class="row"><div><label>المهنة</label><select id="w-job">${JOBS.map(j=>`<option>${j}</option>`).join('')}</select></div><div><label>الشركة</label><select id="w-comp">${COMPANIES.map(c=>`<option>${c}</option>`).join('')}</select></div></div><div class="row"><div><label>القسم</label><input id="w-dept"></div><div><label>تاريخ التسجيل</label><input type="date" id="w-reg" value="${new Date().toISOString().slice(0,10)}"></div></div><label>صورة وش الكارنيه</label><input type="file" id="w-front" accept="image/*"><label>صورة ضهر الكارنيه</label><input type="file" id="w-back" accept="image/*"><button class="btn" onclick="addWorker()">حفظ العامل</button></div><div class="card"><h2>ملفات العاملين</h2>${table(['الاسم','الكود','المهنة','الشركة','أيام العمل','الحالة','عرض'],DB.workers.map((w,i)=>[w.name,w.code,w.job,w.company,daysWorked(w),w.excluded?'<span class="badge excluded">تم الاستبعاد ❌</span>':'<span class="badge closed">نشط</span>',`<button onclick="showWorker(${i})">ملف / باركود</button> <button onclick="excludeWorker(${i})">استبعاد</button>`]))}</div><div class="card" id="workerView"></div>`;
- if(cur==='orient') el.innerHTML=`<div class="card"><h2>محاضرة التوعية</h2><div id="f">${baseFields()}<label>اسم العامل</label><input id="o-name" list="wlist" oninput="fillW(this,'o')"><datalist id="wlist">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><div class="row"><div><label>الكود</label><input id="o-code" readonly></div><div><label>المهنة</label><input id="o-job" readonly></div></div><label>الوقت</label><input type="time" id="o-time"><button class="btn" onclick="addOrient()">حفظ</button></div></div><div class="card">${table(['التاريخ','العامل','الشركة','المكان'],DB.orient.map(x=>[x.date,x.name,x.reporterCompany,x.place]))}</div>`;
- if(cur==='train') el.innerHTML=`<div class="card"><h2>تدريبات السلامة</h2><div id="f">${baseFields()}<label>اسم العامل</label><input id="t-name" list="wlist2" oninput="fillW(this,'t')"><datalist id="wlist2">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><label>اسم التدريب</label><input id="t-title"><label>المدرب</label><input id="t-trainer"><button class="btn" onclick="addTrain()">حفظ</button></div></div><div class="card">${table(['التاريخ','العامل','التدريب','الشركة'],DB.train.map(x=>[x.date,x.name,x.title,x.reporterCompany]))}</div>`;
- if(cur==='empViol') el.innerHTML=`<div class="card"><h2>مخالفات الموظفين</h2><div id="f">${baseFields()}<label>اسم العامل</label><input id="v-name" list="wlist3" oninput="fillW(this,'v')"><datalist id="wlist3">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><div class="row"><div><label>الكود</label><input id="v-code" readonly></div><div><label>المهنة</label><input id="v-job" readonly></div></div><label>وصف المخالفة</label><textarea id="v-desc"></textarea><label>الإجراء</label><select id="v-act"><option>إنذار</option><option>خصم</option><option>استبعاد</option><option>إيقاف</option></select><button class="btn" onclick="addEmpViol()">حفظ</button></div></div><div class="card">${table(['التاريخ','العامل','المخالفة','الإجراء','المكان'],DB.empViol.map(x=>[x.date,x.name,x.desc,x.act,x.place]))}</div>`;
- if(cur==='permits') el.innerHTML=`<div class="card"><h2>تصاريح العمل</h2><div id="f">${baseFields()}<label>نوع التصريح</label><select id="p-type"><option>عمل على ارتفاع</option><option>عمل ساخن</option><option>حفر</option><option>دخول أماكن مغلقة</option><option>كهرباء</option></select><label>اسم المسئول</label><input id="p-name"><label>الحالة</label><select id="p-status"><option>مفتوح</option><option>مغلق</option></select><button class="btn" onclick="addPermit()">حفظ</button></div></div><div class="card">${table(['التاريخ','النوع','المسئول','الحالة'],DB.permits.map(x=>[x.date,x.type,x.name,x.status]))}</div>`;
- if(cur==='daily') el.innerHTML=`<div class="card"><h2>إعداد العاملين اليومي</h2><div id="f">${baseFields()}<label>اسم الشركة</label><select id="d-comp">${COMPANIES.map(c=>`<option>${c}</option>`).join('')}</select><div class="row">${JOBS.map(j=>`<div><label>${j}</label><input type="number" class="d-job" data-job="${j}" value="0"></div>`).join('')}</div><h3 id="d-total">الإجمالي: 0</h3><button class="btn" onclick="addDaily()">حفظ اليوم</button></div></div><div class="card">${table(['التاريخ','الشركة','الإجمالي','ساعات آمنة'],DB.daily.map(x=>[x.date,x.company,x.total,x.total*12]))}</div>`;
- if(cur==='contViol') el.innerHTML=`<div class="card"><h2>مخالفات المقاولين</h2><div id="f">${baseFields()}<label>اسم الشركة المخالفة</label><select id="c-comp">${COMPANIES.map(c=>`<option>${c}</option>`).join('')}</select><label>الوقت</label><input type="time" id="c-time"><label>وصف المخالفة</label><textarea id="c-desc"></textarea><div class="row"><div><label>مبلغ المخالفة</label><input type="number" id="c-amt" value="0"></div><div><label>إجراء آخر</label><select id="c-act"><option>إنذار</option><option>إيقاف أعمال</option><option>خصم</option></select></div></div><label>صورة المخالفة</label><input type="file" id="c-img" accept="image/*"><button class="btn" onclick="addContViol()">حفظ</button></div></div><div class="card">${table(['التاريخ','الشركة','المخالفة','المبلغ','المكان'],DB.contViol.map(x=>[x.date,x.company,x.desc,x.amt,x.place]))}</div>`;
- if(cur==='obs') el.innerHTML=`<div class="card"><h2>ملاحظات السلامة</h2><div id="f">${baseFields()}<label>اسم الشخص</label><input id="ob-name" list="wlist4" oninput="fillW(this,'ob')"><datalist id="wlist4">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><div class="row"><div><label>الكود</label><input id="ob-code" readonly></div><div><label>الوقت</label><input type="time" id="ob-time"></div></div><label>وصف الملاحظة</label><textarea id="ob-desc"></textarea><label>النوع</label><select id="ob-type"><option>وضع غير آمن</option><option>سلوك غير آمن</option></select><label>الإجراء التصحيحي</label><textarea id="ob-corr"></textarea><label>الحالة</label><select id="ob-status"><option>مفتوحة</option><option>مغلقة</option></select><button class="btn" onclick="addObs()">حفظ + إرسال ميل فعلي</button></div></div><div class="card">${table(['التاريخ','الشخص','النوع','الحالة'],DB.obs.map(x=>[x.date,x.name,x.type,x.status]))}</div>`;
- if(cur==='near') el.innerHTML=`<div class="card"><h2>حوادث وشيكة</h2><div id="f">${baseFields()}<label>اسم الشخص</label><input id="n-name" list="wlist5" oninput="fillW(this,'n')"><datalist id="wlist5">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><div class="row"><div><label>الكود</label><input id="n-code" readonly></div><div><label>المهنة</label><input id="n-job" readonly></div></div><label>وصف الحادث الوشيك</label><textarea id="n-desc"></textarea><label>السبب المباشر</label><input id="n-direct"><label>السبب الجذري</label><input id="n-root"><label>الإجراء المباشر</label><input id="n-imm"><label>الإجراء التصحيحي</label><input id="n-corr"><label>صورة الحادث</label><input type="file" id="n-img1" accept="image/*"><label>صورة الإجراء التصحيحي</label><input type="file" id="n-img2" accept="image/*"><button class="btn" onclick="addNear()">حفظ + إرسال ميل فعلي</button></div></div><div class="card">${table(['التاريخ','الشخص','الوصف','المكان'],DB.near.map(x=>[x.date,x.name,x.desc,x.place]))}</div>`;
- if(cur==='acc') el.innerHTML=`<div class="card"><h2>الحوادث</h2><div id="f">${baseFields()}<label>الوقت</label><input type="time" id="a-time"><label>اسم المتسبب</label><input id="a-name" list="wlist6" oninput="fillW(this,'a')"><datalist id="wlist6">${DB.workers.map(w=>`<option value="${w.name}">`).join('')}</datalist><label>وصف الحادث</label><textarea id="a-desc"></textarea><label>تصنيف الحادث</label><select id="a-class"><option>إسعاف أولي</option><option>حالة علاج طبي</option><option>حالة انقطاع عن العمل</option><option>حالة وفاة</option></select><div class="row"><div><label>السبب المباشر</label><input id="a-direct"></div><div><label>السبب الجذري</label><input id="a-root"></div></div><label>مكان الإصابة</label><input id="a-inj"><label>أسماء الشهود (لحد 10 - افصل بفاصلة)</label><input id="a-wit"><label>الإجراءات التصحيحية (لحد 5)</label><input id="a-corr"><label>الإجراءات الوقائية (لحد 5)</label><input id="a-prev"><label>صورة الحادث</label><input type="file" id="a-img" accept="image/*"><button class="btn btnRed" onclick="addAcc()">حفظ + إرسال ميل فعلي</button></div></div><div class="card">${table(['التاريخ','الشخص','التصنيف','المكان'],DB.acc.map(x=>[x.date,x.name,x.class,x.place]))}</div>`;
- if(cur==='stats') el.innerHTML=statsHTML();
- if(cur==='settings') el.innerHTML=`
-  <div class="card"><h2>🖼️ لوجو الشركة</h2>
-   <p class="small">ارفع اللوجو مرة واحدة، هيظهر في كل مكان وهيتحفظ جوة البرنامج</p>
-   ${DB.settings.logo?`<img src="${DB.settings.logo}" class="logoPreview"><br><br>`:''}
-   <input type="file" id="logoInput" accept="image/*" onchange="uploadLogo(this)">
-   <button class="btn btnRed" onclick="removeLogo()">حذف اللوجو</button>
+<header>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <img id="siteLogo" src="" style="width:60px; height:60px; border-radius:50%; border:2px solid #D4AF37; display:none; object-fit:cover;">
+    <div><h1>بوابة السلامة</h1><small>ROAAD - Safety Portal | أسود ودهبي</small></div>
   </div>
-  <div class="card"><h2>🌙 رمضان - اختيار يدوي</h2><label>من</label><input type="date" id="s-from" value="${DB.settings.ramadanFrom}"><label>إلى</label><input type="date" id="s-to" value="${DB.settings.ramadanTo}"><button class="btn" onclick="saveSettings()">حفظ رمضان</button></div>
-  <div class="card"><h2>📧 اختبار الميل</h2><p>الميل الثابت: ${MANAGER_EMAIL}</p><button class="btn btn2" onclick="notifyEmail('اختبار نظام السلامة','ده ميل اختبار - لو وصلك يبقى الإشعارات شغالة ✅')">ابعت ميل تجريبي دلوقتي</button><p class="small">لو أول مرة: افتح الميل اللي هيوصلك ودوس Confirm عشان التفعيل.</p></div>
-  <div class="card"><button class="btn btnRed" onclick="if(confirm('متأكد؟')){localStorage.clear();location.reload()}">مسح كل البيانات</button></div>`;
- document.querySelectorAll('.d-job').forEach(i=>i.oninput=()=>{let t=0;document.querySelectorAll('.d-job').forEach(x=>t+=+x.value||0);document.getElementById('d-total').textContent='الإجمالي: '+t});
+  <label style="font-size:13px;">ارفع اللوجو <input type="file" accept="image/*" onchange="uploadLogo(event)" style="width:auto;"></label>
+</header>
+
+<nav>
+  <button onclick="show('dashboard')" class="active">لوحة التحكم</button>
+  <button onclick="show('workers')">الموظفين</button>
+  <button onclick="show('cards')">الكارنيهات</button>
+  <button onclick="show('train')">التدريبات</button>
+  <button onclick="show('weekly')">المحاضرات الأسبوعية</button>
+  <button onclick="show('stats')">الإحصائيات</button>
+  <button onclick="show('empViol')">مخالفات الموظفين</button>
+  <button onclick="show('conViol')">مخالفات المقاولين</button>
+  <button onclick="show('obs')">ملاحظات السلامة</button>
+  <button onclick="show('near')">حوادث وشيكة</button>
+  <button onclick="show('acc')">الحوادث</button>
+</nav>
+
+<div class="container">
+
+<div id="sec-dashboard">
+  <div class="card"><h2>📊 لوحة التحكم</h2><div id="statsMini" class="flex"></div></div>
+  <div class="card"><h2>⚙️ إعدادات الميل</h2><p style="font-size:13px; color:#ccc;">الميل المستقبل: <b>Mohamed.Zain@rowad-rme.com</b></p><label>الإيميل اللي هيوصله التنبيه</label><input id="notifyMail" value="Mohamed.Zain@rowad-rme.com" onchange="localStorage.setItem('notifyMail',this.value)"><button class="btn2" onclick="testMail()">تجربة إرسال ميل</button><p style="font-size:12px; color:#999;">حط مفاتيح EmailJS مكان YOUR_PUBLIC_KEY / YOUR_SERVICE_ID / YOUR_TEMPLATE_ID عشان يتبعت أوتوماتيك</p></div>
+</div>
+
+<div id="sec-workers" class="hidden">
+  <div class="card"><h2>👷 إضافة عامل / موظف - الكارنيه أوتوماتيك</h2>
+    <div class="grid"><div><label>اسم العامل</label><input id="w-name"></div><div><label>الكود</label><input id="w-code"></div><div><label>الوظيفة</label><input id="w-job"></div><div><label>الشركة</label><input id="w-company" list="companyList" placeholder="اكتب براحتك"></div><div><label>القسم</label><input id="w-dept" list="deptList"></div><div><label>تاريخ الانتهاء</label><input type="date" id="w-exp"></div></div>
+    <label>صورة العامل</label><input type="file" id="w-img" accept="image/*">
+    <button class="btn" onclick="addWorker()">حفظ + إصدار كارنيه أوتوماتيك</button>
+  </div>
+  <div class="card"><h2>قائمة العمال</h2><div id="workersTable"></div></div>
+</div>
+
+<div id="sec-cards" class="hidden"><div class="card"><h2>🪪 الكارنيهات</h2><div id="cardsList"></div></div></div>
+
+<!-- التدريبات -->
+<div id="sec-train" class="hidden">
+  <div class="card"><h2>🎓 التدريبات + محاضرات التوعية</h2>
+    <div id="f-train"></div>
+    <div class="grid"><div><label>اسم الشركة</label><input id="t-comp" list="companyList" placeholder="اكتب براحتك"></div><div><label>المكان</label><input id="t-place"></div><div><label>العنوان / الموضوع</label><input id="t-title"></div><div><label>عدد الحضور</label><input id="t-count" type="number" placeholder="مثال: 20"></div><div><label>المحاضر / المدرب</label><input id="t-trainer"></div><div><label>نوع التدريب</label><select id="t-type"><option value="train">تدريب - 3 ساعات للفرد</option><option value="aware">محاضرة توعية - ربع ساعة للفرد</option></select></div></div>
+    <label>مدة التدريب (ساعة) - بتتحسب أوتوماتيك بس تقدر تعدلها</label><input id="t-hours" type="number" value="3" step="0.25">
+    <label>صورة التدريب</label><input type="file" id="t-img" accept="image/*">
+    <button class="btn" onclick="addTrain()">حفظ التدريب</button>
+    <p style="font-size:12px; color:#ccc;">المعادلة: التدريب = إجمالي الحضور × 3 ساعات | التوعية = إجمالي الحضور × 0.25 ساعة</p>
+  </div>
+  <div class="card"><h2>سجل التدريبات</h2><div id="trainTable"></div></div>
+</div>
+
+<!-- المحاضرات الأسبوعية - جديد -->
+<div id="sec-weekly" class="hidden">
+  <div class="card"><h2>📅 المحاضرات الأسبوعية</h2>
+    <div id="f-weekly"></div>
+    <div class="grid">
+      <div><label>اسم الشركة</label><input id="wk-comp" list="companyList" placeholder="اكتب اسم الشركة براحتك"></div>
+      <div><label>المكان</label><input id="wk-place" placeholder="اكتب المكان"></div>
+      <div><label>العنوان</label><input id="wk-title" placeholder="عنوان المحاضرة"></div>
+      <div><label>عدد الحضور</label><input id="wk-count" type="number" placeholder="مثال: 25"></div>
+      <div><label>المحاضر</label><input id="wk-trainer" placeholder="اسم المحاضر"></div>
+      <div><label>مدة المحاضرة</label><input value="0.5 ساعة (نص ساعة) - أوتوماتيك" disabled></div>
+    </div>
+    <label>صورة المحاضرة</label><input type="file" id="wk-img" accept="image/*">
+    <button class="btn" onclick="addWeekly()">حفظ المحاضرة الأسبوعية</button>
+    <p style="font-size:12px; color:#ccc;">المعادلة: المحاضرة الأسبوعية = إجمالي الحضور × 0.5 ساعة (نص ساعة)</p>
+  </div>
+  <div class="card"><h2>سجل المحاضرات الأسبوعية</h2><div id="weeklyTable"></div></div>
+</div>
+
+<!-- الإحصائيات -->
+<div id="sec-stats" class="hidden">
+  <div class="card"><h2>📈 الإحصائيات - تقارير ساعات التدريب</h2>
+    <p style="font-size:13px; color:#ccc;">اختار الفترة اللي عايز تشوفها:</p>
+    <div class="tabs2" id="periodTabs">
+      <button onclick="setPeriod('15a')" data-p="15a" class="active">من 1 لـ 15</button>
+      <button onclick="setPeriod('15b')" data-p="15b">من 16 لـ 31</button>
+      <button onclick="setPeriod('month')" data-p="month">كل شهر</button>
+      <button onclick="setPeriod('quarter')" data-p="quarter">كل ربع سنوي</button>
+      <button onclick="setPeriod('half')" data-p="half">كل نصف سنوي</button>
+      <button onclick="setPeriod('year')" data-p="year">كل سنة</button>
+      <button onclick="setPeriod('all')" data-p="all">تجميعة المشروع كله</button>
+    </div>
+    <div class="grid">
+      <div><label>السنة</label><input type="number" id="statYear" value="2026" onchange="renderStats()"></div>
+      <div><label>الشهر (للفترات الشهرية ونصف الشهر)</label><input type="number" id="statMonth" value="11" min="1" max="12" onchange="renderStats()"></div>
+      <div><label>الربع / النصف</label><select id="statQ" onchange="renderStats()"><option value="1">الربع 1 / النصف 1 - (يناير - مارس / يناير - يونيو)</option><option value="2">الربع 2 / النصف 2 - (أبريل - يونيو / يوليو - ديسمبر)</option><option value="3">الربع 3 - (يوليو - سبتمبر)</option><option value="4">الربع 4 - (أكتوبر - ديسمبر)</option></select></div>
+      <div><label>من تاريخ</label><input type="date" id="statFrom" onchange="renderStats()"></div>
+      <div><label>إلى تاريخ</label><input type="date" id="statTo" onchange="renderStats()"></div>
+    </div>
+    <div id="statsReport"></div>
+    <button class="btn2" onclick="window.print()">🖨️ طباعة التقرير</button>
+  </div>
+</div>
+
+<div id="sec-empViol" class="hidden">
+  <div class="card"><h2>⚠️ مخالفات الموظفين</h2><div id="f-empViol"></div>
+    <div class="grid"><div><label>اسم العامل</label><input id="v-name"></div><div><label>الكود</label><input id="v-code"></div><div><label>الوظيفة</label><input id="v-job"></div><div><label>القسم التابع ليه</label><input id="v-dept" list="deptList"></div></div>
+    <label>وصف المخالفة</label><textarea id="v-desc"></textarea><label>الإجراء (اكتب براحتك)</label><input id="v-act" list="actList" placeholder="إنذار / خصم / استبعاد"><label>صورة المخالفة</label><input type="file" id="v-img" accept="image/*"><button class="btn" onclick="addEmpViol()">حفظ</button></div>
+  <div class="card"><h2>السجل</h2><div id="empViolTable"></div></div>
+</div>
+
+<div id="sec-conViol" class="hidden">
+  <div class="card"><h2>🏗️ مخالفات المقاولين</h2><div id="f-conViol"></div>
+    <label>اسم الشركة المخالفة - اكتب براحتك</label><input id="c-comp" list="companyList"><label>وصف المخالفة</label><textarea id="c-desc"></textarea>
+    <div class="grid"><div><label>مبلغ المخالفة</label><input id="c-amount" type="number"></div><div><label>إجراء آخر (اكتب براحتك)</label><input id="c-act" list="cActList"></div></div><label>صورة المخالفة</label><input type="file" id="c-img" accept="image/*"><button class="btn" onclick="addConViol()">حفظ</button></div>
+  <div class="card"><h2>السجل</h2><div id="conViolTable"></div></div>
+</div>
+
+<div id="sec-obs" class="hidden">
+  <div class="card"><h2>📝 ملاحظات السلامة</h2><div id="f-obs"></div>
+    <div class="grid"><div><label>اسم الشخص</label><input id="ob-name"></div><div><label>الكود</label><input id="ob-code"></div><div><label>الوقت</label><input type="time" id="ob-time"></div><div><label>نوع الملاحظة</label><input id="ob-type"></div></div>
+    <label>وصف الملاحظة</label><textarea id="ob-desc"></textarea><label>الإجراء التصحيحي</label><textarea id="ob-corr"></textarea><label>صورة الملاحظة</label><input type="file" id="ob-img" accept="image/*"><label>الحالة</label><select id="ob-status"><option>مفتوحة</option><option>مغلقة</option></select><button class="btn" onclick="addObs()">حفظ + إرسال ميل</button></div>
+  <div class="card"><h2>السجل</h2><div id="obsTable"></div></div>
+</div>
+
+<div id="sec-near" class="hidden">
+  <div class="card"><h2>⚡ حوادث وشيكة</h2><div id="f-near"></div>
+    <div class="grid"><div><label>اسم الشخص</label><input id="n-name"></div><div><label>الكود</label><input id="n-code"></div></div><label>وصف الحادث الوشيك</label><textarea id="n-desc"></textarea><label>السبب المباشر</label><textarea id="n-direct"></textarea><label>السبب الجذري</label><textarea id="n-root"></textarea><button class="btn" onclick="addNear()">حفظ</button></div>
+  <div class="card"><h2>السجل</h2><div id="nearTable"></div></div>
+</div>
+
+<div id="sec-acc" class="hidden">
+  <div class="card"><h2>🚨 الحوادث</h2><div id="f-acc"></div>
+    <div class="grid"><div><label>اسم الشخص</label><input id="a-name"></div><div><label>الكود</label><input id="a-code"></div></div><label>تصنيف الحادث</label><select id="a-class"><option>إسعاف أولي</option><option>حالة علاج طبي</option><option>حالة انقطاع عن العمل</option><option>حالة وفاة</option><option>حريق</option><option>اضرار ممتلكات</option><option>انقلاب معدات</option></select><label>وصف الحادث</label><textarea id="a-desc"></textarea><label>السبب المباشر</label><textarea id="a-direct"></textarea><label>السبب الجذري</label><textarea id="a-root"></textarea><label>الإجراء التصحيحي</label><textarea id="a-corr"></textarea><button class="btn" onclick="addAcc()">حفظ</button></div>
+  <div class="card"><h2>السجل</h2><div id="accTable"></div></div>
+</div>
+
+</div>
+
+<datalist id="companyList"><option value="رواد"><option value="المقاول العام"></datalist>
+<datalist id="deptList"><option value="كهرباء"><option value="مدني"><option value="ميكانيكا"><option value="سلامة"><option value="إداري"><option value="مخازن"></datalist>
+<datalist id="actList"><option value="إنذار شفوي"><option value="إنذار كتابي"><option value="خصم"><option value="إيقاف عن العمل"><option value="استبعاد"></datalist>
+<datalist id="cActList"><option value="إنذار"><option value="إنذار كتابي"><option value="إيقاف أعمال"><option value="خصم"><option value="استبعاد مقاول"></datalist>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[]}');
+if(!DB.train) DB.train=[]; if(!DB.weekly) DB.weekly=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id)?.value||''; }
+function setVal(id,v){ let e=document.getElementById(id); if(e) e.value=v; }
+function show(sec){ document.querySelectorAll('[id^="sec-"]').forEach(d=>d.classList.add('hidden')); document.getElementById('sec-'+sec).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(event) event.target.classList.add('active'); render(); if(sec==='stats') renderStats(); }
+function getBase(id){ let el=document.getElementById(id); if(!el) return {date:new Date().toISOString().slice(0,10), place:'', reporter:'', reporterCompany:''}; return { date: el.querySelector('.b-date')?.value||new Date().toISOString().slice(0,10), place: el.querySelector('.b-place')?.value||'', reporter: el.querySelector('.b-reporter')?.value||'', reporterCompany: el.querySelector('.b-company')?.value||'' }; }
+function baseHTML(id){ return `<div class="grid"><div><label>التاريخ</label><input type="date" class="b-date" value="${new Date().toISOString().slice(0,10)}"></div><div><label>المكان</label><input class="b-place" placeholder="اكتب المكان"></div><div><label>اسم معد التقرير</label><input class="b-reporter"></div><div><label>شركة معد التقرير - اكتب براحتك</label><input class="b-company" list="companyList" placeholder="اكتب اسم الشركة براحتك"></div></div>`; }
+['f-empViol','f-conViol','f-obs','f-near','f-acc','f-train','f-weekly'].forEach(id=>{ let e=document.getElementById(id); if(e) e.innerHTML=baseHTML(id); });
+function workerByName(n){ return DB.workers.find(w=>w.name===n); }
+function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
+function addWorker(){ if(!val('w-name')) return alert('اكتب اسم العامل'); readFile('w-img', img=>{ let w={name:val('w-name'),code:val('w-code'),job:val('w-job'),company:val('w-company'),dept:val('w-dept'),exp:val('w-exp'),img,excluded:false}; DB.workers.push(w); DB.cards.push({code:w.code,name:w.name,job:w.job,company:w.company,dept:w.dept,expiry:w.exp||new Date(Date.now()+365*24*60*60*1000).toISOString().slice(0,10),photo:img}); save(); render(); alert('✅ تم حفظ العامل وإصدار الكارنيه أوتوماتيك'); }); }
+function addEmpViol(){ let b=getBase('f-empViol'); let act=val('v-act'); readFile('v-img', img=>{ DB.empViol.push({...b,name:val('v-name'),code:val('v-code'),job:val('v-job'),dept:val('v-dept'),desc:val('v-desc'),act,img}); if(act.includes('استبعاد')){ let w=workerByName(val('v-name')); if(w) w.excluded=true; } save(); render(); alert('✅ تم حفظ مخالفة الموظف'); }); }
+function addConViol(){ let b=getBase('f-conViol'); readFile('c-img', img=>{ DB.conViol.push({...b,comp:val('c-comp'),desc:val('c-desc'),amount:val('c-amount'),act:val('c-act'),img}); save(); render(); alert('✅ تم حفظ مخالفة المقاول'); }); }
+function addObs(){ let b=getBase('f-obs'); readFile('ob-img', img=>{ let o={...b,name:val('ob-name'),code:val('ob-code'),time:val('ob-time'),desc:val('ob-desc'),type:val('ob-type'),corr:val('ob-corr'),status:val('ob-status'),img}; DB.obs.push(o); save(); render(); notifyEmail('ملاحظة سلامة جديدة - '+o.name, `الوصف: ${o.desc}\nالشركة: ${o.reporterCompany}\nالمكان: ${o.place}\nالتاريخ: ${o.date}`); }); }
+function addNear(){ let b=getBase('f-near'); DB.near.push({...b,name:val('n-name'),code:val('n-code'),desc:val('n-desc'),direct:val('n-direct'),root:val('n-root')}); save(); render(); alert('✅ تم حفظ الحادث الوشيك'); }
+function addAcc(){ let b=getBase('f-acc'); DB.acc.push({...b,name:val('a-name'),code:val('a-code'),class:val('a-class'),desc:val('a-desc'),direct:val('a-direct'),root:val('a-root'),corr:val('a-corr')}); save(); render(); alert('✅ تم حفظ الحادث'); }
+
+// التدريبات والمحاضرات الأسبوعية - جديد
+document.getElementById('t-type').addEventListener('change', e=>{ document.getElementById('t-hours').value = e.target.value==='train' ? 3 : 0.25; });
+function addTrain(){ let b=getBase('f-train'); readFile('t-img', img=>{ let count=parseInt(val('t-count')||0); let per=parseFloat(val('t-hours')|| (val('t-type')==='train'?3:0.25)); DB.train.push({...b, comp:val('t-comp'), place2:val('t-place'), title:val('t-title'), count, trainer:val('t-trainer'), type:val('t-type'), hoursPer:per, totalHours:count*per, img}); save(); render(); alert('✅ تم حفظ التدريب - إجمالي الساعات: '+(count*per)); }); }
+function addWeekly(){ let b=getBase('f-weekly'); readFile('wk-img', img=>{ let count=parseInt(val('wk-count')||0); DB.weekly.push({...b, comp:val('wk-comp'), place2:val('wk-place'), title:val('wk-title'), count, trainer:val('wk-trainer'), hoursPer:0.5, totalHours:count*0.5, img}); save(); render(); alert('✅ تم حفظ المحاضرة الأسبوعية - إجمالي الساعات: '+(count*0.5)); }); }
+
+// الإحصائيات
+let curPeriod='15a';
+function setPeriod(p){ curPeriod=p; document.querySelectorAll('#periodTabs button').forEach(b=>b.classList.toggle('active', b.dataset.p===p)); renderStats(); }
+function getPeriodRange(){
+  let y=parseInt(val('statYear')||2026), m=parseInt(val('statMonth')||11), q=parseInt(val('statQ')||1);
+  let from='', to='';
+  if(curPeriod==='15a'){ from=`${y}-${String(m).padStart(2,'0')}-01`; to=`${y}-${String(m).padStart(2,'0')}-15`; }
+  if(curPeriod==='15b'){ from=`${y}-${String(m).padStart(2,'0')}-16`; to=`${y}-${String(m).padStart(2,'0')}-31`; }
+  if(curPeriod==='month'){ from=`${y}-${String(m).padStart(2,'0')}-01`; to=`${y}-${String(m).padStart(2,'0')}-31`; }
+  if(curPeriod==='quarter'){ let sm=(q-1)*3+1, em=sm+2; from=`${y}-${String(sm).padStart(2,'0')}-01`; to=`${y}-${String(em).padStart(2,'0')}-31`; }
+  if(curPeriod==='half'){ if(q<=2){ from=`${y}-01-01`; to=`${y}-06-30`; } else { from=`${y}-07-01`; to=`${y}-12-31`; } }
+  if(curPeriod==='year'){ from=`${y}-01-01`; to=`${y}-12-31`; }
+  if(curPeriod==='all'){ from='2000-01-01'; to='2100-12-31'; }
+  if(val('statFrom')) from=val('statFrom'); if(val('statTo')) to=val('statTo');
+  return {from,to};
 }
-function statsHTML(){
- let byComp={}; [...DB.contViol,...DB.obs,...DB.near,...DB.acc].forEach(x=>{let c=x.reporterCompany||x.company||'غير محدد'; byComp[c]=(byComp[c]||0)+1});
- let places={}; [...DB.contViol,...DB.obs,...DB.near,...DB.acc].forEach(x=>{let p=x.place||'غير محدد'; places[p]=(places[p]||0)+1});
- let reporters={}; [...DB.orient,...DB.train,...DB.empViol,...DB.obs,...DB.near,...DB.acc].forEach(x=>{let r=x.reporter||'غير معروف'; reporters[r]=(reporters[r]||0)+1});
- let top=Object.entries(reporters).sort((a,b)=>b[1]-a[1]).slice(0,5);
- return `<div class="card"><h2>📊 الإحصائيات</h2><div class="kpi"><div>ساعات آمنة<b>${safeHours()}</b></div><div>إجمالي عمال<b>${DB.daily.reduce((s,d)=>s+d.total,0)}</b></div><div>حوادث وشيكة<b>${DB.near.length}</b></div><div>حوادث<b>${DB.acc.length}</b></div></div></div>
- <div class="card"><h2>🏆 Top 5</h2>${table(['الموظف','عدد التقارير'],top.map(x=>[x[0],x[1]]))}</div>
- <div class="card"><h2>🏢 مقارنة الشركات</h2>${table(['الشركة','عدد البلاغات'],Object.entries(byComp).map(x=>[x[0],x[1]]))}</div>
- <div class="card"><h2>📍 الأماكن الأشد خطورة</h2>${table(['المكان','عدد البلاغات'],Object.entries(places).sort((a,b)=>b[1]-a[1]).map(x=>[x[0],x[1]]))}</div>
- <div class="card"><h2>📈 كل التابات</h2>${table(['التاب','العدد'],[['توعية',DB.orient.length],['تدريبات',DB.train.length],['مخالفات موظفين',DB.empViol.length],['تصاريح',DB.permits.length],['إعداد يومي',DB.daily.length],['مخالفات مقاولين',DB.contViol.length],['ملاحظات',DB.obs.length],['حوادث وشيكة',DB.near.length],['حوادث',DB.acc.length]])}</div>`;
+function inRange(d, from, to){ return d>=from && d<=to; }
+function renderStats(){
+  let {from,to}=getPeriodRange();
+  let label = curPeriod==='all' ? 'تجميعة المشروع كله' : `من ${from} إلى ${to}`;
+  let tr = DB.train.filter(x=>inRange(x.date,from,to));
+  let wk = DB.weekly.filter(x=>inRange(x.date,from,to));
+  let trTrain = tr.filter(x=>x.type==='train');
+  let trAware = tr.filter(x=>x.type==='aware');
+  let sum = arr=>arr.reduce((s,x)=>s+(parseInt(x.count)||0),0);
+  let sumH = arr=>arr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0);
+  let cTrain=sum(trTrain), hTrain=sumH(trTrain);
+  let cAware=sum(trAware), hAware=sumH(trAware);
+  let cWk=sum(wk), hWk=sumH(wk);
+  let totalH = hTrain+hAware+hWk;
+  let totalCount = cTrain+cAware+cWk;
+  let obs = DB.obs.filter(x=>inRange(x.date,from,to)).length;
+  let near = DB.near.filter(x=>inRange(x.date,from,to)).length;
+  let acc = DB.acc.filter(x=>inRange(x.date,from,to)).length;
+  let ev = DB.empViol.filter(x=>inRange(x.date,from,to)).length;
+  let cv = DB.conViol.filter(x=>inRange(x.date,from,to)).length;
+  document.getElementById('statsReport').innerHTML = `
+    <div class="statBox"><b>${label}</b><p style="color:#999; font-size:12px;">الفترة: ${from} → ${to}</p></div>
+    <div class="statBox"><h3 style="color:#D4AF37; margin:0;">1- تقرير التدريبات</h3><p>عدد الجلسات: ${trTrain.length} | إجمالي الحضور: ${cTrain} فرد | المعادلة: ${cTrain} × 3 ساعات = <b>${hTrain.toFixed(2)} ساعة</b></p></div>
+    <div class="statBox"><h3 style="color:#D4AF37; margin:0;">2- تقرير محاضرات التوعية</h3><p>عدد الجلسات: ${trAware.length} | إجمالي الحضور: ${cAware} فرد | المعادلة: ${cAware} × 0.25 ساعة (ربع ساعة) = <b>${hAware.toFixed(2)} ساعة</b></p></div>
+    <div class="statBox"><h3 style="color:#D4AF37; margin:0;">3- تقرير المحاضرات الأسبوعية</h3><p>عدد الجلسات: ${wk.length} | إجمالي الحضور: ${cWk} فرد | المعادلة: ${cWk} × 0.5 ساعة (نص ساعة) = <b>${hWk.toFixed(2)} ساعة</b></p></div>
+    <div class="statBox" style="border:2px solid #FFD700;"><h3 style="color:#FFD700; margin:0;">✅ إجمالي ساعات التدريب</h3><p style="font-size:20px;">${hTrain.toFixed(2)} + ${hAware.toFixed(2)} + ${hWk.toFixed(2)} = <b>${totalH.toFixed(2)} ساعة</b></p><p>إجمالي الحضور الكلي: ${totalCount} فرد | إجمالي الجلسات: ${tr.length+wk.length}</p></div>
+    <div class="statBox"><h3 style="color:#D4AF37; margin:0;">تقرير عام للفترة</h3><p>ملاحظات سلامة: ${obs} | حوادث وشيكة: ${near} | حوادث: ${acc} | مخالفات موظفين: ${ev} | مخالفات مقاولين: ${cv} | عمال مسجلين: ${DB.workers.length} | كارنيهات: ${DB.cards.length}</p></div>
+    ${tr.map(x=>`<p style="font-size:12px; color:#ccc;">• ${x.date} - ${x.title} - ${x.comp} - حضور ${x.count} - ${x.totalHours} ساعة</p>`).join('')}
+    ${wk.map(x=>`<p style="font-size:12px; color:#ccc;">• [أسبوعية] ${x.date} - ${x.title} - ${x.comp} - حضور ${x.count} - ${x.totalHours} ساعة</p>`).join('')}
+  `;
 }
-function uploadLogo(inp){ let f=inp.files[0]; if(!f) return; let r=new FileReader(); r.onload=e=>{DB.settings.logo=e.target.result; save(); render(); toast('تم رفع اللوجو ✅')}; r.readAsDataURL(f); }
-function removeLogo(){DB.settings.logo=''; save(); render()}
-function fillW(inp,p){let w=workerByName(inp.value); if(!w) return; ['code','job'].forEach(f=>{let e=document.getElementById(p+'-'+f); if(e) e.value=w[f]})}
-function val(id){return document.getElementById(id)?.value||''}
-function addWorker(){let w={name:val('w-name'),code:val('w-code'),job:val('w-job'),company:val('w-comp'),dept:val('w-dept'),regDate:val('w-reg'),excluded:false}; if(!w.name) return toast('اكتب الاسم'); DB.workers.push(w); save(); render()}
-function excludeWorker(i){DB.workers[i].excluded=true; DB.workers[i].excludedDate=new Date().toISOString().slice(0,10); save(); render()}
-function showWorker(i){let w=DB.workers[i]; let tr=DB.train.filter(x=>x.name===w.name); let vi=DB.empViol.filter(x=>x.name===w.name); let ac=DB.acc.filter(x=>x.name===w.name); let or=DB.orient.filter(x=>x.name===w.name);
- document.getElementById('workerView').innerHTML=`<div style="display:flex;gap:10px;align-items:center">${DB.settings.logo?`<img src="${DB.settings.logo}" style="width:60px;height:60px;object-fit:contain">`:''}<h2>ملف ${w.name} ${w.excluded?'<span class="badge excluded">تم الاستبعاد ❌</span>':''}</h2></div><p>كود: ${w.code} | مهنة: ${w.job} | شركة: ${w.company} | أيام العمل: ${daysWorked(w)} يوم | تسجيل: ${w.regDate}</p><p><b>باركود:</b> <span style="font-size:28px;letter-spacing:4px">▓▓▓ ${w.code} ▓▓▓</span></p><h3>التدريبات (${tr.length})</h3><p>${tr.map(x=>x.title).join(' - ')||'لا يوجد'}</p><h3>المخالفات (${vi.length})</h3><p>${vi.map(x=>x.desc).join(' - ')||'لا يوجد'}</p><h3>الحوادث (${ac.length})</h3><p>${ac.map(x=>x.desc).join(' - ')||'لا يوجد'}</p><h3>توعية: ${or.length?'تم ✅':'لم تتم ❌'}</h3>`; }
-function addOrient(){let b=getBase(document.getElementById('f')); DB.orient.push({...b,name:val('o-name'),code:val('o-code'),job:val('o-job'),time:val('o-time')}); save(); render()}
-function addTrain(){let b=getBase(document.getElementById('f')); DB.train.push({...b,name:val('t-name'),title:val('t-title'),trainer:val('t-trainer')}); save(); render()}
-function addEmpViol(){let b=getBase(document.getElementById('f')); let act=val('v-act'); DB.empViol.push({...b,name:val('v-name'),code:val('v-code'),job:val('v-job'),desc:val('v-desc'),act}); if(act==='استبعاد'){let w=workerByName(val('v-name')); if(w){w.excluded=true; w.excludedDate=b.date}} save(); render()}
-function addPermit(){let b=getBase(document.getElementById('f')); DB.permits.push({...b,type:val('p-type'),name:val('p-name'),status:val('p-status')}); save(); render()}
-function addDaily(){let b=getBase(document.getElementById('f')); let items={}; let tot=0; document.querySelectorAll('.d-job').forEach(x=>{items[x.dataset.job]=+x.value||0; tot+=+x.value||0}); DB.daily.push({...b,company:val('d-comp'),items,total:tot}); save(); render()}
-function addContViol(){let b=getBase(document.getElementById('f')); DB.contViol.push({...b,company:val('c-comp'),time:val('c-time'),desc:val('c-desc'),amt:val('c-amt'),act:val('c-act')}); save(); render()}
-function addObs(){let b=getBase(document.getElementById('f')); let o={...b,name:val('ob-name'),code:val('ob-code'),time:val('ob-time'),desc:val('ob-desc'),type:val('ob-type'),corr:val('ob-corr'),status:val('ob-status')}; DB.obs.push(o); notifyEmail('ملاحظة سلامة جديدة - '+o.name, `الوصف: ${o.desc}\nالمكان: ${o.place}\nالتاريخ: ${o.date}\nالشركة: ${o.reporterCompany}\nمعد التقرير: ${o.reporter}`); save(); render()}
-function addNear(){let b=getBase(document.getElementById('f')); let o={...b,name:val('n-name'),code:val('n-code'),job:val('n-job'),desc:val('n-desc'),direct:val('n-direct'),root:val('n-root'),imm:val('n-imm'),corr:val('n-corr')}; DB.near.push(o); notifyEmail('حادث وشيك - '+o.name, `الوصف: ${o.desc}\nالمكان: ${o.place}\nالتاريخ: ${o.date}\nالسبب المباشر: ${o.direct}\nالسبب الجذري: ${o.root}`); save(); render()}
-function addAcc(){let b=getBase(document.getElementById('f')); let o={...b,time:val('a-time'),name:val('a-name'),desc:val('a-desc'),class:val('a-class'),direct:val('a-direct'),root:val('a-root'),inj:val('a-inj'),witnesses:val('a-wit').split(',').slice(0,10),corr:val('a-corr').split(',').slice(0,5),prev:val('a-prev').split(',').slice(0,5)}; DB.acc.push(o); notifyEmail('حادث جديد - '+o.class+' - '+o.name, `الوصف: ${o.desc}\nالمكان: ${o.place}\nالتاريخ: ${o.date} ${o.time}\nالتصنيف: ${o.class}`); save(); render()}
-function saveSettings(){DB.settings.ramadanFrom=val('s-from'); DB.settings.ramadanTo=val('s-to'); save(); render()}
-updateHeaderLogo(); renderNav(); render();
+function table(heads, rows){ if(!rows.length) return '<p style="color:#999; text-align:center;">لا توجد بيانات بعد</p>'; let h='<table><tr>'+heads.map(x=>`<th>${x}</th>`).join('')+'</tr>'; let r=rows.map(row=>'<tr>'+row.map(c=>`<td>${c}</td>`).join('')+'</tr>').join(''); return h+r+'</table>'; }
+function render(){
+  document.getElementById('statsMini').innerHTML = `<span class="badge">عمال: ${DB.workers.length}</span><span class="badge">تدريبات: ${DB.train.length}</span><span class="badge">محاضرات أسبوعية: ${DB.weekly.length}</span><span class="badge">ملاحظات: ${DB.obs.length}</span><span class="badge">حوادث: ${DB.acc.length}</span>`;
+  let el=document.getElementById('workersTable'); if(el) el.innerHTML=table(['الاسم','الكود','الوظيفة','الشركة','القسم'], DB.workers.map(w=>[w.name,w.code,w.job,w.company||'-',w.dept||'-']));
+  let cl=document.getElementById('cardsList'); if(cl) cl.innerHTML=DB.cards.map(c=>`<div class="idcard"><div class="front"><b style="color:#D4AF37;">ROAAD</b>${c.photo?`<br><img src="${c.photo}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid #D4AF37;">`:''}<h3>${c.name}</h3><p>${c.job} - ${c.dept||''}</p><p>الشركة: ${c.company||'-'}</p><p>الكود: ${c.code} | الانتهاء: ${c.expiry}</p><button class="btn2" onclick="window.print()">🖨️ طباعة</button></div><div class="back"><h4 style="color:#D4AF37; text-align:center;">تعليمات السلامة</h4><p>1- الالتزام بمهمات الوقاية الشخصية</p><p>2- ممنوع العمل بدون تصريح عمل ساري</p><p>3- الإبلاغ فوراً عن أي حادث أو خطر</p><p>4- ممنوع التدخين إلا في الأماكن المخصصة</p><p>5- الكارنيه شخصي ولا يجوز إعطاؤه لشخص آخر</p><p>6- في حالة فقدان الكارنيه إبلاغ السلامة فوراً</p><p style="text-align:center; color:#D4AF37;">في حالة الطوارئ: اتصل بالسلامة فوراً</p></div></div>`).join('')||'<p style="text-align:center; color:#999;">لسه مفيش كارنيهات</p>';
+  let t=document.getElementById('trainTable'); if(t) t.innerHTML=table(['التاريخ','الشركة','العنوان','النوع','الحضور','ساعات/فرد','إجمالي الساعات','الصورة'], DB.train.map(x=>[x.date,x.comp,x.title, x.type==='train'?'تدريب':'توعية', x.count, x.hoursPer, x.totalHours, x.img?`<a href="${x.img}" target="_blank">📷</a>`:'-']));
+  let w=document.getElementById('weeklyTable'); if(w) w.innerHTML=table(['التاريخ','الشركة','المكان','العنوان','الحضور','المحاضر','إجمالي الساعات','الصورة'], DB.weekly.map(x=>[x.date,x.comp,x.place2||x.place,x.title,x.count,x.trainer,x.totalHours, x.img?`<a href="${x.img}" target="_blank">📷</a>`:'-']));
+  let e=document.getElementById('empViolTable'); if(e) e.innerHTML=table(['التاريخ','العامل','القسم','المخالفة','الإجراء','الشركة','الصورة'], DB.empViol.map(x=>[x.date,x.name,x.dept||'-',x.desc,x.act,x.reporterCompany||'-', x.img?`<a href="${x.img}" target="_blank">📷</a>`:'-']));
+  let c=document.getElementById('conViolTable'); if(c) c.innerHTML=table(['التاريخ','الشركة المخالفة','المخالفة','الإجراء','المبلغ','الصورة'], DB.conViol.map(x=>[x.date,x.comp,x.desc,x.act,x.amount, x.img?`<a href="${x.img}" target="_blank">📷</a>`:'-']));
+  let o=document.getElementById('obsTable'); if(o) o.innerHTML=table(['التاريخ','الشخص','الشركة','النوع','الحالة','الصورة'], DB.obs.map(x=>[x.date,x.name,x.reporterCompany||'-',x.type,x.status, x.img?`<a href="${x.img}" target="_blank">📷</a>`:'-']));
+  let n=document.getElementById('nearTable'); if(n) n.innerHTML=table(['التاريخ','الشخص','الشركة','الوصف','المكان'], DB.near.map(x=>[x.date,x.name,x.reporterCompany||'-',x.desc,x.place]));
+  let a=document.getElementById('accTable'); if(a) a.innerHTML=table(['التاريخ','الشخص','الشركة','التصنيف','المكان'], DB.acc.map(x=>[x.date,x.name,x.reporterCompany||'-',x.class,x.place]));
+}
+function uploadLogo(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ localStorage.setItem('siteLogo',ev.target.result); showLogo(); }; r.readAsDataURL(f); }
+function showLogo(){ let l=localStorage.getItem('siteLogo'); let img=document.getElementById('siteLogo'); if(l){ img.src=l; img.style.display='block'; } }
+showLogo();
+function notifyEmail(subject, body){ let to=localStorage.getItem('notifyMail')||'Mohamed.Zain@rowad-rme.com'; if(window.emailjs && !document.documentElement.innerHTML.includes('YOUR_PUBLIC_KEY')){ emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{subject,message:body,to_email:to}).then(()=>alert("✅ الميل اتبعت لـ "+to)).catch(err=>alert("❌ الميل متبعتش: "+JSON.stringify(err))); } else { window.location.href=`mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; alert("⚠️ لسه مظبطتش EmailJS - فتحت برنامج الميل، دوس Send."); } }
+function testMail(){ notifyEmail('تجربة من بوابة السلامة','ده ميل تجريبي - لو وصلك يبقى شغال ✅'); }
+let sm=localStorage.getItem('notifyMail'); if(sm) document.getElementById('notifyMail').value=sm;
+render(); renderStats();
 </script>
 </body>
 </html>
