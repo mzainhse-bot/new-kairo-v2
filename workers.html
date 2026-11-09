@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الموظفين - RMED</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1100px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:24px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+.badge.red{background:#FFEBEE;color:#D32F2F;} .badge.green{background:#E8F5E9;color:#2E7D32;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.filters button{padding:8px 14px;border-radius:20px;border:1px solid #CFD8DC;background:#fff;cursor:pointer;font-weight:bold;}
+.filters button.active{background:#0A1F44;color:#fff;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> الموظفين</h1><small>قاعدة بيانات كل الموظفين</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html" class="active">👷 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 أسبوعية</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+<div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>إصدار الكارنيهات - RMED</b></div>
+<button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 إصدار كارنيه - ثابت</button>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi"><b id="k-all">0</b><small>إجمالي الموظفين</small></div>
+<div class="kpi"><b id="k-active">0</b><small>نشط</small></div>
+<div class="kpi red"><b id="k-resign">0</b><small>استقال</small></div>
+<div class="kpi red"><b id="k-excluded">0</b><small>استبعاد</small></div>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">👷 بحث وفلترة</h2>
+<input id="searchW" placeholder="ابحث بالاسم أو الكود أو الرقم القومي أو الشركة أو المهنة..." oninput="renderWorkers()">
+<div class="filters" style="margin-top:10px;">
+<button id="f-all" class="active" onclick="setFilter('all')">الكل</button>
+<button id="f-active" onclick="setFilter('نشط')">✅ نشط</button>
+<button id="f-resign" onclick="setFilter('استقال')">⚠️ استقال</button>
+<button id="f-excluded" onclick="setFilter('استبعاد')">⛔ استبعاد</button>
+<button id="f-rehab" onclick="setFilter('rehab')">🔁 إعادة تأهيل</button>
+</div>
+<div id="workersTable"></div>
+</div>
+
+<div class="card red">
+<h2 style="margin:0 0 10px;">➕ إضافة موظف يدوي - بدون محاضرة</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">لو موظف قديم وعايز تضيفه بسرعة هنا من غير ما تدخل المحاضرة الأولية</p>
+<div class="grid">
+<div><label>الاسم *</label><input id="w-name" placeholder="الاسم"></div>
+<div><label>الكود</label><input id="w-code" placeholder="أوتوماتيك"></div>
+<div><label>الرقم القومي</label><input id="w-national" placeholder="14 رقم" maxlength="14"></div>
+<div><label>المهنة</label><input id="w-job" placeholder="المهنة"></div>
+<div><label>الشركة</label><input id="w-company" placeholder="RMED" value="RMED"></div>
+<div><label>الهاتف</label><input id="w-phone" placeholder="الهاتف"></div>
+<div><label>الحالة</label><select id="w-status"><option value="نشط">نشط</option><option value="استقال">استقال</option><option value="استبعاد">استبعاد</option></select></div>
+<div><label>الحالة الصحية</label><input id="w-health" placeholder="سليم"></div>
+</div>
+<button class="btn" onclick="addWorkerManual()">💾 إضافة موظف</button>
+</div>
+</div>
+
+<!-- نافذة اصدار كارنيه ثابت -->
+<div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
+<div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;">
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
+<label>اختر موظف</label><select id="issue-select" onchange="fillIssueFromWorker()"></select>
+<p style="text-align:center;color:#999;font-size:13px;">— أو اكتب يدوي —</p>
+<div class="grid"><div><label>الاسم</label><input id="issue-name"></div><div><label>الكود</label><input id="issue-code"></div><div><label>الرقم القومي</label><input id="issue-national"></div><div><label>المهنة</label><input id="issue-job"></div><div><label>الشركة</label><input id="issue-company" value="RMED"></div><div><label>الحالة الصحية</label><input id="issue-health"></div><div><label>الهاتف</label><input id="issue-phone"></div><div><label>طوارئ</label><input id="issue-emergency"></div></div>
+<label>صورة</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
+<button class="btn red" onclick="showCardFromIssue()">👁️ عرض الكارنيه</button>
+</div>
+</div>
+
+<!-- كارنيه -->
+<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
+<div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
+<div id="cardFront" style="background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;">
+<div style="background:#0A1F44;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+<div style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;" onerror="this.style.display='none'"><b>RMED - JOINT VENTURE</b></div>
+<span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">كارنيه موظف</span>
+</div>
+<div style="display:flex;gap:14px;padding:14px;">
+<img id="c-photo" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #0A1F44;">
+<div style="flex:1;font-size:14px;line-height:1.9;"><div style="font-size:18px;font-weight:bold;" id="c-name"></div>
+<div><b>الكود:</b> <span id="c-code"></span> | <b>المهنة:</b> <span id="c-job"></span></div>
+<div><b>الشركة:</b> <span id="c-company"></span></div>
+<div><b>الرقم القومي:</b> <span id="c-national"></span></div>
+<div><b>الحالة الصحية:</b> <span id="c-health"></span></div>
+<div><b>الهاتف:</b> <span id="c-phone"></span> | <b>طوارئ:</b> <span id="c-emergency"></span> (<span id="c-kin"></span>)</div>
+<div><b>الحالة:</b> <span id="c-status" style="background:#E8F5E9;color:#2E7D32;padding:2px 10px;border-radius:20px;font-weight:bold;"></span></div>
+</div></div>
+<div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">الكود: <span id="c-code2"></span> - RMED</div>
+</div>
+<div id="cardBack" style="background:#0A1F44;color:#fff;border-radius:14px;padding:16px;margin-top:12px;">
+<div style="text-align:center;margin-bottom:8px;"><img src="logo.png" style="width:130px;height:44px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;" onerror="this.style.display='none'"></div>
+<h4 style="margin:0 0 10px;text-align:center;">⚠️ تعليمات السلامة - يجب الالتزام بها</h4>
+<div style="font-size:13px;line-height:2;">1. ارتداء مهمات الوقاية الشخصية PPE طول وقت العمل<br>2. ممنوع العمل بدون تصريح عمل<br>3. ممنوع العمل على ارتفاع بدون حزام أمان<br>4. الإبلاغ فورا عن أي حادث أو حادث وشيك<br>5. ممنوع التدخين إلا في الأماكن المخصصة<br>6. الحفاظ على ممرات الطوارئ خالية<br>7. في حالة الطوارئ التوجه لنقطة التجمع فورا<br>8. الكارنيه شخصي وممنوع إعطاؤه لشخص آخر</div>
+<div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">في حالة فقدان الكارنيه إبلاغ السلامة فورا - RMED</div>
+</div>
+<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
+<button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[]}');
+if(!DB.workers) DB.workers=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v; }
+let curFilter='all';
+function setFilter(f){
+  curFilter=f;
+  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+  if(f==='all') document.getElementById('f-all').classList.add('active');
+  if(f==='نشط') document.getElementById('f-active').classList.add('active');
+  if(f==='استقال') document.getElementById('f-resign').classList.add('active');
+  if(f==='استبعاد') document.getElementById('f-excluded').classList.add('active');
+  if(f==='rehab') document.getElementById('f-rehab').classList.add('active');
+  renderWorkers();
+}
+function renderWorkers(){
+  let q=(document.getElementById('searchW').value||'').toLowerCase();
+  let list=DB.workers.map((x,i)=>({...x,_idx:i})).filter(x=>{
+    let ok=(x.name+x.code+x.nationalId+x.company+x.job).toLowerCase().includes(q);
+    if(curFilter==='rehab') return ok && (x.isRehab || (x.notes||'').includes('إعادة تأهيل'));
+    if(curFilter!=='all') return ok && x.status===curFilter;
+    return ok;
+  });
+  document.getElementById('k-all').innerText=DB.workers.length;
+  document.getElementById('k-active').innerText=DB.workers.filter(x=>x.status==='نشط').length;
+  document.getElementById('k-resign').innerText=DB.workers.filter(x=>x.status==='استقال').length;
+  document.getElementById('k-excluded').innerText=DB.workers.filter(x=>x.status==='استبعاد').length;
+  if(!list.length){ document.getElementById('workersTable').innerHTML='<p style="text-align:center;color:#999;">مفيش موظفين بالفلتر ده - سجل من المحاضرة الأولية الأول</p>'; return; }
+  document.getElementById('workersTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>الحالة</th><th>تحكم</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name} ${x.isRehab?'<br><span class="badge red">إعادة تأهيل</span>':''}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td><select onchange="changeStatus(${x._idx},this.value)" style="width:auto;padding:6px;"><option ${x.status==='نشط'?'selected':''}>نشط</option><option ${x.status==='استقال'?'selected':''}>استقال</option><option ${x.status==='استبعاد'?'selected':''}>استبعاد</option></select></td><td><button class="btn2" onclick="openCard(${x._idx})">🪪 كارنيه</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker(${x._idx})">🗑️</button></td></tr>`).join('')+'</table>';
+}
+function changeStatus(idx,v){ DB.workers[idx].status=v; if(DB.induction[idx]) DB.induction[idx].status=v; save(); renderWorkers(); }
+function delWorker(idx){ if(!confirm('تحذف '+DB.workers[idx].name+' ؟')) return; DB.workers.splice(idx,1); save(); renderWorkers(); }
+function addWorkerManual(){
+  if(!val('w-name')) return alert('اكتب الاسم');
+  let code=val('w-code')||String((Math.max(1000,...DB.workers.map(w=>parseInt(w.code)||0))+1));
+  let w={name:val('w-name'),code:code,nationalId:val('w-national'),job:val('w-job'),company:val('w-company')||'RMED',phone:val('w-phone'),status:val('w-status'),health:val('w-health'),date:new Date().toISOString().slice(0,10),isRehab:false,img:'',emergency:'',kin:''};
+  DB.workers.push(w); save(); renderWorkers(); alert('✅ تم إضافة '+w.name);
+  ['w-name','w-code','w-national','w-job','w-phone','w-health'].forEach(id=>setVal(id,''));
+}
+let curCard=null, issueImgData='';
+function previewIssuePhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{issueImgData=ev.target.result;}; r.readAsDataURL(f); }
+function fillCardData(x){
+  curCard=x;
+  document.getElementById('c-photo').src=x.img||x.photo||issueImgData||'https://via.placeholder.com/110x140?text=No+Photo';
+  document.getElementById('c-name').innerText=x.name||'-'; document.getElementById('c-code').innerText=x.code||'-'; document.getElementById('c-code2').innerText=x.code||'-';
+  document.getElementById('c-job').innerText=x.job||'-'; document.getElementById('c-company').innerText=x.company||'RMED';
+  document.getElementById('c-national').innerText=x.nationalId||'-'; document.getElementById('c-health').innerText=x.health||'-';
+  document.getElementById('c-phone').innerText=x.phone||'-'; document.getElementById('c-emergency').innerText=x.emergency||'-'; document.getElementById('c-kin').innerText=x.kin||'-';
+  document.getElementById('c-status').innerText=x.status||'نشط';
+  document.getElementById('cardModal').style.display='block';
+}
+function openCard(idx){ fillCardData(DB.workers[idx]); }
+function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- اختر موظف --</option>'+DB.workers.map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join(''); document.getElementById('issueModal').style.display='block'; }
+function fillIssueFromWorker(){ let idx=document.getElementById('issue-select').value; if(idx==='') return; let x=DB.workers[idx]; setVal('issue-name',x.name); setVal('issue-code',x.code); setVal('issue-national',x.nationalId||''); setVal('issue-job',x.job||''); setVal('issue-company',x.company||'RMED'); setVal('issue-health',x.health||''); setVal('issue-phone',x.phone||''); setVal('issue-emergency',x.emergency||''); issueImgData=x.img||x.photo||''; }
+function showCardFromIssue(){ if(!val('issue-name')) return alert('اكتب الاسم أو اختر موظف'); document.getElementById('issueModal').style.display='none'; fillCardData({name:val('issue-name'),code:val('issue-code'),nationalId:val('issue-national'),job:val('issue-job'),company:val('issue-company'),health:val('issue-health'),phone:val('issue-phone'),emergency:val('issue-emergency'),status:'نشط',img:issueImgData}); }
+async function downloadCard(which){ let name=curCard?.name||'card'; if(which==='front'){ let c=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=c.toDataURL('image/png'); a.click(); return; } let c1=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let c2=await html2canvas(document.getElementById('cardBack'),{scale:2,useCORS:true}); let f=document.createElement('canvas'); f.width=Math.max(c1.width,c2.width); f.height=c1.height+c2.height+20; let ctx=f.getContext('2d'); ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,f.width,f.height); ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20); let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=f.toDataURL('image/png'); a.click(); }
+renderWorkers();
+</script>
+</body>
+</html>
