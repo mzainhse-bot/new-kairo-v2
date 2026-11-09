@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تقييم الموظفين - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.container{max-width:1000px;margin:auto;padding:16px}
+.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;min-width:140px;cursor:pointer}
+.btn{background:#0A1F44;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center}
+.top1{border:4px solid #FFD700;background:linear-gradient(180deg,#FFF8E1,#fff);position:relative}
+.top1 img{width:150px;height:150px;object-fit:cover;border-radius:50%;border:6px solid #FFD700;box-shadow:0 0 0 4px #fff,0 0 20px #FFD700}
+.top23{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.top23{grid-template-columns:1fr}}
+.rank2{border:4px solid #C0C0C0;background:linear-gradient(180deg,#F5F5F5,#fff)}
+.rank2 img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:5px solid #C0C0C0}
+.rank3{border:4px solid #CD7F32;background:linear-gradient(180deg,#FFF3E0,#fff)}
+.rank3 img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:5px solid #CD7F32}
+.crown{font-size:42px;display:block}
+.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:13px;margin:3px}
+.badge-gold{background:#FFD700}.badge-silver{background:#C0C0C0}.badge-bronze{background:#CD7F32;color:#fff}
+.badge-green{background:#E8F5E9;color:#2E7D32}.badge-blue{background:#E3F2FD;color:#1565C0}.badge-red{background:#FFEBEE;color:#D32F2F}
+.list-row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:right}
+.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #0A1F44;flex-shrink:0}
+.rank-num{font-size:24px;font-weight:bold;width:40px;text-align:center;flex-shrink:0}
+.print-head{display:none}
+@media print{
+  body{background:#fff}
+  header .no-print, .no-print{display:none !important}
+  .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
+  .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
+  .container{max-width:100%;padding:0}
+  .card,.list-row{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  @page{margin:12mm}
+}
+</style>
+</head>
+<body>
+<header><h2 style="margin:0;">🏆 تقييم الموظفين - الموظف المثالي</h2><div class="no-print"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="location.href='stats.html'">📊 الإحصائيات</button></div></header>
+<div class="container">
+<div class="print-head"><h1>🏆 تقرير تقييم الموظفين - الموظف المثالي - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
+
+<div class="filter"><b>🗓️ اختار الشهر:</b>
+<label>السنة:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
+<label>الشهر:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
+<span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
+<span style="flex:1;"></span><span id="totalEmp" style="font-weight:bold;"></span>
+</div>
+
+<!-- المركز الأول - الموظف المثالي -->
+<div id="top1Box"></div>
+<!-- التاني والتالت جنب بعض -->
+<div id="top23Box" class="top23"></div>
+<!-- الباقي تحت بعض -->
+<div id="restBox" style="margin-top:14px;"></div>
+<div id="emptyBox"></div>
+
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة تقرير الموظف المثالي</button><p style="color:#78909C;font-size:12px;">اختار الشهر الأول، وبعدين دوس تصدير - اختار Destination = Save as PDF</p></div>
+</div>
+
+<script>
+let nowD=new Date();
+let selYear=nowD.getFullYear();
+let selMonth=nowD.getMonth();
+let months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function fillSelects(){
+  let y=document.getElementById('selYear'); y.innerHTML=''; for(let yy=2026;yy<=2030;yy++){ let o=document.createElement('option'); o.value=yy; o.text=yy; if(yy==selYear) o.selected=true; y.appendChild(o); }
+  let m=document.getElementById('selMonth'); m.innerHTML=''; months.forEach((mm,i)=>{ let o=document.createElement('option'); o.value=i; o.text=mm; if(i==selMonth) o.selected=true; m.appendChild(o); });
+}
+function exportPDF(){
+  document.getElementById('printPeriod').innerText='الشهر: '+months[selMonth]+' '+selYear+' - ترتيب الموظفين حسب عدد التقارير المرفوعة (ملاحظات + وشيكة + حوادث)';
+  document.getElementById('printDate').innerText='تاريخ استخراج التقرير: '+new Date().toLocaleDateString('ar-EG');
+  document.title='تقرير الموظف المثالي - '+months[selMonth]+' '+selYear+' - RMED';
+  window.print();
+}
+function isClosed(x){
+  let s=(x.status||x.state||'').toString().trim().toLowerCase();
+  return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || x.isClosed===true || x.closed===true;
+}
+function getReporter(x){
+  // اسم اللي رافع التقرير - بيتاخد من الحساب اللي مسجل بيه
+  return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim();
+}
+function getReporterCode(x){ return (x.reporterCode||x.reporterId||x.createdByCode||x.code||'').toString().trim(); }
+function getDate(x){ return x.date||x.createdAt||x.created_at||''; }
+function inMonth(d){
+  if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false;
+  return dt.getFullYear()===selYear && dt.getMonth()===selMonth;
+}
+function render(){
+  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+  document.getElementById('periodLabel').innerText='من 1 '+months[selMonth]+' '+selYear+' إلى '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
+
+  // 1 - الموظفين - بنستبعد المدير والمشرف من الصلاحيات مش المهنة
+  let allUsers = DB.users || DB.employees || DB.workers || [];
+  let employees = allUsers.filter(u=>{
+    let role=(u.role||u.permission||u.type||u.accountType||'').toString().trim().toLowerCase();
+    // استبعاد المدير والمشرف والادمن
+    if(['مدير','مشرف','manager','supervisor','admin','أدمن','ادمن'].includes(role)) return false;
+    if(['مدير','مشرف'].includes((u.role||'').toString().trim())) return false;
+    return true;
+  });
+
+  // لو مفيش users، بنجيب الأسماء من التقارير نفسها
+  let obs=(DB.observations||DB.safetyObservations||DB.obs||[]).filter(x=>inMonth(getDate(x)));
+  let near=(DB.nearMiss||DB.near||[]).filter(x=>inMonth(getDate(x)));
+  let acc=(DB.accidents||DB.acc||[]).filter(x=>inMonth(getDate(x)));
+  let allReports=[...obs.map(x=>({...x,_type:'ملاحظة'})), ...near.map(x=>({...x,_type:'وشيكة'})), ...acc.map(x=>({...x,_type:'حادث'}))];
+
+  // 2 - حساب لكل موظف: رفع كام + قفل كام
+  let map={};
+  employees.forEach(u=>{
+    let key=(u.code||u.id||u.name||'').toString();
+    map[key]={user:u, total:0, closed:0, obs:0, near:0, acc:0};
+  });
+  // لو الموظف مش في users بس رفع تقرير، بنضيفه برضو
+  function findKey(reporter, code){
+    // ندور بالكود الأول، بعدين بالاسم
+    let found=null;
+    if(code){ found=Object.keys(map).find(k=> (map[k].user.code||map[k].user.id||'') .toString()===code); if(found) return found; }
+    if(reporter){
+      found=Object.keys(map).find(k=> (map[k].user.name||'').toString().trim()===reporter);
+      if(found) return found;
+      // موظف مش مسجل في users بس رفع تقرير
+      let nk='extra-'+reporter;
+      if(!map[nk]) map[nk]={user:{name:reporter, code:code||'', img:'', photo:''}, total:0, closed:0, obs:0, near:0, acc:0};
+      return nk;
+    }
+    return null;
+  }
+  allReports.forEach(r=>{
+    let rep=getReporter(r); let code=getReporterCode(r);
+    // لو التقرير مفيهوش اسم الرافع، بنجرب اسم الشخص نفسه لو كان هو الرافع
+    if(!rep) return;
+    let k=findKey(rep, code); if(!k) return;
+    map[k].total++;
+    if(isClosed(r)) map[k].closed++;
+    if(r._type==='ملاحظة') map[k].obs++;
+    if(r._type==='وشيكة') map[k].near++;
+    if(r._type==='حادث') map[k].acc++;
+  });
+
+  // 3 - الترتيب تنازلي: الأعلى في رفع التقارير الأول، ولو تساووا اللي قافل أكتر الأول
+  let ranked=Object.values(map).sort((a,b)=>{
+    if(b.total!==a.total) return b.total-a.total;
+    return b.closed-a.closed;
+  });
+  // بنشيل اللي صفر تقرير عشان الترتيب يبقى نضيف؟ لا - بنخليهم تحت خالص
+  document.getElementById('totalEmp').innerText='إجمالي الموظفين: '+ranked.length+' | إجمالي التقارير في الشهر: '+allReports.length;
+
+  function imgHTML(u, size){
+    let src=u.img||u.photo||u.image||u.avatar||'';
+    if(src) return `<img src="${src}" alt="${u.name||''}">`;
+    return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#ECEFF1;display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid #CFD8DC;">👷</div>`;
+  }
+  function statsHTML(r){
+    let rate=r.total? Math.round(r.closed/r.total*100):0;
+    return `<div style="margin-top:10px;"><span class="badge badge-blue">📝 رفع: ${r.total} تقرير</span><span class="badge badge-green">✅ قفل: ${r.closed}</span><span class="badge badge-red">🔓 مفتوح: ${r.total-r.closed}</span><br>
+    <span class="badge">👀 ملاحظات: ${r.obs}</span><span class="badge">⚡ وشيكة: ${r.near}</span><span class="badge">🚨 حوادث: ${r.acc}</span><br>
+    <span class="badge badge-green">نسبة الغلق: ${rate}%</span></div>`;
+  }
+
+  // الأول
+  let top1=document.getElementById('top1Box');
+  if(ranked.length && ranked[0].total>0){
+    let r=ranked[0];
+    top1.innerHTML=`<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 الموظف المثالي - ${months[selMonth]} ${selYear}</h2><p style="color:#78909C;margin:4px 0;">المركز الأول</p>${imgHTML(r.user,150)}<h2 style="margin:10px 0 0;">${r.user.name||'بدون اسم'}</h2><p style="margin:4px 0;color:#78909C;">${r.user.job||r.user.dept||''} ${r.user.code?' - كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+  } else {
+    top1.innerHTML=`<div class="card"><h3>لسه مفيش تقارير في ${months[selMonth]} ${selYear}</h3><p style="color:#78909C;">أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>`;
+  }
+  // التاني والتالت
+  let top23=document.getElementById('top23Box');
+  let html23='';
+  if(ranked[1] && ranked[1].total>0){
+    let r=ranked[1];
+    html23+=`<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">المركز الثاني</h3>${imgHTML(r.user,120)}<h3 style="margin:8px 0 0;">${r.user.name}</h3><p style="margin:4px 0;color:#78909C;">${r.user.code?'كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+  }
+  if(ranked[2] && ranked[2].total>0){
+    let r=ranked[2];
+    html23+=`<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">المركز الثالث</h3>${imgHTML(r.user,120)}<h3 style="margin:8px 0 0;">${r.user.name}</h3><p style="margin:4px 0;color:#78909C;">${r.user.code?'كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+  }
+  top23.innerHTML=html23;
+
+  // الباقي من الرابع لتحت
+  let rest=document.getElementById('restBox');
+  let restList=ranked.slice(3);
+  if(restList.length){
+    rest.innerHTML=`<h3 style="margin:10px 0;">📋 باقي الترتيب</h3>`+restList.map((r,i)=>{
+      let rank=i+4;
+      return `<div class="list-row"><div class="rank-num">${rank}</div>${imgHTML(r.user,64)}<div style="flex:1;"><b style="font-size:16px;">${r.user.name||'بدون اسم'}</b><div style="color:#78909C;font-size:13px;">${r.user.job||''} ${r.user.code?' - كود: '+r.user.code:''}</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">رفع: ${r.total}</span><span class="badge badge-green">قفل: ${r.closed}</span><span class="badge">👀 ${r.obs} | ⚡ ${r.near} | 🚨 ${r.acc}</span><span class="badge badge-green">غلق: ${r.total?Math.round(r.closed/r.total*100):0}%</span></div></div></div>`;
+    }).join('');
+  } else rest.innerHTML='';
+}
+fillSelects();
+render();
+</script></body></html>
