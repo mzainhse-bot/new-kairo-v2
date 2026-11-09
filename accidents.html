@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الحوادث - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:60px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;} .kpi.black{border-bottom-color:#000;}
+.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
+.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.user-bar input{width:auto;flex:1;min-width:180px;}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #ECEFF1;cursor:pointer;}
+.section-title{background:#0A1F44;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
+.witness-box{background:#F4F6F9;border:1.5px solid #ECEFF1;border-radius:12px;padding:12px;margin-bottom:10px;}
+.chip{display:inline-block;background:#FFEBEE;color:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin:2px;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> الحوادث</h1><small>Accidents Reports</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
+<a href="accidents.html" class="active">🚑 الحوادث</a>
+</div>
+
+<div class="user-bar">
+<span style="font-weight:bold;">🦺 مُعد التقرير:</span>
+<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ac-reporter').value=this.value; renderAcc();">
+<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل تقرير</span>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi red"><b id="k-total">0</b><small>إجمالي عدد الحوادث</small></div>
+<div class="kpi orange"><b id="k-medical">0</b><small>🩹 حالة علاج طبي</small></div>
+<div class="kpi"><b id="k-restricted">0</b><small>🦺 حالة عمل مقيد</small></div>
+<div class="kpi red"><b id="k-lost">0</b><small>⏰ حالة انقطاع عن العمل</small></div>
+<div class="kpi black"><b id="k-death">0</b><small>⚫ حالة وفاة</small></div>
+<div class="kpi orange"><b id="k-fire">0</b><small>🔥 حادث حريق</small></div>
+<div class="kpi"><b id="k-property">0</b><small>🏗️ ضرر في الممتلكات</small></div>
+<div class="kpi green"><b id="k-top-comp">-</b><small>الشركة صاحبة أعلى حوادث</small></div>
+</div>
+
+<div class="card red">
+<h2 style="margin:0 0 5px;">🚑 تسجيل حادث جديد</h2>
+
+<div class="section-title">📅 بيانات الحادث</div>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="ac-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="ac-time"></div>
+<div><label>🏢 اسم الشركة *</label><input id="ac-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>📍 مكان الحادث *</label><input id="ac-place" placeholder="مثال: مبنى A - الدور الثالث..." list="placesList"><datalist id="placesList"></datalist></div>
+<div style="grid-column:1/-1;"><label>📝 وصف الحادث *</label><textarea id="ac-desc" placeholder="اشرح اللي حصل بالتفصيل..."></textarea></div>
+<div style="grid-column:1/-1;"><label>⚡ الأسباب المباشرة *</label><textarea id="ac-direct" placeholder="مثال: سقوط من ارتفاع - عدم استخدام مهمات الوقاية..."></textarea></div>
+<div style="grid-column:1/-1;"><label>🔍 الأسباب الجذرية *</label><textarea id="ac-root" placeholder="مثال: عدم التدريب - عدم الإشراف - عدم توفير مهمات..."></textarea></div>
+</div>
+
+<div class="section-title">🏷️ تصنيف الحادث - اختار واحد أو أكتر</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FFCC80;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حالة علاج طبي" class="ac-class" style="width:auto;"> 🩹 حالة علاج طبي</label>
+<label style="background:#E3F2FD;padding:10px 14px;border-radius:10px;border:1px solid #90CAF9;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حالة عمل مقيد" class="ac-class" style="width:auto;"> 🦺 حالة عمل مقيد</label>
+<label style="background:#FFEBEE;padding:10px 14px;border-radius:10px;border:1px solid #EF9A9A;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حالة انقطاع عن العمل" class="ac-class" style="width:auto;"> ⏰ حالة انقطاع عن العمل</label>
+<label style="background:#F5F5F5;padding:10px 14px;border-radius:10px;border:1px solid #BDBDBD;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حالة وفاة" class="ac-class" style="width:auto;"> ⚫ حالة وفاة</label>
+<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FF9800;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="حادث حريق" class="ac-class" style="width:auto;"> 🔥 حادث حريق</label>
+<label style="background:#E8F5E9;padding:10px 14px;border-radius:10px;border:1px solid #A5D6A7;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="ضرر في الممتلكات" class="ac-class" style="width:auto;"> 🏗️ ضرر في الممتلكات</label>
+</div>
+
+<div class="section-title">👤 بيانات المصاب</div>
+<div class="grid">
+<div><label>👤 اسم الشخص المصاب *</label><input id="ac-injured" placeholder="اكتب الاسم..." list="empNames" oninput="lookupInjured(this.value)"><datalist id="empNames"></datalist><small id="injHint" style="color:#2E7D32;font-size:11px;"></small></div>
+<div><label>🔢 الكود - أوتوماتيك</label><input id="ac-code" class="auto" placeholder="هيتملي أوتوماتيك" readonly></div>
+<div><label>👷 المهنة - أوتوماتيك</label><input id="ac-job" class="auto" placeholder="هيتملي أوتوماتيك" readonly></div>
+<div><label>🦴 الجزء المصاب في الشخص *</label><select id="ac-body"><option value="">-- اختار الجزء المصاب --</option><option>الرأس</option><option>الذراع</option><option>اليد</option><option>القدم</option><option>الساق</option><option>الكتف</option><option>أخرى</option></select></div>
+<div><label>🩹 طبيعة الإصابة *</label><select id="ac-nature"><option value="">-- اختار طبيعة الإصابة --</option><option>جروح</option><option>كسور</option><option>حريق</option><option>سحجات</option><option>كدمات</option><option>أخرى</option></select></div>
+<div><label>📝 تفاصيل أخرى عن الإصابة - لو اخترت أخرى</label><input id="ac-body-other" placeholder="اكتب الجزء المصاب أو طبيعة الإصابة لو أخرى..."></div>
+</div>
+
+<div class="section-title">👁️ أسماء الشهود - لحد 5 أشخاص</div>
+<div id="witnesses"></div>
+
+<div class="section-title">✅ الإجراءات التصحيحية الواجب اتخاذها - لحد 10 إجراءات</div>
+<div id="correctiveList"></div>
+<button class="btn2" onclick="addCorrectiveField()" style="width:100%;padding:12px;margin-top:8px;">➕ إضافة إجراء تصحيحي آخر - باقي <span id="corrLeft">9</span></button>
+
+<div class="section-title">📸 صور الحادث - لحد 5 صور</div>
+<input type="file" id="ac-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident','incident')">
+<div class="thumbs" id="prev-incident"></div>
+
+<div class="section-title">📸 صور الإجراءات التصحيحية - لحد 10 صور</div>
+<input type="file" id="ac-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action','action')">
+<div class="thumbs" id="prev-action"></div>
+
+<div class="grid" style="margin-top:14px;">
+<div><label>🦺 مُعد التقرير - أوتوماتيك</label><input id="ac-reporter" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
+<div><label>📝 ملاحظات - اختياري</label><input id="ac-notes" placeholder="أي ملاحظات..."></div>
+</div>
+
+<button class="btn red" onclick="addAcc()">💾 حفظ تقرير الحادث</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل الحوادث</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchAc" placeholder="ابحث بالشركة أو المكان أو المصاب أو الوصف..." oninput="renderAcc()" style="flex:2;">
+<select id="filterClass" onchange="renderAcc()" style="flex:1;"><option value="">كل التصنيفات</option><option>حالة علاج طبي</option><option>حالة عمل مقيد</option><option>حالة انقطاع عن العمل</option><option>حالة وفاة</option><option>حادث حريق</option><option>ضرر في الممتلكات</option></select>
+<select id="filterCompany" onchange="renderAcc()" style="flex:1;"><option value="">كل الشركات</option></select>
+</div>
+<div id="acTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn2" onclick="exportAcc()" style="flex:1;padding:12px;">📥 تصدير سجل الحوادث كله Excel / CSV</button>
+<button class="btn2" onclick="clearAcc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+if(!DB.accidents) DB.accidents=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+
+let tempIncident=[], tempAction=[];
+function previewImgs(input, prevId, type){
+  let files=[...input.files].slice(0, type==='incident'?5:10);
+  if(input.files.length > (type==='incident'?5:10)) alert('⚠️ الحد الأقصى '+(type==='incident'?'5':'10')+' صور بس، اخترنا أول '+ (type==='incident'?'5':'10'));
+  let container=document.getElementById(prevId); container.innerHTML='';
+  let arr = type==='incident'?tempIncident:tempAction; arr.length=0;
+  files.forEach(f=>{
+    let r=new FileReader();
+    r.onload=e=>{ arr.push(e.target.result); let img=document.createElement('img'); img.src=e.target.result; img.onclick=()=>window.open(e.target.result,'_blank'); container.appendChild(img); };
+    r.readAsDataURL(f);
+  });
+}
+
+function getAllPeople(){
+  let list=[];
+  (DB.induction||[]).forEach(x=>list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}));
+  (DB.workers||[]).forEach(x=>{ if(!list.find(p=>p.name===x.name)) list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
+  return list;
+}
+
+function lookupInjured(name){
+  let p=getAllPeople().find(x=>x.name===name.trim());
+  if(p){
+    setVal('ac-code',p.code); setVal('ac-job',p.job);
+    document.getElementById('injHint').innerText='✅ لقيناه - كود: '+p.code+' - مهنة: '+p.job;
+  } else if(name.trim().length>2){
+    document.getElementById('injHint').innerText='⚠️ الاسم مش موجود في المحاضرة الأولية - اكتب الكود والمهنة يدوي';
+    document.getElementById('ac-code').readOnly=false; document.getElementById('ac-job').readOnly=false;
+  } else document.getElementById('injHint').innerText='';
+}
+function lookupWitness(i, name){
+  let p=getAllPeople().find(x=>x.name===name.trim());
+  if(p){
+    document.getElementById('wit-job-'+i).value=p.job;
+    document.getElementById('wit-phone-'+i).value=p.phone;
+    document.getElementById('wit-hint-'+i).innerText='✅ لقيناه - مهنة: '+p.job+' - تليفون: '+p.phone;
+  } else if(name.trim().length>2){
+    document.getElementById('wit-hint-'+i).innerText='⚠️ مش موجود - اكتب المهنة والتليفون يدوي';
+  } else document.getElementById('wit-hint-'+i).innerText='';
+}
+
+function buildWitnesses(){
+  let html='';
+  for(let i=1;i<=5;i++){
+    html+=`<div class="witness-box"><b>👁️ الشاهد ${i} ${i===1?'(أساسي)':'(اختياري)'}</b><div class="grid3"><div><label>اسم الشاهد ${i}</label><input id="wit-name-${i}" placeholder="اكتب اسم الشاهد..." list="empNames" oninput="lookupWitness(${i},this.value)"><small id="wit-hint-${i}" style="color:#2E7D32;font-size:11px;"></small></div><div><label>مهنة الشاهد ${i}</label><input id="wit-job-${i}" placeholder="هتتملي أوتوماتيك"></div><div><label>📞 رقم تليفون الشاهد ${i}</label><input id="wit-phone-${i}" placeholder="هيتملي أوتوماتيك" inputmode="tel"></div></div></div>`;
+  }
+  document.getElementById('witnesses').innerHTML=html;
+}
+let corrCount=1;
+function buildCorrective(){
+  let html='';
+  for(let i=1;i<=corrCount;i++){
+    html+=`<div style="display:flex;gap:8px;margin-bottom:8px;"><span style="background:#0A1F44;color:#fff;width:35px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:bold;flex-shrink:0;">${i}</span><input id="corr-${i}" placeholder="الإجراء التصحيحي رقم ${i} - مثال: توفير حزام أمان - تدريب العمال..."></div>`;
+  }
+  document.getElementById('correctiveList').innerHTML=html;
+  document.getElementById('corrLeft').innerText=10-corrCount;
+}
+function addCorrectiveField(){
+  if(corrCount>=10) return alert('وصلت للحد الأقصى 10 إجراءات');
+  let vals=[]; for(let i=1;i<=corrCount;i++) vals.push(document.getElementById('corr-'+i).value);
+  corrCount++;
+  buildCorrective();
+  vals.forEach((v,i)=>{ document.getElementById('corr-'+(i+1)).value=v; });
+}
+
+function addAcc(){
+  if(!val('ac-date')) return alert('اختار التاريخ');
+  if(!val('ac-time')) return alert('اختار الوقت');
+  if(!val('ac-company')) return alert('اكتب اسم الشركة');
+  if(!val('ac-place')) return alert('اكتب مكان الحادث');
+  if(!val('ac-desc')) return alert('اكتب وصف الحادث');
+  if(!val('ac-direct')) return alert('اكتب الأسباب المباشرة');
+  if(!val('ac-root')) return alert('اكتب الأسباب الجذرية');
+  let classes=[...document.querySelectorAll('.ac-class:checked')].map(c=>c.value);
+  if(!classes.length) return alert('اختار تصنيف الحادث على الأقل');
+  if(!val('ac-injured')) return alert('اكتب اسم المصاب');
+  if(!val('ac-code')) return alert('اكتب كود المصاب');
+  if(!val('ac-job')) return alert('اكتب مهنة المصاب');
+  if(!val('ac-body')) return alert('اختار الجزء المصاب');
+  if(!val('ac-nature')) return alert('اختار طبيعة الإصابة');
+  let correctives=[];
+  for(let i=1;i<=corrCount;i++){ let v=document.getElementById('corr-'+i).value.trim(); if(v) correctives.push(v); }
+  if(!correctives.length) return alert('اكتب إجراء تصحيحي واحد على الأقل');
+  let witnesses=[];
+  for(let i=1;i<=5;i++){
+    let n=document.getElementById('wit-name-'+i).value.trim();
+    if(n) witnesses.push({name:n,job:document.getElementById('wit-job-'+i).value.trim(),phone:document.getElementById('wit-phone-'+i).value.trim()});
+  }
+  if(!witnesses.length) return alert('اكتب اسم شاهد واحد على الأقل');
+  let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter'),notes:val('ac-notes'),createdAt:new Date().toISOString()};
+  DB.accidents.push(rec); save(); renderAcc();
+  alert('✅ تم حفظ تقرير الحادث - '+rec.injured+' - '+classes.join(' + '));
+  ['ac-company','ac-place','ac-desc','ac-direct','ac-root','ac-injured','ac-code','ac-job','ac-body-other','ac-notes'].forEach(id=>setVal(id,''));
+  setVal('ac-body',''); setVal('ac-nature','');
+  document.querySelectorAll('.ac-class').forEach(c=>c.checked=false);
+  for(let i=1;i<=5;i++){ document.getElementById('wit-name-'+i).value=''; document.getElementById('wit-job-'+i).value=''; document.getElementById('wit-phone-'+i).value=''; }
+  corrCount=1; buildCorrective();
+  document.getElementById('ac-img-incident').value=''; document.getElementById('ac-img-action').value='';
+  document.getElementById('prev-incident').innerHTML=''; document.getElementById('prev-action').innerHTML='';
+  tempIncident=[]; tempAction=[];
+  document.getElementById('injHint').innerText='';
+}
+
+function renderAcc(){
+  let people=getAllPeople();
+  document.getElementById('empNames').innerHTML=people.map(p=>`<option value="${p.name}">`).join('');
+  let all=DB.accidents||[];
+  let comps=[...new Set(all.map(x=>x.company))];
+  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  let sel=document.getElementById('filterCompany'); let cur=sel.value;
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  document.getElementById('placesList').innerHTML=[...new Set(all.map(x=>x.place))].map(p=>`<option value="${p}">`).join('');
+
+  document.getElementById('k-total').innerText=all.length;
+  document.getElementById('k-medical').innerText=all.filter(x=>x.classes.includes('حالة علاج طبي')).length;
+  document.getElementById('k-restricted').innerText=all.filter(x=>x.classes.includes('حالة عمل مقيد')).length;
+  document.getElementById('k-lost').innerText=all.filter(x=>x.classes.includes('حالة انقطاع عن العمل')).length;
+  document.getElementById('k-death').innerText=all.filter(x=>x.classes.includes('حالة وفاة')).length;
+  document.getElementById('k-fire').innerText=all.filter(x=>x.classes.includes('حادث حريق')).length;
+  document.getElementById('k-property').innerText=all.filter(x=>x.classes.includes('ضرر في الممتلكات')).length;
+  let byComp={}; all.forEach(x=>{ byComp[x.company]=(byComp[x.company]||0)+1; });
+  let topComp=Object.keys(byComp).sort((a,b)=>byComp[b]-byComp[a])[0];
+  document.getElementById('k-top-comp').innerText=topComp?topComp+' ('+byComp[topComp]+')':'-';
+
+  let q=(document.getElementById('searchAc').value||'').toLowerCase();
+  let fc=document.getElementById('filterClass').value;
+  let fcomp=document.getElementById('filterCompany').value;
+  let list=all.filter(x=>{
+    let okQ=(x.company+x.place+x.desc+x.injured+x.code).toLowerCase().includes(q);
+    let okC=!fc||x.classes.includes(fc);
+    let okComp=!fcomp||x.company===fcomp;
+    return okQ&&okC&&okComp;
+  });
+  if(!list.length){ document.getElementById('acTable').innerHTML='<p style="text-align:center;color:#999;">مفيش حوادث مسجلة لسه</p>'; return; }
+  document.getElementById('acTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>المصاب</th><th>التصنيف</th><th>مكان الحادث</th><th>الوصف</th><th>الجزء / طبيعة الإصابة</th><th>الشهود</th><th>الإجراءات</th><th>الصور</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.accidents.indexOf(x);
+    return `<tr><td>${x.date}<br>${x.time}</td><td><b>${x.company}</b></td><td><b>${x.injured}</b><br>${x.code} - ${x.job}</td><td>${x.classes.map(c=>`<span class="chip">${c}</span>`).join('<br>')}</td><td>${x.place}</td><td style="text-align:right;max-width:200px;">${x.desc}<br><small style="color:#78909C;">مباشر: ${x.direct}</small><br><small style="color:#78909C;">جذري: ${x.root}</small></td><td>${x.body}<br>${x.nature}${x.bodyOther?'<br>'+x.bodyOther:''}</td><td style="font-size:11px;">${x.witnesses.map(w=>w.name+' - '+w.job+' - '+w.phone).join('<br>')}</td><td style="font-size:11px;text-align:right;">${x.correctives.map((c,i)=>(i+1)+'. '+c).join('<br>')}</td><td style="font-size:11px;">📸 حادث: ${(x.incidentImgs||[]).length}<br>📸 إجراءات: ${(x.actionImgs||[]).length}<br>${x.incidentImgs && x.incidentImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'incident')">👁️ حادث</button>`:''} ${x.actionImgs && x.actionImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'action')">👁️ إجراءات</button>`:''}</td><td><button class="btn2" style="color:#D32F2F;" onclick="delAcc(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function viewImgs(idx,type){
+  let x=DB.accidents[idx]; let arr=type==='incident'?x.incidentImgs:x.actionImgs;
+  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;direction:rtl;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 صور الحادث':'📸 صور الإجراءات')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>`<img src="${src}" style="width:300px;border-radius:12px;">`).join('')+'</div>');
+}
+function delAcc(i){ if(!confirm('تحذف تقرير الحادث ده؟')) return; DB.accidents.splice(i,1); save(); renderAcc(); }
+function clearAcc(){ if(!confirm('تمسح كل سجل الحوادث؟')) return; DB.accidents=[]; save(); renderAcc(); }
+function exportAcc(){
+  if(!DB.accidents.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,الشركة,مكان الحادث,وصف الحادث,الاسباب المباشرة,الاسباب الجذرية,تصنيف الحادث,اسم المصاب,الكود,المهنة,الجزء المصاب,طبيعة الاصابة,تفاصيل اخرى,الشهود,الاجراءات التصحيحية,معد التقرير,ملاحظات,عدد صور الحادث,عدد صور الاجراءات\n'+DB.accidents.map(x=>[x.date,x.time,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+x.classes.join(' + ')+'"',x.injured,x.code,x.job,x.body,x.nature,'"'+(x.bodyOther||'').replace(/"/g,'""')+'"','"'+x.witnesses.map(w=>w.name+' - '+w.job+' - '+w.phone).join(' | ')+'"','"'+x.correctives.join(' | ')+'"',x.reporter,'"'+(x.notes||'').replace(/"/g,'""')+'"',(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='accidents.csv'; a.click();
+}
+buildWitnesses(); buildCorrective();
+let savedUser=localStorage.getItem('safetyUser')||'';
+document.getElementById('currentUser').value=savedUser;
+document.getElementById('ac-reporter').value=savedUser;
+document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('ac-time').value=new Date().toTimeString().slice(0,5);
+renderAcc();
+</script>
+</body>
+</html>
