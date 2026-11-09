@@ -7,10 +7,37 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
-header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
-header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
-.container{max-width:1150px;margin:auto;padding:16px;}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -20,9 +47,6 @@ input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-
 textarea{min-height:70px;resize:vertical;}
 .btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
-.nav a.active{background:#0A1F44;color:#fff;}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 .kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
@@ -34,30 +58,57 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 .role-bar select{width:auto;flex:1;min-width:180px;}
 .img-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
 .img-preview img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #CFD8DC;cursor:pointer;}
-@media print{ header,.nav,.no-print,.role-bar{display:none!important;} body{background:#fff;} }
+@media print{ .sidebar,.topbar,.overlay,.page-head,.role-bar{display:none!important;} .main{margin:0} body{background:#fff;} }
 </style>
 </head>
 <body>
-<header>
-<div style="display:flex;align-items:center;gap:10px;">
-<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
-<div><h1>RMED <span>•</span> مخالفات المقاولين</h1><small>مخالفات السلامة - Subcontractor Violations</small></div>
-</div>
-<a href="index.html">🏠 الرئيسية</a>
-</header>
-<div class="container">
-<div class="nav">
-<a href="induction.html">📘 المحاضرة الأولية</a>
-<a href="workers.html">👷 الموظفين</a>
-<a href="train.html">🎓 التدريبات</a>
-<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
-<a href="permits.html">📋 التصاريح</a>
-<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
-<a href="violations.html" class="active">⚠️ مخالفات المقاولين</a>
-<a href="stats.html">📈 الإحصائيات</a>
-</div>
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
-<!-- الصلاحيات -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head">
+<div><h1>RMED <span>•</span> مخالفات المقاولين</h1><small>مخالفات السلامة - Subcontractor Violations</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+</div>
+<div class="container">
+
 <div class="role-bar no-print">
 <span style="font-weight:bold;">🔐 انت داخل بصفتك:</span>
 <select id="myRole" onchange="setRole(this.value)">
@@ -70,7 +121,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <span id="roleMsg" style="font-size:12px;font-weight:bold;color:#D32F2F;">انت دلوقتي مشاهد - مش هتقدر تضيف</span>
 </div>
 
-<!-- الاحصائيات -->
 <div class="kpi-grid">
 <div class="kpi"><b id="k-count">0</b><small>إجمالي عدد المخالفات</small></div>
 <div class="kpi red"><b id="k-total-deduct">0 ج.م</b><small>إجمالي المبالغ المخصومة</small></div>
@@ -80,7 +130,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div class="kpi"><b id="k-min-money">-</b><small>أقل شركة في المبالغ المخصومة</small></div>
 </div>
 
-<!-- نموذج الاضافة - للمشرف والمدير بس -->
 <div class="card red" id="addCard">
 <h2 style="margin:0 0 5px;">⚠️ تسجيل مخالفة جديدة</h2>
 <p style="color:#78909C;font-size:13px;margin:0;">صلاحية المشرف والمدير فقط</p>
@@ -97,7 +146,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <button class="btn red" onclick="addViolation()">💾 حفظ المخالفة + إرسال إشعار</button>
 </div>
 
-<!-- تصدير بفترة -->
 <div class="card no-print">
 <h3 style="margin:0 0 10px;">📥 تصدير سجل المخالفات - حدد الفترة</h3>
 <div class="grid">
@@ -114,14 +162,37 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div id="violationsTable"></div>
 </div>
 </div>
+</div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function getMe(){
+  try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
+  return null;
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
+
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[],"permits":[],"dailyCount":[],"violations":[]}');
 if(!DB.violations) DB.violations=[];
 function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
 function val(id){ return document.getElementById(id).value.trim(); }
 const ROLE_CODE='1234';
-let currentRole=localStorage.getItem('myRole')||'مشاهد';
+// ✅ لو داخل بحساب مدير / مشرف، خد صلاحيته أوتوماتيك
+let _me=getMe();
+let _autoRole=_me ? (_me.role==='manager'?'مدير':_me.role==='supervisor'?'مشرف':_me.role==='employee'?'مشاهد':'مشاهد') : null;
+let currentRole=_autoRole || localStorage.getItem('myRole')||'مشاهد';
+if(_autoRole) localStorage.setItem('myRole',currentRole);
 let tempPhotos=[];
 function setRole(r){ currentRole=r; localStorage.setItem('myRole',r); applyRole(); }
 function unlockRole(){
@@ -137,7 +208,6 @@ function applyRole(){
   document.getElementById('roleMsg').style.color=canEdit?'#2E7D32':'#D32F2F';
   document.getElementById('addCard').style.opacity=canEdit?'1':'0.5';
   document.getElementById('addCard').style.pointerEvents=canEdit?'auto':'none';
-  // زرار الحذف في الجدول هيتقفل برضه في render
 }
 function previewPhotos(inp){
   tempPhotos=[];
@@ -158,12 +228,11 @@ function addViolation(){
   if(!val('v-company')) return alert('اكتب اسم الشركة');
   if(!val('v-desc')) return alert('اكتب وصف المخالفة');
   if(!val('v-deduct')) return alert('اكتب إجمالي الخصم');
-  let rec={date:val('v-date'),time:val('v-time'),company:val('v-company'),desc:val('v-desc'),deduct:parseFloat(val('v-deduct'))||0,action:val('v-action'),emails:val('v-emails'),photos:[...tempPhotos],by:currentRole,createdAt:new Date().toISOString()};
+  let _m=getMe();
+  let rec={date:val('v-date'),time:val('v-time'),company:val('v-company'),desc:val('v-desc'),deduct:parseFloat(val('v-deduct'))||0,action:val('v-action'),emails:val('v-emails'),photos:[...tempPhotos],by:currentRole,reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
   DB.violations.push(rec); save(); renderViolations();
   alert('✅ تم حفظ المخالفة - '+rec.company+' - خصم '+rec.deduct+' ج.م');
-  // إشعار الميل
   sendEmail(rec);
-  // تصفير
   ['v-company','v-desc','v-deduct','v-action'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('photoPreview').innerHTML=''; tempPhotos=[];
 }
@@ -177,18 +246,15 @@ function sendEmail(rec){
   }
   let subject='⚠️ تم إصدار مخالفة سلامة - '+rec.company+' - '+rec.date;
   let body='تم إصدار مخالفة سلامة\n\n'+'التاريخ: '+rec.date+'\nالوقت: '+rec.time+'\nالشركة: '+rec.company+'\nوصف المخالفة: '+rec.desc+'\nإجمالي الخصم: '+rec.deduct+' ج.م\nإجراء آخر: '+(rec.action||'-')+'\n\nبرجاء اتخاذ اللازم\n\nRMED - HSE\n\nملحوظة: افتح ملف المخالفة واطبع PDF وارفقه في الميل - لان المتصفح مش بيبعت PDF أوتوماتيك من غير سيرفر.';
-  // بيفتح برنامج الميل جاهز
   window.location.href='mailto:'+encodeURIComponent(emails)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
   alert('📧 اتفتح الميل جاهز - دوس Send\nعشان تبعت PDF: دوس على زرار PDF في المخالفة واطبعه وارفقه');
 }
 function renderViolations(){
   let q=(document.getElementById('searchV').value||'').toLowerCase();
   let list=DB.violations.filter(x=>(x.company+x.desc).toLowerCase().includes(q));
-  // احصائيات
   document.getElementById('k-count').innerText=DB.violations.length;
   let totalDeduct=DB.violations.reduce((s,x)=>s+(x.deduct||0),0);
   document.getElementById('k-total-deduct').innerText=totalDeduct.toLocaleString()+' ج.م';
-  // تجميع حسب الشركة
   let byComp={};
   DB.violations.forEach(x=>{
     if(!byComp[x.company]) byComp[x.company]={count:0,money:0};
@@ -208,7 +274,6 @@ function renderViolations(){
   } else {
     ['k-max-count','k-min-count','k-max-money','k-min-money'].forEach(id=>document.getElementById(id).innerText='-');
   }
-  // فلتر التصدير
   document.getElementById('exp-company').innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option>${c}</option>`).join('');
   if(!list.length){ document.getElementById('violationsTable').innerHTML='<p style="text-align:center;color:#999;">مفيش مخالفات لسه</p>'; return; }
   let canEdit=currentRole==='مشرف'||currentRole==='مدير';
