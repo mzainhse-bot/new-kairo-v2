@@ -3,12 +3,42 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تقييم الموظفين - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.container{max-width:1000px;margin:auto;padding:16px}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FFD700;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h2{margin:0;font-size:21px}
+.container{max-width:1000px;margin:auto;padding:0 16px 16px}
 .filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;min-width:140px;cursor:pointer}
 .btn{background:#0A1F44;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 .btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn2{background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center}
 .top1{border:4px solid #FFD700;background:linear-gradient(180deg,#FFF8E1,#fff);position:relative}
 .top1 img{width:150px;height:150px;object-fit:cover;border-radius:50%;border:6px solid #FFD700;box-shadow:0 0 0 4px #fff,0 0 20px #FFD700}
@@ -27,7 +57,8 @@ header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-cont
 .print-head{display:none}
 @media print{
   body{background:#fff}
-  header .no-print, .no-print{display:none !important}
+  .sidebar,.topbar,.overlay,.page-head,.no-print{display:none !important}
+  .main{margin-right:0}
   .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
   .container{max-width:100%;padding:0}
@@ -37,7 +68,48 @@ header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-cont
 </style>
 </head>
 <body>
-<header><h2 style="margin:0;">🏆 تقييم الموظفين - الموظف المثالي</h2><div class="no-print"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="location.href='stats.html'">📊 الإحصائيات</button></div></header>
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head"><h2>🏆 تقييم الموظفين - الموظف المثالي</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button><button class="btn2" onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div></div>
 <div class="container">
 <div class="print-head"><h1>🏆 تقرير تقييم الموظفين - الموظف المثالي - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 
@@ -48,18 +120,30 @@ header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-cont
 <span style="flex:1;"></span><span id="totalEmp" style="font-weight:bold;"></span>
 </div>
 
-<!-- المركز الأول - الموظف المثالي -->
 <div id="top1Box"></div>
-<!-- التاني والتالت جنب بعض -->
 <div id="top23Box" class="top23"></div>
-<!-- الباقي تحت بعض -->
 <div id="restBox" style="margin-top:14px;"></div>
 <div id="emptyBox"></div>
 
 <div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة تقرير الموظف المثالي</button><p style="color:#78909C;font-size:12px;">اختار الشهر الأول، وبعدين دوس تصدير - اختار Destination = Save as PDF</p></div>
 </div>
+</div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
+  if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role==='manager'?'مدير':u.role==='supervisor'?'مشرف':u.role==='employee'?'موظف':u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
+})();
+
 let nowD=new Date();
 let selYear=nowD.getFullYear();
 let selMonth=nowD.getMonth();
@@ -79,7 +163,6 @@ function isClosed(x){
   return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || x.isClosed===true || x.closed===true;
 }
 function getReporter(x){
-  // اسم اللي رافع التقرير - بيتاخد من الحساب اللي مسجل بيه
   return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim();
 }
 function getReporterCode(x){ return (x.reporterCode||x.reporterId||x.createdByCode||x.code||'').toString().trim(); }
@@ -91,38 +174,28 @@ function inMonth(d){
 function render(){
   let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
   document.getElementById('periodLabel').innerText='من 1 '+months[selMonth]+' '+selYear+' إلى '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
-
-  // 1 - الموظفين - بنستبعد المدير والمشرف من الصلاحيات مش المهنة
   let allUsers = DB.users || DB.employees || DB.workers || [];
   let employees = allUsers.filter(u=>{
     let role=(u.role||u.permission||u.type||u.accountType||'').toString().trim().toLowerCase();
-    // استبعاد المدير والمشرف والادمن
     if(['مدير','مشرف','manager','supervisor','admin','أدمن','ادمن'].includes(role)) return false;
     if(['مدير','مشرف'].includes((u.role||'').toString().trim())) return false;
     return true;
   });
-
-  // لو مفيش users، بنجيب الأسماء من التقارير نفسها
   let obs=(DB.observations||DB.safetyObservations||DB.obs||[]).filter(x=>inMonth(getDate(x)));
   let near=(DB.nearMiss||DB.near||[]).filter(x=>inMonth(getDate(x)));
   let acc=(DB.accidents||DB.acc||[]).filter(x=>inMonth(getDate(x)));
   let allReports=[...obs.map(x=>({...x,_type:'ملاحظة'})), ...near.map(x=>({...x,_type:'وشيكة'})), ...acc.map(x=>({...x,_type:'حادث'}))];
-
-  // 2 - حساب لكل موظف: رفع كام + قفل كام
   let map={};
   employees.forEach(u=>{
     let key=(u.code||u.id||u.name||'').toString();
     map[key]={user:u, total:0, closed:0, obs:0, near:0, acc:0};
   });
-  // لو الموظف مش في users بس رفع تقرير، بنضيفه برضو
   function findKey(reporter, code){
-    // ندور بالكود الأول، بعدين بالاسم
     let found=null;
     if(code){ found=Object.keys(map).find(k=> (map[k].user.code||map[k].user.id||'') .toString()===code); if(found) return found; }
     if(reporter){
       found=Object.keys(map).find(k=> (map[k].user.name||'').toString().trim()===reporter);
       if(found) return found;
-      // موظف مش مسجل في users بس رفع تقرير
       let nk='extra-'+reporter;
       if(!map[nk]) map[nk]={user:{name:reporter, code:code||'', img:'', photo:''}, total:0, closed:0, obs:0, near:0, acc:0};
       return nk;
@@ -131,7 +204,6 @@ function render(){
   }
   allReports.forEach(r=>{
     let rep=getReporter(r); let code=getReporterCode(r);
-    // لو التقرير مفيهوش اسم الرافع، بنجرب اسم الشخص نفسه لو كان هو الرافع
     if(!rep) return;
     let k=findKey(rep, code); if(!k) return;
     map[k].total++;
@@ -140,15 +212,11 @@ function render(){
     if(r._type==='وشيكة') map[k].near++;
     if(r._type==='حادث') map[k].acc++;
   });
-
-  // 3 - الترتيب تنازلي: الأعلى في رفع التقارير الأول، ولو تساووا اللي قافل أكتر الأول
   let ranked=Object.values(map).sort((a,b)=>{
     if(b.total!==a.total) return b.total-a.total;
     return b.closed-a.closed;
   });
-  // بنشيل اللي صفر تقرير عشان الترتيب يبقى نضيف؟ لا - بنخليهم تحت خالص
   document.getElementById('totalEmp').innerText='إجمالي الموظفين: '+ranked.length+' | إجمالي التقارير في الشهر: '+allReports.length;
-
   function imgHTML(u, size){
     let src=u.img||u.photo||u.image||u.avatar||'';
     if(src) return `<img src="${src}" alt="${u.name||''}">`;
@@ -160,8 +228,6 @@ function render(){
     <span class="badge">👀 ملاحظات: ${r.obs}</span><span class="badge">⚡ وشيكة: ${r.near}</span><span class="badge">🚨 حوادث: ${r.acc}</span><br>
     <span class="badge badge-green">نسبة الغلق: ${rate}%</span></div>`;
   }
-
-  // الأول
   let top1=document.getElementById('top1Box');
   if(ranked.length && ranked[0].total>0){
     let r=ranked[0];
@@ -169,7 +235,6 @@ function render(){
   } else {
     top1.innerHTML=`<div class="card"><h3>لسه مفيش تقارير في ${months[selMonth]} ${selYear}</h3><p style="color:#78909C;">أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>`;
   }
-  // التاني والتالت
   let top23=document.getElementById('top23Box');
   let html23='';
   if(ranked[1] && ranked[1].total>0){
@@ -181,8 +246,6 @@ function render(){
     html23+=`<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">المركز الثالث</h3>${imgHTML(r.user,120)}<h3 style="margin:8px 0 0;">${r.user.name}</h3><p style="margin:4px 0;color:#78909C;">${r.user.code?'كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
   }
   top23.innerHTML=html23;
-
-  // الباقي من الرابع لتحت
   let rest=document.getElementById('restBox');
   let restList=ranked.slice(3);
   if(restList.length){
