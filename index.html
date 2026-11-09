@@ -3,257 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة السلامة - ROWAD</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script>emailjs.init("YOUR_PUBLIC_KEY");</script>
+<title>نظام عمال رواد - السلامة</title>
 <style>
-:root{ --gold:#D4AF37; --black:#0A0A0A; --dark:#1A1A1A; }
-*{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial; }
-body{ background:var(--black); color:#fff; margin:0; }
-header{ background:var(--dark); border-bottom:2px solid var(--gold); padding:14px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
-header h1{ margin:0; color:var(--gold); font-size:22px; }
-nav{ display:flex; gap:6px; flex-wrap:wrap; padding:10px; background:#111; position:sticky; top:76px; z-index:9; }
-nav button{ background:#222; color:#fff; border:1px solid var(--gold); padding:8px 11px; border-radius:8px; cursor:pointer; font-size:13px; }
-nav button.active, nav button:hover{ background:var(--gold); color:#000; font-weight:bold; }
-.container{ padding:14px; max-width:1100px; margin:auto; }
-.card{ background:var(--dark); border:1px solid var(--gold); border-radius:14px; padding:14px; margin-bottom:14px; }
-.card h2{ color:var(--gold); margin:0 0 12px; font-size:18px; }
-label{ display:block; margin:10px 0 4px; font-size:14px; }
-input,select,textarea{ width:100%; background:#111; color:#fff; border:1px solid var(--gold); border-radius:8px; padding:9px; }
-textarea{ min-height:60px; }
-.btn{ background:var(--gold); color:#000; font-weight:bold; border:none; border-radius:8px; padding:11px 18px; cursor:pointer; margin-top:12px; width:100%; font-size:16px; }
-.btn2{ background:#333; color:#fff; border:1px solid var(--gold); padding:7px 10px; border-radius:7px; cursor:pointer; }
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-@media(max-width:700px){ .grid{ grid-template-columns:1fr; } }
-table{ width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
-table th{ background:var(--gold); color:#000; padding:8px; }
-table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
-.hidden{ display:none; }
-.badge{ background:var(--gold); color:#000; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; display:inline-block; margin:3px; }
-.stats-wrap{ background:#F7F3EC; color:#222; border-radius:14px; padding:16px; }
-.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px; }
-@media(max-width:700px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
-.kpi{ background:#fff; border-radius:10px; padding:12px; text-align:center; border-right:4px solid #ccc; }
-.kpi b{ font-size:22px; } .kpi small{ color:#777; display:block; font-size:12px; }
-.idcard-wrap{ width:640px; max-width:100%; margin:16px auto; }
-.idcard-h{ width:100%; background:#fff; color:#000; border:2px solid var(--gold); border-radius:14px; overflow:hidden; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-.idcard-h .top{ background:#0A0A0A; color:#fff; display:flex; justify-content:space-between; align-items:center; padding:10px 14px; }
-.idcard-h .top b{ color:var(--gold); font-size:20px; letter-spacing:3px; }
-.idcard-h .body{ display:flex; gap:12px; padding:12px; }
-.idcard-h .photo{ width:115px; height:135px; object-fit:cover; border:2px solid var(--gold); border-radius:8px; }
-.idcard-h .info{ flex:1; font-size:13px; line-height:1.75; }
-.status{ display:inline-block; padding:2px 10px; border-radius:20px; font-weight:bold; font-size:12px; }
-.status-active{ background:#d4edda; color:#155724; } .status-resign{ background:#fff3cd; color:#856404; } .status-excluded{ background:#f8d7da; color:#721c24; }
-.idcard-h .qr-box{ padding:8px; border-top:1px dashed #ccc; display:flex; justify-content:center; align-items:center; gap:12px; }
-.idcard-back{ width:100%; background:#0A0A0A; color:#fff; border:2px solid var(--gold); border-radius:14px; overflow:hidden; margin-top:10px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-.idcard-back .back-top{ border-bottom:2px solid var(--gold); padding:10px 14px; display:flex; justify-content:space-between; align-items:center; }
-.idcard-back .back-top b{ color:var(--gold); font-size:18px; }
-.idcard-back .back-body{ padding:16px 18px; }
-.idcard-back h3{ color:var(--gold); margin:0 0 12px; font-size:19px; text-align:center; }
-.idcard-back ol{ margin:0; padding-right:20px; font-size:15px; line-height:2.1; }
-.idcard-back .back-footer{ background:#1A1A1A; padding:10px 14px; text-align:center; font-size:13px; color:#ccc; border-top:1px solid #333; }
-.flex{ display:flex; gap:8px; flex-wrap:wrap; }
-.thumb{ width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid var(--gold); margin:2px; }
-.profile-box{ background:#fff; color:#000; border-radius:14px; padding:16px; }
-.profile-box h3{ color:#D4AF37; margin:0 0 8px; }
-.profile-box h4{ margin:14px 0 6px; border-bottom:2px solid #D4AF37; padding-bottom:4px; }
-.profile-box ul{ margin:0; padding-right:18px; line-height:1.9; font-size:14px; }
-@media print{
-  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-  body{ background:#fff !important; }
-  header, nav, .no-print, .container > div:not(#sec-cards){ display:none !important; }
-  #sec-cards{ display:block !important; }
-  #sec-cards .card{ border:none !important; padding:0 !important; background:#fff !important; }
-  .idcard-wrap{ width:100%; margin:0 auto; break-after:page; page-break-after:always; }
-  .card-actions{ display:none !important; }
-}
+*{box-sizing:border-box;font-family:system-ui,Tahoma}
+body{margin:0;background:#f1f5f9;color:#0f172a;padding:12px}
+.header{background:#0f766e;color:#fff;padding:16px;border-radius:14px;text-align:center}
+.header h1{margin:0;font-size:22px}
+.header p{margin:6px 0 0;opacity:.9;font-size:14px}
+.card{background:#fff;padding:14px;border-radius:14px;margin-top:12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;margin-top:8px;font-size:15px}
+label{font-weight:700;font-size:14px;display:block;margin-top:10px}
+.btn{width:100%;padding:12px;border:none;border-radius:10px;background:#0f766e;color:#fff;font-weight:800;font-size:16px;margin-top:14px;cursor:pointer}
+.btn2{background:#e2e8f0;color:#0f172a;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{border-bottom:1px solid #e2e8f0;padding:8px;text-align:right}
+th{background:#f8fafc}
+.badge{padding:4px 8px;border-radius:20px;font-size:12px;font-weight:800}
+.ok{background:#dcfce7;color:#166534}
+.exp{background:#fee2e2;color:#991b1b}
+.soon{background:#fef9c3;color:#854d0e}
+.search{margin-top:12px}
+.flex{display:flex;gap:8px;align-items:center}
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex; align-items:center; gap:12px;">
-    <img id="siteLogo" src="" style="width:60px; height:60px; border-radius:50%; border:2px solid #D4AF37; display:none; object-fit:cover;">
-    <div><h1>بوابة السلامة</h1><small>ROWAD - Safety Portal</small></div>
-  </div>
-  <label style="font-size:13px;">ارفع اللوجو <input type="file" accept="image/*" onchange="uploadLogo(event)" style="width:auto;"></label>
-</header>
-<nav>
-  <button onclick="show('dashboard')" class="active">لوحة التحكم</button>
-  <button onclick="show('workers')">الموظفين</button>
-  <button onclick="show('cards')">الكارنيهات</button>
-  <button onclick="show('search')">🔍 بحث عن عامل</button>
-  <button onclick="show('companies')">🏢 تقرير الشركات</button>
-  <button onclick="show('verify')">🔍 التحقق QR</button>
-  <button onclick="show('train')">التدريبات</button>
-  <button onclick="show('weekly')">المحاضرات الأسبوعية</button>
-  <button onclick="show('stats')">الإحصائيات</button>
-  <button onclick="show('empViol')">مخالفات الموظفين</button>
-  <button onclick="show('conViol')">مخالفات المقاولين</button>
-  <button onclick="show('obs')">ملاحظات السلامة</button>
-  <button onclick="show('near')">حوادث وشيكة</button>
-  <button onclick="show('acc')">الحوادث</button>
-</nav>
-<div class="container">
-<div id="sec-dashboard"><div class="card"><h2>📊 لوحة التحكم</h2><div id="statsMini" class="flex"></div></div><div class="card"><h2>💾 النسخة الاحتياطية</h2><div class="flex"><button class="btn2" onclick="exportBackup()">📥 تصدير</button><label class="btn2" style="cursor:pointer;">📤 استيراد <input type="file" accept=".json" onchange="importBackup(event)" style="display:none;"></label></div><p style="font-size:12px; color:#aaa;">اعمل تصدير كل أسبوع واحفظ الملف في جوجل درايف</p></div></div>
 
-<div id="sec-search" class="hidden">
-  <div class="card"><h2>🔍 بحث عن عامل - إحصائية خاصة بالعامل</h2>
-  <label>اكتب اسم العامل أو الكود</label>
-  <input id="searchInput" placeholder="مثال: أحمد أو 101" oninput="searchWorker()">
-  <div id="searchResults" class="flex" style="margin-top:10px;"></div>
-  <div id="searchBox" style="margin-top:14px;"></div></div>
+<div class="header">
+<h1>🦺 رواد - نظام عمال السلامة</h1>
+<p>متزامن مع جوجل شيت - أي جهاز يضيف يظهر في كل الأجهزة</p>
 </div>
 
-<div id="sec-companies" class="hidden">
-  <div class="card"><h2>🏢 تقرير الشركات - كل شركة لوحدها</h2>
-  <label>اختار الشركة</label>
-  <select id="compSelect" onchange="renderCompany()"></select>
-  <div id="companyBox" style="margin-top:14px;"></div></div>
+<div class="card">
+<h3 style="margin:0">➕ إضافة عامل جديد</h3>
+<label>كود العامل</label>
+<input id="id" placeholder="مثال: 1001">
+<label>اسم العامل</label>
+<input id="name" placeholder="الاسم بالكامل">
+<label>الرقم القومي</label>
+<input id="nationalId" placeholder="14 رقم">
+<label>الوظيفة</label>
+<input id="job" placeholder="مثال: نجار - حداد - كهربائي">
+<label>الشركة</label>
+<input id="company" placeholder="اسم الشركة">
+<label>رقم التليفون</label>
+<input id="phone" placeholder="01xxxxxxxxx">
+<label>تاريخ انتهاء شهادة السلامة</label>
+<input id="safetyExpiry" type="date">
+<label>الحالة</label>
+<select id="status"><option value="ساري">ساري</option><option value="منتهي">منتهي</option></select>
+<button class="btn" onclick="addWorker()">💾 حفظ العامل في الشيت</button>
+<p id="msg" style="text-align:center;font-weight:700"></p>
 </div>
 
-<div id="sec-verify" class="hidden"><div class="card"><h2>🔍 التحقق من الكارنيه - بيفتح من الـ QR</h2><label>اكتب الكود للتحقق يدوياً</label><input id="verifyInput" placeholder="اكتب الكود ودوس تحقق"><button class="btn" onclick="showVerify(val('verifyInput'))">تحقق</button><div id="verifyBox" style="margin-top:14px;"></div></div></div>
+<div class="card">
+<div class="flex">
+<input id="search" placeholder="🔍 ابحث بالاسم أو الكود أو الشركة..." oninput="renderTable()" style="margin:0">
+<button class="btn2" onclick="loadFromSheet()">🔄 تحديث</button>
+</div>
+<div style="margin-top:10px;font-weight:800" id="count"></div>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>الكود</th><th>الاسم</th><th>الوظيفة</th><th>الشركة</th><th>التليفون</th><th>انتهاء السلامة</th><th>الحالة</th><th></th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</div>
 
-<div id="sec-workers" class="hidden">
-  <div class="card"><h2>👷 إضافة عامل</h2><p style="font-size:13px; color:#FFD700;">تسجيل الموظف = توعية 0.25 ساعة أوتوماتيك + كارنيه</p>
-    <div class="grid"><div><label>اسم العامل</label><input id="w-name"></div><div><label>الكود</label><input id="w-code"></div><div><label>الوظيفة</label><input id="w-job"></div><div><label>الشركة</label><input id="w-company" list="companyList"></div><div><label>القسم</label><input id="w-dept" list="deptList"></div><div><label>تاريخ التعيين</label><input type="date" id="w-hire"></div><div><label>رقم التليفون</label><input id="w-phone"></div><div><label>رقم الطوارئ</label><input id="w-emergency"></div><div><label>صلة القرابة</label><input id="w-kin" list="kinList"></div><div><label>الحالة الصحية</label><input id="w-health" list="healthList"></div><div><label>الحالة</label><select id="w-status"><option value="نشط">✅ نشط</option><option value="استقال">⚠️ استقال</option><option value="استبعاد">⛔ استبعاد</option></select></div><div><label>تاريخ الانتهاء</label><input type="date" id="w-exp"></div></div>
-    <label>صورة العامل</label><input type="file" id="w-img" accept="image/*"><button class="btn" onclick="addWorker()">حفظ + كارنيه + توعية</button></div>
-  <div class="card"><h2>قائمة العمال</h2><div id="workersTable"></div></div>
-</div>
-<div id="sec-cards" class="hidden"><div class="card"><h2 class="no-print">🪪 الكارنيهات - وش + ضهر + QR لينك</h2><div class="flex no-print card-actions" style="margin-bottom:10px;"><button class="btn2" onclick="filterCard('all')">الكل</button><button class="btn2" onclick="filterCard('نشط')">نشط</button><button class="btn2" onclick="filterCard('استقال')">استقال</button><button class="btn2" onclick="filterCard('استبعاد')">استبعاد</button><button class="btn2" onclick="window.print()">🖨️ طباعة بنفس التصميم</button><button class="btn2" onclick="exportAllCards()">📸 تصدير الكل كصور</button></div><div id="cardsList"></div></div></div>
-<div id="sec-train" class="hidden"><div class="card"><h2>🎓 التدريبات</h2><div id="f-train"></div><div class="grid"><div><label>اسم الشركة</label><input id="t-comp" list="companyList"></div><div><label>المكان</label><input id="t-place"></div><div><label>العنوان</label><input id="t-title"></div><div><label>عدد الحضور</label><input id="t-count" type="number"></div><div><label>المحاضر</label><input id="t-trainer"></div></div><label>مدة التدريب</label><input id="t-hours" type="number" value="3" step="0.25"><label>صورة التدريب</label><input type="file" id="t-img" accept="image/*"><button class="btn" onclick="addTrain()">حفظ</button></div><div class="card"><h2>سجل التدريبات</h2><div id="trainTable"></div></div></div>
-<div id="sec-weekly" class="hidden"><div class="card"><h2>📅 المحاضرات الأسبوعية</h2><div id="f-weekly"></div><div class="grid"><div><label>اسم الشركة</label><input id="wk-comp" list="companyList"></div><div><label>المكان</label><input id="wk-place"></div><div><label>العنوان</label><input id="wk-title"></div><div><label>عدد الحضور</label><input id="wk-count" type="number"></div><div><label>المحاضر</label><input id="wk-trainer"></div></div><label>صورة المحاضرة</label><input type="file" id="wk-img" accept="image/*"><button class="btn" onclick="addWeekly()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="weeklyTable"></div></div></div>
-<div id="sec-stats" class="hidden"><div class="card"><h2>إحصائيات السلامة</h2><div id="statsReport"></div></div></div>
-<div id="sec-empViol" class="hidden"><div class="card"><h2>⚠️ مخالفات الموظفين</h2><div id="f-empViol"></div><div class="grid"><div><label>اسم العامل</label><input id="v-name"></div><div><label>الكود</label><input id="v-code"></div><div><label>الوظيفة</label><input id="v-job"></div><div><label>القسم</label><input id="v-dept" list="deptList"></div></div><label>وصف المخالفة</label><textarea id="v-desc"></textarea><label>الإجراء</label><input id="v-act" list="actList"><label>صورة</label><input type="file" id="v-img" accept="image/*"><button class="btn" onclick="addEmpViol()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="empViolTable"></div></div></div>
-<div id="sec-conViol" class="hidden"><div class="card"><h2>🏗️ مخالفات المقاولين</h2><div id="f-conViol"></div><label>اسم الشركة المخالفة</label><input id="c-comp" list="companyList"><label>وصف المخالفة</label><textarea id="c-desc"></textarea><div class="grid"><div><label>مبلغ المخالفة</label><input id="c-amount" type="number"></div><div><label>إجراء آخر</label><input id="c-act" list="cActList"></div></div><label>صورة</label><input type="file" id="c-img" accept="image/*"><button class="btn" onclick="addConViol()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="conViolTable"></div></div></div>
-<div id="sec-obs" class="hidden"><div class="card"><h2>📝 ملاحظات السلامة</h2><div id="f-obs"></div><div class="grid"><div><label>اسم الشخص</label><input id="ob-name"></div><div><label>الكود</label><input id="ob-code"></div><div><label>الوقت</label><input type="time" id="ob-time"></div><div><label>نوع الملاحظة</label><input id="ob-type"></div></div><label>وصف الملاحظة</label><textarea id="ob-desc"></textarea><label>الإجراء التصحيحي</label><textarea id="ob-corr"></textarea><label>صورة</label><input type="file" id="ob-img" accept="image/*"><label>الحالة</label><select id="ob-status"><option>مفتوحة</option><option>مغلقة</option></select><button class="btn" onclick="addObs()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="obsTable"></div></div></div>
-<div id="sec-near" class="hidden"><div class="card"><h2>⚡ حوادث وشيكة</h2><div id="f-near"></div><div class="grid"><div><label>اسم الشخص</label><input id="n-name"></div><div><label>الكود</label><input id="n-code"></div></div><label>وصف الحادث الوشيك</label><textarea id="n-desc"></textarea><label>السبب المباشر</label><textarea id="n-direct"></textarea><label>السبب الجذري</label><textarea id="n-root"></textarea><label>صور</label><input type="file" id="n-imgs" accept="image/*" multiple><button class="btn" onclick="addNear()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="nearTable"></div></div></div>
-<div id="sec-acc" class="hidden"><div class="card"><h2>🚨 الحوادث</h2><div id="f-acc"></div><div class="grid"><div><label>اسم الشخص</label><input id="a-name"></div><div><label>الكود</label><input id="a-code"></div></div><label>تصنيف الحادث</label><select id="a-class"><option>إسعاف أولي</option><option>حالة علاج طبي</option><option>حالة انقطاع عن العمل</option><option>حالة وفاة</option><option>حريق</option><option>اضرار ممتلكات</option><option>انقلاب معدات</option></select><label>وصف الحادث</label><textarea id="a-desc"></textarea><label>السبب المباشر</label><textarea id="a-direct"></textarea><label>السبب الجذري</label><textarea id="a-root"></textarea><label>الإجراء التصحيحي</label><textarea id="a-corr"></textarea><label>صور</label><input type="file" id="a-imgs" accept="image/*" multiple><button class="btn" onclick="addAcc()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="accTable"></div></div></div>
-</div>
-<datalist id="companyList"><option value="ROWAD"></datalist>
-<datalist id="deptList"><option value="كهرباء"><option value="مدني"><option value="ميكانيكا"><option value="سلامة"><option value="إداري"><option value="مخازن"></datalist>
-<datalist id="actList"><option value="إنذار شفوي"><option value="إنذار كتابي"><option value="خصم"><option value="إيقاف عن العمل"><option value="استبعاد"></datalist>
-<datalist id="cActList"><option value="إنذار"><option value="إنذار كتابي"><option value="إيقاف أعمال"><option value="خصم"><option value="استبعاد مقاول"></datalist>
-<datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
-<datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
 <script>
-// ===== غير ده بلينك جيت هاب بتاعك =====
+let SITE_URL = "https://mzainhse-bot.github.io/new-kairo-v2";
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbwvhMg0xWjYZ6C3b0Dc9U0YDRuJzur_PhGtzpsjZRtH33JGTdsDsEzgLaeDmBGAES6m/exec";
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[]}');
-if(!DB.train) DB.train=[]; if(!DB.weekly) DB.weekly=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
-function val(id){ return document.getElementById(id)?.value||''; }
-function show(sec){ document.querySelectorAll('[id^="sec-"]').forEach(d=>d.classList.add('hidden')); document.getElementById('sec-'+sec).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(event) event.target.classList.add('active'); render(); if(sec==='stats') renderStats(); if(sec==='companies') initCompanies(); }
-function getBase(id){ let el=document.getElementById(id); if(!el) return {date:new Date().toISOString().slice(0,10), place:'', reporter:'', reporterCompany:''}; return { date: el.querySelector('.b-date')?.value||new Date().toISOString().slice(0,10), place: el.querySelector('.b-place')?.value||'', reporter: el.querySelector('.b-reporter')?.value||'', reporterCompany: el.querySelector('.b-company')?.value||'' }; }
-function baseHTML(id){ return `<div class="grid"><div><label>التاريخ</label><input type="date" class="b-date" value="${new Date().toISOString().slice(0,10)}"></div><div><label>المكان</label><input class="b-place"></div><div><label>اسم معد التقرير</label><input class="b-reporter"></div><div><label>شركة معد التقرير</label><input class="b-company" list="companyList"></div></div>`; }
-['f-empViol','f-conViol','f-obs','f-near','f-acc','f-train','f-weekly'].forEach(id=>{ let e=document.getElementById(id); if(e) e.innerHTML=baseHTML(id); });
-function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
-function readFiles(id, cb){ let files=document.getElementById(id)?.files; if(!files || !files.length) return cb([]); let out=[]; let done=0; Array.from(files).forEach(f=>{ let r=new FileReader(); r.onload=e=>{ out.push(e.target.result); done++; if(done===files.length) cb(out); }; r.readAsDataURL(f); }); }
-function imgsHTML(item){ let arr=item.imgs || (item.img ? [item.img] : []); if(!arr.length) return '-'; return arr.length+' صورة'; }
-function workerByName(n){ return DB.workers.find(w=>w.name===n); }
-function addWorker(){ if(!val('w-name')) return alert('اكتب اسم العامل'); readFile('w-img', img=>{ let w={name:val('w-name'),code:val('w-code'),job:val('w-job'),company:val('w-company'),dept:val('w-dept'),hire:val('w-hire'),exp:val('w-exp'),phone:val('w-phone'),emergency:val('w-emergency'),kin:val('w-kin'),health:val('w-health'),status:val('w-status'),img}; DB.workers.push(w); DB.cards.push({...w}); DB.train.push({date:w.hire,place:w.company||'',reporter:'تسجيل موظف',reporterCompany:w.company||'',comp:w.company||'',title:'محاضرة توعية - تسجيل موظف: '+w.name,count:1,trainer:'HSE',type:'aware',hoursPer:0.25,totalHours:0.25,img:''}); save(); render(); alert('✅ تم الحفظ'); }); }
-function addEmpViol(){ let b=getBase('f-empViol'); let act=val('v-act'); readFile('v-img', img=>{ DB.empViol.push({...b,name:val('v-name'),code:val('v-code'),job:val('v-job'),dept:val('v-dept'),desc:val('v-desc'),act,img}); save(); render(); alert('✅ تم حفظ مخالفة الموظف'); }); }
-function addConViol(){ let b=getBase('f-conViol'); readFile('c-img', img=>{ DB.conViol.push({...b,comp:val('c-comp'),desc:val('c-desc'),amount:val('c-amount'),act:val('c-act'),img}); save(); render(); alert('✅ تم حفظ مخالفة المقاول'); }); }
-function addObs(){ let b=getBase('f-obs'); readFile('ob-img', img=>{ DB.obs.push({...b,name:val('ob-name'),code:val('ob-code'),time:val('ob-time'),desc:val('ob-desc'),type:val('ob-type'),corr:val('ob-corr'),status:val('ob-status'),img}); save(); render(); }); }
-function addNear(){ let b=getBase('f-near'); readFiles('n-imgs', imgs=>{ DB.near.push({...b,name:val('n-name'),code:val('n-code'),desc:val('n-desc'),direct:val('n-direct'),root:val('n-root'),imgs,img:imgs[0]||''}); save(); render(); alert('✅ تم حفظ الحادث الوشيك'); }); }
-function addAcc(){ let b=getBase('f-acc'); readFiles('a-imgs', imgs=>{ DB.acc.push({...b,name:val('a-name'),code:val('a-code'),class:val('a-class'),desc:val('a-desc'),direct:val('a-direct'),root:val('a-root'),corr:val('a-corr'),imgs,img:imgs[0]||''}); save(); render(); alert('✅ تم حفظ الحادث'); }); }
-function addTrain(){ let b=getBase('f-train'); readFile('t-img', img=>{ let count=parseInt(val('t-count')||0); let per=parseFloat(val('t-hours')||3); DB.train.push({...b,comp:val('t-comp'),place2:val('t-place'),title:val('t-title'),count,trainer:val('t-trainer'),type:'train',hoursPer:per,totalHours:count*per,img}); save(); render(); alert('✅ تم حفظ التدريب'); }); }
-function addWeekly(){ let b=getBase('f-weekly'); readFile('wk-img', img=>{ let count=parseInt(val('wk-count')||0); DB.weekly.push({...b,comp:val('wk-comp'),place2:val('wk-place'),title:val('wk-title'),count,trainer:val('wk-trainer'),hoursPer:0.5,totalHours:count*0.5,img}); save(); render(); alert('✅ تم حفظ المحاضرة'); }); }
-let cardFilter='all';
-function filterCard(f){ cardFilter=f; render(); }
-function changeStatus(code,s){ let w=DB.workers.find(x=>x.code===code); if(w) w.status=s; let c=DB.cards.find(x=>x.code===code); if(c) c.status=s; save(); render(); }
-function statusClass(s){ if(s==='نشط') return 'status-active'; if(s==='استقال') return 'status-resign'; return 'status-excluded'; }
-// QR = لينك لصفحة التحقق
-function makeQR(el, c){
-  el.innerHTML="";
-  new QRCode(el, { text: SITE_URL + "/?verify=" + encodeURIComponent(c.code), width:90, height:90, colorDark:"#000000", colorLight:"#ffffff", correctLevel: QRCode.CorrectLevel.M });
-}
-function exportCard(index){ setTimeout(()=>{ let el=document.querySelectorAll('.idcard-wrap')[index]; if(!el) return; html2canvas(el,{scale:2,useCORS:true}).then(canvas=>{ let a=document.createElement('a'); a.download=`ROWAD-ID-${DB.cards[index]?.code||index}.png`; a.href=canvas.toDataURL('image/png'); a.click(); }); },300); }
-function exportAllCards(){ let els=document.querySelectorAll('.idcard-wrap'); els.forEach((el,i)=>setTimeout(()=>exportCard(i), i*700)); }
-function exportBackup(){ let blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`ROWAD-Backup-${new Date().toISOString().slice(0,10)}.json`; a.click(); }
-function importBackup(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ try{ DB=JSON.parse(ev.target.result); save(); render(); alert('✅ رجعت الداتا'); }catch(err){ alert('❌ الملف مش مظبوط'); } }; r.readAsText(f); }
+let workers = JSON.parse(localStorage.getItem('workers') || '[]');
 
-// ===== ملف العامل - بيجمع كل حاجة تحت مسماها =====
-function workerProfileHTML(w){
-  if(!w) return '<p>العامل مش موجود</p>';
-  let tr = DB.train.filter(x=> (x.title||'').includes(w.name));
-  let wk = DB.weekly.filter(x=> (x.title||'').includes(w.name));
-  let ev = DB.empViol.filter(x=>x.name===w.name);
-  let ac = DB.acc.filter(x=>x.name===w.name);
-  let ne = DB.near.filter(x=>x.name===w.name);
-  let ob = DB.obs.filter(x=>x.name===w.name);
-  let list = (arr, empty, fn) => arr.length ? arr.map(fn).join('') : `<li>${empty}</li>`;
-  let totalHours = tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0) + wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0);
-  return `<div class="profile-box">
-    <h3>👷 ${w.name} - كود ${w.code}</h3>
-    <p><b>الوظيفة:</b> ${w.job||'-'} | <b>الشركة:</b> ${w.company||'-'} | <b>القسم:</b> ${w.dept||'-'} | <b>الحالة:</b> ${w.status||'نشط'} | <b>التليفون:</b> ${w.phone||'-'}</p>
-    <div class="kpi-grid"><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات</small><b>${totalHours.toFixed(2)}</b></div><div class="kpi"><small>⚠️ مخالفات</small><b>${ev.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div>
-    <h4>🎓 التدريبات</h4><ul>${list(tr,'لا توجد تدريبات', x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`)}</ul>
-    <h4>📅 المحاضرات الأسبوعية</h4><ul>${list(wk,'لا توجد محاضرات', x=>`<li>${x.date} - ${x.title}</li>`)}</ul>
-    <h4>⚠️ مخالفات الموظفين</h4><ul>${list(ev,'لا توجد مخالفات ✅', x=>`<li>${x.date} - ${x.desc} - ${x.act}</li>`)}</ul>
-    <h4>🚨 الحوادث</h4><ul>${list(ac,'لا توجد حوادث ✅', x=>`<li>${x.date} - ${x.class} - ${x.desc}</li>`)}</ul>
-    <h4>⚡ حوادث وشيكة</h4><ul>${list(ne,'لا توجد حوادث وشيكة ✅', x=>`<li>${x.date} - ${x.desc}</li>`)}</ul>
-    <h4>📝 ملاحظات السلامة</h4><ul>${list(ob,'لا توجد ملاحظات', x=>`<li>${x.date} - ${x.desc} - ${x.status}</li>`)}</ul>
-    <h4>🏆 التكريم</h4><ul><li>لسه مفيش تكريم مسجل</li></ul>
-  </div>`;
+function getStatus(expiry){
+  if(!expiry) return 'ساري';
+  let today = new Date(); today.setHours(0,0,0,0);
+  let d = new Date(expiry);
+  let diff = Math.ceil((d - today)/(1000*60*60*24));
+  if(diff < 0) return 'منتهي';
+  if(diff <= 30) return 'قرب ينتهي';
+  return 'ساري';
 }
-function showVerify(code){
-  show('verify');
-  document.getElementById('verifyInput').value = code||'';
-  let w = DB.workers.find(x=>x.code===String(code)) || DB.workers.find(x=>x.name===code);
-  if(!w){ document.getElementById('verifyBox').innerHTML = `<div class="profile-box"><h3 style="color:red;">❌ الكود ${code} مش موجود</h3><p>ممكن يكون الكود اتسجل في جهاز تاني، اعمل استيراد للنسخة الاحتياطية</p></div>`; return; }
-  document.getElementById('verifyBox').innerHTML = workerProfileHTML(w);
+
+async function loadFromSheet(){
+  document.getElementById('msg').innerText = "جاري التحميل من الشيت...";
+  try{
+    let res = await fetch(SHEET_URL);
+    let data = await res.json();
+    if(data && data.length > 0){
+      // شيل الصفوف الفاضية
+      workers = data.filter(x => x.name || x.id);
+      localStorage.setItem('workers', JSON.stringify(workers));
+    }
+    document.getElementById('msg').innerText = "✅ تم التحديث من الشيت";
+  }catch(e){
+    document.getElementById('msg').innerText = "شغال من الذاكرة المحلية";
+  }
+  renderTable();
 }
-function searchWorker(){
-  let q = val('searchInput').trim().toLowerCase();
-  let box = document.getElementById('searchBox');
-  let res = document.getElementById('searchResults');
-  if(!q){ box.innerHTML=''; res.innerHTML=''; return; }
-  let found = DB.workers.filter(w=> (w.name||'').toLowerCase().includes(q) || (w.code||'').toLowerCase().includes(q));
-  res.innerHTML = found.map(w=>`<button class="btn2" onclick="document.getElementById('searchBox').innerHTML=workerProfileHTML(DB.workers.find(x=>x.code==='${w.code}'))">${w.name} - ${w.code}</button>`).join('') || '<span>مفيش نتائج</span>';
-  if(found.length===1) box.innerHTML = workerProfileHTML(found[0]);
+
+async function saveToSheet(w){
+  try{
+    await fetch(SHEET_URL, {method:'POST', body: JSON.stringify(w)});
+  }catch(e){}
 }
-function initCompanies(){
-  let comps = [...new Set(DB.workers.map(w=>w.company).filter(Boolean))];
-  let sel = document.getElementById('compSelect');
-  sel.innerHTML = comps.map(c=>`<option value="${c}">${c}</option>`).join('') || '<option>مفيش شركات</option>';
-  renderCompany();
+
+function addWorker(){
+  let w = {
+    id: document.getElementById('id').value.trim(),
+    name: document.getElementById('name').value.trim(),
+    nationalId: document.getElementById('nationalId').value.trim(),
+    job: document.getElementById('job').value.trim(),
+    company: document.getElementById('company').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    safetyExpiry: document.getElementById('safetyExpiry').value,
+    status: document.getElementById('status').value
+  };
+  if(!w.name || !w.id){ alert("اكتب الكود والاسم على الأقل"); return; }
+  w.status = getStatus(w.safetyExpiry);
+  workers.push(w);
+  localStorage.setItem('workers', JSON.stringify(workers));
+  saveToSheet(w);
+  renderTable();
+  document.getElementById('msg').innerText = "✅ تم حفظ " + w.name + " في الشيت";
+  ['id','name','nationalId','job','company','phone','safetyExpiry'].forEach(i=>document.getElementById(i).value='');
 }
-function renderCompany(){
-  let comp = val('compSelect');
-  let box = document.getElementById('companyBox');
-  if(!comp){ box.innerHTML=''; return; }
-  let workers = DB.workers.filter(w=>w.company===comp);
-  let tr = DB.train.filter(x=>x.comp===comp);
-  let wk = DB.weekly.filter(x=>x.comp===comp);
-  let ev = DB.empViol.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let ac = DB.acc.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let ne = DB.near.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let cv = DB.conViol.filter(x=>x.comp===comp);
-  let totalHours = tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0) + wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0);
-  box.innerHTML = `<div class="profile-box">
-    <h3>🏢 تقرير شركة: ${comp}</h3>
-    <div class="kpi-grid"><div class="kpi"><small>👷 عمال</small><b>${workers.length}</b></div><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات تدريب</small><b>${totalHours.toFixed(1)}</b></div><div class="kpi"><small>⚠️ مخالفات موظفين</small><b>${ev.length}</b></div><div class="kpi"><small>🏗️ مخالفات مقاولين</small><b>${cv.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div>
-    <h4>👷 العمال (${workers.length})</h4><ul>${workers.map(w=>`<li>${w.name} - ${w.code} - ${w.job} - ${w.status}</li>`).join('')||'<li>مفيش</li>'}</ul>
-    <h4>🎓 التدريبات</h4><ul>${tr.map(x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`).join('')||'<li>مفيش</li>'}</ul>
-    <h4>⚠️ مخالفات الموظفين</h4><ul>${ev.map(x=>`<li>${x.date} - ${x.name} - ${x.desc} - ${x.act}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <h4>🏗️ مخالفات المقاولين</h4><ul>${cv.map(x=>`<li>${x.date} - ${x.desc} - ${x.amount||''} - ${x.act}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <h4>🚨 الحوادث</h4><ul>${ac.map(x=>`<li>${x.date} - ${x.name} - ${x.class}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <button class="btn2" onclick="window.print()">🖨️ طباعة تقرير الشركة</button>
-  </div>`;
+
+function delWorker(i){
+  if(!confirm("متأكد تحذف؟")) return;
+  workers.splice(i,1);
+  localStorage.setItem('workers', JSON.stringify(workers));
+  renderTable();
 }
-function renderStats(){ let totalH=DB.train.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0)+DB.weekly.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0); document.getElementById('statsReport').innerHTML=`<div class="kpi-grid"><div class="kpi"><small>عمال</small><b>${DB.workers.length}</b></div><div class="kpi"><small>تدريبات</small><b>${DB.train.length}</b></div><div class="kpi"><small>أسبوعية</small><b>${DB.weekly.length}</b></div><div class="kpi"><small>ساعات</small><b>${totalH.toFixed(1)}</b></div><div class="kpi"><small>حوادث</small><b>${DB.acc.length}</b></div><div class="kpi"><small>وشيكة</small><b>${DB.near.length}</b></div></div>`; }
-function table(heads, rows){ if(!rows.length) return '<p style="color:#999; text-align:center;">لا توجد بيانات بعد</p>'; return '<table><tr>'+heads.map(x=>`<th>${x}</th>`).join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(c=>`<td>${c}</td>`).join('')+'</tr>').join('')+'</table>'; }
-function render(){ document.getElementById('statsMini').innerHTML=`<span class="badge">عمال: ${DB.workers.length}</span><span class="badge">تدريبات: ${DB.train.length}</span><span class="badge">حوادث: ${DB.acc.length}</span>`; let wt=document.getElementById('workersTable'); if(wt) wt.innerHTML=table(['الاسم','الكود','الوظيفة','الشركة','تاريخ التعيين','الحالة'], DB.workers.map(w=>[w.name,w.code,w.job,w.company||'-',w.hire||'-',w.status||'نشط'])); let list=DB.cards.filter(c=> cardFilter==='all' || c.status===cardFilter); let cl=document.getElementById('cardsList'); if(cl) cl.innerHTML=list.map((c,i)=>`<div class="idcard-wrap"><div class="idcard-h"><div class="top"><b>ROWAD</b><span>SAFETY ID CARD</span><span class="status ${statusClass(c.status||'نشط')}">${c.status||'نشط'}</span></div><div class="body">${c.photo?`<img src="${c.photo}" class="photo">`:'<div class="photo" style="display:flex;align-items:center;justify-content:center;font-size:40px;">👷</div>'}<div class="info"><div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 14px;"><div><b>الاسم:</b> ${c.name}</div><div><b>الكود:</b> ${c.code}</div><div><b>الوظيفة:</b> ${c.job}</div><div><b>القسم:</b> ${c.dept||'-'}</div><div><b>الشركة:</b> ${c.company||'-'}</div><div><b>تاريخ التعيين:</b> ${c.hire||'-'}</div><div><b>التليفون:</b> ${c.phone||'-'}</div><div><b>الحالة الصحية:</b> ${c.health||'-'}</div><div><b>رقم الطوارئ:</b> ${c.emergency||'-'}</div><div><b>صلة القرابة:</b> ${c.kin||'-'}</div></div><div style="margin-top:6px;"><b>الحالة:</b> <span class="status ${statusClass(c.status||'نشط')}">${c.status||'نشط'}</span></div></div></div><div class="qr-box"><div class="qr-holder" data-code="${c.code}" style="width:90px; height:90px; background:#fff; padding:2px; border:1px solid #ddd; border-radius:6px;"></div><div style="font-size:12px; text-align:right;"><b>ROWAD - ${c.code}</b><br>${c.name}<br><span style="color:#666;">امسح الكود لعرض ملف العامل</span></div><div class="no-print card-actions" style="margin-right:auto; display:flex; gap:6px;"><button class="btn2" onclick="exportCard(${i})">📸 تصدير كصورة</button><button class="btn2" onclick="window.print()">🖨️ طباعة</button></div></div></div><div class="idcard-back"><div class="back-top"><b>ROWAD</b><span style="color:#fff; font-size:13px;">تعليمات السلامة</span></div><div class="back-body"><h3>⚠️ تعليمات السلامة - يجب الالتزام بها</h3><ol><li>الالتزام الكامل بمهمات الوقاية الشخصية طوال وقت العمل</li><li>ممنوع العمل بدون تصريح عمل ساري</li><li>الإبلاغ فوراً عن أي حادث أو حادث وشيك أو خطر</li><li>ممنوع التدخين إلا في الأماكن المخصصة لذلك</li><li>الكارنيه شخصي ولا يجوز إعطاؤه لأي شخص آخر</li><li>عند فقدان الكارنيه إبلاغ قسم السلامة فوراً</li><li>ممنوع تشغيل أي معدة بدون تدريب وتصريح</li><li>حافظ على نظافة مكان عملك وممرات الطوارئ</li></ol></div><div class="back-footer">في حالة الطوارئ اتصل فوراً بقسم السلامة | ROWAD - Safety Department</div></div></div>`).join('')||'<p style="text-align:center; color:#999;">لسه مفيش كارنيهات</p>'; document.querySelectorAll('.qr-holder').forEach(el=>{ let c=DB.cards.find(x=>x.code===el.dataset.code); if(c) makeQR(el,c); }); let t=document.getElementById('trainTable'); if(t) t.innerHTML=table(['التاريخ','الشركة','العنوان','النوع','الحضور','الساعات'], DB.train.map(x=>[x.date,x.comp,x.title,x.type==='train'?'تدريب':'توعية',x.count,x.totalHours])); let w=document.getElementById('weeklyTable'); if(w) w.innerHTML=table(['التاريخ','الشركة','العنوان','الحضور','الساعات'], DB.weekly.map(x=>[x.date,x.comp,x.title,x.count,x.totalHours])); let e=document.getElementById('empViolTable'); if(e) e.innerHTML=table(['التاريخ','العامل','المخالفة','الإجراء'], DB.empViol.map(x=>[x.date,x.name,x.desc,x.act])); let co=document.getElementById('conViolTable'); if(co) co.innerHTML=table(['التاريخ','الشركة','المخالفة','الإجراء','المبلغ'], DB.conViol.map(x=>[x.date,x.comp,x.desc,x.act,x.amount])); let o=document.getElementById('obsTable'); if(o) o.innerHTML=table(['التاريخ','الشخص','النوع','الحالة'], DB.obs.map(x=>[x.date,x.name,x.type,x.status])); let n=document.getElementById('nearTable'); if(n) n.innerHTML=table(['التاريخ','الشخص','الوصف'], DB.near.map(x=>[x.date,x.name,x.desc])); let a=document.getElementById('accTable'); if(a) a.innerHTML=table(['التاريخ','الشخص','التصنيف'], DB.acc.map(x=>[x.date,x.name,x.class])); }
-function uploadLogo(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ localStorage.setItem('siteLogo',ev.target.result); showLogo(); }; r.readAsDataURL(f); }
-function showLogo(){ let l=localStorage.getItem('siteLogo'); let img=document.getElementById('siteLogo'); if(l){ img.src=l; img.style.display='block'; } }
-showLogo();
-window.addEventListener('load', ()=>{
-  let p = new URLSearchParams(location.search);
-  if(p.get('verify')){ setTimeout(()=>showVerify(p.get('verify')), 300); }
-});
-render(); renderStats();
+
+function renderTable(){
+  let q = (document.getElementById('search').value || '').toLowerCase();
+  let list = workers.filter(w => (w.name+w.id+w.company+w.job).toLowerCase().includes(q));
+  document.getElementById('count').innerText = "إجمالي العمال: " + workers.length + " | المعروض: " + list.length;
+  let html = "";
+  list.forEach((w, idx) => {
+    let realIdx = workers.indexOf(w);
+    let st = getStatus(w.safetyExpiry);
+    let cls = st==='ساري' ? 'ok' : (st==='منتهي' ? 'exp' : 'soon');
+    html += `<tr><td>${w.id||''}</td><td><b>${w.name||''}</b><br><small>${w.nationalId||''}</small></td><td>${w.job||''}</td><td>${w.company||''}</td><td><a href="tel:${w.phone}">${w.phone||''}</a></td><td>${w.safetyExpiry||''}</td><td><span class="badge ${cls}">${st}</span></td><td><button class="btn2" onclick="delWorker(${realIdx})">🗑️</button></td></tr>`;
+  });
+  document.getElementById('tbody').innerHTML = html || '<tr><td colspan="8" style="text-align:center">لسه مفيش عمال، ضيف أول عامل</td></tr>';
+}
+
+renderTable();
+loadFromSheet();
 </script>
 </body>
 </html>
