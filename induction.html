@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المحاضرة الأولية - تسجيل موظف جديد - ROWAD</title>
+<style>
+*{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial;}
+body{ margin:0; background:#F4F6F9; color:#0A1F44; }
+header{ background:#0A1F44; color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
+header h1{ margin:0; font-size:21px; }
+header h1 span{ color:#D32F2F; }
+header small{ color:#B0BEC5; }
+header a{ background:#fff; color:#0A1F44; text-decoration:none; padding:8px 14px; border-radius:20px; font-weight:bold; font-size:13px; }
+.container{ max-width:1000px; margin:auto; padding:16px; }
+.card{ background:#fff; border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:0 2px 12px rgba(10,31,68,.08); border-top:4px solid #0A1F44; }
+.card.red{ border-top-color:#D32F2F; }
+.card h2{ margin:0 0 4px; font-size:19px; }
+.card p.sub{ margin:0 0 14px; color:#78909C; font-size:13px; }
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:700px){ .grid{ grid-template-columns:1fr; } }
+label{ display:block; font-size:13px; font-weight:bold; margin:10px 0 5px; }
+input,select,textarea{ width:100%; padding:11px; border:1.5px solid #CFD8DC; border-radius:10px; font-size:14px; background:#fff; color:#0A1F44; outline:none; }
+input:focus,select:focus{ border-color:#0A1F44; }
+textarea{ min-height:60px; }
+.btn{ width:100%; background:#0A1F44; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:bold; font-size:16px; cursor:pointer; margin-top:14px; }
+.btn.red{ background:#D32F2F; }
+.btn2{ background:#ECEFF1; color:#0A1F44; border:1px solid #CFD8DC; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+@media(max-width:700px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
+.kpi{ background:#fff; border-radius:12px; padding:14px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.06); border-bottom:3px solid #0A1F44; }
+.kpi.red{ border-bottom-color:#D32F2F; }
+.kpi b{ font-size:24px; display:block; color:#0A1F44; }
+.kpi small{ color:#78909C; font-size:12px; }
+table{ width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+table th{ background:#0A1F44; color:#fff; padding:9px; }
+table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
+.badge{ background:#E3F2FD; color:#0A1F44; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold; }
+.badge.red{ background:#FFEBEE; color:#D32F2F; }
+.badge.green{ background:#E8F5E9; color:#2E7D32; }
+.note-box{ background:#FFF3E0; border:1px solid #FFB300; border-radius:10px; padding:10px 12px; font-size:13px; margin-top:8px; display:none; }
+.note-box b{ color:#D32F2F; }
+.photo-preview{ width:90px; height:110px; object-fit:cover; border-radius:10px; border:2px solid #0A1F44; display:none; margin-top:8px; }
+.nav{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.nav a{ background:#fff; color:#0A1F44; text-decoration:none; padding:9px 14px; border-radius:20px; border:1px solid #CFD8DC; font-size:13px; font-weight:bold; }
+.nav a.active{ background:#0A1F44; color:#fff; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>ROWAD <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
+  <a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+  <div class="nav">
+    <a href="induction.html" class="active">📘 المحاضرة الأولية</a>
+    <a href="workers.html">👷 الموظفين</a>
+    <a href="train.html">🎓 التدريبات</a>
+    <a href="weekly.html">📅 أسبوعية</a>
+    <a href="stats.html">📈 الإحصائيات</a>
+  </div>
+
+  <!-- الإحصائيات فوق أوتوماتيك -->
+  <div class="kpi-grid">
+    <div class="kpi"><b id="k-total">0</b><small>إجمالي الحضور - عدد</small></div>
+    <div class="kpi"><b id="k-hours">0.00</b><small>إجمالي الساعات (الحضور × 0.25)</small></div>
+    <div class="kpi red"><b id="k-rehab">0</b><small>عدد إعادة التأهيل</small></div>
+    <div class="kpi red"><b id="k-today">0</b><small>حضور اليوم</small></div>
+  </div>
+
+  <div class="card">
+    <h2>📘 تسجيل موظف جديد - محاضرة أولية</h2>
+    <p class="sub">الكود أوتوماتيك، ولو الشركة بتدي أكواد لموظفيها تقدر تعدله يدوي. الرقم القومي لو اتكرر هيتكتب أوتوماتيك إعادة تأهيل.</p>
+    <div class="grid">
+      <div><label>الكود - أوتوماتيك / قابل للتعديل</label><input id="f-code" type="number" placeholder="هيتولد أوتوماتيك"></div>
+      <div><label>الرقم القومي *</label><input id="f-national" placeholder="14 رقم" maxlength="14" inputmode="numeric" oninput="checkNational()"></div>
+      <div><label>الاسم بالكامل *</label><input id="f-name" placeholder="الاسم بالكامل"></div>
+      <div><label>المهنة</label><input id="f-job" list="jobList" placeholder="المهنة"></div>
+      <div><label>الشركة</label><input id="f-company" list="companyList" placeholder="الشركة"></div>
+      <div><label>التاريخ</label><input type="date" id="f-date"></div>
+      <div><label>الحالة الصحية</label><input id="f-health" list="healthList" placeholder="الحالة الصحية"></div>
+      <div><label>رقم الهاتف</label><input id="f-phone" placeholder="01xxxxxxxxx"></div>
+      <div><label>رقم طوارئ</label><input id="f-emergency" placeholder="رقم الطوارئ"></div>
+      <div><label>صلة القرابة</label><input id="f-kin" list="kinList" placeholder="صلة القرابة"></div>
+      <div><label>الحالة</label><select id="f-status"><option value="نشط">✅ نشط - الأساسي</option><option value="استقال">⚠️ استقال</option><option value="استبعاد">⛔ استبعاد</option></select></div>
+      <div><label>صورة الموظف</label><input type="file" id="f-img" accept="image/*" onchange="previewPhoto(event)"><img id="photoPrev" class="photo-preview"></div>
+    </div>
+    <label>ملاحظات</label>
+    <textarea id="f-notes" placeholder="ملاحظات... لو الرقم القومي اتكرر هيتكتب هنا أوتوماتيك: إعادة تأهيل"></textarea>
+    <div id="rehabAlert" class="note-box">⚠️ <b>تنبيه:</b> الرقم القومي ده متسجل قبل كده باسم <b id="rehabName"></b>، هيتسجل في الملاحظات: <b>إعادة تأهيل</b> وهيتحسب في إحصائيات إعادة التأهيل.</div>
+    <button class="btn" onclick="saveInductionWorker()">💾 حفظ الموظف + المحاضرة الأولية (0.25 ساعة)</button>
+  </div>
+
+  <div class="card red">
+    <h2>📋 سجل المحاضرة الأولية - آخر المسجلين</h2>
+    <input id="searchInd" placeholder="ابحث بالاسم أو الكود أو الرقم القومي أو الشركة..." oninput="renderInd()" style="margin-bottom:8px;">
+    <div id="indTable"></div>
+  </div>
+</div>
+
+<datalist id="companyList"><option value="ROWAD"></datalist>
+<datalist id="jobList"><option value="عامل"><option value="كهربائي"><option value="سباك"><option value="نجار"><option value="حداد"><option value="مشرف"><option value="مهندس"><option value="سائق"></datalist>
+<datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
+<datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
+
+<script>
+let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[],"induction":[]}');
+if(!DB.induction) DB.induction=[];
+if(!DB.train) DB.train=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v; }
+document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+
+function nextCode(){
+  let max=1000;
+  (DB.workers||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
+  return max+1;
+}
+function refreshCode(){ if(!val('f-code')) setVal('f-code', nextCode()); }
+refreshCode();
+
+function previewPhoto(e){
+  let f=e.target.files[0]; if(!f) return;
+  let r=new FileReader(); r.onload=ev=>{ let img=document.getElementById('photoPrev'); img.src=ev.target.result; img.style.display='block'; }; r.readAsDataURL(f);
+}
+function checkNational(){
+  let nat=val('f-national');
+  let box=document.getElementById('rehabAlert');
+  if(nat.length<14){ box.style.display='none'; return null; }
+  let old=(DB.workers||[]).find(w=>String(w.nationalId)===nat);
+  if(old){
+    box.style.display='block';
+    document.getElementById('rehabName').innerText=old.name+' - كود '+old.code;
+    let notes=val('f-notes');
+    if(!notes.includes('إعادة تأهيل')) setVal('f-notes', (notes?notes+' - ':'')+'إعادة تأهيل');
+    return old;
+  } else { box.style.display='none'; return null; }
+}
+function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
+
+function saveInductionWorker(){
+  if(!val('f-name')) return alert('اكتب الاسم بالكامل');
+  if(!val('f-national')) return alert('اكتب الرقم القومي');
+  if(val('f-national').length!==14) return alert('الرقم القومي لازم يكون 14 رقم');
+  let code = val('f-code') || String(nextCode());
+  // لو الكود متكرر، ننبه
+  let codeExists=(DB.workers||[]).find(w=>String(w.code)===String(code));
+  if(codeExists && !confirm('الكود '+code+' متسجل قبل كده باسم '+codeExists.name+'، تكمل بنفس الكود؟')) return;
+
+  let old = checkNational();
+  let isRehab = !!old;
+  let notes = val('f-notes');
+  if(isRehab && !notes.includes('إعادة تأهيل')) notes = (notes?notes+' - ':'')+'إعادة تأهيل';
+
+  readFile('f-img', img=>{
+    let w={
+      name:val('f-name'), code:String(code), nationalId:val('f-national'),
+      job:val('f-job'), company:val('f-company'),
+      hire:val('f-date'), date:val('f-date'), exp:'',
+      health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'),
+      kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img,
+      dept:'', photo:img
+    };
+    DB.workers.push(w);
+    DB.cards.push({...w});
+    let rec={...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'محاضرة أولية - '+w.name};
+    DB.induction.push(rec);
+    DB.train.push({...rec});
+    save();
+    // إرسال للشيت بنفس الترتيب الجديد
+    try{
+      let params=new URLSearchParams({action:'add', name:w.name, id:w.code, job:w.job, company:w.company, department:'', hireDate:w.hire, phone:w.phone, emergencyPhone:w.emergency, relation:w.kin, health:w.health, status:w.status, expiry:'', photo:'', nationalId:w.nationalId, notes:w.notes});
+      fetch(SHEET_URL+'?'+params.toString());
+    }catch(e){}
+    renderInd();
+    alert('✅ تم حفظ '+w.name+' - محاضرة أولية 0.25 ساعة' + (isRehab?' - إعادة تأهيل':''));
+    // تجهيز للي بعده
+    setVal('f-name',''); setVal('f-national',''); setVal('f-job',''); setVal('f-phone',''); setVal('f-emergency',''); setVal('f-notes',''); setVal('f-code', nextCode());
+    document.getElementById('photoPrev').style.display='none';
+    document.getElementById('rehabAlert').style.display='none';
+    document.getElementById('f-img').value='';
+  });
+}
+
+function renderInd(){
+  let q=(document.getElementById('searchInd').value||'').toLowerCase();
+  let list=(DB.induction||[]).filter(x=>(x.name+x.code+x.nationalId+x.company).toLowerCase().includes(q));
+  let total=(DB.induction||[]).length;
+  let hours=total*0.25;
+  let rehab=(DB.induction||[]).filter(x=>x.isRehab || (x.notes||'').includes('إعادة تأهيل')).length;
+  let today=new Date().toISOString().slice(0,10);
+  document.getElementById('k-total').innerText=total;
+  document.getElementById('k-hours').innerText=hours.toFixed(2);
+  document.getElementById('k-rehab').innerText=rehab;
+  document.getElementById('k-today').innerText=(DB.induction||[]).filter(x=>x.date===today).length;
+  if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#999;">لسه مفيش مسجلين</p>'; return; }
+  document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td>${x.date||'-'}</td><td><span class="badge ${x.status==='نشط'?'green':x.status==='استقال'?'':'red'}">${x.status}</span></td><td>${x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-')}</td></tr>`).join('')+'</table>';
+}
+renderInd();
+</script>
+</body>
+</html>
