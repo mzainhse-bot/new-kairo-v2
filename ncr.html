@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حالات عدم المطابقة - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#FF9800;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.orange{border-top-color:#FF9800;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:70px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:20px;display:block;line-height:1.2;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
+.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.user-bar input{width:auto;flex:1;min-width:180px;}
+.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
+.badge.open{background:#FFF3E0;color:#E65100;}
+.badge.closed{background:#E8F5E9;color:#2E7D32;}
+.badge.simple{background:#E3F2FD;color:#1565C0;}
+.badge.critical{background:#FFEBEE;color:#D32F2F;}
+.bar{height:18px;background:#ECEFF1;border-radius:20px;overflow:hidden;margin:6px 0;}
+.bar-fill{height:100%;background:#2E7D32;transition:width .3s;}
+.bar-fill.open{background:#FF9800;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> حالات عدم المطابقة</h1><small>NCR - Non Conformity Report</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
+<a href="accidents.html">🚑 الحوادث</a>
+<a href="scaffolds.html">🏗️ فحص السقالات</a>
+<a href="employee-file.html">📁 ملفات الموظفين</a>
+<a href="ncr.html" class="active">📄 حالات عدم المطابقة</a>
+</div>
+
+<div class="user-bar">
+<span style="font-weight:bold;">🦺 اسم معد التقرير:</span>
+<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ncr-reporter').value=this.value;">
+<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل تقرير</span>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi"><b id="k-total">0</b><small>إجمالي عدد حالات عدم المطابقة</small></div>
+<div class="kpi green"><b id="k-close-p">0%</b><small>نسبة الغلق</small></div>
+<div class="kpi orange"><b id="k-open">0</b><small>عدد الحالات المفتوحة</small></div>
+<div class="kpi red"><b id="k-critical">0</b><small>عدد الحالات الحرجة</small></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">📊 رسم بياني - نسبة الغلق</h3>
+<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+<canvas id="chart" width="160" height="160" style="flex-shrink:0;"></canvas>
+<div style="flex:1;min-width:220px;">
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟢 تم الغلق: <b id="leg-closed">0</b></span><span id="leg-closed-p">0%</span></div>
+<div class="bar"><div class="bar-fill" id="bar-closed" style="width:0%"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟠 مفتوح: <b id="leg-open">0</b></span><span id="leg-open-p">0%</span></div>
+<div class="bar"><div class="bar-fill open" id="bar-open" style="width:0%"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🔴 حرج: <b id="leg-crit">0</b></span><span>🔵 بسيط: <b id="leg-simple">0</b></span></div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">🏆 ترتيب الشركات</h3>
+<div class="grid">
+<div style="background:#FFF3E0;padding:14px;border-radius:12px;text-align:center;">
+<small style="color:#78909C;">🏢 الشركة صاحبة أعلى عدد تقارير عدم مطابقة</small><br>
+<b id="top-count-name" style="font-size:18px;">-</b><br>
+<span id="top-count-detail" style="font-size:13px;color:#E65100;">0 تقرير - 0 مغلق - 0 مفتوح</span>
+</div>
+<div style="background:#E8F5E9;padding:14px;border-radius:12px;text-align:center;">
+<small style="color:#78909C;">✅ الشركة صاحبة أعلى نسبة غلق</small><br>
+<b id="top-close-name" style="font-size:18px;">-</b><br>
+<span id="top-close-detail" style="font-size:13px;color:#2E7D32;">0% غلق - إجمالي 0 تقرير</span>
+</div>
+<div style="background:#FFEBEE;padding:14px;border-radius:12px;text-align:center;">
+<small style="color:#78909C;">⚠️ الشركة صاحبة أعلى نسبة تقارير مفتوحة</small><br>
+<b id="top-open-name" style="font-size:18px;">-</b><br>
+<span id="top-open-detail" style="font-size:13px;color:#D32F2F;">0% مفتوح - إجمالي 0 تقرير</span>
+</div>
+</div>
+<div id="compTable"></div>
+</div>
+
+<div class="card orange">
+<h2 style="margin:0 0 5px;">📄 تسجيل حالة عدم مطابقة جديدة</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">الحالة الافتراضية مفتوح، وتاريخ الغلق بيتسجل لما تقفل الحالة</p>
+<div class="grid">
+<div><label>🏢 اسم الشركة *</label><input id="ncr-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>📅 التاريخ *</label><input type="date" id="ncr-date"></div>
+<div><label>📌 تصنيف الحالة *</label><select id="ncr-class"><option value="">-- اختار التصنيف --</option><option>بسيط</option><option>حرج</option></select></div>
+<div><label>🦺 اسم معد التقرير - أوتوماتيك</label><input id="ncr-reporter" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
+<div><label>📋 الحالة *</label><select id="ncr-status" onchange="toggleCloseDate()"><option value="مفتوح" selected>🟠 مفتوح</option><option value="تم الغلق">🟢 تم الغلق</option></select></div>
+<div><label>📅 تاريخ الغلق</label><input type="date" id="ncr-close" disabled style="background:#ECEFF1;"></div>
+<div style="grid-column:1/-1;"><label>📝 وصف الحالة *</label><textarea id="ncr-desc" placeholder="اكتب وصف الحالة بالتفصيل... ايه اللي مش مطابق و فين و ايه المطلوب..."></textarea></div>
+</div>
+<button class="btn orange" onclick="addNcr()">💾 حفظ حالة عدم المطابقة</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل حالات عدم المطابقة</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchNcr" placeholder="ابحث بالشركة أو وصف الحالة..." oninput="renderNcr()" style="flex:2;">
+<select id="filterStatus" onchange="renderNcr()" style="flex:1;"><option value="">كل الحالات</option><option>مفتوح</option><option>تم الغلق</option></select>
+<select id="filterClass" onchange="renderNcr()" style="flex:1;"><option value="">كل التصنيفات</option><option>بسيط</option><option>حرج</option></select>
+<select id="filterCompany" onchange="renderNcr()" style="flex:1;"><option value="">كل الشركات</option></select>
+</div>
+<div id="ncrTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn2" onclick="exportNcr()" style="flex:1;padding:12px;">📥 تصدير السجل كله Excel / CSV</button>
+<button class="btn2" onclick="clearNcr()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+if(!DB.ncr) DB.ncr=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+function toggleCloseDate(){
+  let st=val('ncr-status'); let inp=document.getElementById('ncr-close');
+  if(st==='تم الغلق'){ inp.disabled=false; inp.style.background='#fff'; if(!inp.value) inp.value=new Date().toISOString().slice(0,10); }
+  else { inp.disabled=true; inp.style.background='#ECEFF1'; inp.value=''; }
+}
+function addNcr(){
+  if(!val('ncr-company')) return alert('اكتب اسم الشركة');
+  if(!val('ncr-date')) return alert('اختار التاريخ');
+  if(!val('ncr-class')) return alert('اختار تصنيف الحالة');
+  if(!val('ncr-desc')) return alert('اكتب وصف الحالة');
+  if(!val('ncr-reporter')) return alert('اكتب اسم معد التقرير');
+  if(val('ncr-status')==='تم الغلق' && !val('ncr-close')) return alert('اختار تاريخ الغلق');
+  let rec={company:val('ncr-company'),date:val('ncr-date'),class:val('ncr-class'),desc:val('ncr-desc'),reporter:val('ncr-reporter'),status:val('ncr-status'),closeDate:val('ncr-close'),createdAt:new Date().toISOString()};
+  DB.ncr.push(rec); save(); renderNcr();
+  alert('✅ تم حفظ حالة عدم المطابقة - '+rec.company+' - '+rec.class+' - '+rec.status);
+  setVal('ncr-company',''); setVal('ncr-class',''); setVal('ncr-desc',''); setVal('ncr-status','مفتوح'); toggleCloseDate();
+}
+function drawChart(closed, open){
+  let c=document.getElementById('chart'); let ctx=c.getContext('2d');
+  ctx.clearRect(0,0,160,160);
+  let total=closed+open; if(!total){ ctx.fillStyle='#ECEFF1'; ctx.beginPath(); ctx.arc(80,80,70,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#999'; ctx.font='bold 14px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد',80,84); return; }
+  let aClosed=(closed/total)*Math.PI*2;
+  ctx.fillStyle='#2E7D32'; ctx.beginPath(); ctx.moveTo(80,80); ctx.arc(80,80,70,-Math.PI/2,-Math.PI/2+aClosed); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#FF9800'; ctx.beginPath(); ctx.moveTo(80,80); ctx.arc(80,80,70,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(80,80,42,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',80,78);
+  ctx.font='12px Arial'; ctx.fillStyle='#78909C'; ctx.fillText('نسبة الغلق',80,96);
+}
+function renderNcr(){
+  let all=DB.ncr||[];
+  let comps=[...new Set(all.map(x=>x.company))];
+  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  let sel=document.getElementById('filterCompany'); let cur=sel.value;
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  let total=all.length;
+  let closed=all.filter(x=>x.status==='تم الغلق').length;
+  let open=total-closed;
+  let crit=all.filter(x=>x.class==='حرج').length;
+  let simple=total-crit;
+  let closeP=total?Math.round(closed/total*100):0;
+  let openP=total?Math.round(open/total*100):0;
+  document.getElementById('k-total').innerText=total;
+  document.getElementById('k-close-p').innerText=closeP+'%';
+  document.getElementById('k-open').innerText=open;
+  document.getElementById('k-critical').innerText=crit;
+  document.getElementById('leg-closed').innerText=closed; document.getElementById('leg-closed-p').innerText=closeP+'%';
+  document.getElementById('leg-open').innerText=open; document.getElementById('leg-open-p').innerText=openP+'%';
+  document.getElementById('leg-crit').innerText=crit; document.getElementById('leg-simple').innerText=simple;
+  document.getElementById('bar-closed').style.width=closeP+'%';
+  document.getElementById('bar-open').style.width=openP+'%';
+  drawChart(closed, open);
+
+  let byComp={};
+  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0,crit:0}; byComp[x.company].total++; if(x.status==='تم الغلق') byComp[x.company].closed++; else byComp[x.company].open++; if(x.class==='حرج') byComp[x.company].crit++; });
+  let arr=Object.entries(byComp).map(([name,v])=>({name,...v, closeP: v.total?Math.round(v.closed/v.total*100):0, openP: v.total?Math.round(v.open/v.total*100):0 }));
+  arr.sort((a,b)=>b.total-a.total);
+  if(!arr.length){
+    document.getElementById('top-count-name').innerText='-'; document.getElementById('top-count-detail').innerText='0 تقرير';
+    document.getElementById('top-close-name').innerText='-'; document.getElementById('top-close-detail').innerText='0% غلق';
+    document.getElementById('top-open-name').innerText='-'; document.getElementById('top-open-detail').innerText='0% مفتوح';
+    document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تقارير لسه</p>';
+  } else {
+    let topCount=[...arr].sort((a,b)=>b.total-a.total)[0];
+    let topClose=[...arr].sort((a,b)=>b.closeP-a.closeP || b.total-a.total)[0];
+    let topOpen=[...arr].sort((a,b)=>b.openP-a.openP || b.total-a.total)[0];
+    document.getElementById('top-count-name').innerText=topCount.name;
+    document.getElementById('top-count-detail').innerText=topCount.total+' تقرير إجمالي - '+topCount.closed+' مغلق - '+topCount.open+' مفتوح - نسبة غلق '+topCount.closeP+'%';
+    document.getElementById('top-close-name').innerText=topClose.name;
+    document.getElementById('top-close-detail').innerText=topClose.closeP+'% غلق - إجمالي '+topClose.total+' تقرير - '+topClose.closed+' مغلق - '+topClose.open+' مفتوح';
+    document.getElementById('top-open-name').innerText=topOpen.name;
+    document.getElementById('top-open-detail').innerText=topOpen.openP+'% مفتوح - إجمالي '+topOpen.total+' تقرير - '+topOpen.open+' مفتوح - '+topOpen.closed+' مغلق';
+    document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي التقارير</th><th>🟢 مغلق</th><th>🟠 مفتوح</th><th>🔴 حرج</th><th>نسبة الغلق</th><th>نسبة المفتوح</th></tr>'+arr.map(v=>`<tr><td><b>${v.name}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:bold;">${v.closed}</td><td style="color:#E65100;font-weight:bold;">${v.open}</td><td>${v.crit}</td><td>${v.closeP}%</td><td>${v.openP}%</td></tr>`).join('')+'</table>';
+  }
+
+  let q=(document.getElementById('searchNcr').value||'').toLowerCase();
+  let fs=document.getElementById('filterStatus').value;
+  let fc=document.getElementById('filterClass').value;
+  let fcomp=document.getElementById('filterCompany').value;
+  let list=all.filter(x=> (x.company+x.desc+x.reporter).toLowerCase().includes(q) && (!fs||x.status===fs) && (!fc||x.class===fc) && (!fcomp||x.company===fcomp));
+  if(!list.length){ document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#999;">مفيش حالات عدم مطابقة لسه</p>'; return; }
+  document.getElementById('ncrTable').innerHTML='<table><tr><th>الشركة</th><th>التاريخ</th><th>التصنيف</th><th>وصف الحالة</th><th>معد التقرير</th><th>الحالة</th><th>تاريخ الغلق</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.ncr.indexOf(x);
+    return `<tr><td><b>${x.company}</b></td><td>${x.date}</td><td><span class="badge ${x.class==='حرج'?'critical':'simple'}">${x.class}</span></td><td style="text-align:right;max-width:220px;">${x.desc}</td><td>${x.reporter}</td><td><span class="badge ${x.status==='مفتوح'?'open':'closed'}">${x.status}</span></td><td>${x.closeDate||'-'}</td><td><button class="btn2" onclick="toggleNcr(${idx})">${x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNcr(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function toggleNcr(i){
+  if(DB.ncr[i].status==='مفتوح'){ DB.ncr[i].status='تم الغلق'; DB.ncr[i].closeDate=new Date().toISOString().slice(0,10); }
+  else { DB.ncr[i].status='مفتوح'; DB.ncr[i].closeDate=''; }
+  save(); renderNcr();
+}
+function delNcr(i){ if(!confirm('تحذف الحالة دي؟')) return; DB.ncr.splice(i,1); save(); renderNcr(); }
+function clearNcr(){ if(!confirm('تمسح كل سجل عدم المطابقة؟')) return; DB.ncr=[]; save(); renderNcr(); }
+function exportNcr(){
+  if(!DB.ncr.length) return alert('مفيش بيانات');
+  let csv='اسم الشركة,التاريخ,تصنيف الحالة,وصف الحالة,اسم معد التقرير,الحالة,تاريخ الغلق\n'+DB.ncr.map(x=>[x.company,x.date,x.class,'"'+x.desc.replace(/"/g,'""')+'"',x.reporter,x.status,x.closeDate||''].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ncr.csv'; a.click();
+}
+let savedUser=localStorage.getItem('safetyUser')||'';
+document.getElementById('currentUser').value=savedUser;
+document.getElementById('ncr-reporter').value=savedUser;
+document.getElementById('ncr-date').value=new Date().toISOString().slice(0,10);
+renderNcr();
+</script>
+</body>
+</html>
