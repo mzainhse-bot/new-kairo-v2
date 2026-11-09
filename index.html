@@ -3,48 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام عمال رواد - السلامة</title>
+<title>رواد - نظام عمال السلامة</title>
 <style>
-*{box-sizing:border-box;font-family:system-ui,Tahoma}
-body{margin:0;background:#f1f5f9;color:#0f172a;padding:12px}
-.header{background:#0f766e;color:#fff;padding:16px;border-radius:14px;text-align:center}
-.header h1{margin:0;font-size:22px}
-.header p{margin:6px 0 0;opacity:.9;font-size:14px}
-.card{background:#fff;padding:14px;border-radius:14px;margin-top:12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;margin-top:8px;font-size:15px}
+*{box-sizing:border-box;font-family:system-ui,Tahoma,Arial}
+body{margin:0;background:#f1f5f9;color:#0f172a;padding:12px;padding-bottom:40px}
+.header{background:linear-gradient(135deg,#0f766e,#134e4a);color:#fff;padding:18px;border-radius:16px;text-align:center}
+.header h1{margin:0;font-size:23px}
+.header p{margin:8px 0 0;opacity:.9;font-size:14px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:12px}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:#fff;padding:12px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat b{font-size:22px;display:block}
+.stat span{font-size:13px;color:#64748b}
+.card{background:#fff;padding:15px;border-radius:14px;margin-top:12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;margin-top:8px;font-size:15px;background:#fff}
 label{font-weight:700;font-size:14px;display:block;margin-top:10px}
-.btn{width:100%;padding:12px;border:none;border-radius:10px;background:#0f766e;color:#fff;font-weight:800;font-size:16px;margin-top:14px;cursor:pointer}
+.btn{width:100%;padding:13px;border:none;border-radius:10px;background:#0f766e;color:#fff;font-weight:800;font-size:16px;margin-top:14px;cursor:pointer}
 .btn2{background:#e2e8f0;color:#0f172a;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:700}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-th,td{border-bottom:1px solid #e2e8f0;padding:8px;text-align:right}
+.btn-green{background:#dcfce7;color:#166534}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;min-width:700px}
+th,td{border-bottom:1px solid #e2e8f0;padding:9px;text-align:right;white-space:nowrap}
 th{background:#f8fafc}
-.badge{padding:4px 8px;border-radius:20px;font-size:12px;font-weight:800}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800}
 .ok{background:#dcfce7;color:#166534}
 .exp{background:#fee2e2;color:#991b1b}
 .soon{background:#fef9c3;color:#854d0e}
-.search{margin-top:12px}
-.flex{display:flex;gap:8px;align-items:center}
+.flex{display:flex;gap:8px}
+.flex input{margin:0}
+.wrap{overflow-x:auto}
+.footer{text-align:center;color:#94a3b8;font-size:12px;margin-top:16px}
 </style>
 </head>
 <body>
-
 <div class="header">
 <h1>🦺 رواد - نظام عمال السلامة</h1>
-<p>متزامن مع جوجل شيت - أي جهاز يضيف يظهر في كل الأجهزة</p>
+<p>متزامن مع جوجل شيت • أي جهاز يضيف يظهر في كل الأجهزة</p>
 </div>
-
+<div class="stats">
+<div class="stat"><b id="tAll">0</b><span>إجمالي العمال</span></div>
+<div class="stat"><b id="tOk" style="color:#16a34a">0</b><span>شهادة سارية</span></div>
+<div class="stat"><b id="tSoon" style="color:#ca8a04">0</b><span>قرب ينتهي (30 يوم)</span></div>
+<div class="stat"><b id="tExp" style="color:#dc2626">0</b><span>منتهي</span></div>
+</div>
 <div class="card">
 <h3 style="margin:0">➕ إضافة عامل جديد</h3>
-<label>كود العامل</label>
+<label>كود العامل *</label>
 <input id="id" placeholder="مثال: 1001">
-<label>اسم العامل</label>
+<label>اسم العامل *</label>
 <input id="name" placeholder="الاسم بالكامل">
 <label>الرقم القومي</label>
 <input id="nationalId" placeholder="14 رقم">
 <label>الوظيفة</label>
-<input id="job" placeholder="مثال: نجار - حداد - كهربائي">
+<input id="job" placeholder="نجار - حداد - كهربائي - سباك">
 <label>الشركة</label>
-<input id="company" placeholder="اسم الشركة">
+<input id="company" placeholder="اسم الشركة / المقاول">
 <label>رقم التليفون</label>
 <input id="phone" placeholder="01xxxxxxxxx">
 <label>تاريخ انتهاء شهادة السلامة</label>
@@ -52,28 +64,28 @@ th{background:#f8fafc}
 <label>الحالة</label>
 <select id="status"><option value="ساري">ساري</option><option value="منتهي">منتهي</option></select>
 <button class="btn" onclick="addWorker()">💾 حفظ العامل في الشيت</button>
-<p id="msg" style="text-align:center;font-weight:700"></p>
+<p id="msg" style="text-align:center;font-weight:700;min-height:20px"></p>
 </div>
-
 <div class="card">
+<h3 style="margin:0 0 10px">📋 كشف العمال</h3>
 <div class="flex">
-<input id="search" placeholder="🔍 ابحث بالاسم أو الكود أو الشركة..." oninput="renderTable()" style="margin:0">
+<input id="search" placeholder="🔍 ابحث بالاسم أو الكود أو الشركة أو الوظيفة..." oninput="renderTable()" style="margin:0">
 <button class="btn2" onclick="loadFromSheet()">🔄 تحديث</button>
+<button class="btn2 btn-green" onclick="exportCSV()">📥 تصدير Excel</button>
 </div>
 <div style="margin-top:10px;font-weight:800" id="count"></div>
-<div style="overflow-x:auto">
+<div class="wrap">
 <table>
-<thead><tr><th>الكود</th><th>الاسم</th><th>الوظيفة</th><th>الشركة</th><th>التليفون</th><th>انتهاء السلامة</th><th>الحالة</th><th></th></tr></thead>
+<thead><tr><th>الكود</th><th>الاسم / القومي</th><th>الوظيفة</th><th>الشركة</th><th>التليفون</th><th>انتهاء السلامة</th><th>الحالة</th><th>حذف</th></tr></thead>
 <tbody id="tbody"></tbody>
 </table>
 </div>
 </div>
-
+<p class="footer">نظام رواد للسلامة • نسخة متزامنة مع Google Sheets</p>
 <script>
 let SITE_URL = "https://mzainhse-bot.github.io/new-kairo-v2";
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbwvhMg0xWjYZ6C3b0Dc9U0YDRuJzur_PhGtzpsjZRtH33JGTdsDsEzgLaeDmBGAES6m/exec";
 let workers = JSON.parse(localStorage.getItem('workers') || '[]');
-
 function getStatus(expiry){
   if(!expiry) return 'ساري';
   let today = new Date(); today.setHours(0,0,0,0);
@@ -83,30 +95,22 @@ function getStatus(expiry){
   if(diff <= 30) return 'قرب ينتهي';
   return 'ساري';
 }
-
 async function loadFromSheet(){
   document.getElementById('msg').innerText = "جاري التحميل من الشيت...";
   try{
     let res = await fetch(SHEET_URL);
     let data = await res.json();
     if(data && data.length > 0){
-      // شيل الصفوف الفاضية
       workers = data.filter(x => x.name || x.id);
       localStorage.setItem('workers', JSON.stringify(workers));
     }
     document.getElementById('msg').innerText = "✅ تم التحديث من الشيت";
-  }catch(e){
-    document.getElementById('msg').innerText = "شغال من الذاكرة المحلية";
-  }
+  }catch(e){ document.getElementById('msg').innerText = "شغال من الذاكرة المحلية"; }
   renderTable();
 }
-
 async function saveToSheet(w){
-  try{
-    await fetch(SHEET_URL, {method:'POST', body: JSON.stringify(w)});
-  }catch(e){}
+  try{ await fetch(SHEET_URL, {method:'POST', body: JSON.stringify(w)}); }catch(e){}
 }
-
 function addWorker(){
   let w = {
     id: document.getElementById('id').value.trim(),
@@ -127,28 +131,37 @@ function addWorker(){
   document.getElementById('msg').innerText = "✅ تم حفظ " + w.name + " في الشيت";
   ['id','name','nationalId','job','company','phone','safetyExpiry'].forEach(i=>document.getElementById(i).value='');
 }
-
 function delWorker(i){
-  if(!confirm("متأكد تحذف؟")) return;
+  if(!confirm("متأكد تحذف؟ امسحه كمان من الشيت عشان ميرجعش")) return;
   workers.splice(i,1);
   localStorage.setItem('workers', JSON.stringify(workers));
   renderTable();
 }
-
+function exportCSV(){
+  let csv = "الكود,الاسم,القومي,الوظيفة,الشركة,التليفون,انتهاء السلامة,الحالة\n";
+  workers.forEach(w=>{ csv += `"${w.id}","${w.name}","${w.nationalId}","${w.job}","${w.company}","${w.phone}","${w.safetyExpiry}","${getStatus(w.safetyExpiry)}"\n`; });
+  let blob = new Blob(["\ufeff"+csv], {type:'text/csv'});
+  let a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'عمال_رواد.csv'; a.click();
+}
 function renderTable(){
   let q = (document.getElementById('search').value || '').toLowerCase();
-  let list = workers.filter(w => (w.name+w.id+w.company+w.job).toLowerCase().includes(q));
-  document.getElementById('count').innerText = "إجمالي العمال: " + workers.length + " | المعروض: " + list.length;
+  let list = workers.filter(w => (w.name+w.id+w.company+w.job+w.phone).toLowerCase().includes(q));
+  document.getElementById('count').innerText = "إجمالي: " + workers.length + " | المعروض: " + list.length;
+  let cOk=0,cSoon=0,cExp=0;
+  workers.forEach(w=>{ let s=getStatus(w.safetyExpiry); if(s==='ساري')cOk++; else if(s==='منتهي')cExp++; else cSoon++; });
+  document.getElementById('tAll').innerText = workers.length;
+  document.getElementById('tOk').innerText = cOk;
+  document.getElementById('tSoon').innerText = cSoon;
+  document.getElementById('tExp').innerText = cExp;
   let html = "";
-  list.forEach((w, idx) => {
+  list.forEach((w) => {
     let realIdx = workers.indexOf(w);
     let st = getStatus(w.safetyExpiry);
     let cls = st==='ساري' ? 'ok' : (st==='منتهي' ? 'exp' : 'soon');
-    html += `<tr><td>${w.id||''}</td><td><b>${w.name||''}</b><br><small>${w.nationalId||''}</small></td><td>${w.job||''}</td><td>${w.company||''}</td><td><a href="tel:${w.phone}">${w.phone||''}</a></td><td>${w.safetyExpiry||''}</td><td><span class="badge ${cls}">${st}</span></td><td><button class="btn2" onclick="delWorker(${realIdx})">🗑️</button></td></tr>`;
+    html += `<tr><td><b>${w.id||''}</b></td><td><b>${w.name||''}</b><br><small style="color:#64748b">${w.nationalId||''}</small></td><td>${w.job||''}</td><td>${w.company||''}</td><td><a href="tel:${w.phone}">${w.phone||''}</a></td><td>${w.safetyExpiry||''}</td><td><span class="badge ${cls}">${st}</span></td><td><button class="btn2" onclick="delWorker(${realIdx})">🗑️</button></td></tr>`;
   });
-  document.getElementById('tbody').innerHTML = html || '<tr><td colspan="8" style="text-align:center">لسه مفيش عمال، ضيف أول عامل</td></tr>';
+  document.getElementById('tbody').innerHTML = html || '<tr><td colspan="8" style="text-align:center">لسه مفيش عمال، ضيف أول عامل فوق</td></tr>';
 }
-
 renderTable();
 loadFromSheet();
 </script>
