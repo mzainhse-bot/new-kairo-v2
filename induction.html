@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المحاضرة الأولية - تسجيل موظف جديد - ROWAD</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial;}
 body{ margin:0; background:#F4F6F9; color:#0A1F44; }
@@ -60,7 +61,6 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
     <a href="stats.html">📈 الإحصائيات</a>
   </div>
 
-  <!-- الإحصائيات فوق أوتوماتيك -->
   <div class="kpi-grid">
     <div class="kpi"><b id="k-total">0</b><small>إجمالي الحضور - عدد</small></div>
     <div class="kpi"><b id="k-hours">0.00</b><small>إجمالي الساعات (الحضور × 0.25)</small></div>
@@ -103,6 +103,47 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 <datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
 <datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
 
+<!-- نافذة الكارنيه -->
+<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
+  <div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0A1F44;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
+    <div id="cardFront" style="background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;box-shadow:0 4px 16px rgba(0,0,0,.15);">
+      <div style="background:#0A1F44;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+        <b>ROWAD - رواد</b><span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">كارنيه موظف</span>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px;">
+        <img id="c-photo" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #0A1F44;">
+        <div style="flex:1;font-size:14px;color:#0A1F44;line-height:1.9;">
+          <div style="font-size:18px;font-weight:bold;" id="c-name"></div>
+          <div><b>الكود:</b> <span id="c-code"></span> &nbsp; | &nbsp; <b>المهنة:</b> <span id="c-job"></span></div>
+          <div><b>الشركة:</b> <span id="c-company"></span></div>
+          <div><b>الرقم القومي:</b> <span id="c-national"></span></div>
+          <div><b>الحالة الصحية:</b> <span id="c-health"></span></div>
+          <div><b>الهاتف:</b> <span id="c-phone"></span> &nbsp; | &nbsp; <b>طوارئ:</b> <span id="c-emergency"></span> (<span id="c-kin"></span>)</div>
+          <div><b>الحالة:</b> <span id="c-status" style="background:#E8F5E9;color:#2E7D32;padding:2px 10px;border-radius:20px;font-weight:bold;"></span></div>
+        </div>
+      </div>
+      <div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">الكود: <span id="c-code2"></span> - المحاضرة الأولية: <span id="c-date"></span></div>
+    </div>
+    <div id="cardBack" style="background:#0A1F44;color:#fff;border-radius:14px;padding:16px;margin-top:12px;">
+      <h4 style="margin:0 0 10px;color:#fff;text-align:center;">⚠️ تعليمات السلامة - يجب الالتزام بها</h4>
+      <div style="font-size:13px;line-height:2;">
+        1. ارتداء مهمات الوقاية الشخصية PPE طول وقت العمل<br>
+        2. ممنوع العمل بدون تصريح عمل<br>
+        3. ممنوع العمل على ارتفاع بدون حزام أمان<br>
+        4. الإبلاغ فورا عن أي حادث أو حادث وشيك<br>
+        5. ممنوع التدخين إلا في الأماكن المخصصة<br>
+        6. الحفاظ على ممرات الطوارئ خالية<br>
+        7. في حالة الطوارئ التوجه لنقطة التجمع فورا<br>
+        8. الكارنيه شخصي وممنوع إعطاؤه لشخص آخر
+      </div>
+      <div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">في حالة فقدان الكارنيه إبلاغ السلامة فورا</div>
+    </div>
+    <button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
+    <button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
+  </div>
+</div>
+
 <script>
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[],"induction":[]}');
@@ -112,7 +153,6 @@ function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v; }
 document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-
 function nextCode(){
   let max=1000;
   (DB.workers||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
@@ -120,7 +160,6 @@ function nextCode(){
 }
 function refreshCode(){ if(!val('f-code')) setVal('f-code', nextCode()); }
 refreshCode();
-
 function previewPhoto(e){
   let f=e.target.files[0]; if(!f) return;
   let r=new FileReader(); r.onload=ev=>{ let img=document.getElementById('photoPrev'); img.src=ev.target.result; img.style.display='block'; }; r.readAsDataURL(f);
@@ -139,54 +178,40 @@ function checkNational(){
   } else { box.style.display='none'; return null; }
 }
 function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
-
 function saveInductionWorker(){
   if(!val('f-name')) return alert('اكتب الاسم بالكامل');
   if(!val('f-national')) return alert('اكتب الرقم القومي');
   if(val('f-national').length!==14) return alert('الرقم القومي لازم يكون 14 رقم');
   let code = val('f-code') || String(nextCode());
-  // لو الكود متكرر، ننبه
   let codeExists=(DB.workers||[]).find(w=>String(w.code)===String(code));
   if(codeExists && !confirm('الكود '+code+' متسجل قبل كده باسم '+codeExists.name+'، تكمل بنفس الكود؟')) return;
-
   let old = checkNational();
   let isRehab = !!old;
   let notes = val('f-notes');
   if(isRehab && !notes.includes('إعادة تأهيل')) notes = (notes?notes+' - ':'')+'إعادة تأهيل';
-
   readFile('f-img', img=>{
-    let w={
-      name:val('f-name'), code:String(code), nationalId:val('f-national'),
-      job:val('f-job'), company:val('f-company'),
-      hire:val('f-date'), date:val('f-date'), exp:'',
-      health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'),
-      kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img,
-      dept:'', photo:img
-    };
+    let w={ name:val('f-name'), code:String(code), nationalId:val('f-national'), job:val('f-job'), company:val('f-company'), hire:val('f-date'), date:val('f-date'), exp:'', health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'), kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img, dept:'', photo:img };
     DB.workers.push(w);
     DB.cards.push({...w});
     let rec={...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'محاضرة أولية - '+w.name};
     DB.induction.push(rec);
     DB.train.push({...rec});
     save();
-    // إرسال للشيت بنفس الترتيب الجديد
     try{
       let params=new URLSearchParams({action:'add', name:w.name, id:w.code, job:w.job, company:w.company, department:'', hireDate:w.hire, phone:w.phone, emergencyPhone:w.emergency, relation:w.kin, health:w.health, status:w.status, expiry:'', photo:'', nationalId:w.nationalId, notes:w.notes});
       fetch(SHEET_URL+'?'+params.toString());
     }catch(e){}
     renderInd();
     alert('✅ تم حفظ '+w.name+' - محاضرة أولية 0.25 ساعة' + (isRehab?' - إعادة تأهيل':''));
-    // تجهيز للي بعده
     setVal('f-name',''); setVal('f-national',''); setVal('f-job',''); setVal('f-phone',''); setVal('f-emergency',''); setVal('f-notes',''); setVal('f-code', nextCode());
     document.getElementById('photoPrev').style.display='none';
     document.getElementById('rehabAlert').style.display='none';
     document.getElementById('f-img').value='';
   });
 }
-
 function renderInd(){
   let q=(document.getElementById('searchInd').value||'').toLowerCase();
-  let list=(DB.induction||[]).filter(x=>(x.name+x.code+x.nationalId+x.company).toLowerCase().includes(q));
+  let list=(DB.induction||[]).map((x,idx)=>({...x,_idx:idx})).filter(x=>(x.name+x.code+x.nationalId+x.company).toLowerCase().includes(q));
   let total=(DB.induction||[]).length;
   let hours=total*0.25;
   let rehab=(DB.induction||[]).filter(x=>x.isRehab || (x.notes||'').includes('إعادة تأهيل')).length;
@@ -196,7 +221,44 @@ function renderInd(){
   document.getElementById('k-rehab').innerText=rehab;
   document.getElementById('k-today').innerText=(DB.induction||[]).filter(x=>x.date===today).length;
   if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#999;">لسه مفيش مسجلين</p>'; return; }
-  document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td>${x.date||'-'}</td><td><span class="badge ${x.status==='نشط'?'green':x.status==='استقال'?'':'red'}">${x.status}</span></td><td>${x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-')}</td></tr>`).join('')+'</table>';
+  document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th><th>كارنيه</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td>${x.date||'-'}</td><td><span class="badge ${x.status==='نشط'?'green':x.status==='استقال'?'':'red'}">${x.status}</span></td><td>${x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-')}</td><td><button class="btn2" onclick="openCard(${x._idx})">🪪 كارنيه</button></td></tr>`).join('')+'</table>';
+}
+let currentCardIndex = 0;
+function openCard(idx){
+  let x = DB.induction[idx];
+  if(!x) return;
+  currentCardIndex = idx;
+  document.getElementById('c-photo').src = x.img || 'https://via.placeholder.com/110x140?text=No+Photo';
+  document.getElementById('c-name').innerText = x.name;
+  document.getElementById('c-code').innerText = x.code;
+  document.getElementById('c-code2').innerText = x.code;
+  document.getElementById('c-job').innerText = x.job || '-';
+  document.getElementById('c-company').innerText = x.company || '-';
+  document.getElementById('c-national').innerText = x.nationalId || '-';
+  document.getElementById('c-health').innerText = x.health || '-';
+  document.getElementById('c-phone').innerText = x.phone || '-';
+  document.getElementById('c-emergency').innerText = x.emergency || '-';
+  document.getElementById('c-kin').innerText = x.kin || '-';
+  document.getElementById('c-status').innerText = x.status || 'نشط';
+  document.getElementById('c-date').innerText = x.date || '-';
+  document.getElementById('cardModal').style.display='block';
+}
+async function downloadCard(which){
+  let name = DB.induction[currentCardIndex]?.name || 'card';
+  if(which==='front'){
+    let canvas = await html2canvas(document.getElementById('cardFront'), {scale:2});
+    let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=canvas.toDataURL('image/png'); a.click();
+    return;
+  }
+  let c1 = await html2canvas(document.getElementById('cardFront'), {scale:2});
+  let c2 = await html2canvas(document.getElementById('cardBack'), {scale:2});
+  let final = document.createElement('canvas');
+  final.width = Math.max(c1.width, c2.width);
+  final.height = c1.height + c2.height + 20;
+  let ctx = final.getContext('2d');
+  ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,final.width,final.height);
+  ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20);
+  let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=final.toDataURL('image/png'); a.click();
 }
 renderInd();
 </script>
