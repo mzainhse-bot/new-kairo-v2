@@ -1,10 +1,91 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إنجازاتي - RMED</title>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}.top{background:#0A1F44;color:#fff;padding:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.top img{width:70px;height:85px;object-fit:cover;border-radius:12px;border:2px solid #fff}.container{max-width:900px;margin:auto;padding:16px}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;border-bottom:3px solid #0A1F44}.kpi b{font-size:22px;display:block}.kpi small{color:#78909C}table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}.btn{width:100%;background:#2E7D32;color:#fff;border:none;padding:15px;border-radius:12px;font-weight:bold;font-size:17px;cursor:pointer}.btn2{background:#ECEFF1;border:1px solid #CFD8DC;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:bold}</style>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.top{background:#0A1F44;color:#fff;padding:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-radius:0 0 16px 16px;margin-bottom:16px}
+.top img{width:70px;height:85px;object-fit:cover;border-radius:12px;border:2px solid #fff}
+.container{max-width:900px;margin:auto;padding:0 16px 16px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;border-bottom:3px solid #0A1F44}
+.kpi b{font-size:22px;display:block}.kpi small{color:#78909C}
+table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
+.btn{width:100%;background:#2E7D32;color:#fff;border:none;padding:15px;border-radius:12px;font-weight:bold;font-size:17px;cursor:pointer}
+.btn2{background:#ECEFF1;border:1px solid #CFD8DC;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:bold}
+</style>
 </head>
 <body>
-<div class="top"><img id="u-photo" src="https://via.placeholder.com/70x85?text=No"><div style="flex:1;"><h2 id="u-name" style="margin:0;">-</h2><p id="u-info" style="margin:4px 0;color:#B0BEC5;">-</p></div><button class="btn2" onclick="logout()">🚪 خروج</button></div>
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="top"><img id="u-photo" src="https://via.placeholder.com/70x85?text=No"><div style="flex:1;"><h2 id="u-name" style="margin:0;">-</h2><p id="u-info" style="margin:4px 0;color:#B0BEC5;">-</p></div><button class="btn2" onclick="toggleSidebar()">◀️ إخفاء القائمة</button><button class="btn2" onclick="logout()">🚪 خروج</button></div>
 <div class="container">
 <div class="card"><h3 style="margin:0 0 10px;">🏆 إنجازاتك - التقارير اللي انت رفعتها</h3>
 <div class="kpi-grid"><div class="kpi"><b id="a-week">0</b><small>تقارير الأسبوع ده</small></div><div class="kpi"><b id="a-month">0</b><small>تقارير الشهر ده</small></div><div class="kpi"><b id="a-year">0</b><small>تقارير السنة دي</small></div><div class="kpi"><b id="a-total">0</b><small>إجمالي كل التقارير</small></div></div>
@@ -13,19 +94,36 @@
 <button class="btn" onclick="location.href='index.html'">🚀 ادخل على الموقع - ارفع تقاريرك</button>
 <p id="roleNote" style="text-align:center;color:#78909C;font-size:13px;"></p>
 </div>
+</div>
+
 <script>
-let me=JSON.parse(localStorage.getItem('safetyUser')||'null'); if(!me) location.href='login.html';
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+let me=JSON.parse(localStorage.getItem('safetyUser')||localStorage.getItem('currentUser')||'null'); if(!me) location.href='login.html';
 let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-document.getElementById('u-photo').src=me.photo||'https://via.placeholder.com/70x85?text=No';
+document.getElementById('u-photo').src=me.photo||me.img||'https://via.placeholder.com/70x85?text=No';
 document.getElementById('u-name').innerText='أهلاً بيك، '+me.name;
-document.getElementById('u-info').innerText=me.job+' • '+me.email+' • الدور: '+(me.role==='manager'?'مدير':me.role==='supervisor'?'مشرف':me.role==='employee'?'موظف':'زائر');
+document.getElementById('u-info').innerText=(me.job||'')+' • '+(me.email||'')+' • الدور: '+(me.role==='manager'?'مدير':me.role==='supervisor'?'مشرف':me.role==='employee'?'موظف':me.role==='visitor'?'زائر':me.role||'');
+// بيانات الشريط
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  document.getElementById('sideName').innerText=me.name||'اسم الموظف';
+  document.getElementById('sideRole').innerText=me.role==='manager'?'مدير':me.role==='supervisor'?'مشرف':me.role==='employee'?'موظف':me.role||'';
+  if(me.photo||me.img) document.getElementById('sideImg').src=me.photo||me.img;
+  let t=document.getElementById('topUser'); if(t) t.innerText=me.name||'';
+})();
 let roleNote={visitor:'👁️ انت زائر - هتشوف الإحصائيات والصفحات بدون تعديل',employee:'👷 انت موظف - تقدر ترفع تقارير في كل الصفحات ماعدا حالات عدم المطابقة وخانة تم التسليم في التصاريح',supervisor:'🦺 انت مشرف - ليك كل صلاحيات التعديل ماعدا صفحة المستخدمين',manager:'👑 انت المدير - ليك كل الصلاحيات المطلقة'};
 document.getElementById('roleNote').innerText=roleNote[me.role]||'';
 // جمع كل التقارير اللي رفعها باسمه أو إيميله
 let all=[];
-function collect(arr, label){ (arr||[]).forEach(x=>{ let rep=x.reporter||x.name||x.createdBy||x.user||''; if(rep===me.name||rep===me.email||(x.email&&x.email===me.email)){ all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||'', page:label}); } }); }
+function collect(arr, label){ (arr||[]).forEach(x=>{ let rep=x.reporter||x.reporterName||x.name||x.createdBy||x.user||''; if(rep===me.name||rep===me.email||(x.email&&x.email===me.email)){ all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||'', page:label}); } }); }
 collect(DB.scaffolds,'فحص السقالات'); collect(DB.accidents,'الحوادث'); collect(DB.violations,'مخالفات المقاولين'); collect(DB.empViolations,'مخالفات الموظفين'); collect(DB.ncr,'حالات عدم المطابقة'); collect(DB.nearMiss,'الحوادث الوشيكة'); collect(DB.observations,'ملاحظات السلامة'); collect(DB.permits,'التصاريح'); collect(DB.train,'التدريبات'); collect(DB.weeklyLect,'المحاضرة الأسبوعية'); collect(DB.induction,'المحاضرة الأولية');
-let now=new Date(); let inDays=d=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=d; };
+let now=new Date(); let inDays=(d,days)=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=days; };
 document.getElementById('a-week').innerText=all.filter(x=>inDays(x.date,7)).length;
 document.getElementById('a-month').innerText=all.filter(x=>inDays(x.date,30)).length;
 document.getElementById('a-year').innerText=all.filter(x=>inDays(x.date,365)).length;
@@ -36,5 +134,5 @@ document.getElementById('a-top').innerText=top? top[0]+' ('+top[1]+' تقرير)
 all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
 document.getElementById('a-last').innerText=all.length? all[0].date+' - '+all[0].page:'مفيش تقارير لسه';
 document.getElementById('last5').innerHTML=all.length? '<table><tr><th>التاريخ</th><th>الصفحة</th><th>الوصف</th></tr>'+all.slice(0,5).map(x=>`<tr><td>${x.date||'-'}</td><td>${x.page}</td><td style="text-align:right;">${(x.desc||'').slice(0,80)}</td></tr>`).join('')+'</table>':'<p style="color:#999;text-align:center;">لسه مرفعتش تقارير، ابدأ من زرار الدخول على الموقع</p>';
-function logout(){ localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function logout(){ localStorage.removeItem('safetyUser'); localStorage.removeItem('currentUser'); location.href='login.html'; }
 </script></body></html>
