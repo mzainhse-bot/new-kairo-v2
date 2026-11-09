@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مخالفات المقاولين - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:70px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.role-bar{background:#FFF3E0;border:1.5px solid #FF9800;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.role-bar select{width:auto;flex:1;min-width:180px;}
+.img-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.img-preview img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #CFD8DC;cursor:pointer;}
+@media print{ header,.nav,.no-print,.role-bar{display:none!important;} body{background:#fff;} }
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> مخالفات المقاولين</h1><small>مخالفات السلامة - Subcontractor Violations</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👷 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html" class="active">⚠️ مخالفات المقاولين</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<!-- الصلاحيات -->
+<div class="role-bar no-print">
+<span style="font-weight:bold;">🔐 انت داخل بصفتك:</span>
+<select id="myRole" onchange="setRole(this.value)">
+<option value="مشاهد">👁️ مشاهد - قراءة فقط</option>
+<option value="مشرف">👷 مشرف - يقدر يضيف</option>
+<option value="مدير">👨‍💼 مدير - يقدر يضيف</option>
+</select>
+<input id="roleCode" placeholder="كود المشرف / المدير - 1234" style="max-width:220px;">
+<button class="btn2" onclick="unlockRole()" style="padding:11px 16px;background:#0A1F44;color:#fff;">تأكيد الصلاحية</button>
+<span id="roleMsg" style="font-size:12px;font-weight:bold;color:#D32F2F;">انت دلوقتي مشاهد - مش هتقدر تضيف</span>
+</div>
+
+<!-- الاحصائيات -->
+<div class="kpi-grid">
+<div class="kpi"><b id="k-count">0</b><small>إجمالي عدد المخالفات</small></div>
+<div class="kpi red"><b id="k-total-deduct">0 ج.م</b><small>إجمالي المبالغ المخصومة</small></div>
+<div class="kpi orange"><b id="k-max-count">-</b><small>أعلى شركة في عدد المخالفات</small></div>
+<div class="kpi green"><b id="k-min-count">-</b><small>أقل شركة في عدد المخالفات</small></div>
+<div class="kpi red"><b id="k-max-money">-</b><small>أعلى شركة في المبالغ المخصومة</small></div>
+<div class="kpi"><b id="k-min-money">-</b><small>أقل شركة في المبالغ المخصومة</small></div>
+</div>
+
+<!-- نموذج الاضافة - للمشرف والمدير بس -->
+<div class="card red" id="addCard">
+<h2 style="margin:0 0 5px;">⚠️ تسجيل مخالفة جديدة</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">صلاحية المشرف والمدير فقط</p>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="v-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="v-time"></div>
+<div><label>🏢 اسم الشركة - مقاول الباطن *</label><input id="v-company" placeholder="اسم شركة المقاول"></div>
+<div><label>💰 إجمالي الخصم - ج.م *</label><input type="number" id="v-deduct" placeholder="0" inputmode="numeric"></div>
+<div style="grid-column:1/-1;"><label>📝 وصف المخالفة *</label><textarea id="v-desc" placeholder="اكتب وصف المخالفة بالتفصيل..."></textarea></div>
+<div style="grid-column:1/-1;"><label>🔧 إجراء آخر - اختياري</label><textarea id="v-action" placeholder="مثال: إيقاف العمل - إنذار - استبعاد العامل..."></textarea></div>
+<div style="grid-column:1/-1;"><label>📧 إيميلات المستلمين للإشعار - افصل بفاصلة</label><input id="v-emails" placeholder="manager@rmed.com, safety@rmed.com"></div>
+<div style="grid-column:1/-1;"><label>📸 صور المخالفة - تقدر تختار أكتر من صورة</label><input type="file" id="v-photos" accept="image/*" multiple onchange="previewPhotos(this)"><div class="img-preview" id="photoPreview"></div></div>
+</div>
+<button class="btn red" onclick="addViolation()">💾 حفظ المخالفة + إرسال إشعار</button>
+</div>
+
+<!-- تصدير بفترة -->
+<div class="card no-print">
+<h3 style="margin:0 0 10px;">📥 تصدير سجل المخالفات - حدد الفترة</h3>
+<div class="grid">
+<div><label>من تاريخ</label><input type="date" id="exp-from"></div>
+<div><label>إلى تاريخ</label><input type="date" id="exp-to"></div>
+<div><label>شركة معينة - اختياري</label><select id="exp-company"><option value="">كل الشركات</option></select></div>
+<div style="display:flex;align-items:end;"><button class="btn2" onclick="exportFiltered()" style="width:100%;padding:12px;background:#0A1F44;color:#fff;">📥 تصدير Excel للفترة دي</button></div>
+</div>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل المخالفات</h2>
+<input id="searchV" placeholder="ابحث باسم الشركة أو وصف المخالفة..." oninput="renderViolations()" class="no-print">
+<div id="violationsTable"></div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[],"permits":[],"dailyCount":[],"violations":[]}');
+if(!DB.violations) DB.violations=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+const ROLE_CODE='1234';
+let currentRole=localStorage.getItem('myRole')||'مشاهد';
+let tempPhotos=[];
+function setRole(r){ currentRole=r; localStorage.setItem('myRole',r); applyRole(); }
+function unlockRole(){
+  if(val('roleCode')!==ROLE_CODE) return alert('❌ كود غلط');
+  let r=document.getElementById('myRole').value;
+  if(r==='مشاهد') return alert('اختار مشرف أو مدير الأول');
+  setRole(r); alert('✅ تمام - انت دلوقتي '+r+' وتقدر تضيف');
+}
+function applyRole(){
+  let canEdit=currentRole==='مشرف'||currentRole==='مدير';
+  document.getElementById('myRole').value=currentRole;
+  document.getElementById('roleMsg').innerText=canEdit?'✅ انت دلوقتي '+currentRole+' - تقدر تضيف مخالفات':'👁️ انت دلوقتي مشاهد - قراءة فقط';
+  document.getElementById('roleMsg').style.color=canEdit?'#2E7D32':'#D32F2F';
+  document.getElementById('addCard').style.opacity=canEdit?'1':'0.5';
+  document.getElementById('addCard').style.pointerEvents=canEdit?'auto':'none';
+  // زرار الحذف في الجدول هيتقفل برضه في render
+}
+function previewPhotos(inp){
+  tempPhotos=[];
+  let preview=document.getElementById('photoPreview'); preview.innerHTML='';
+  [...inp.files].forEach(f=>{
+    let reader=new FileReader();
+    reader.onload=e=>{
+      tempPhotos.push(e.target.result);
+      let img=document.createElement('img'); img.src=e.target.result; preview.appendChild(img);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+function addViolation(){
+  if(currentRole!=='مشرف'&&currentRole!=='مدير') return alert('❌ انت مشاهد - الإضافة للمشرف والمدير بس');
+  if(!val('v-date')) return alert('اختار التاريخ');
+  if(!val('v-time')) return alert('اختار الوقت');
+  if(!val('v-company')) return alert('اكتب اسم الشركة');
+  if(!val('v-desc')) return alert('اكتب وصف المخالفة');
+  if(!val('v-deduct')) return alert('اكتب إجمالي الخصم');
+  let rec={date:val('v-date'),time:val('v-time'),company:val('v-company'),desc:val('v-desc'),deduct:parseFloat(val('v-deduct'))||0,action:val('v-action'),emails:val('v-emails'),photos:[...tempPhotos],by:currentRole,createdAt:new Date().toISOString()};
+  DB.violations.push(rec); save(); renderViolations();
+  alert('✅ تم حفظ المخالفة - '+rec.company+' - خصم '+rec.deduct+' ج.م');
+  // إشعار الميل
+  sendEmail(rec);
+  // تصفير
+  ['v-company','v-desc','v-deduct','v-action'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('photoPreview').innerHTML=''; tempPhotos=[];
+}
+function sendEmail(rec){
+  let emails=rec.emails||'';
+  if(!emails){
+    let ask=confirm('عايز تبعت إشعار بالميل؟\nدوس OK واكتب الإيميلات');
+    if(!ask) return;
+    emails=prompt('اكتب إيميلات المستلمين - افصل بفاصلة:','');
+    if(!emails) return;
+  }
+  let subject='⚠️ تم إصدار مخالفة سلامة - '+rec.company+' - '+rec.date;
+  let body='تم إصدار مخالفة سلامة\n\n'+'التاريخ: '+rec.date+'\nالوقت: '+rec.time+'\nالشركة: '+rec.company+'\nوصف المخالفة: '+rec.desc+'\nإجمالي الخصم: '+rec.deduct+' ج.م\nإجراء آخر: '+(rec.action||'-')+'\n\nبرجاء اتخاذ اللازم\n\nRMED - HSE\n\nملحوظة: افتح ملف المخالفة واطبع PDF وارفقه في الميل - لان المتصفح مش بيبعت PDF أوتوماتيك من غير سيرفر.';
+  // بيفتح برنامج الميل جاهز
+  window.location.href='mailto:'+encodeURIComponent(emails)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  alert('📧 اتفتح الميل جاهز - دوس Send\nعشان تبعت PDF: دوس على زرار PDF في المخالفة واطبعه وارفقه');
+}
+function renderViolations(){
+  let q=(document.getElementById('searchV').value||'').toLowerCase();
+  let list=DB.violations.filter(x=>(x.company+x.desc).toLowerCase().includes(q));
+  // احصائيات
+  document.getElementById('k-count').innerText=DB.violations.length;
+  let totalDeduct=DB.violations.reduce((s,x)=>s+(x.deduct||0),0);
+  document.getElementById('k-total-deduct').innerText=totalDeduct.toLocaleString()+' ج.م';
+  // تجميع حسب الشركة
+  let byComp={};
+  DB.violations.forEach(x=>{
+    if(!byComp[x.company]) byComp[x.company]={count:0,money:0};
+    byComp[x.company].count++;
+    byComp[x.company].money+=x.deduct||0;
+  });
+  let comps=Object.keys(byComp);
+  if(comps.length){
+    let maxCount=comps.sort((a,b)=>byComp[b].count-byComp[a].count)[0];
+    let minCount=comps.sort((a,b)=>byComp[a].count-byComp[b].count)[0];
+    let maxMoney=comps.sort((a,b)=>byComp[b].money-byComp[a].money)[0];
+    let minMoney=comps.sort((a,b)=>byComp[a].money-byComp[b].money)[0];
+    document.getElementById('k-max-count').innerText=maxCount+' ('+byComp[maxCount].count+')';
+    document.getElementById('k-min-count').innerText=minCount+' ('+byComp[minCount].count+')';
+    document.getElementById('k-max-money').innerText=maxMoney+' ('+byComp[maxMoney].money.toLocaleString()+' ج.م)';
+    document.getElementById('k-min-money').innerText=minMoney+' ('+byComp[minMoney].money.toLocaleString()+' ج.م)';
+  } else {
+    ['k-max-count','k-min-count','k-max-money','k-min-money'].forEach(id=>document.getElementById(id).innerText='-');
+  }
+  // فلتر التصدير
+  document.getElementById('exp-company').innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option>${c}</option>`).join('');
+  if(!list.length){ document.getElementById('violationsTable').innerHTML='<p style="text-align:center;color:#999;">مفيش مخالفات لسه</p>'; return; }
+  let canEdit=currentRole==='مشرف'||currentRole==='مدير';
+  document.getElementById('violationsTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>وصف المخالفة</th><th>الخصم</th><th>إجراء آخر</th><th>الصور</th><th>إجراءات</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.violations.indexOf(x);
+    let imgs=(x.photos||[]).slice(0,3).map(p=>`<img src="${p}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;" onclick="window.open('${p}')">`).join(' ')+(x.photos&&x.photos.length>3?' +'+(x.photos.length-3):'');
+    return `<tr><td>${x.date}<br>${x.time}</td><td><b>${x.company}</b></td><td style="text-align:right;max-width:220px;">${x.desc}</td><td><b style="color:#D32F2F;">${(x.deduct||0).toLocaleString()} ج.م</b></td><td>${x.action||'-'}</td><td>${imgs||'-'}</td><td><button class="btn2" onclick="exportOne(${idx})">📄 PDF</button> <button class="btn2" onclick="resendEmail(${idx})">📧 ميل</button>${canEdit?` <button class="btn2" style="color:#D32F2F;" onclick="delViolation(${idx})">🗑️</button>`:''}</td></tr>`;
+  }).join('')+'</table>';
+}
+function exportOne(idx){
+  let x=DB.violations[idx];
+  let w=window.open('','_blank');
+  w.document.write(`<html dir="rtl"><head><title>مخالفة - ${x.company}</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:10px}img{width:180px;height:130px;object-fit:cover;margin:5px;border-radius:8px}</style></head><body><h2 style="text-align:center;color:#D32F2F;">⚠️ تقرير مخالفة سلامة - RMED</h2><table><tr><td><b>التاريخ</b></td><td>${x.date}</td></tr><tr><td><b>الوقت</b></td><td>${x.time}</td></tr><tr><td><b>الشركة</b></td><td>${x.company}</td></tr><tr><td><b>وصف المخالفة</b></td><td>${x.desc}</td></tr><tr><td><b>إجمالي الخصم</b></td><td>${x.deduct} ج.م</td></tr><tr><td><b>إجراء آخر</b></td><td>${x.action||'-'}</td></tr><tr><td><b>بواسطة</b></td><td>${x.by}</td></tr></table><h3>صور المخالفة</h3>${(x.photos||[]).map(p=>`<img src="${p}">`).join('')}<p style="text-align:center;margin-top:20px;">توقيع مسئول السلامة: .................... &nbsp;&nbsp; توقيع المدير: ....................</p><script>window.print()<\/script></body></html>`);
+}
+function resendEmail(idx){ sendEmail(DB.violations[idx]); }
+function delViolation(i){ if(currentRole!=='مشرف'&&currentRole!=='مدير') return alert('قراءة فقط'); if(!confirm('تحذف المخالفة دي؟')) return; DB.violations.splice(i,1); save(); renderViolations(); }
+function exportFiltered(){
+  let from=document.getElementById('exp-from').value;
+  let to=document.getElementById('exp-to').value;
+  let comp=document.getElementById('exp-company').value;
+  let list=DB.violations.filter(x=>{
+    let okFrom=!from||x.date>=from;
+    let okTo=!to||x.date<=to;
+    let okComp=!comp||x.company===comp;
+    return okFrom&&okTo&&okComp;
+  });
+  if(!list.length) return alert('مفيش مخالفات في الفترة دي');
+  let csv='التاريخ,الوقت,اسم الشركة,وصف المخالفة,اجمالي الخصم,اجراء اخر,بواسطة,عدد الصور\n'+list.map(x=>[x.date,x.time,x.company,'"'+(x.desc||'').replace(/"/g,'""')+'"',x.deduct,'"'+(x.action||'').replace(/"/g,'""')+'"',x.by,(x.photos||[]).length].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='violations-'+(from||'all')+'-to-'+(to||'all')+'.csv'; a.click();
+  alert('✅ تم تصدير '+list.length+' مخالفة');
+}
+document.getElementById('v-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('v-time').value=new Date().toTimeString().slice(0,5);
+applyRole(); renderViolations();
+</script>
+</body>
+</html>
