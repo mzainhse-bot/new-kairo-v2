@@ -7,10 +7,37 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
-header h1{margin:0;font-size:21px;} header h1 span{color:#FF9800;} header small{color:#B0BEC5;}
-header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
-.container{max-width:1150px;margin:auto;padding:16px;}
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FF9800;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#FF9800;} .page-head small{color:#78909C;}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
 .card.orange{border-top-color:#FF9800;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -20,9 +47,6 @@ input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-
 textarea{min-height:60px;resize:vertical;}
 .btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
-.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
-.nav a.active{background:#0A1F44;color:#fff;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 .kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
@@ -42,27 +66,52 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<header>
-<div style="display:flex;align-items:center;gap:10px;">
-<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head">
 <div><h1>RMED <span>•</span> الحوادث الوشيكة</h1><small>Near Miss Reports</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
-<a href="index.html">🏠 الرئيسية</a>
-</header>
 <div class="container">
-<div class="nav">
-<a href="index.html">🏠 الرئيسية</a>
-<a href="induction.html">📘 المحاضرة الأولية</a>
-<a href="workers.html">👥 الموظفين</a>
-<a href="train.html">🎓 التدريبات</a>
-<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
-<a href="permits.html">📋 التصاريح</a>
-<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
-<a href="violations.html">⚠️ مخالفات المقاولين</a>
-<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
-<a href="safety-observations.html">📋 ملاحظات السلامة</a>
-<a href="near-miss.html" class="active">⚡ الحوادث الوشيكة</a>
-</div>
 
 <div class="user-bar">
 <span style="font-weight:bold;">🦺 مسئول السلامة اللي بيرفع التقرير:</span>
@@ -129,14 +178,33 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 </div>
+</div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function getReporter(){
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
+  if(typeof u==='object' && u.name) return u.name;
+  return localStorage.getItem('safetyUser')||'';
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getReporter();
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+})();
+
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
 if(!DB.nearMiss) DB.nearMiss=[];
 function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
-
 let tempIncidentImgs=[], tempActionImgs=[];
 function previewImgs(input, prevId){
   let files=[...input.files];
@@ -155,19 +223,19 @@ function previewImgs(input, prevId){
     r.readAsDataURL(f);
   });
 }
-
 function addNM(){
   if(!val('nm-date')) return alert('اختار التاريخ');
   if(!val('nm-time')) return alert('اختار الوقت');
   if(!val('nm-company')) return alert('اكتب الشركة');
-  if(!val('nm-reporter')) return alert('اكتب اسم المبلغ');
+  let rep=val('nm-reporter')||getReporter();
+  if(!rep) return alert('اكتب اسم المبلغ');
   if(!val('nm-place')) return alert('اكتب المكان');
   if(!val('nm-desc')) return alert('اكتب وصف الحادث');
   if(!val('nm-direct')) return alert('اكتب السبب المباشر');
   if(!val('nm-root')) return alert('اكتب السبب الجذري');
   if(!val('nm-corrective')) return alert('اكتب الإجراء التصحيحي');
   if(!val('nm-preventive')) return alert('اكتب الإجراء الوقائي');
-  let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),reporter:val('nm-reporter'),place:val('nm-place'),desc:val('nm-desc'),direct:val('nm-direct'),root:val('nm-root'),corrective:val('nm-corrective'),preventive:val('nm-preventive'),status:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
+  let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),reporter:rep,reporterName:rep,place:val('nm-place'),desc:val('nm-desc'),direct:val('nm-direct'),root:val('nm-root'),corrective:val('nm-corrective'),preventive:val('nm-preventive'),status:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
   DB.nearMiss.push(rec); save(); renderNM();
   sendEmailNotify(rec);
   alert('✅ تم حفظ تقرير الحادث الوشيك\nوهيفتح الميل دلوقتي عشان يبعت إشعار للمدير والمشرف');
@@ -177,7 +245,6 @@ function addNM(){
   document.getElementById('prev-incident').innerHTML=''; document.getElementById('prev-action').innerHTML='';
   tempIncidentImgs=[]; tempActionImgs=[];
 }
-
 function sendEmailNotify(r){
   let mgr=document.getElementById('mgrEmail').value.trim();
   let sup=document.getElementById('supEmail').value.trim();
@@ -187,14 +254,12 @@ function sendEmailNotify(r){
   let body=encodeURIComponent('تقرير حادث وشيك جديد - RMED\n\n'+'📅 التاريخ: '+r.date+'\n⏰ الوقت: '+r.time+'\n🏢 الشركة: '+r.company+'\n👤 المبلغ: '+r.reporter+'\n📍 المكان: '+r.place+'\n📌 الحالة: '+r.status+'\n\n📝 وصف الحادث:\n'+r.desc+'\n\n⚡ السبب المباشر:\n'+r.direct+'\n\n🔍 السبب الجذري:\n'+r.root+'\n\n✅ الإجراء التصحيحي:\n'+r.corrective+'\n\n🛡️ الإجراء الوقائي:\n'+r.preventive+'\n\nعدد صور الحادث: '+r.incidentImgs.length+'\nعدد صور الإجراءات: '+r.actionImgs.length+'\n\nبرجاء المراجعة واتخاذ اللازم.');
   window.location.href='mailto:'+to+'?subject='+subject+'&body='+body;
 }
-
 function topOf(arr,key){
   let m={}; arr.forEach(x=>{ let k=x[key]; if(!k) return; m[k]=(m[k]||0)+1; });
   let keys=Object.keys(m); if(!keys.length) return null;
   keys.sort((a,b)=>m[b]-m[a]);
   return {name:keys[0],count:m[keys[0]],all:m,low:{name:keys[keys.length-1],count:m[keys[keys.length-1]]}};
 }
-
 function renderNM(){
   let q=(document.getElementById('searchNM').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
@@ -206,7 +271,6 @@ function renderNM(){
   sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
   let places=[...new Set(all.map(x=>x.place))];
   document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${p}">`).join('');
-
   let total=all.length;
   let open=all.filter(x=>x.status==='مفتوح').length;
   let closed=all.filter(x=>x.status==='مغلق').length;
@@ -215,7 +279,6 @@ function renderNM(){
   document.getElementById('k-closed').innerText=closed;
   document.getElementById('k-close-p').innerText=total?Math.round(closed/total*100)+'%':'0%';
   document.getElementById('k-open-p').innerText=total?Math.round(open/total*100)+'%':'0%';
-
   let tPlace=topOf(all,'place');
   document.getElementById('k-top-place').innerText=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
   document.getElementById('k-low-place').innerText=tPlace?tPlace.low.name+' ('+tPlace.low.count+')':'-';
@@ -224,8 +287,6 @@ function renderNM(){
   document.getElementById('k-low-person').innerText=tPerson?tPerson.low.name+' ('+tPerson.low.count+')':'-';
   let tComp=topOf(all,'company');
   document.getElementById('k-top-comp').innerText=tComp?tComp.name+' ('+tComp.count+')':'-';
-
-  // الشركات - نسبة الغلق والمفتوح
   let byComp={};
   all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0}; byComp[x.company].total++; if(x.status==='مغلق') byComp[x.company].closed++; else byComp[x.company].open++; });
   let compArr=Object.entries(byComp).map(([name,v])=>({name,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0,total:v.total}));
@@ -233,7 +294,6 @@ function renderNM(){
   document.getElementById('k-top-close-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].closeP+'% غلق)':'-';
   compArr.sort((a,b)=>b.openP-a.openP);
   document.getElementById('k-top-open-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].openP+'% مفتوح)':'-';
-
   let list=all.filter(x=>{
     let okQ=(x.company+x.place+x.desc+x.reporter).toLowerCase().includes(q);
     let okS=!fs||x.status===fs;
@@ -262,7 +322,7 @@ function exportNM(){
   let csv='التاريخ,الوقت,الشركة,اسم المبلغ,المكان,وصف الحادث الوشيك,السبب المباشر,السبب الجذري,الاجراء التصحيحي,الاجراء الوقائي,الحالة,عدد صور الحادث,عدد صور الاجراءات\n'+DB.nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+(x.corrective||'').replace(/"/g,'""')+'"','"'+(x.preventive||'').replace(/"/g,'""')+'"',x.status,(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='near-miss-reports.csv'; a.click();
 }
-let savedUser=localStorage.getItem('safetyUser')||'';
+let savedUser=getReporter();
 document.getElementById('currentUser').value=savedUser;
 document.getElementById('nm-reporter').value=savedUser;
 document.getElementById('mgrEmail').value=localStorage.getItem('mgrEmail')||'';
