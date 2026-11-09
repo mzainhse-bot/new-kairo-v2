@@ -139,7 +139,7 @@ table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
 <datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
 <script>
 // ===== غير ده بلينك جيت هاب بتاعك =====
-let SITE_URL = "https://mzainhse-bot.github.io/new-kairo-v2";
+let SHEET_URL = "https://script.google.com/macros/s/AKfycbwvhMg0xWjYZ6C3b0Dc9U0YDRuJzur_PhGtzpsjZRtH33JGTdsDsEzgLaeDmBGAES6m/exec";
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[]}');
 if(!DB.train) DB.train=[]; if(!DB.weekly) DB.weekly=[];
 function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
