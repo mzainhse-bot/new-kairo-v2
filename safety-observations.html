@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملاحظات السلامة | بوابة السلامة</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:#0f0f0f;color:#fff;padding:15px}
+h1{text-align:center;color:#d4af37;margin:5px 0}
+.sub{text-align:center;color:#aaa;margin-bottom:15px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:15px}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:12px;text-align:center}
+.card b{font-size:22px;color:#d4af37;display:block}
+.card span{font-size:13px;color:#ccc}
+.card.green b{color:#2ecc71}.card.red b{color:#e74c3c}.card.blue b{color:#3498db}
+.form{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;margin-bottom:15px}
+.form h3{color:#d4af37;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #444;background:#222;color:#fff}
+textarea{grid-column:1/-1;min-height:70px}
+label{font-size:13px;color:#ccc;display:block;margin-bottom:2px}
+button{background:#d4af37;color:#000;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
+.btn2{background:#27ae60;color:#fff}
+table{width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:12px;overflow:hidden;font-size:13px}
+th{background:#d4af37;color:#000;padding:10px}
+td{padding:8px;border-bottom:1px solid #333;text-align:center}
+img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer}
+.badge{padding:4px 8px;border-radius:20px;font-size:12px}
+.open{background:#e74c3c}.closed{background:#27ae60}
+.del{background:#c0392b;padding:5px 10px;border-radius:6px;color:#fff;cursor:pointer;border:none;width:auto}
+.top{display:flex;gap:10px;flex-wrap:wrap}
+.top button{flex:1}
+</style>
+</head>
+<body>
+<h1>📋 ملاحظات السلامة</h1>
+<p class="sub">Safety Observations - سجل كل الملاحظات وتابع قفلها</p>
+
+<div class="stats">
+<div class="card"><b id="total">0</b><span>إجمالي الملاحظات</span></div>
+<div class="card blue"><b id="cCond">0</b><span>ظرف غير آمن</span></div>
+<div class="card blue"><b id="cAct">0</b><span>سلوك غير آمن</span></div>
+<div class="card red"><b id="cOpen">0</b><span>مفتوح</span></div>
+<div class="card green"><b id="cClosed">0</b><span>مغلق</span></div>
+<div class="card"><b id="topLoc">-</b><span>أعلى مكان ملاحظات</span></div>
+<div class="card"><b id="lowLoc">-</b><span>أقل مكان ملاحظات</span></div>
+<div class="card"><b id="topPerson">-</b><span>أعلى شخص تقارير</span></div>
+<div class="card"><b id="lowPerson">-</b><span>أقل شخص تقارير</span></div>
+</div>
+
+<div class="form">
+<h3>➕ إضافة ملاحظة جديدة</h3>
+<div class="grid">
+<div><label>اسم المبلغ / صاحب التقرير</label><input id="reporter" placeholder="اكتب الاسم"></div>
+<div><label>التاريخ</label><input type="date" id="date"></div>
+<div><label>الساعة</label><input type="time" id="time"></div>
+<div><label>نوع الملاحظة</label><select id="type"><option>ظرف غير آمن</option><option>سلوك غير آمن</option></select></div>
+<div><label>مكان الملاحظة</label><input id="place" placeholder="مثال: مبنى A - الدور 3"></div>
+<div><label>الحالة</label><select id="status"><option>مفتوح</option><option>مغلق</option></select></div>
+<div><label>صورة الملاحظة</label><input type="file" id="img1" accept="image/*"></div>
+<div><label>صورة الغلق</label><input type="file" id="img2" accept="image/*"></div>
+</div>
+<label style="margin-top:10px">وصف الملاحظة</label>
+<textarea id="desc" placeholder="اكتب وصف الملاحظة بالتفصيل..."></textarea>
+<label>الإجراء التصحيحي المقترح</label>
+<textarea id="action" placeholder="اكتب الإجراء التصحيحي المقترح..."></textarea>
+<button onclick="addObs()">💾 حفظ الملاحظة</button>
+</div>
+
+<div class="top">
+<input id="search" placeholder="🔍 ابحث بالاسم / المكان / الوصف..." oninput="render()" style="flex:2">
+<select id="filterType" onchange="render()" style="flex:1"><option value="">كل الأنواع</option><option>ظرف غير آمن</option><option>سلوك غير آمن</option></select>
+<select id="filterStatus" onchange="render()" style="flex:1"><option value="">كل الحالات</option><option>مفتوح</option><option>مغلق</option></select>
+<button class="btn2" onclick="exportExcel()">📥 تصدير Excel</button>
+</div>
+
+<div style="overflow-x:auto;margin-top:10px">
+<table>
+<thead><tr><th>التاريخ</th><th>الساعة</th><th>المبلغ</th><th>النوع</th><th>المكان</th><th>الوصف</th><th>الإجراء</th><th>الحالة</th><th>صورة الملاحظة</th><th>صورة الغلق</th><th>حذف</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem('safety_obs')||'[]');
+document.getElementById('date').value = new Date().toISOString().slice(0,10);
+document.getElementById('time').value = new Date().toTimeString().slice(0,5);
+
+function readFile(file,cb){ if(!file){cb('');return} let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(file); }
+
+function addObs(){
+let reporter=document.getElementById('reporter').value.trim();
+let date=document.getElementById('date').value;
+let time=document.getElementById('time').value;
+let type=document.getElementById('type').value;
+let place=document.getElementById('place').value.trim();
+let status=document.getElementById('status').value;
+let desc=document.getElementById('desc').value.trim();
+let action=document.getElementById('action').value.trim();
+if(!reporter||!date||!place||!desc){alert('اكمل الاسم والتاريخ والمكان والوصف');return}
+readFile(document.getElementById('img1').files[0], img1=>{
+readFile(document.getElementById('img2').files[0], img2=>{
+data.unshift({reporter,date,time,type,place,status,desc,action,img1,img2});
+localStorage.setItem('safety_obs',JSON.stringify(data));
+document.getElementById('desc').value='';document.getElementById('action').value='';document.getElementById('place').value='';document.getElementById('reporter').value='';
+render(); alert('تم حفظ الملاحظة ✅');
+});});
+}
+
+function render(){
+let q=document.getElementById('search').value.toLowerCase();
+let ft=document.getElementById('filterType').value;
+let fs=document.getElementById('filterStatus').value;
+let filtered=data.filter(d=> (!ft||d.type==ft)&&(!fs||d.status==fs)&&((d.reporter+d.place+d.desc).toLowerCase().includes(q)) );
+document.getElementById('total').textContent=data.length;
+document.getElementById('cCond').textContent=data.filter(d=>d.type=='ظرف غير آمن').length;
+document.getElementById('cAct').textContent=data.filter(d=>d.type=='سلوك غير آمن').length;
+document.getElementById('cOpen').textContent=data.filter(d=>d.status=='مفتوح').length;
+document.getElementById('cClosed').textContent=data.filter(d=>d.status=='مغلق').length;
+
+function topLow(arr,key){
+if(!arr.length) return ['-','-'];
+let c={}; arr.forEach(d=>{c[d[key]]=(c[d[key]]||0)+1});
+let sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+return [sorted[0][0]+' ('+sorted[0][1]+')', sorted[sorted.length-1][0]+' ('+sorted[sorted.length-1][1]+')'];
+}
+let [tLoc,lLoc]=topLow(data,'place');
+let [tPer,lPer]=topLow(data,'reporter');
+document.getElementById('topLoc').textContent=tLoc;
+document.getElementById('lowLoc').textContent=lLoc;
+document.getElementById('topPerson').textContent=tPer;
+document.getElementById('lowPerson').textContent=lPer;
+
+document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
+<tr>
+<td>${d.date}</td><td>${d.time}</td><td>${d.reporter}</td><td>${d.type}</td><td>${d.place}</td>
+<td style="text-align:right;max-width:200px">${d.desc}</td><td style="text-align:right;max-width:200px">${d.action}</td>
+<td><span class="badge ${d.status=='مفتوح'?'open':'closed'}" onclick="toggle(${data.indexOf(d)})" style="cursor:pointer">${d.status}</span></td>
+<td>${d.img1?`<a href="${d.img1}" target="_blank"><img class="thumb" src="${d.img1}"></a>`:'-'}</td>
+<td>${d.img2?`<a href="${d.img2}" target="_blank"><img class="thumb" src="${d.img2}"></a>`:'-'}</td>
+<td><button class="del" onclick="delObs(${data.indexOf(d)})">حذف</button></td>
+</tr>`).join('') || '<tr><td colspan="11">لا توجد ملاحظات بعد</td></tr>';
+}
+function toggle(i){ data[i].status = data[i].status=='مفتوح'?'مغلق':'مفتوح'; localStorage.setItem('safety_obs',JSON.stringify(data)); render(); }
+function delObs(i){ if(confirm('متأكد تحذف الملاحظة؟')){ data.splice(i,1); localStorage.setItem('safety_obs',JSON.stringify(data)); render(); } }
+
+function exportExcel(){
+let csv='\uFEFFالتاريخ,الساعة,المبلغ,النوع,المكان,الوصف,الاجراء التصحيحي,الحالة\n';
+data.forEach(d=>{ csv+=`"${d.date}","${d.time}","${d.reporter}","${d.type}","${d.place}","${d.desc}","${d.action}","${d.status}"\n`; });
+let blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safety-observations.csv'; a.click();
+}
+render();
+</script>
+</body>
+</html>
