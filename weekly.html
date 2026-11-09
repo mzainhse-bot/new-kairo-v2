@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المحاضرة الأسبوعية - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1100px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:1fr;}}
+.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+.calc-box{background:#FFF3E0;border:2px dashed #FF9800;border-radius:12px;padding:14px;text-align:center;margin-top:14px;font-weight:bold;}
+.calc-box b{color:#D32F2F;font-size:20px;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> المحاضرة الأسبوعية</h1><small>محاضرة السلامة الأسبوعية - نص ساعة</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👷 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html" class="active">📅 المحاضرة الأسبوعية</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<!-- الاحصائيات فوق -->
+<div class="kpi-grid">
+<div class="kpi"><b id="k-lect">0</b><small>عدد المحاضرات الأسبوعية</small></div>
+<div class="kpi"><b id="k-att">0</b><small>إجمالي الحضور</small></div>
+<div class="kpi red"><b id="k-hours">0</b><small>إجمالي ساعات المحاضرات</small></div>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 5px;">📅 تسجيل محاضرة أسبوعية جديدة</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">عدد الساعات بيتحسب لوحده: عدد الحضور × 0.5 ساعة</p>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="w-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="w-time"></div>
+<div><label>📚 عنوان المحاضرة *</label><input id="w-title" placeholder="مثال: مخاطر الكهرباء - السقالات - الحريق"></div>
+<div><label>👥 عدد الحضور *</label><input type="number" id="w-count" min="1" placeholder="مثال: 20" oninput="calcHours()" inputmode="numeric"></div>
+<div><label>📍 مكان المحاضرة *</label><input id="w-place" placeholder="مثال: الموقع - قاعة الاجتماعات"></div>
+<div><label>🏢 اسم الشركة *</label><input id="w-company" value="RMED" placeholder="RMED"></div>
+</div>
+
+<div class="calc-box" id="calcBox">
+  🧮 الحسبة: <span id="calcText">اكتب عدد الحضور</span> = <b id="calcResult">0 ساعة</b>
+</div>
+
+<button class="btn red" onclick="addWeekly()">💾 حفظ المحاضرة الأسبوعية</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل المحاضرات الأسبوعية</h2>
+<input id="searchW" placeholder="ابحث بالعنوان أو المكان أو الشركة..." oninput="renderWeekly()">
+<div id="weeklyTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button class="btn2" onclick="exportWeekly()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV</button>
+<button class="btn2" onclick="clearWeekly()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[]}');
+if(!DB.weeklyLect) DB.weeklyLect=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+
+function calcHours(){
+  let count = parseInt(val('w-count')) || 0;
+  let hours = count * 0.5;
+  document.getElementById('calcText').innerText = count + ' × 0.5 ساعة';
+  document.getElementById('calcResult').innerText = hours + ' ساعة';
+  return hours;
+}
+
+function addWeekly(){
+  if(!val('w-date')) return alert('اختار التاريخ');
+  if(!val('w-time')) return alert('اختار الوقت');
+  if(!val('w-title')) return alert('اكتب عنوان المحاضرة');
+  if(!val('w-count') || parseInt(val('w-count'))<=0) return alert('اكتب عدد الحضور صح');
+  if(!val('w-place')) return alert('اكتب مكان المحاضرة');
+  if(!val('w-company')) return alert('اكتب اسم الشركة');
+  let count = parseInt(val('w-count'));
+  let hours = count * 0.5; // الحسبة الأساسية
+  let rec={date:val('w-date'),time:val('w-time'),title:val('w-title'),count:count,place:val('w-place'),company:val('w-company'),hours:hours,createdAt:new Date().toISOString()};
+  DB.weeklyLect.push(rec); save(); renderWeekly();
+  alert('✅ تم حفظ المحاضرة - '+rec.title+' - '+rec.count+' فرد - '+rec.hours+' ساعة');
+  ['w-title','w-place'].forEach(id=>setVal(id,'')); setVal('w-count',''); setVal('w-company','RMED');
+  document.getElementById('calcText').innerText='اكتب عدد الحضور'; document.getElementById('calcResult').innerText='0 ساعة';
+}
+
+function renderWeekly(){
+  let q=(document.getElementById('searchW').value||'').toLowerCase();
+  let list=DB.weeklyLect.filter(x=>(x.title+x.place+x.company).toLowerCase().includes(q));
+  let totalLect=DB.weeklyLect.length;
+  let totalAtt=DB.weeklyLect.reduce((s,x)=>s+(parseInt(x.count)||0),0);
+  let totalHours=DB.weeklyLect.reduce((s,x)=>s+(parseFloat(x.hours)||0),0);
+  document.getElementById('k-lect').innerText=totalLect;
+  document.getElementById('k-att').innerText=totalAtt;
+  document.getElementById('k-hours').innerText=totalHours+' ساعة';
+  if(!list.length){ document.getElementById('weeklyTable').innerHTML='<p style="text-align:center;color:#999;">مفيش محاضرات أسبوعية لسه - سجل أول محاضرة فوق</p>'; return; }
+  document.getElementById('weeklyTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان المحاضرة</th><th>الحضور</th><th>المكان</th><th>الشركة</th><th>الساعات</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.weeklyLect.indexOf(x);
+    return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.count}</td><td>${x.place}</td><td>${x.company}</td><td><span class="badge">${x.hours} ساعة</span></td><td><button class="btn2" style="color:#D32F2F;" onclick="delWeekly(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function delWeekly(i){ if(!confirm('تحذف المحاضرة دي؟')) return; DB.weeklyLect.splice(i,1); save(); renderWeekly(); }
+function clearWeekly(){ if(!confirm('تمسح كل المحاضرات الأسبوعية؟')) return; DB.weeklyLect=[]; save(); renderWeekly(); }
+function exportWeekly(){
+  if(!DB.weeklyLect.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,عنوان المحاضرة,عدد الحضور,مكان المحاضرة,اسم الشركة,عدد الساعات\n'+DB.weeklyLect.map(x=>[x.date,x.time,x.title,x.count,x.place,x.company,x.hours].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='weekly-lectures.csv'; a.click();
+}
+document.getElementById('w-date').value=new Date().toISOString().slice(0,10);
+renderWeekly();
+</script>
+</body>
+</html>
