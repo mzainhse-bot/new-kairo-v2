@@ -220,7 +220,24 @@ function workerProfileHTML(w){
     <h4>🏆 التكريم</h4><ul><li>لسه مفيش تكريم مسجل</li></ul>
   </div>`;
 }
-function showVerify(code){
+async function showVerify(code){
+  show('verify');
+  document.getElementById('verifyInput').value = code||'';
+  let box = document.getElementById('verifyBox');
+  // 1. دور في الموبايل الأول
+  let w = DB.workers.find(x=>String(x.code)===String(code)) || DB.workers.find(x=>x.name===code);
+  // 2. لو مش موجود، هاته من الشيت على طول
+  if(!w){
+    box.innerHTML = `<div class="profile-box"><h3>⏳ جاري البحث في الشيت عن كود ${code}...</h3></div>`;
+    await loadFromSheet();
+    w = DB.workers.find(x=>String(x.code)===String(code)) || DB.workers.find(x=>x.name===code);
+  }
+  if(!w){ 
+    box.innerHTML = `<div class="profile-box"><h3 style="color:red;">❌ الكود ${code} مش موجود</h3><p>اتأكد إنك سجلت العامل ده في الشيت، أو افتح لوحة التحكم ودوس "تحديث من الشيت"</p></div>`; 
+    return; 
+  }
+  box.innerHTML = workerProfileHTML(w);
+}
   show('verify');
   document.getElementById('verifyInput').value = code||'';
   let w = DB.workers.find(x=>x.code===String(code)) || DB.workers.find(x=>x.name===code);
