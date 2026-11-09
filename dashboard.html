@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إنجازاتي - RMED</title>
+<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}.top{background:#0A1F44;color:#fff;padding:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.top img{width:70px;height:85px;object-fit:cover;border-radius:12px;border:2px solid #fff}.container{max-width:900px;margin:auto;padding:16px}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;border-bottom:3px solid #0A1F44}.kpi b{font-size:22px;display:block}.kpi small{color:#78909C}table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}.btn{width:100%;background:#2E7D32;color:#fff;border:none;padding:15px;border-radius:12px;font-weight:bold;font-size:17px;cursor:pointer}.btn2{background:#ECEFF1;border:1px solid #CFD8DC;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:bold}</style>
+</head>
+<body>
+<div class="top"><img id="u-photo" src="https://via.placeholder.com/70x85?text=No"><div style="flex:1;"><h2 id="u-name" style="margin:0;">-</h2><p id="u-info" style="margin:4px 0;color:#B0BEC5;">-</p></div><button class="btn2" onclick="logout()">🚪 خروج</button></div>
+<div class="container">
+<div class="card"><h3 style="margin:0 0 10px;">🏆 إنجازاتك - التقارير اللي انت رفعتها</h3>
+<div class="kpi-grid"><div class="kpi"><b id="a-week">0</b><small>تقارير الأسبوع ده</small></div><div class="kpi"><b id="a-month">0</b><small>تقارير الشهر ده</small></div><div class="kpi"><b id="a-year">0</b><small>تقارير السنة دي</small></div><div class="kpi"><b id="a-total">0</b><small>إجمالي كل التقارير</small></div></div>
+<p style="margin:14px 0 0;">📊 أكتر صفحة بترفع عليها: <b id="a-top">-</b> | 📅 آخر تقرير: <b id="a-last">-</b></p></div>
+<div class="card"><h3 style="margin:0 0 10px;">📋 آخر 5 تقارير رفعتهم</h3><div id="last5"></div></div>
+<button class="btn" onclick="location.href='index.html'">🚀 ادخل على الموقع - ارفع تقاريرك</button>
+<p id="roleNote" style="text-align:center;color:#78909C;font-size:13px;"></p>
+</div>
+<script>
+let me=JSON.parse(localStorage.getItem('safetyUser')||'null'); if(!me) location.href='login.html';
+let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+document.getElementById('u-photo').src=me.photo||'https://via.placeholder.com/70x85?text=No';
+document.getElementById('u-name').innerText='أهلاً بيك، '+me.name;
+document.getElementById('u-info').innerText=me.job+' • '+me.email+' • الدور: '+(me.role==='manager'?'مدير':me.role==='supervisor'?'مشرف':me.role==='employee'?'موظف':'زائر');
+let roleNote={visitor:'👁️ انت زائر - هتشوف الإحصائيات والصفحات بدون تعديل',employee:'👷 انت موظف - تقدر ترفع تقارير في كل الصفحات ماعدا حالات عدم المطابقة وخانة تم التسليم في التصاريح',supervisor:'🦺 انت مشرف - ليك كل صلاحيات التعديل ماعدا صفحة المستخدمين',manager:'👑 انت المدير - ليك كل الصلاحيات المطلقة'};
+document.getElementById('roleNote').innerText=roleNote[me.role]||'';
+// جمع كل التقارير اللي رفعها باسمه أو إيميله
+let all=[];
+function collect(arr, label){ (arr||[]).forEach(x=>{ let rep=x.reporter||x.name||x.createdBy||x.user||''; if(rep===me.name||rep===me.email||(x.email&&x.email===me.email)){ all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||'', page:label}); } }); }
+collect(DB.scaffolds,'فحص السقالات'); collect(DB.accidents,'الحوادث'); collect(DB.violations,'مخالفات المقاولين'); collect(DB.empViolations,'مخالفات الموظفين'); collect(DB.ncr,'حالات عدم المطابقة'); collect(DB.nearMiss,'الحوادث الوشيكة'); collect(DB.observations,'ملاحظات السلامة'); collect(DB.permits,'التصاريح'); collect(DB.train,'التدريبات'); collect(DB.weeklyLect,'المحاضرة الأسبوعية'); collect(DB.induction,'المحاضرة الأولية');
+let now=new Date(); let inDays=d=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=d; };
+document.getElementById('a-week').innerText=all.filter(x=>inDays(x.date,7)).length;
+document.getElementById('a-month').innerText=all.filter(x=>inDays(x.date,30)).length;
+document.getElementById('a-year').innerText=all.filter(x=>inDays(x.date,365)).length;
+document.getElementById('a-total').innerText=all.length;
+let byPage={}; all.forEach(x=>byPage[x.page]=(byPage[x.page]||0)+1);
+let top=Object.entries(byPage).sort((a,b)=>b[1]-a[1])[0];
+document.getElementById('a-top').innerText=top? top[0]+' ('+top[1]+' تقرير)':'-';
+all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+document.getElementById('a-last').innerText=all.length? all[0].date+' - '+all[0].page:'مفيش تقارير لسه';
+document.getElementById('last5').innerHTML=all.length? '<table><tr><th>التاريخ</th><th>الصفحة</th><th>الوصف</th></tr>'+all.slice(0,5).map(x=>`<tr><td>${x.date||'-'}</td><td>${x.page}</td><td style="text-align:right;">${(x.desc||'').slice(0,80)}</td></tr>`).join('')+'</table>':'<p style="color:#999;text-align:center;">لسه مرفعتش تقارير، ابدأ من زرار الدخول على الموقع</p>';
+function logout(){ localStorage.removeItem('safetyUser'); location.href='login.html'; }
+</script></body></html>
