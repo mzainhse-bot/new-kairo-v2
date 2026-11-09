@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ملاحظات السلامة | بوابة السلامة</title>
+<title>ملاحظات السلامة | RMED</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;background:#0a0a0a;color:#fff}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;font-family:'Segoe UI',Tahoma,Arial}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#F4F6F9;color:#0A1F44}
+/* ✅ الشريط الجانبي - التصميم الجديد - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
@@ -23,7 +23,7 @@ body{margin:0;background:#0a0a0a;color:#fff}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s;padding:15px}
+.main{margin-right:260px;transition:0.3s;padding:0}
 .main.full{margin-right:0}
 .topbar{display:none}
 @media(max-width:900px){
@@ -35,38 +35,45 @@ body{margin:0;background:#0a0a0a;color:#fff}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h1{margin:0;font-size:21px} .page-head h1 span{color:#D32F2F} .page-head small{color:#78909C}
 .page-head button{background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;color:#0A1F44}
-h1{text-align:center;color:#C9A227;margin:5px 0;font-size:28px}
-.sub{text-align:center;color:#999;margin-bottom:20px}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px}
+h1.title{text-align:center;color:#0A1F44;margin:5px 0;font-size:26px}
+h1.title span{color:#D32F2F}
+.sub{text-align:center;color:#78909C;margin-bottom:18px;font-size:14px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
-.card{background:linear-gradient(145deg,#1a1a1a,#121212);border:1px solid #C9A227;border-radius:14px;padding:14px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
-.card b{font-size:24px;color:#C9A227;display:block}
-.card span{font-size:13px;color:#ddd}
-.card.green b{color:#2ecc71}.card.red b{color:#e74c3c}.card.blue b{color:#f1c40f}
-.form{background:#111;border:1px solid #C9A227;border-radius:14px;padding:18px;margin-bottom:18px}
-.form h3{color:#C9A227;margin:0 0 12px}
+.card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 2px 12px rgba(10,31,68,.08);border-bottom:3px solid #0A1F44}
+.card b{font-size:24px;color:#0A1F44;display:block}
+.card span{font-size:13px;color:#78909C}
+.card.green{border-bottom-color:#2E7D32} .card.green b{color:#2E7D32}
+.card.red{border-bottom-color:#D32F2F} .card.red b{color:#D32F2F}
+.card.blue{border-bottom-color:#FF9800} .card.blue b{color:#E65100}
+.form{background:#fff;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44}
+.form h3{color:#0A1F44;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
-input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid #333;background:#1e1e1e;color:#fff}
-textarea{grid-column:1/-1;min-height:70px}
-label{font-size:13px;color:#C9A227;display:block;margin-bottom:4px;font-weight:bold}
-button{background:linear-gradient(90deg,#C9A227,#f1c40f);color:#000;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
-.btn2{background:#1a1a1a !important;color:#C9A227 !important;border:1px solid #C9A227 !important}
-table{width:100%;border-collapse:collapse;background:#111;border-radius:14px;overflow:hidden;font-size:13px}
-th{background:#C9A227;color:#000;padding:11px}
-td{padding:9px;border-bottom:1px solid #222;text-align:center}
-img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #C9A227}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
-.open{background:#e74c3c}.closed{background:#27ae60}
-.del{background:#c0392b;padding:5px 10px;border-radius:6px;color:#fff;cursor:pointer;border:none;width:auto}
-.top{display:flex;gap:10px;flex-wrap:wrap}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1.5px solid #CFD8DC;background:#fff;color:#0A1F44;font-family:inherit;font-size:14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#0A1F44}
+textarea{grid-column:1/-1;min-height:70px;resize:vertical}
+label{font-size:13px;color:#0A1F44;display:block;margin-bottom:4px;font-weight:bold}
+button.save{background:#0A1F44;color:#fff;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
+button.save:hover{background:#1A3A6A}
+.btn2{background:#ECEFF1 !important;color:#0A1F44 !important;border:1px solid #CFD8DC !important;padding:11px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13px;box-shadow:0 2px 12px rgba(10,31,68,.08)}
+th{background:#0A1F44;color:#fff;padding:11px}
+td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;color:#0A1F44}
+img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #CFD8DC}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;color:#fff}
+.open{background:#D32F2F}.closed{background:#2E7D32}
+.del{background:#D32F2F;padding:5px 10px;border-radius:6px;color:#fff;cursor:pointer;border:none;width:auto;font-size:12px}
+.top{display:flex;gap:10px;flex-wrap:wrap;background:#fff;padding:14px;border-radius:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);margin-bottom:10px}
 .top button{flex:1}
 .top input,.top select{flex:1}
+.table-wrap{background:#fff;border-radius:14px;overflow:hidden;overflow-x:auto}
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -107,9 +114,10 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </aside>
 
 <div class="main">
-<div class="page-head"><span style="color:#999;font-size:13px;">RMED • Safety Observations</span><button onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div>
+<div class="page-head"><div><h1>RMED <span>•</span> ملاحظات السلامة</h1><small>Safety Observations - التصميم الجديد</small></div><button onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div>
+<div class="container">
 
-<h1>📋 ملاحظات السلامة</h1>
+<h1 class="title">📋 ملاحظات <span>السلامة</span></h1>
 <p class="sub">Safety Observations - سجل كل الملاحظات وتابع قفلها</p>
 
 <div class="stats">
@@ -140,7 +148,7 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <textarea id="desc" placeholder="اكتب وصف الملاحظة بالتفصيل..."></textarea>
 <label>الإجراء التصحيحي المقترح</label>
 <textarea id="action" placeholder="اكتب الإجراء التصحيحي المقترح..."></textarea>
-<button onclick="addObs()">💾 حفظ الملاحظة</button>
+<button class="save" onclick="addObs()">💾 حفظ الملاحظة</button>
 </div>
 
 <div class="top">
@@ -150,16 +158,17 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <button class="btn2" onclick="exportExcel()">📥 تصدير Excel</button>
 </div>
 
-<div style="overflow-x:auto;margin-top:10px">
+<div class="table-wrap">
 <table>
 <thead><tr><th>التاريخ</th><th>الساعة</th><th>المبلغ</th><th>النوع</th><th>المكان</th><th>الوصف</th><th>الإجراء</th><th>الحالة</th><th>صورة الملاحظة</th><th>صورة الغلق</th><th>حذف</th></tr></thead>
 <tbody id="tbody"></tbody>
 </table>
 </div>
+
+</div>
 </div>
 
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
@@ -179,7 +188,6 @@ function getReporter(){
 })();
 
 let data = JSON.parse(localStorage.getItem('safety_obs')||'[]');
-// ✅ توحيد البيانات: لو فيه ملاحظات قديمة في safetyDB ومش في safety_obs، ضمهم
 try{
   let DB0=JSON.parse(localStorage.getItem('safetyDB')||'{}');
   let oldObs=DB0.observations||DB0.safetyObservations||DB0.obs||[];
@@ -198,7 +206,6 @@ function syncToDB(){
 }
 document.getElementById('date').value = new Date().toISOString().slice(0,10);
 document.getElementById('time').value = new Date().toTimeString().slice(0,5);
-// ✅ املى اسم المبلغ من الحساب
 let _rep=getReporter(); if(_rep) document.getElementById('reporter').value=_rep;
 function readFile(file,cb){ if(!file){cb('');return} let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(file); }
 function addObs(){
