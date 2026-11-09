@@ -1,36 +1,193 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تسجيل الدخول - RMED</title>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1F44;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px}label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px}button{width:100%;background:#2E7D32;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}</style>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تسجيل الدخول - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#F4F6F9;color:#0A1F44}
+/* ✅ الشريط الجانبي - التصميم الجديد - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:fixed;top:0;right:0;left:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+  .main{padding-top:70px}
+}
+.page-head{position:fixed;top:0;left:0;right:260px;background:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #D32F2F;z-index:80}
+@media(max-width:900px){.page-head{right:0;top:48px}}
+.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0A1F44;margin-top:50px}
+label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}
+input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none}
+input:focus{border-color:#0A1F44}
+button.login-btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
+button.login-btn:hover{background:#1A3A6A}
+.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}
+.show-pass{font-size:12px;color:#0A1F44;cursor:pointer;font-weight:bold;display:inline-block;margin-top:5px}
+.debug{background:#FFF3E0;border:1px solid #FF9800;border-radius:10px;padding:10px;font-size:12px;color:#333;margin-top:12px;display:none}
+</style>
 </head>
-<body><div class="box">
+<body>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span></span></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+    <div><b id="sideName">ضيف</b><small id="sideRole">مش مسجل دخول</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login" class="active"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+</aside>
+
+<div class="page-head"><b>🏗️ RMED • تسجيل الدخول</b><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button></div>
+
+<div class="main">
+<div class="box">
 <h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد</p>
 <label>📧 الإيميل</label><input id="l-email" type="email" placeholder="example@gmail.com">
 <label>🔒 الباسورد</label><input id="l-pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') doLogin()">
-<button onclick="doLogin()">🚀 دخول</button>
+<span class="show-pass" onclick="togglePass()">👁️ إظهار الباسورد</span>
+<button class="login-btn" onclick="doLogin()">🚀 دخول</button>
 <button class="btn2" onclick="loginAsVisitor()">👁️ دخول كزائر - عرض بس بدون تعديل</button>
 <button class="btn2" onclick="location.href='index.html'">🏠 الرئيسية</button>
 <p style="text-align:center;font-size:13px;">معندكش حساب؟ <a href="register.html">سجل حساب جديد</a></p>
-<p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;"></p>
+<p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;min-height:18px;"></p>
+<div id="debugBox" class="debug"></div>
 </div>
+</div>
+
 <script>
-// لو مسجل دخول أصلاً، روح على إنجازاتي على طول
-(function(){ let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser'); if(u){ try{ let o=JSON.parse(u); if(o && o.name) location.href='dashboard.html'; }catch(e){} } })();
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); document.querySelector('.page-head').style.right = s.classList.contains('closed') ? '0' : '260px'; }
+}
+function togglePass(){
+  let p=document.getElementById('l-pass');
+  p.type = p.type==='password' ? 'text' : 'password';
+}
+// ✅ متدخلش على dashboard لو انت جاي من logout - بنشيل العلامة دي
+// لو مسجل دخول أصلاً، روح على إنجازاتي على طول - بس لو مش زائر ومش جاي من تسجيل خروج
+(function(){
+  // لو الرابط فيه ?logout متدخلش تلقائي
+  if(location.search.includes('logout')) return;
+  let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser');
+  if(u){ try{ let o=JSON.parse(u); if(o && o.name && o.role!=='visitor') location.href='dashboard.html'; }catch(e){} }
+})();
+
+function getAllUsers(){
+  let all=[];
+  let keys=['safetyDB','users','registeredUsers','safetyUsers','allUsers','appUsers'];
+  // 1 - من جوه safetyDB
+  try{
+    let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(Array.isArray(DB.users)) all.push(...DB.users);
+    if(Array.isArray(DB.registeredUsers)) all.push(...DB.registeredUsers);
+    if(Array.isArray(DB.accounts)) all.push(...DB.accounts);
+  }catch(e){}
+  // 2 - من مفاتيح لوحدها
+  keys.forEach(k=>{
+    if(k==='safetyDB') return;
+    try{
+      let v=JSON.parse(localStorage.getItem(k)||'null');
+      if(Array.isArray(v)) all.push(...v);
+    }catch(e){}
+  });
+  // 3 - حساب واحد متسجل لوحده
+  try{
+    let single=JSON.parse(localStorage.getItem('registeredUser')||'null');
+    if(single && single.email) all.push(single);
+  }catch(e){}
+  return all;
+}
+
 function doLogin(){
-  let email=document.getElementById('l-email').value.trim().toLowerCase(), pass=document.getElementById('l-pass').value;
-  if(!email) return document.getElementById('msg').innerText='اكتب الإيميل';
-  if(!pass) return document.getElementById('msg').innerText='اكتب الباسورد';
-  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); let user=(DB.users||[]).find(u=>(u.email||'').toLowerCase()===email);
-  if(!user) return document.getElementById('msg').innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
-  if(user.pass!==pass) return document.getElementById('msg').innerText='الباسورد غلط';
-  if(user.status==='pending') return document.getElementById('msg').innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
-  if(user.status==='rejected') return document.getElementById('msg').innerText='❌ حسابك اترفض من المدير';
-  // ✅ بنحفظ في الاتنين عشان الشريط يقرا صح في كل الصفحات
-  let session={email:user.email,name:user.name,job:user.job,role:user.role,photo:user.photo,img:user.photo,code:user.code||user.id||''};
+  let email=document.getElementById('l-email').value.trim().toLowerCase();
+  let pass=document.getElementById('l-pass').value;
+  let msg=document.getElementById('msg');
+  let debug=document.getElementById('debugBox');
+  msg.innerText='';
+  debug.style.display='none';
+  if(!email) return msg.innerText='اكتب الإيميل';
+  if(!pass) return msg.innerText='اكتب الباسورد';
+
+  let allUsers=getAllUsers();
+  // شيل التكرار
+  let unique={}; allUsers.forEach(u=>{ if(u && u.email) unique[u.email.toLowerCase()]=u; });
+  let list=Object.values(unique);
+
+  let user=list.find(u=>(u.email||'').toLowerCase().trim()===email);
+  if(!user){
+    msg.innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
+    debug.style.display='block';
+    debug.innerHTML='🔍 لقيت '+list.length+' حساب متسجل: '+(list.map(u=>u.email).join(' ، ')||'مفيش حسابات خالص')+'<br>لو حسابك مش هنا، يبقى التسجيل بيحفظ في مكان تاني، ابعتلي كود register.html وأنا أظبطه.';
+    return;
+  }
+  let savedPass = user.pass || user.password || user.pwd || '';
+  if(String(savedPass)!==String(pass)){
+    msg.innerText='الباسورد غلط - اتأكد انك كاتبه صح، ودوس إظهار الباسورد';
+    return;
+  }
+  let status=(user.status||'approved').toLowerCase();
+  if(status==='pending') return msg.innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
+  if(status==='rejected' || status==='blocked') return msg.innerText='❌ حسابك اترفض من المدير';
+
+  let session={email:user.email,name:user.name||user.fullName||email,job:user.job||user.role||'',role:user.role||user.job||'user',photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
   localStorage.setItem('safetyUser',JSON.stringify(session));
   localStorage.setItem('currentUser',JSON.stringify(session));
-  localStorage.setItem('safetyUserName',user.name);
-  location.href='dashboard.html';
+  localStorage.setItem('safetyUserName',session.name);
+  msg.style.color='#2E7D32';
+  msg.innerText='✅ تم الدخول بنجاح، جاري تحويلك...';
+  setTimeout(()=>location.href='dashboard.html',600);
 }
 function loginAsVisitor(){
   let session={email:'visitor@rmed.com',name:'زائر',job:'زائر',role:'visitor',photo:'',img:''};
@@ -38,4 +195,6 @@ function loginAsVisitor(){
   localStorage.setItem('currentUser',JSON.stringify(session));
   location.href='dashboard.html';
 }
-</script></body></html>
+</script>
+</body>
+</html>
