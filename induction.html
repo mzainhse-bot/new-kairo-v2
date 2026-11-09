@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المحاضرة الأولية - تسجيل موظف جديد - ROWAD</title>
+<title>المحاضرة الأولية - تسجيل موظف جديد - RMED</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial;}
@@ -49,7 +49,10 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 </head>
 <body>
 <header>
-  <div><h1>ROWAD <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+    <div><h1>RMED <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
+  </div>
   <a href="index.html">🏠 الرئيسية</a>
 </header>
 <div class="container">
@@ -59,6 +62,12 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
     <a href="train.html">🎓 التدريبات</a>
     <a href="weekly.html">📅 أسبوعية</a>
     <a href="stats.html">📈 الإحصائيات</a>
+  </div>
+
+  <!-- زرار ثابت للكارنيه -->
+  <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+    <div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>إصدار الكارنيهات - RMED</b></div>
+    <button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 إصدار كارنيه - ثابت</button>
   </div>
 
   <div class="kpi-grid">
@@ -89,6 +98,7 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
     <textarea id="f-notes" placeholder="ملاحظات... لو الرقم القومي اتكرر هيتكتب هنا أوتوماتيك: إعادة تأهيل"></textarea>
     <div id="rehabAlert" class="note-box">⚠️ <b>تنبيه:</b> الرقم القومي ده متسجل قبل كده باسم <b id="rehabName"></b>، هيتسجل في الملاحظات: <b>إعادة تأهيل</b> وهيتحسب في إحصائيات إعادة التأهيل.</div>
     <button class="btn" onclick="saveInductionWorker()">💾 حفظ الموظف + المحاضرة الأولية (0.25 ساعة)</button>
+    <button class="btn red" onclick="openLastCard()">🪪 إصدار كارنيه لآخر موظف مسجل</button>
   </div>
 
   <div class="card red">
@@ -98,10 +108,32 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
   </div>
 </div>
 
-<datalist id="companyList"><option value="ROWAD"></datalist>
+<datalist id="companyList"><option value="RMED"><option value="ROWAD"></datalist>
 <datalist id="jobList"><option value="عامل"><option value="كهربائي"><option value="سباك"><option value="نجار"><option value="حداد"><option value="مشرف"><option value="مهندس"><option value="سائق"></datalist>
 <datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
 <datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
+
+<!-- نافذة اختيار موظف للكارنيه - ثابتة -->
+<div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
+  <div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0A1F44;">🪪 إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
+    <label>اختر موظف مسجل</label>
+    <select id="issue-select" onchange="fillIssueFromWorker()"></select>
+    <p style="text-align:center;color:#999;font-size:13px;margin:10px 0;">— أو اكتب بيانات يدوي —</p>
+    <div class="grid">
+      <div><label>الاسم</label><input id="issue-name" placeholder="الاسم"></div>
+      <div><label>الكود</label><input id="issue-code" placeholder="الكود"></div>
+      <div><label>الرقم القومي</label><input id="issue-national" placeholder="14 رقم"></div>
+      <div><label>المهنة</label><input id="issue-job" placeholder="المهنة"></div>
+      <div><label>الشركة</label><input id="issue-company" placeholder="RMED" value="RMED"></div>
+      <div><label>الحالة الصحية</label><input id="issue-health" placeholder="سليم"></div>
+      <div><label>الهاتف</label><input id="issue-phone" placeholder="الهاتف"></div>
+      <div><label>طوارئ</label><input id="issue-emergency" placeholder="طوارئ"></div>
+    </div>
+    <label>صورة (اختياري)</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
+    <button class="btn red" onclick="showCardFromIssue()">👁️ عرض الكارنيه وش وضهر</button>
+  </div>
+</div>
 
 <!-- نافذة الكارنيه -->
 <div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
@@ -109,7 +141,11 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
     <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0A1F44;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
     <div id="cardFront" style="background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;box-shadow:0 4px 16px rgba(0,0,0,.15);">
       <div style="background:#0A1F44;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-        <b>ROWAD - رواد</b><span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">كارنيه موظف</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;" onerror="this.style.display='none'">
+          <b>RMED - JOINT VENTURE</b>
+        </div>
+        <span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">كارنيه موظف</span>
       </div>
       <div style="display:flex;gap:14px;padding:14px;">
         <img id="c-photo" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #0A1F44;">
@@ -126,6 +162,7 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
       <div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">الكود: <span id="c-code2"></span> - المحاضرة الأولية: <span id="c-date"></span></div>
     </div>
     <div id="cardBack" style="background:#0A1F44;color:#fff;border-radius:14px;padding:16px;margin-top:12px;">
+      <div style="text-align:center;margin-bottom:8px;"><img src="logo.png" style="width:130px;height:44px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;" onerror="this.style.display='none'"></div>
       <h4 style="margin:0 0 10px;color:#fff;text-align:center;">⚠️ تعليمات السلامة - يجب الالتزام بها</h4>
       <div style="font-size:13px;line-height:2;">
         1. ارتداء مهمات الوقاية الشخصية PPE طول وقت العمل<br>
@@ -137,7 +174,7 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
         7. في حالة الطوارئ التوجه لنقطة التجمع فورا<br>
         8. الكارنيه شخصي وممنوع إعطاؤه لشخص آخر
       </div>
-      <div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">في حالة فقدان الكارنيه إبلاغ السلامة فورا</div>
+      <div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">في حالة فقدان الكارنيه إبلاغ السلامة فورا - RMED</div>
     </div>
     <button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
     <button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
@@ -164,6 +201,8 @@ function previewPhoto(e){
   let f=e.target.files[0]; if(!f) return;
   let r=new FileReader(); r.onload=ev=>{ let img=document.getElementById('photoPrev'); img.src=ev.target.result; img.style.display='block'; }; r.readAsDataURL(f);
 }
+let issueImgData='';
+function previewIssuePhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ issueImgData=ev.target.result; }; r.readAsDataURL(f); }
 function checkNational(){
   let nat=val('f-national');
   let box=document.getElementById('rehabAlert');
@@ -224,34 +263,61 @@ function renderInd(){
   document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th><th>كارنيه</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td>${x.date||'-'}</td><td><span class="badge ${x.status==='نشط'?'green':x.status==='استقال'?'':'red'}">${x.status}</span></td><td>${x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-')}</td><td><button class="btn2" onclick="openCard(${x._idx})">🪪 كارنيه</button></td></tr>`).join('')+'</table>';
 }
 let currentCardIndex = 0;
-function openCard(idx){
-  let x = DB.induction[idx];
-  if(!x) return;
-  currentCardIndex = idx;
-  document.getElementById('c-photo').src = x.img || 'https://via.placeholder.com/110x140?text=No+Photo';
-  document.getElementById('c-name').innerText = x.name;
-  document.getElementById('c-code').innerText = x.code;
-  document.getElementById('c-code2').innerText = x.code;
+let currentCardData = null;
+function fillCardData(x){
+  currentCardData = x;
+  document.getElementById('c-photo').src = x.img || x.photo || issueImgData || 'https://via.placeholder.com/110x140?text=No+Photo';
+  document.getElementById('c-name').innerText = x.name || '-';
+  document.getElementById('c-code').innerText = x.code || '-';
+  document.getElementById('c-code2').innerText = x.code || '-';
   document.getElementById('c-job').innerText = x.job || '-';
-  document.getElementById('c-company').innerText = x.company || '-';
+  document.getElementById('c-company').innerText = x.company || 'RMED';
   document.getElementById('c-national').innerText = x.nationalId || '-';
   document.getElementById('c-health').innerText = x.health || '-';
   document.getElementById('c-phone').innerText = x.phone || '-';
   document.getElementById('c-emergency').innerText = x.emergency || '-';
   document.getElementById('c-kin').innerText = x.kin || '-';
   document.getElementById('c-status').innerText = x.status || 'نشط';
-  document.getElementById('c-date').innerText = x.date || '-';
+  document.getElementById('c-date').innerText = x.date || new Date().toISOString().slice(0,10);
   document.getElementById('cardModal').style.display='block';
 }
+function openCard(idx){
+  let x = DB.induction[idx];
+  if(!x) return;
+  currentCardIndex = idx;
+  fillCardData(x);
+}
+function openLastCard(){
+  if(!DB.induction.length) return alert('سجل موظف الأول عشان تطلعله كارنيه، أو دوس على زرار إصدار كارنيه الثابت واكتب بيانات يدوي');
+  openCard(DB.induction.length - 1);
+}
+function openIssueCard(){
+  let sel=document.getElementById('issue-select');
+  sel.innerHTML='<option value="">-- اختر موظف --</option>' + (DB.induction||[]).map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join('');
+  document.getElementById('issueModal').style.display='block';
+}
+function fillIssueFromWorker(){
+  let idx=document.getElementById('issue-select').value;
+  if(idx==='') return;
+  let x=DB.induction[idx];
+  setVal('issue-name', x.name); setVal('issue-code', x.code); setVal('issue-national', x.nationalId||''); setVal('issue-job', x.job||''); setVal('issue-company', x.company||'RMED'); setVal('issue-health', x.health||''); setVal('issue-phone', x.phone||''); setVal('issue-emergency', x.emergency||'');
+  issueImgData = x.img || x.photo || '';
+  currentCardIndex = parseInt(idx);
+}
+function showCardFromIssue(){
+  if(!val('issue-name')) return alert('اكتب الاسم أو اختر موظف');
+  document.getElementById('issueModal').style.display='none';
+  fillCardData({ name:val('issue-name'), code:val('issue-code'), nationalId:val('issue-national'), job:val('issue-job'), company:val('issue-company'), health:val('issue-health'), phone:val('issue-phone'), emergency:val('issue-emergency'), kin:'', status:'نشط', date:new Date().toISOString().slice(0,10), img:issueImgData });
+}
 async function downloadCard(which){
-  let name = DB.induction[currentCardIndex]?.name || 'card';
+  let name = currentCardData?.name || DB.induction[currentCardIndex]?.name || 'card';
   if(which==='front'){
-    let canvas = await html2canvas(document.getElementById('cardFront'), {scale:2});
+    let canvas = await html2canvas(document.getElementById('cardFront'), {scale:2, useCORS:true});
     let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=canvas.toDataURL('image/png'); a.click();
     return;
   }
-  let c1 = await html2canvas(document.getElementById('cardFront'), {scale:2});
-  let c2 = await html2canvas(document.getElementById('cardBack'), {scale:2});
+  let c1 = await html2canvas(document.getElementById('cardFront'), {scale:2, useCORS:true});
+  let c2 = await html2canvas(document.getElementById('cardBack'), {scale:2, useCORS:true});
   let final = document.createElement('canvas');
   final.width = Math.max(c1.width, c2.width);
   final.height = c1.height + c2.height + 20;
