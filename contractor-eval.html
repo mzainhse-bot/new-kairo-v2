@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقييم المقاولين - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#FF9800;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.orange{border-top-color:#FF9800;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:20px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
+.badge.exc{background:#E8F5E9;color:#2E7D32;} .badge.good{background:#E3F2FD;color:#1565C0;} .badge.avg{background:#FFF3E0;color:#E65100;} .badge.weak{background:#FFEBEE;color:#D32F2F;}
+.bar{height:16px;background:#ECEFF1;border-radius:20px;overflow:hidden;margin:6px 0;}
+.bar-fill{height:100%;background:#2E7D32;}
+.bar-fill.orange{background:#FF9800;} .bar-fill.red{background:#D32F2F;}
+.score-box{text-align:center;padding:20px;border-radius:16px;color:#fff;margin-bottom:14px;}
+.score-box b{font-size:48px;display:block;line-height:1;}
+@media print{ header,.nav,.no-print{display:none!important;} body{background:#fff;} .container{max-width:100%;padding:0;} .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;} .print-header{display:block!important;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:14px;} }
+.print-header{display:none;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> تقييم المقاولين</h1><small>Contractor Evaluation</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav no-print">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
+<a href="accidents.html">🚑 الحوادث</a>
+<a href="scaffolds.html">🏗️ فحص السقالات</a>
+<a href="employee-file.html">📁 ملفات الموظفين</a>
+<a href="ncr.html">📄 حالات عدم المطابقة</a>
+<a href="contractor-eval.html" class="active">🏆 تقييم المقاولين</a>
+</div>
+
+<div class="card no-print">
+<h2 style="margin:0 0 10px;">🔍 البحث عن شركة</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<select id="companySelect" onchange="renderEval()" style="flex:2;"><option value="">-- اختار اسم الشركة --</option></select>
+<select id="periodSelect" onchange="renderEval()" style="flex:1;">
+<option value="all">📊 إجمالي المشروع - من البداية حتى الآن</option>
+<option value="15">🗓️ نصف شهري - آخر 15 يوم</option>
+<option value="30">🗓️ شهري - آخر 30 يوم</option>
+<option value="90">📅 ربع سنوي - آخر 3 شهور</option>
+<option value="180">📅 نصف سنوي - آخر 6 شهور</option>
+<option value="365">📅 سنوي - آخر 12 شهر</option>
+</select>
+</div>
+<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اختار الشركة، والفترة، كل الأرقام هتتغير أوتوماتيك حسب الفترة</p>
+</div>
+
+<div id="evalArea" style="display:none;">
+<div class="print-header"><h1 style="margin:0;">RMED - تقييم مقاول</h1><p style="margin:4px 0;color:#666;">شركة: <span id="printCompany"></span> | الفترة: <span id="printPeriod"></span> | تاريخ التقرير: <span id="printDate"></span></p></div>
+
+<div class="score-box" id="scoreBox" style="background:#2E7D32;">
+<small style="font-size:14px;">🏆 درجة تقييم المقاول - <span id="scoreCompany"></span></small>
+<b id="scoreVal">0%</b>
+<span id="scoreLabel" style="font-size:16px;font-weight:bold;">-</span>
+<p id="scoreDesc" style="font-size:12px;margin:6px 0 0;opacity:.9;"></p>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi"><b id="e-workers">0</b><small>آخر عدد عاملين مسجل - من daily-count</small></div>
+<div class="kpi"><b id="e-safety">0</b><small>عدد قسم السلامة - من daily-count</small></div>
+<div class="kpi"><b id="e-induction">0</b><small>عدد المحاضرات الأولية</small></div>
+<div class="kpi"><b id="e-induction-h">0 ساعة</b><small>عدد الساعات - المحاضرة × ربع ساعة</small></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">🎓 التدريبات - من صفحة تسجيل التدريبات</h3>
+<div class="kpi-grid">
+<div class="kpi"><b id="e-train-count">0</b><small>عدد التدريبات</small></div>
+<div class="kpi"><b id="e-train-hours">0 ساعة</b><small>إجمالي الساعات - مجموع خانة الساعات</small></div>
+<div class="kpi"><b id="e-train-people">0</b><small>عدد المتدربين</small></div>
+<div class="kpi"><b id="e-train-avg">0</b><small>متوسط المتدربين في التدريب</small></div>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">📅 المحاضرات الأسبوعية</h3>
+<div class="kpi-grid">
+<div class="kpi"><b id="e-weekly-count">0</b><small>عدد المحاضرات الأسبوعية - إجمالي</small></div>
+<div class="kpi"><b id="e-weekly-att">0</b><small>عدد الحضور - إجمالي</small></div>
+<div class="kpi"><b id="e-weekly-h">0 ساعة</b><small>عدد الساعات - الحضور × نصف ساعة</small></div>
+<div class="kpi"><b id="e-weekly-avg">0</b><small>متوسط الحضور في المحاضرة</small></div>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">⚠️ المخالفات - من صفحة مخالفات المقاولين</h3>
+<div class="kpi-grid">
+<div class="kpi red"><b id="e-viol-count">0</b><small>عدد المخالفات - إجمالي</small></div>
+<div class="kpi red"><b id="e-viol-money">0 جنيه</b><small>إجمالي المبالغ المخصومة</small></div>
+<div class="kpi"><b id="e-viol-avg">0 جنيه</b><small>متوسط الخصم في المخالفة</small></div>
+<div class="kpi orange"><b id="e-viol-top">-</b><small>أعلى بند مخالفة تكراراً - وصف المخالفة</small></div>
+</div>
+<div id="violTopTable"></div>
+</div>
+
+<div class="grid">
+<div class="card">
+<h3 style="margin:0 0 8px;">📄 حالات عدم المطابقة</h3>
+<b id="e-ncr-total" style="font-size:26px;">0</b> <small>إجمالي</small><br>
+<span>نسبة الغلق: <b id="e-ncr-close-p">0%</b> - مغلق <b id="e-ncr-closed">0</b> - مفتوح <b id="e-ncr-open">0</b></span>
+<div class="bar"><div class="bar-fill" id="e-ncr-bar" style="width:0%"></div></div>
+<canvas id="chartNcr" width="300" height="90"></canvas>
+</div>
+<div class="card">
+<h3 style="margin:0 0 8px;">📋 ملاحظات السلامة</h3>
+<b id="e-obs-total" style="font-size:26px;">0</b> <small>إجمالي</small><br>
+<span>نسبة الغلق: <b id="e-obs-close-p">0%</b> - مغلق <b id="e-obs-closed">0</b> - مفتوح <b id="e-obs-open">0</b></span>
+<div class="bar"><div class="bar-fill" id="e-obs-bar" style="width:0%"></div></div>
+<canvas id="chartObs" width="300" height="90"></canvas>
+</div>
+</div>
+
+<div class="grid">
+<div class="card">
+<h3 style="margin:0 0 8px;">⚡ الحوادث الوشيكة</h3>
+<b id="e-near-total" style="font-size:26px;">0</b> <small>إجمالي</small><br>
+<span>نسبة الغلق: <b id="e-near-close-p">0%</b> - مغلق <b id="e-near-closed">0</b> - مفتوح <b id="e-near-open">0</b></span>
+<div class="bar"><div class="bar-fill orange" id="e-near-bar" style="width:0%"></div></div>
+<canvas id="chartNear" width="300" height="90"></canvas>
+</div>
+<div class="card">
+<h3 style="margin:0 0 8px;">📋 تصاريح العمل</h3>
+<b id="e-permit-total" style="font-size:26px;">0</b> <small>إجمالي التصاريح المسجلة باسم الشركة</small><br>
+<span>نسبة التسليم: <b id="e-permit-del-p">0%</b> - مسلم <b id="e-permit-del">0</b> - غير مسلم <b id="e-permit-undel">0</b></span>
+<div class="bar"><div class="bar-fill" id="e-permit-bar" style="width:0%"></div></div>
+<canvas id="chartPermit" width="300" height="90"></canvas>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">🚑 الحوادث - الإصابات وتصنيفها</h3>
+<div class="kpi-grid">
+<div class="kpi red"><b id="e-acc-total">0</b><small>عدد الحوادث - إجمالي</small></div>
+<div class="kpi red"><b id="e-acc-inj">0</b><small>عدد الإصابات</small></div>
+<div class="kpi"><b id="e-acc-rate">0</b><small>معدل الحوادث لكل 100 عامل</small></div>
+<div class="kpi"><b id="e-acc-top">-</b><small>أكثر تصنيف تكراراً</small></div>
+</div>
+<div id="accClassTable"></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 10px;">📈 رسم بياني - نسبة التغيير في كل شهر</h3>
+<p style="color:#78909C;font-size:12px;margin:0 0 10px;">مقارنة كل شهر باللي قبله، من بداية التسجيل حتى لحظة العرض - اختار البند اللي عايز تقارنه</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<select id="trendMetric" onchange="renderEval()" style="flex:1;">
+<option value="viol">⚠️ عدد المخالفات</option>
+<option value="ncr">📄 حالات عدم المطابقة</option>
+<option value="obs">📋 ملاحظات السلامة</option>
+<option value="near">⚡ الحوادث الوشيكة</option>
+<option value="acc">🚑 الحوادث</option>
+<option value="train">🎓 عدد التدريبات</option>
+<option value="weekly">📅 عدد المحاضرات الأسبوعية</option>
+<option value="permit">📋 عدد التصاريح</option>
+<option value="money">💰 المبالغ المخصومة</option>
+</select>
+</div>
+<canvas id="trendChart" width="800" height="220" style="width:100%;margin-top:10px;"></canvas>
+<div id="trendTable"></div>
+</div>
+
+<div style="display:flex;gap:8px;" class="no-print">
+<button class="btn2" onclick="window.print()" style="flex:1;padding:13px;background:#0A1F44;color:#fff;">🖨️ تصدير PDF للطباعة والعرض على الإدارة</button>
+<button class="btn2" onclick="exportEval()" style="flex:1;padding:13px;">📥 تصدير Excel</button>
+</div>
+</div>
+
+<div id="emptyState" style="text-align:center;color:#999;padding:40px;">
+<p style="font-size:40px;margin:0;">🏆</p>
+<p>اختار اسم الشركة عشان التقييم يظهر هنا</p>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+function gf(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!=='' && o[k]!==null) return o[k]; } return ''; }
+function num(v){ let n=parseFloat(String(v||'').replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n; }
+function inPeriod(dateStr, period){
+  if(period==='all' || !dateStr) return true;
+  let d=new Date(dateStr); if(isNaN(d)) return true;
+  let days=parseInt(period); let diff=(new Date()-d)/(1000*60*60*24);
+  return diff<=days;
+}
+function getAllCompanies(){
+  let s=new Set();
+  ['dailyCount','workers','induction','train','weeklyLect','violations','ncr','observations','safetyObs','nearMiss','accidents','permits','permitsList'].forEach(k=>{ (DB[k]||[]).forEach(x=>{ let c=gf(x,['company']); if(c) s.add(c); }); });
+  (DB.daily||[]).forEach(x=>{ if(x.company) s.add(x.company); });
+  return [...s].sort();
+}
+function fillCompanies(){
+  let sel=document.getElementById('companySelect');
+  sel.innerHTML='<option value="">-- اختار اسم الشركة --</option>'+getAllCompanies().map(c=>`<option>${c}</option>`).join('');
+}
+function drawPie(id, closed, open){
+  let c=document.getElementById(id); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,300,90);
+  let total=closed+open; if(!total){ ctx.fillStyle='#999'; ctx.font='13px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',150,45); return; }
+  let w1=closed/total*280; let w2=open/total*280;
+  ctx.fillStyle='#2E7D32'; ctx.fillRect(10,20,w1,28);
+  ctx.fillStyle='#FF9800'; ctx.fillRect(10+w1,20,w2,28);
+  ctx.fillStyle='#0A1F44'; ctx.font='bold 13px Arial'; ctx.textAlign='left'; ctx.fillText('مغلق '+closed+' ('+Math.round(closed/total*100)+'%)',10,70);
+  ctx.fillStyle='#E65100'; ctx.fillText('مفتوح '+open+' ('+Math.round(open/total*100)+'%)',160,70);
+}
+function drawTrend(data){
+  let c=document.getElementById('trendChart'); let ctx=c.getContext('2d'); ctx.clearRect(0,0,800,220);
+  if(!data.length){ ctx.fillStyle='#999'; ctx.font='14px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات شهرية',400,110); return; }
+  let max=Math.max(...data.map(d=>d.val),1); let barW=800/data.length;
+  data.forEach((d,i)=>{
+    let h=(d.val/max)*150; let x=i*barW+10; let y=190-h;
+    ctx.fillStyle='#0A1F44'; ctx.fillRect(x,y,Math.max(barW-20,20),h);
+    ctx.fillStyle='#0A1F44'; ctx.font='bold 12px Arial'; ctx.textAlign='center'; ctx.fillText(d.val, x+(barW-20)/2, y-6);
+    ctx.fillStyle='#666'; ctx.font='11px Arial'; ctx.fillText(d.label, x+(barW-20)/2, 205);
+    if(d.change!==null){ ctx.fillStyle=d.change>=0?'#D32F2F':'#2E7D32'; ctx.font='bold 11px Arial'; ctx.fillText((d.change>=0?'+':'')+d.change+'%', x+(barW-20)/2, 12); }
+  });
+}
+function renderEval(){
+  let comp=document.getElementById('companySelect').value;
+  let period=document.getElementById('periodSelect').value;
+  let periodLabel=document.getElementById('periodSelect').options[document.getElementById('periodSelect').selectedIndex].text;
+  if(!comp){ document.getElementById('evalArea').style.display='none'; document.getElementById('emptyState').style.display='block'; return; }
+  document.getElementById('evalArea').style.display='block'; document.getElementById('emptyState').style.display='none';
+  document.getElementById('printCompany').innerText=comp; document.getElementById('printPeriod').innerText=periodLabel;
+  document.getElementById('printDate').innerText=new Date().toISOString().slice(0,10);
+  document.getElementById('scoreCompany').innerText=comp;
+
+  // 1 - العاملين و قسم السلامة - من آخر يوم في daily-count
+  let daily=(DB.dailyCount||DB.daily||[]).filter(x=>gf(x,['company'])===comp).sort((a,b)=>(gf(a,['date'])||'').localeCompare(gf(b,['date'])||''));
+  let lastDaily=daily.length?daily[daily.length-1]:{};
+  let workersLast=num(gf(lastDaily,['totalWorkers','workers','total','count','عدد_العمال','عاملين'])) || num(gf(lastDaily,['workersCount']));
+  let safetyLast=num(gf(lastDaily,['safety','safetyCount','safetyStaff','قسم_السلامة','safetyDept'])) || 0;
+  // لو مفيش في daily-count، جرب workers
+  if(!workersLast){ workersLast=(DB.workers||[]).filter(x=>gf(x,['company'])===comp).length; }
+  document.getElementById('e-workers').innerText=workersLast;
+  document.getElementById('e-safety').innerText=safetyLast;
+
+  // 2 - المحاضرات الأولية
+  let induction=(DB.induction||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  document.getElementById('e-induction').innerText=induction.length;
+  document.getElementById('e-induction-h').innerText=(induction.length*0.25).toFixed(2)+' ساعة';
+
+  // 3 - التدريبات
+  let trains=(DB.train||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let trainHours=trains.reduce((s,x)=>s+num(gf(x,['hours','duration','ساعات'])),0);
+  let trainPeople=trains.reduce((s,x)=>s+num(gf(x,['attendees','trainees','participants','عدد_المتدربين','count'])),0);
+  // لو عدد المتدربين متسجل كقائمة
+  trains.forEach(x=>{ if(Array.isArray(x.trainees)) trainPeople+=x.trainees.length; if(Array.isArray(x.attendeesList)) trainPeople+=x.attendeesList.length; });
+  document.getElementById('e-train-count').innerText=trains.length;
+  document.getElementById('e-train-hours').innerText=trainHours+' ساعة';
+  document.getElementById('e-train-people').innerText=trainPeople;
+  document.getElementById('e-train-avg').innerText=trains.length? (trainPeople/trains.length).toFixed(1):0;
+
+  // 4 - المحاضرات الأسبوعية
+  let weekly=(DB.weeklyLect||DB.weekly||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let weeklyAtt=weekly.reduce((s,x)=>s+num(gf(x,['attendees','attendance','حضور','count'])),0);
+  weekly.forEach(x=>{ if(Array.isArray(x.attendeesList)) weeklyAtt+=x.attendeesList.length; });
+  document.getElementById('e-weekly-count').innerText=weekly.length;
+  document.getElementById('e-weekly-att').innerText=weeklyAtt;
+  document.getElementById('e-weekly-h').innerText=(weeklyAtt*0.5).toFixed(1)+' ساعة';
+  document.getElementById('e-weekly-avg').innerText=weekly.length? (weeklyAtt/weekly.length).toFixed(1):0;
+
+  // 5 - المخالفات
+  let viols=(DB.violations||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let violMoney=viols.reduce((s,x)=>s+num(gf(x,['deduction','amount','خصم','money','fine'])),0);
+  document.getElementById('e-viol-count').innerText=viols.length;
+  document.getElementById('e-viol-money').innerText=violMoney.toLocaleString()+' جنيه';
+  document.getElementById('e-viol-avg').innerText=viols.length? Math.round(violMoney/viols.length).toLocaleString()+' جنيه': '0 جنيه';
+  let byDesc={}; viols.forEach(v=>{ let d=gf(v,['desc','description','violation','بند','item'])||'بدون وصف'; byDesc[d]=(byDesc[d]||0)+1; });
+  let topDesc=Object.entries(byDesc).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('e-viol-top').innerText=topDesc? topDesc[0]+' ('+topDesc[1]+' مرة)':'-';
+  document.getElementById('violTopTable').innerHTML=Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).length? '<table><tr><th>بند المخالفة - الوصف</th><th>عدد التكرار</th></tr>'+Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<tr><td style="text-align:right;">${k}</td><td><b>${v}</b></td></tr>`).join('')+'</table>':'';
+
+  // 6 - NCR
+  let ncr=(DB.ncr||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let ncrClosed=ncr.filter(x=>gf(x,['status'])==='تم الغلق').length;
+  let ncrOpen=ncr.length-ncrClosed;
+  let ncrCloseP=ncr.length?Math.round(ncrClosed/ncr.length*100):0;
+  document.getElementById('e-ncr-total').innerText=ncr.length;
+  document.getElementById('e-ncr-closed').innerText=ncrClosed; document.getElementById('e-ncr-open').innerText=ncrOpen;
+  document.getElementById('e-ncr-close-p').innerText=ncrCloseP+'%'; document.getElementById('e-ncr-bar').style.width=ncrCloseP+'%';
+  drawPie('chartNcr', ncrClosed, ncrOpen);
+
+  // 7 - ملاحظات السلامة
+  let obs=(DB.observations||DB.safetyObs||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let obsClosed=obs.filter(x=>{ let s=gf(x,['status']); return s==='تم الغلق'||s==='مغلق'||s==='Closed'; }).length;
+  let obsOpen=obs.length-obsClosed;
+  let obsCloseP=obs.length?Math.round(obsClosed/obs.length*100):0;
+  document.getElementById('e-obs-total').innerText=obs.length;
+  document.getElementById('e-obs-closed').innerText=obsClosed; document.getElementById('e-obs-open').innerText=obsOpen;
+  document.getElementById('e-obs-close-p').innerText=obsCloseP+'%'; document.getElementById('e-obs-bar').style.width=obsCloseP+'%';
+  drawPie('chartObs', obsClosed, obsOpen);
+
+  // 8 - الحوادث الوشيكة
+  let near=(DB.nearMiss||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let nearClosed=near.filter(x=>{ let s=gf(x,['status']); return s==='تم الغلق'||s==='مغلق'||s==='Closed'; }).length;
+  let nearOpen=near.length-nearClosed;
+  let nearCloseP=near.length?Math.round(nearClosed/near.length*100):0;
+  document.getElementById('e-near-total').innerText=near.length;
+  document.getElementById('e-near-closed').innerText=nearClosed; document.getElementById('e-near-open').innerText=nearOpen;
+  document.getElementById('e-near-close-p').innerText=nearCloseP+'%'; document.getElementById('e-near-bar').style.width=nearCloseP+'%';
+  drawPie('chartNear', nearClosed, nearOpen);
+
+  // 9 - التصاريح
+  let permits=(DB.permits||DB.permitsList||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let permitDel=permits.filter(x=>{ let v=gf(x,['delivered','تم_التسليم','تسليم','status']); return v==='تم التسليم'||v==='نعم'||v===true||v==='Yes'||String(v).includes('تم'); }).length;
+  let permitUndel=permits.length-permitDel;
+  let permitDelP=permits.length?Math.round(permitDel/permits.length*100):0;
+  document.getElementById('e-permit-total').innerText=permits.length;
+  document.getElementById('e-permit-del').innerText=permitDel; document.getElementById('e-permit-undel').innerText=permitUndel;
+  document.getElementById('e-permit-del-p').innerText=permitDelP+'%'; document.getElementById('e-permit-bar').style.width=permitDelP+'%';
+  drawPie('chartPermit', permitDel, permitUndel);
+
+  // 10 - الحوادث
+  let accs=(DB.accidents||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  document.getElementById('e-acc-total').innerText=accs.length;
+  document.getElementById('e-acc-inj').innerText=accs.length;
+  document.getElementById('e-acc-rate').innerText=workersLast? (accs.length/workersLast*100).toFixed(2):0;
+  let byClass={}; accs.forEach(a=>{ let arr=a.classes||[gf(a,['class','تصنيف'])]; arr.forEach(c=>{ if(c) byClass[c]=(byClass[c]||0)+1; }); });
+  let topClass=Object.entries(byClass).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('e-acc-top').innerText=topClass? topClass[0]+' ('+topClass[1]+')':'-';
+  document.getElementById('accClassTable').innerHTML=Object.entries(byClass).length? '<table><tr><th>تصنيف الإصابة / الحادث</th><th>العدد</th></tr>'+Object.entries(byClass).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${k}</td><td><b>${v}</b></td></tr>`).join('')+'</table>':'<p style="color:#2E7D32;">✅ مفيش حوادث في الفترة دي</p>';
+
+  // درجة التقييم
+  let score=100;
+  score-=Math.min(30, viols.length*2);
+  score-=Math.min(20, accs.length*5);
+  score-=Math.min(15, ncrOpen*2);
+  score-=Math.min(10, obsOpen*1);
+  score-=Math.min(10, nearOpen*1);
+  score+=Math.min(10, (ncrCloseP+obsCloseP+nearCloseP+permitDelP)/40);
+  score=Math.max(0,Math.min(100,Math.round(score)));
+  let box=document.getElementById('scoreBox');
+  let label='', color='';
+  if(score>=90){ label='⭐ ممتاز'; color='#2E7D32'; } else if(score>=75){ label='✅ جيد جداً'; color='#1565C0'; } else if(score>=60){ label='⚠️ مقبول'; color='#FF9800'; } else { label='🔴 ضعيف - يحتاج تحسين عاجل'; color='#D32F2F'; }
+  box.style.background=color;
+  document.getElementById('scoreVal').innerText=score+'%';
+  document.getElementById('scoreLabel').innerText=label;
+  document.getElementById('scoreDesc').innerText='الدرجة بتتخصم منها المخالفات والحوادث والحالات المفتوحة، وبتزيد بنسبة الغلق والتسليم - الفترة: '+periodLabel;
+
+  // رسم بياني التغيير الشهري - لكل بند لوحده
+  let metric=document.getElementById('trendMetric').value;
+  let metricData={viol:viols, ncr:ncr, obs:obs, near:near, acc:accs, train:trains, weekly:weekly, permit:permits};
+  let source=metric==='money'? viols : metricData[metric];
+  let byMonth={};
+  (source||[]).forEach(x=>{ let d=gf(x,['date']); if(!d) return; let key=d.slice(0,7); if(!byMonth[key]) byMonth[key]={val:0}; if(metric==='money') byMonth[key].val+=num(gf(x,['deduction','amount','خصم','money','fine'])); else byMonth[key].val+=1; });
+  let months=Object.keys(byMonth).sort();
+  let trend=months.map((m,i)=>{
+    let prev=i>0?byMonth[months[i-1]].val:0; let cur=byMonth[m].val;
+    let change=null; if(i>0 && prev>0) change=Math.round((cur-prev)/prev*100); else if(i>0 && prev===0 && cur>0) change=100;
+    return {label:m, val:cur, change};
+  });
+  drawTrend(trend);
+  document.getElementById('trendTable').innerHTML=trend.length? '<table><tr><th>الشهر</th><th>القيمة</th><th>التغيير عن الشهر اللي قبله</th></tr>'+trend.map(t=>`<tr><td>${t.label}</td><td><b>${t.val}</b></td><td style="color:${t.change===null?'#999':t.change>0?'#D32F2F':'#2E7D32'};font-weight:bold;">${t.change===null?'أول شهر':(t.change>0?'+':'')+t.change+'%'}</td></tr>`).join('')+'</table>':'<p style="color:#999;">مفيش بيانات شهرية</p>';
+
+  window._evalData={comp,periodLabel,workersLast,safetyLast,induction:induction.length,inductionH:induction.length*0.25,trains:trains.length,trainHours,trainPeople,weekly:weekly.length,weeklyAtt,weeklyH:weeklyAtt*0.5,viols:viols.length,violMoney,topDesc:topDesc?topDesc[0]:'',ncr:ncr.length,ncrCloseP,obs:obs.length,obsCloseP,near:near.length,nearCloseP,permits:permits.length,permitDelP,accs:accs.length,score,label};
+}
+function exportEval(){
+  let d=window._evalData; if(!d) return alert('اختار الشركة الأول');
+  let csv='تقييم مقاول\nالشركة,الفترة,درجة التقييم,اخر عدد عاملين,عدد قسم السلامة,عدد المحاضرات الاولية,ساعات المحاضرات الاولية,عدد التدريبات,ساعات التدريبات,عدد المتدربين,عدد المحاضرات الاسبوعية,عدد الحضور,ساعات الاسبوعية,عدد المخالفات,اجمالي المخصوم,اعلي بند مخالفة,عدد عدم المطابقة,نسبة غلق عدم المطابقة,عدد ملاحظات السلامة,نسبة غلق الملاحظات,عدد الحوادث الوشيكة,نسبة غلق الوشيكة,عدد التصاريح,نسبة التسليم,عدد الحوادث\n'+[d.comp,d.periodLabel,d.score+'% - '+d.label,d.workersLast,d.safetyLast,d.induction,d.inductionH,d.trains,d.trainHours,d.trainPeople,d.weekly,d.weeklyAtt,d.weeklyH,d.viols,d.violMoney,d.topDesc,d.ncr,d.ncrCloseP+'%',d.obs,d.obsCloseP+'%',d.near,d.nearCloseP+'%',d.permits,d.permitDelP+'%',d.accs].join(',')+'\n';
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='contractor-eval-'+d.comp+'.csv'; a.click();
+}
+fillCompanies();
+</script>
+</body>
+</html>
