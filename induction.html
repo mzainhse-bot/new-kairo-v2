@@ -8,12 +8,39 @@
 <style>
 *{box-sizing:border-box; font-family:'Segoe UI',Tahoma,Arial;}
 body{ margin:0; background:#F4F6F9; color:#0A1F44; }
-header{ background:#0A1F44; color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:10; }
-header h1{ margin:0; font-size:21px; }
-header h1 span{ color:#D32F2F; }
-header small{ color:#B0BEC5; }
-header a{ background:#fff; color:#0A1F44; text-decoration:none; padding:8px 14px; border-radius:20px; font-weight:bold; font-size:13px; }
-.container{ max-width:1000px; margin:auto; padding:16px; }
+/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
+.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{right:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#90A4AE}
+.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-right:260px;transition:0.3s}
+.main.full{margin-right:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{right:-270px}
+  .sidebar.open{right:0}
+  .main{margin-right:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
+.page-head h1{margin:0;font-size:21px}
+.page-head h1 span{color:#D32F2F}
+.page-head small{color:#78909C}
+.container{ max-width:1000px; margin:auto; padding:0 16px 16px; }
 .card{ background:#fff; border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:0 2px 12px rgba(10,31,68,.08); border-top:4px solid #0A1F44; }
 .card.red{ border-top-color:#D32F2F; }
 .card h2{ margin:0 0 4px; font-size:19px; }
@@ -42,29 +69,55 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 .note-box{ background:#FFF3E0; border:1px solid #FFB300; border-radius:10px; padding:10px 12px; font-size:13px; margin-top:8px; display:none; }
 .note-box b{ color:#D32F2F; }
 .photo-preview{ width:90px; height:110px; object-fit:cover; border-radius:10px; border:2px solid #0A1F44; display:none; margin-top:8px; }
-.nav{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
-.nav a{ background:#fff; color:#0A1F44; text-decoration:none; padding:9px 14px; border-radius:20px; border:1px solid #CFD8DC; font-size:13px; font-weight:bold; }
-.nav a.active{ background:#0A1F44; color:#fff; }
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
-    <div><h1>RMED <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
-  </div>
-  <a href="index.html">🏠 الرئيسية</a>
-</header>
-<div class="container">
-  <div class="nav">
-    <a href="induction.html" class="active">📘 المحاضرة الأولية</a>
-    <a href="workers.html">👷 الموظفين</a>
-    <a href="train.html">🎓 التدريبات</a>
-    <a href="weekly.html">📅 أسبوعية</a>
-    <a href="stats.html">📈 الإحصائيات</a>
-  </div>
+<!-- ✅ الشريط الجانبي -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
-  <!-- زرار ثابت للكارنيه -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+  </div>
+  <div class="menu-title">📊 الرئيسية</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
+  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
+  <div class="menu-title">👷 العمال والتدريب</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
+  <div class="menu-title">🛡️ السلامة والتقارير</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
+  <div class="menu-title">⚙️ الحساب</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+</aside>
+
+<div class="main">
+<div class="page-head">
+  <div><h1>RMED <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
+  <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+</div>
+<div class="container">
   <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
     <div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>إصدار الكارنيهات - RMED</b></div>
     <button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 إصدار كارنيه - ثابت</button>
@@ -107,13 +160,13 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
     <div id="indTable"></div>
   </div>
 </div>
+</div>
 
 <datalist id="companyList"><option value="RMED"><option value="ROWAD"></datalist>
 <datalist id="jobList"><option value="عامل"><option value="كهربائي"><option value="سباك"><option value="نجار"><option value="حداد"><option value="مشرف"><option value="مهندس"><option value="سائق"></datalist>
 <datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
 <datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
 
-<!-- نافذة اختيار موظف للكارنيه - ثابتة -->
 <div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
   <div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;">
     <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0A1F44;">🪪 إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
@@ -135,7 +188,6 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
   </div>
 </div>
 
-<!-- نافذة الكارنيه -->
 <div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
   <div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
     <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0A1F44;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
@@ -182,6 +234,21 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 </div>
 
 <script>
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
+  let nm=typeof u==='string'?u:u.name||'';
+  if(nm){ document.getElementById('sideName').innerText=nm; document.getElementById('sideRole').innerText=typeof u==='object'?(u.role||u.job||''):''; if(typeof u==='object' && (u.img||u.photo)) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+})();
+
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[],"induction":[]}');
 if(!DB.induction) DB.induction=[];
