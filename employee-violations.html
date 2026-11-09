@@ -20,7 +20,7 @@ input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-
 textarea{min-height:60px;resize:vertical;}
 .btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
 .nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
 .nav a.active{background:#0A1F44;color:#fff;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
@@ -45,25 +45,24 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </header>
 <div class="container">
 <div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
 <a href="induction.html">📘 المحاضرة الأولية</a>
-<a href="workers.html">👷 الموظفين</a>
+<a href="workers.html">👥 الموظفين</a>
 <a href="train.html">🎓 التدريبات</a>
 <a href="weekly.html">📅 المحاضرة الأسبوعية</a>
 <a href="permits.html">📋 التصاريح</a>
 <a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
 <a href="violations.html">⚠️ مخالفات المقاولين</a>
 <a href="employee-violations.html" class="active">🚨 مخالفات الموظفين</a>
-<a href="stats.html">📈 الإحصائيات</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
 </div>
 
-<!-- اسم المستخدم اللي بيسجل -->
 <div class="user-bar">
 <span style="font-weight:bold;">🦺 مسئول السلامة اللي بيسجل:</span>
 <input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ev-safety').value=this.value; renderEmpViol();">
 <span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل مخالفة</span>
 </div>
 
-<!-- الاحصائيات -->
 <div class="kpi-grid">
 <div class="kpi red"><b id="k-total">0</b><small>إجمالي عدد المخالفات</small></div>
 <div class="kpi orange"><b id="k-top-desc">-</b><small>أكتر وصف مخالفة متكرر</small></div>
@@ -126,8 +125,6 @@ if(!DB.empViolations) DB.empViolations=[];
 function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
-
-// المرجع: المحاضرة الأولية + الموظفين
 function getAllPeople(){
   let list=[];
   (DB.induction||[]).forEach(x=>list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}));
@@ -141,7 +138,6 @@ function lookupByName(name){
     document.getElementById('nameHint').innerText='✅ لقيناه - كود: '+p.code+' - مهنة: '+p.job;
   } else if(name.trim().length>2){
     document.getElementById('nameHint').innerText='⚠️ الاسم مش موجود في المحاضرة الأولية - اكتب الكود والمهنة يدوي لو حابب';
-    // خلي المهنة تتكتب يدوي لو مش موجود
     document.getElementById('ev-job').readOnly=false;
     document.getElementById('ev-company').readOnly=false;
   } else document.getElementById('nameHint').innerText='';
@@ -165,7 +161,6 @@ function addEmpViolation(){
   if(!val('ev-action')) return alert('اختار الإجراء المتبع');
   let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',place:val('ev-place'),desc:val('ev-desc'),action:val('ev-action'),safety:val('ev-safety')||localStorage.getItem('safetyUser')||'',notes:val('ev-notes'),createdAt:new Date().toISOString()};
   DB.empViolations.push(rec); save(); renderEmpViol();
-  // تنبيه لو الشخص اتكرر
   let count=DB.empViolations.filter(x=>x.name===rec.name).length;
   if(count>1) alert('⚠️ خد بالك - '+rec.name+' دي المخالفة رقم '+count+' ليه!');
   else alert('✅ تم حفظ مخالفة '+rec.name+' - '+rec.action);
@@ -185,7 +180,6 @@ function renderEmpViol(){
   document.getElementById('empNames').innerHTML=people.map(p=>`<option value="${p.name}">`).join('');
   let places=[...new Set(DB.empViolations.map(x=>x.place))];
   document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${p}">`).join('');
-
   let q=(document.getElementById('searchEV').value||'').toLowerCase();
   let fa=document.getElementById('filterAction').value;
   let list=DB.empViolations.filter(x=>{
@@ -193,8 +187,6 @@ function renderEmpViol(){
     let okA=!fa||x.action===fa;
     return okQ&&okA;
   });
-
-  // الاحصائيات
   document.getElementById('k-total').innerText=DB.empViolations.length;
   let tDesc=topOf(DB.empViolations,'desc');
   let tPerson=topOf(DB.empViolations,'name');
@@ -210,7 +202,6 @@ function renderEmpViol(){
     document.getElementById('k-least-action').innerText=actions[0]+' ('+tAction.all[actions[0]]+')';
   } else { document.getElementById('k-top-action').innerText='-'; document.getElementById('k-least-action').innerText='-'; }
   document.getElementById('k-top-reporter').innerText=tReporter?(tReporter.name||'غير مسجل')+' ('+tReporter.count+')':'-';
-  // المتكررين
   let byPerson={};
   DB.empViolations.forEach(x=>{ if(!byPerson[x.name]) byPerson[x.name]={count:0,code:x.code,job:x.job}; byPerson[x.name].count++; });
   let repeats=Object.entries(byPerson).filter(([k,v])=>v.count>1).sort((a,b)=>b[1].count-a[1].count);
@@ -220,7 +211,6 @@ function renderEmpViol(){
     let last=DB.empViolations.filter(x=>x.name===name).slice(-1)[0];
     return `<tr><td><b style="color:#D32F2F;">${name}</b></td><td>${v.code}</td><td>${v.job}</td><td><b>${v.count}</b></td><td>${last.date} - ${last.desc}</td></tr>`;
   }).join('')+'</table>';
-
   if(!list.length){ document.getElementById('empViolTable').innerHTML='<p style="text-align:center;color:#999;">مفيش مخالفات موظفين لسه</p>'; return; }
   document.getElementById('empViolTable').innerHTML='<table><tr><th>التاريخ</th><th>الاسم</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>وصف المخالفة</th><th>الإجراء</th><th>المبلغ</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
     let idx=DB.empViolations.indexOf(x);
