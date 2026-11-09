@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مخالفات الموظفين - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:60px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:20px;display:block;line-height:1.3;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
+.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.user-bar input{width:auto;flex:1;min-width:180px;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> مخالفات الموظفين</h1><small>Employee Violations</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👷 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html" class="active">🚨 مخالفات الموظفين</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<!-- اسم المستخدم اللي بيسجل -->
+<div class="user-bar">
+<span style="font-weight:bold;">🦺 مسئول السلامة اللي بيسجل:</span>
+<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ev-safety').value=this.value; renderEmpViol();">
+<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل مخالفة</span>
+</div>
+
+<!-- الاحصائيات -->
+<div class="kpi-grid">
+<div class="kpi red"><b id="k-total">0</b><small>إجمالي عدد المخالفات</small></div>
+<div class="kpi orange"><b id="k-top-desc">-</b><small>أكتر وصف مخالفة متكرر</small></div>
+<div class="kpi"><b id="k-top-person">-</b><small>أكتر شخص اتكررت مخالفاته</small></div>
+<div class="kpi"><b id="k-top-place">-</b><small>أكتر مكان حصل فيه مخالفات</small></div>
+<div class="kpi green"><b id="k-top-action">-</b><small>أكتر إجراء متبع</small></div>
+<div class="kpi"><b id="k-least-action">-</b><small>أقل إجراء متبع</small></div>
+<div class="kpi"><b id="k-top-reporter">-</b><small>أكتر شخص بيبلغ عن مخالفات</small></div>
+<div class="kpi"><b id="k-repeat-count">0</b><small>عدد الموظفين اللي اتكررت مخالفاتهم</small></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🔁 الموظفين اللي اتكررت مخالفاتهم</h3>
+<div id="repeatList"></div>
+</div>
+
+<div class="card red">
+<h2 style="margin:0 0 5px;">🚨 تسجيل مخالفة موظف</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">اكتب الاسم أو الكود، والباقي هيكمل لوحده من المحاضرة الأولية</p>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="ev-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="ev-time"></div>
+<div><label>👤 اسم المخالف *</label><input id="ev-name" placeholder="اكتب الاسم..." list="empNames" oninput="lookupByName(this.value)"><datalist id="empNames"></datalist><small id="nameHint" style="color:#2E7D32;font-size:11px;"></small></div>
+<div><label>🔢 الكود - أوتوماتيك</label><input id="ev-code" class="auto" placeholder="اكتب الكود هنا لو عارفه" oninput="lookupByCode(this.value)"><small style="color:#D32F2F;font-size:11px;">لو كتبت الكود، الاسم هيظهر لوحده</small></div>
+<div><label>👷 المهنة - أوتوماتيك</label><input id="ev-job" class="auto" placeholder="هتظهر أوتوماتيك" readonly></div>
+<div><label>🏢 الشركة - أوتوماتيك</label><input id="ev-company" class="auto" placeholder="هتظهر أوتوماتيك" readonly></div>
+<div><label>📍 مكان المخالفة *</label><input id="ev-place" placeholder="مثال: مبنى A - الدور الثالث - منطقة الحفر..." list="placesList"><datalist id="placesList"></datalist></div>
+<div><label>⚖️ الإجراء المتبع *</label><select id="ev-action">
+<option value="">-- اختار الإجراء --</option>
+<option>انذار كتابي</option>
+<option>خصم يوم</option>
+<option>خصم يومين</option>
+<option>خصم 3 ايام</option>
+<option>استبعاد نهائي</option>
+</select></div>
+<div style="grid-column:1/-1;"><label>📝 وصف المخالفة *</label><textarea id="ev-desc" placeholder="مثال: عدم ارتداء خوذة - العمل بدون حزام أمان - التدخين في الموقع..." list="descList"></textarea></div>
+<div><label>🦺 اسم مسئول السلامة - أوتوماتيك</label><input id="ev-safety" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
+<div><label>📝 ملاحظات - اختياري</label><input id="ev-notes" placeholder="أي ملاحظات..."></div>
+</div>
+<button class="btn red" onclick="addEmpViolation()">💾 حفظ مخالفة الموظف</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل مخالفات الموظفين</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchEV" placeholder="ابحث بالاسم أو الكود أو الوصف أو المكان..." oninput="renderEmpViol()" style="flex:2;">
+<select id="filterAction" onchange="renderEmpViol()" style="flex:1;"><option value="">كل الإجراءات</option><option>انذار كتابي</option><option>خصم يوم</option><option>خصم يومين</option><option>خصم 3 ايام</option><option>استبعاد نهائي</option></select>
+</div>
+<div id="empViolTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button class="btn2" onclick="exportEmpViol()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV - سجل المخالفات</button>
+<button class="btn2" onclick="clearEmpViol()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[],"permits":[],"dailyCount":[],"violations":[],"empViolations":[]}');
+if(!DB.empViolations) DB.empViolations=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+
+// المرجع: المحاضرة الأولية + الموظفين
+function getAllPeople(){
+  let list=[];
+  (DB.induction||[]).forEach(x=>list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}));
+  (DB.workers||[]).forEach(x=>{ if(!list.find(p=>p.name===x.name)) list.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
+  return list;
+}
+function lookupByName(name){
+  let p=getAllPeople().find(x=>x.name===name.trim());
+  if(p){
+    setVal('ev-code',p.code); setVal('ev-job',p.job); setVal('ev-company',p.company);
+    document.getElementById('nameHint').innerText='✅ لقيناه - كود: '+p.code+' - مهنة: '+p.job;
+  } else if(name.trim().length>2){
+    document.getElementById('nameHint').innerText='⚠️ الاسم مش موجود في المحاضرة الأولية - اكتب الكود والمهنة يدوي لو حابب';
+    // خلي المهنة تتكتب يدوي لو مش موجود
+    document.getElementById('ev-job').readOnly=false;
+    document.getElementById('ev-company').readOnly=false;
+  } else document.getElementById('nameHint').innerText='';
+}
+function lookupByCode(code){
+  if(!code.trim()) return;
+  let p=getAllPeople().find(x=>(x.code||'').toString()===code.trim());
+  if(p){
+    setVal('ev-name',p.name); setVal('ev-job',p.job); setVal('ev-company',p.company);
+    document.getElementById('nameHint').innerText='✅ لقيناه بالكود - الاسم: '+p.name+' - مهنة: '+p.job;
+  }
+}
+function addEmpViolation(){
+  if(!val('ev-date')) return alert('اختار التاريخ');
+  if(!val('ev-time')) return alert('اختار الوقت');
+  if(!val('ev-name')) return alert('اكتب اسم المخالف');
+  if(!val('ev-code')) return alert('اكتب الكود - لو مش موجود في المحاضرة الأولية اكتبه يدوي');
+  if(!val('ev-job')) return alert('اكتب المهنة');
+  if(!val('ev-desc')) return alert('اكتب وصف المخالفة');
+  if(!val('ev-place')) return alert('اكتب مكان المخالفة');
+  if(!val('ev-action')) return alert('اختار الإجراء المتبع');
+  let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',place:val('ev-place'),desc:val('ev-desc'),action:val('ev-action'),safety:val('ev-safety')||localStorage.getItem('safetyUser')||'',notes:val('ev-notes'),createdAt:new Date().toISOString()};
+  DB.empViolations.push(rec); save(); renderEmpViol();
+  // تنبيه لو الشخص اتكرر
+  let count=DB.empViolations.filter(x=>x.name===rec.name).length;
+  if(count>1) alert('⚠️ خد بالك - '+rec.name+' دي المخالفة رقم '+count+' ليه!');
+  else alert('✅ تم حفظ مخالفة '+rec.name+' - '+rec.action);
+  ['ev-name','ev-code','ev-job','ev-company','ev-place','ev-desc','ev-notes'].forEach(id=>setVal(id,''));
+  setVal('ev-action',''); document.getElementById('nameHint').innerText='';
+  document.getElementById('ev-job').readOnly=true; document.getElementById('ev-company').readOnly=true;
+}
+function topOf(arr, key){
+  let m={}; arr.forEach(x=>{ let k=x[key]; if(!k) return; m[k]=(m[k]||0)+1; });
+  let keys=Object.keys(m);
+  if(!keys.length) return null;
+  keys.sort((a,b)=>m[b]-m[a]);
+  return {name:keys[0],count:m[keys[0]],all:m};
+}
+function renderEmpViol(){
+  let people=getAllPeople();
+  document.getElementById('empNames').innerHTML=people.map(p=>`<option value="${p.name}">`).join('');
+  let places=[...new Set(DB.empViolations.map(x=>x.place))];
+  document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${p}">`).join('');
+
+  let q=(document.getElementById('searchEV').value||'').toLowerCase();
+  let fa=document.getElementById('filterAction').value;
+  let list=DB.empViolations.filter(x=>{
+    let okQ=(x.name+x.code+x.desc+x.place+x.job).toLowerCase().includes(q);
+    let okA=!fa||x.action===fa;
+    return okQ&&okA;
+  });
+
+  // الاحصائيات
+  document.getElementById('k-total').innerText=DB.empViolations.length;
+  let tDesc=topOf(DB.empViolations,'desc');
+  let tPerson=topOf(DB.empViolations,'name');
+  let tPlace=topOf(DB.empViolations,'place');
+  let tAction=topOf(DB.empViolations,'action');
+  let tReporter=topOf(DB.empViolations,'safety');
+  document.getElementById('k-top-desc').innerText=tDesc?tDesc.name+' ('+tDesc.count+')':'-';
+  document.getElementById('k-top-person').innerText=tPerson?tPerson.name+' ('+tPerson.count+' مخالفة)':'-';
+  document.getElementById('k-top-place').innerText=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
+  if(tAction){
+    document.getElementById('k-top-action').innerText=tAction.name+' ('+tAction.count+')';
+    let actions=Object.keys(tAction.all).sort((a,b)=>tAction.all[a]-tAction.all[b]);
+    document.getElementById('k-least-action').innerText=actions[0]+' ('+tAction.all[actions[0]]+')';
+  } else { document.getElementById('k-top-action').innerText='-'; document.getElementById('k-least-action').innerText='-'; }
+  document.getElementById('k-top-reporter').innerText=tReporter?(tReporter.name||'غير مسجل')+' ('+tReporter.count+')':'-';
+  // المتكررين
+  let byPerson={};
+  DB.empViolations.forEach(x=>{ if(!byPerson[x.name]) byPerson[x.name]={count:0,code:x.code,job:x.job}; byPerson[x.name].count++; });
+  let repeats=Object.entries(byPerson).filter(([k,v])=>v.count>1).sort((a,b)=>b[1].count-a[1].count);
+  document.getElementById('k-repeat-count').innerText=repeats.length;
+  if(!repeats.length) document.getElementById('repeatList').innerHTML='<p style="text-align:center;color:#2E7D32;">✅ مفيش حد اتكررت مخالفاته لسه</p>';
+  else document.getElementById('repeatList').innerHTML='<table><tr><th>الاسم</th><th>الكود</th><th>المهنة</th><th>عدد المخالفات</th><th>آخر مخالفة</th></tr>'+repeats.map(([name,v])=>{
+    let last=DB.empViolations.filter(x=>x.name===name).slice(-1)[0];
+    return `<tr><td><b style="color:#D32F2F;">${name}</b></td><td>${v.code}</td><td>${v.job}</td><td><b>${v.count}</b></td><td>${last.date} - ${last.desc}</td></tr>`;
+  }).join('')+'</table>';
+
+  if(!list.length){ document.getElementById('empViolTable').innerHTML='<p style="text-align:center;color:#999;">مفيش مخالفات موظفين لسه</p>'; return; }
+  document.getElementById('empViolTable').innerHTML='<table><tr><th>التاريخ</th><th>الاسم</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>وصف المخالفة</th><th>الإجراء</th><th>المبلغ</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.empViolations.indexOf(x);
+    return `<tr><td>${x.date}<br>${x.time}</td><td><b>${x.name}</b></td><td>${x.code}</td><td>${x.job}</td><td>${x.place}</td><td style="text-align:right;max-width:200px;">${x.desc}</td><td>${x.action}</td><td style="font-size:11px;color:#78909C;">بواسطة: ${x.safety||'-'}</td><td><button class="btn2" style="color:#D32F2F;" onclick="delEmpViol(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function delEmpViol(i){ if(!confirm('تحذف المخالفة دي؟')) return; DB.empViolations.splice(i,1); save(); renderEmpViol(); }
+function clearEmpViol(){ if(!confirm('تمسح كل مخالفات الموظفين؟')) return; DB.empViolations=[]; save(); renderEmpViol(); }
+function exportEmpViol(){
+  if(!DB.empViolations.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,اسم المخالف,الكود,المهنة,الشركة,مكان المخالفة,وصف المخالفة,الاجراء المتبع,مسئول السلامة,ملاحظات\n'+DB.empViolations.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"',x.action,x.safety,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='employee-violations.csv'; a.click();
+}
+let savedUser=localStorage.getItem('safetyUser')||'';
+document.getElementById('currentUser').value=savedUser;
+document.getElementById('ev-safety').value=savedUser;
+document.getElementById('ev-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('ev-time').value=new Date().toTimeString().slice(0,5);
+renderEmpViol();
+</script>
+</body>
+</html>
