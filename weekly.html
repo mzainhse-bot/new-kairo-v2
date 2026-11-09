@@ -27,10 +27,22 @@ input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10
 .kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
 .calc-box{background:#FFF3E0;border:2px dashed #FF9800;border-radius:12px;padding:14px;text-align:center;margin-top:14px;font-weight:bold;}
 .calc-box b{color:#D32F2F;font-size:20px;}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+.upload-box{border:2px dashed #0A1F44;border-radius:12px;padding:16px;text-align:center;background:#F4F6F9;margin-top:6px;cursor:pointer;}
+.upload-box b{font-size:15px;} .upload-box small{color:#78909C;display:block;margin-top:4px;}
+.photos-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.photo-item{position:relative;width:90px;height:90px;border-radius:10px;overflow:hidden;border:2px solid #CFD8DC;}
+.photo-item img{width:100%;height:100%;object-fit:cover;}
+.photo-item button{position:absolute;top:2px;left:2px;background:#D32F2F;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:12px;line-height:1;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;flex-direction:column;padding:16px;}
+.modal.open{display:flex;}
+.modal img{max-width:95%;max-height:75vh;border-radius:12px;background:#fff;}
+.modal .modal-imgs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;max-height:20vh;overflow:auto;}
+.modal .modal-imgs img{width:80px;height:80px;object-fit:cover;cursor:pointer;border:3px solid transparent;}
+.modal .modal-imgs img.active{border-color:#D32F2F;}
 </style>
 </head>
 <body>
@@ -50,7 +62,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <a href="stats.html">📈 الإحصائيات</a>
 </div>
 
-<!-- الاحصائيات فوق -->
 <div class="kpi-grid">
 <div class="kpi"><b id="k-lect">0</b><small>عدد المحاضرات الأسبوعية</small></div>
 <div class="kpi"><b id="k-att">0</b><small>إجمالي الحضور</small></div>
@@ -59,7 +70,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="card">
 <h2 style="margin:0 0 5px;">📅 تسجيل محاضرة أسبوعية جديدة</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">عدد الساعات بيتحسب لوحده: عدد الحضور × 0.5 ساعة</p>
+<p style="color:#78909C;font-size:13px;margin:0;">عدد الساعات بيتحسب لوحده: عدد الحضور × 0.5 ساعة - وتقدر ترفع أكتر من صورة</p>
 <div class="grid">
 <div><label>📅 التاريخ *</label><input type="date" id="w-date"></div>
 <div><label>⏰ الوقت *</label><input type="time" id="w-time"></div>
@@ -67,6 +78,15 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>👥 عدد الحضور *</label><input type="number" id="w-count" min="1" placeholder="مثال: 20" oninput="calcHours()" inputmode="numeric"></div>
 <div><label>📍 مكان المحاضرة *</label><input id="w-place" placeholder="مثال: الموقع - قاعة الاجتماعات"></div>
 <div><label>🏢 اسم الشركة *</label><input id="w-company" value="RMED" placeholder="RMED"></div>
+</div>
+
+<div><label>📷 صور المحاضرة - تقدر تختار أكتر من صورة</label>
+<div class="upload-box" onclick="document.getElementById('w-photos').click()">
+<b>📷 اضغط هنا لاختيار صور المحاضرة</b>
+<small>تقدر تختار صورة أو أكتر من مرة واحدة - من الموبايل أو الكمبيوتر</small>
+</div>
+<input type="file" id="w-photos" accept="image/*" multiple style="display:none;" onchange="handlePhotos(event)">
+<div class="photos-preview" id="photosPreview"></div>
 </div>
 
 <div class="calc-box" id="calcBox">
@@ -87,12 +107,23 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<!-- مودال عرض الصور -->
+<div class="modal" id="photoModal" onclick="if(event.target===this) closeModal()">
+<div style="display:flex;justify-content:space-between;align-items:center;width:100%;max-width:900px;">
+<b id="modalTitle" style="color:#fff;">صور المحاضرة</b>
+<button onclick="closeModal()" style="background:#D32F2F;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">✕ إغلاق</button>
+</div>
+<img id="modalMainImg" src="">
+<div class="modal-imgs" id="modalImgs"></div>
+</div>
+
 <script>
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[]}');
 if(!DB.weeklyLect) DB.weeklyLect=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function save(){ try{ localStorage.setItem('safetyDB', JSON.stringify(DB)); }catch(e){ alert('⚠️ الصور كبيرة أوي، امسح صورة أو صغّر حجمها، المساحة اتملت'); } }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
+let tempPhotos = []; // صور المحاضرة الجديدة قبل الحفظ
 
 function calcHours(){
   let count = parseInt(val('w-count')) || 0;
@@ -102,6 +133,46 @@ function calcHours(){
   return hours;
 }
 
+// ضغط الصورة عشان متملاش التخزين
+function compressImage(file){
+  return new Promise((resolve)=>{
+    let reader=new FileReader();
+    reader.onload=(e)=>{
+      let img=new Image();
+      img.onload=()=>{
+        let canvas=document.createElement('canvas');
+        let max=900;
+        let w=img.width, h=img.height;
+        if(w>max){ h=h*max/w; w=max; }
+        if(h>max){ w=w*max/h; h=max; }
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',0.75));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handlePhotos(e){
+  let files=[...e.target.files];
+  for(let f of files){
+    let compressed=await compressImage(f);
+    tempPhotos.push(compressed);
+  }
+  renderTempPhotos();
+  e.target.value='';
+}
+function renderTempPhotos(){
+  let box=document.getElementById('photosPreview');
+  if(!tempPhotos.length){ box.innerHTML=''; return; }
+  box.innerHTML='<b style="width:100%;">الصور المختارة: '+tempPhotos.length+' صورة - دوس على ❌ عشان تمسح صورة</b>'+tempPhotos.map((p,i)=>`
+    <div class="photo-item"><img src="${p}"><button onclick="removeTempPhoto(${i})">✕</button></div>
+  `).join('');
+}
+function removeTempPhoto(i){ tempPhotos.splice(i,1); renderTempPhotos(); }
+
 function addWeekly(){
   if(!val('w-date')) return alert('اختار التاريخ');
   if(!val('w-time')) return alert('اختار الوقت');
@@ -110,11 +181,12 @@ function addWeekly(){
   if(!val('w-place')) return alert('اكتب مكان المحاضرة');
   if(!val('w-company')) return alert('اكتب اسم الشركة');
   let count = parseInt(val('w-count'));
-  let hours = count * 0.5; // الحسبة الأساسية
-  let rec={date:val('w-date'),time:val('w-time'),title:val('w-title'),count:count,place:val('w-place'),company:val('w-company'),hours:hours,createdAt:new Date().toISOString()};
+  let hours = count * 0.5;
+  let rec={date:val('w-date'),time:val('w-time'),title:val('w-title'),count:count,place:val('w-place'),company:val('w-company'),hours:hours,photos:[...tempPhotos],createdAt:new Date().toISOString()};
   DB.weeklyLect.push(rec); save(); renderWeekly();
-  alert('✅ تم حفظ المحاضرة - '+rec.title+' - '+rec.count+' فرد - '+rec.hours+' ساعة');
+  alert('✅ تم حفظ المحاضرة - '+rec.title+' - '+rec.count+' فرد - '+rec.hours+' ساعة - '+rec.photos.length+' صورة');
   ['w-title','w-place'].forEach(id=>setVal(id,'')); setVal('w-count',''); setVal('w-company','RMED');
+  tempPhotos=[]; renderTempPhotos();
   document.getElementById('calcText').innerText='اكتب عدد الحضور'; document.getElementById('calcResult').innerText='0 ساعة';
 }
 
@@ -128,18 +200,29 @@ function renderWeekly(){
   document.getElementById('k-att').innerText=totalAtt;
   document.getElementById('k-hours').innerText=totalHours+' ساعة';
   if(!list.length){ document.getElementById('weeklyTable').innerHTML='<p style="text-align:center;color:#999;">مفيش محاضرات أسبوعية لسه - سجل أول محاضرة فوق</p>'; return; }
-  document.getElementById('weeklyTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان المحاضرة</th><th>الحضور</th><th>المكان</th><th>الشركة</th><th>الساعات</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+  document.getElementById('weeklyTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان المحاضرة</th><th>الحضور</th><th>المكان</th><th>الشركة</th><th>الساعات</th><th>الصور</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
     let idx=DB.weeklyLect.indexOf(x);
-    return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.count}</td><td>${x.place}</td><td>${x.company}</td><td><span class="badge">${x.hours} ساعة</span></td><td><button class="btn2" style="color:#D32F2F;" onclick="delWeekly(${idx})">🗑️</button></td></tr>`;
+    let photoCount=(x.photos||[]).length;
+    let thumb=photoCount?`<img src="${x.photos[0]}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;" onclick="openModal(${idx})">`:'-';
+    return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.count}</td><td>${x.place}</td><td>${x.company}</td><td><span class="badge">${x.hours} ساعة</span></td><td>${thumb}<br><button class="btn2" onclick="openModal(${idx})">📷 ${photoCount} صورة</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delWeekly(${idx})">🗑️</button></td></tr>`;
   }).join('')+'</table>';
 }
 function delWeekly(i){ if(!confirm('تحذف المحاضرة دي؟')) return; DB.weeklyLect.splice(i,1); save(); renderWeekly(); }
 function clearWeekly(){ if(!confirm('تمسح كل المحاضرات الأسبوعية؟')) return; DB.weeklyLect=[]; save(); renderWeekly(); }
 function exportWeekly(){
   if(!DB.weeklyLect.length) return alert('مفيش بيانات');
-  let csv='التاريخ,الوقت,عنوان المحاضرة,عدد الحضور,مكان المحاضرة,اسم الشركة,عدد الساعات\n'+DB.weeklyLect.map(x=>[x.date,x.time,x.title,x.count,x.place,x.company,x.hours].join(',')).join('\n');
+  let csv='التاريخ,الوقت,عنوان المحاضرة,عدد الحضور,مكان المحاضرة,اسم الشركة,عدد الساعات,عدد الصور\n'+DB.weeklyLect.map(x=>[x.date,x.time,x.title,x.count,x.place,x.company,x.hours,(x.photos||[]).length].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='weekly-lectures.csv'; a.click();
 }
+function openModal(idx){
+  let rec=DB.weeklyLect[idx];
+  if(!rec.photos||!rec.photos.length) return alert('مفيش صور للمحاضرة دي');
+  document.getElementById('modalTitle').innerText=rec.title+' - '+rec.date+' - '+rec.photos.length+' صورة';
+  document.getElementById('modalMainImg').src=rec.photos[0];
+  document.getElementById('modalImgs').innerHTML=rec.photos.map((p,i)=>`<img src="${p}" class="${i===0?'active':''}" onclick="document.getElementById('modalMainImg').src='${p}';document.querySelectorAll('#modalImgs img').forEach(im=>im.classList.remove('active'));this.classList.add('active');">`).join('');
+  document.getElementById('photoModal').classList.add('open');
+}
+function closeModal(){ document.getElementById('photoModal').classList.remove('open'); }
 document.getElementById('w-date').value=new Date().toISOString().slice(0,10);
 renderWeekly();
 </script>
