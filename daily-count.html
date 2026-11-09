@@ -233,4 +233,19 @@ document.getElementById('filterDate').value=new Date().toISOString().slice(0,10)
 renderDaily();
 </script>
 </body>
+  <div class="navbar">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📖 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 الاجتماع الأسبوعي</a>
+<a href="permits.html">📄 التصاريح</a>
+<a href="daily-count.html">📊 الحصر اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">👷 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+</div>
+  .navbar{background:#111;border:1px solid #C9A227;border-radius:14px;padding:10px;display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
+.navbar a{color:#fff;text-decoration:none;background:#1e1e1e;border:1px solid #333;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold}
+.navbar a.active{background:#C9A227;color:#000;border-color:#C9A227}
 </html>
