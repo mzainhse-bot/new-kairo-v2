@@ -6,28 +6,31 @@
 <title>ملاحظات السلامة | بوابة السلامة</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
-body{margin:0;background:#0f0f0f;color:#fff;padding:15px}
-h1{text-align:center;color:#d4af37;margin:5px 0}
-.sub{text-align:center;color:#aaa;margin-bottom:15px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:15px}
-.card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:12px;text-align:center}
-.card b{font-size:22px;color:#d4af37;display:block}
-.card span{font-size:13px;color:#ccc}
-.card.green b{color:#2ecc71}.card.red b{color:#e74c3c}.card.blue b{color:#3498db}
-.form{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;margin-bottom:15px}
-.form h3{color:#d4af37;margin:0 0 10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body{margin:0;background:#0a0a0a;color:#fff;padding:15px}
+h1{text-align:center;color:#C9A227;margin:5px 0;font-size:28px}
+.sub{text-align:center;color:#999;margin-bottom:20px}
+.navbar{background:#111;border:1px solid #C9A227;border-radius:14px;padding:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;position:sticky;top:10px;z-index:99}
+.navbar a{color:#fff;text-decoration:none;background:#1e1e1e;border:1px solid #333;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:bold}
+.navbar a:hover,.navbar a.active{background:#C9A227;color:#000;border-color:#C9A227}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.card{background:linear-gradient(145deg,#1a1a1a,#121212);border:1px solid #C9A227;border-radius:14px;padding:14px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+.card b{font-size:24px;color:#C9A227;display:block}
+.card span{font-size:13px;color:#ddd}
+.card.green b{color:#2ecc71}.card.red b{color:#e74c3c}.card.blue b{color:#f1c40f}
+.form{background:#111;border:1px solid #C9A227;border-radius:14px;padding:18px;margin-bottom:18px}
+.form h3{color:#C9A227;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
-input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #444;background:#222;color:#fff}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid #333;background:#1e1e1e;color:#fff}
 textarea{grid-column:1/-1;min-height:70px}
-label{font-size:13px;color:#ccc;display:block;margin-bottom:2px}
-button{background:#d4af37;color:#000;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
-.btn2{background:#27ae60;color:#fff}
-table{width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:12px;overflow:hidden;font-size:13px}
-th{background:#d4af37;color:#000;padding:10px}
-td{padding:8px;border-bottom:1px solid #333;text-align:center}
-img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer}
-.badge{padding:4px 8px;border-radius:20px;font-size:12px}
+label{font-size:13px;color:#C9A227;display:block;margin-bottom:4px;font-weight:bold}
+button{background:linear-gradient(90deg,#C9A227,#f1c40f);color:#000;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
+.btn2{background:#1a1a1a !important;color:#C9A227 !important;border:1px solid #C9A227 !important}
+table{width:100%;border-collapse:collapse;background:#111;border-radius:14px;overflow:hidden;font-size:13px}
+th{background:#C9A227;color:#000;padding:11px}
+td{padding:9px;border-bottom:1px solid #222;text-align:center}
+img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #C9A227}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
 .open{background:#e74c3c}.closed{background:#27ae60}
 .del{background:#c0392b;padding:5px 10px;border-radius:6px;color:#fff;cursor:pointer;border:none;width:auto}
 .top{display:flex;gap:10px;flex-wrap:wrap}
@@ -35,6 +38,14 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </style>
 </head>
 <body>
+
+<div class="navbar">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">👷 مخالفات الموظفين</a>
+<a href="safety-observations.html" class="active">📋 ملاحظات السلامة</a>
+</div>
+
 <h1>📋 ملاحظات السلامة</h1>
 <p class="sub">Safety Observations - سجل كل الملاحظات وتابع قفلها</p>
 
@@ -87,9 +98,7 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 let data = JSON.parse(localStorage.getItem('safety_obs')||'[]');
 document.getElementById('date').value = new Date().toISOString().slice(0,10);
 document.getElementById('time').value = new Date().toTimeString().slice(0,5);
-
 function readFile(file,cb){ if(!file){cb('');return} let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(file); }
-
 function addObs(){
 let reporter=document.getElementById('reporter').value.trim();
 let date=document.getElementById('date').value;
@@ -108,7 +117,6 @@ document.getElementById('desc').value='';document.getElementById('action').value
 render(); alert('تم حفظ الملاحظة ✅');
 });});
 }
-
 function render(){
 let q=document.getElementById('search').value.toLowerCase();
 let ft=document.getElementById('filterType').value;
@@ -119,7 +127,6 @@ document.getElementById('cCond').textContent=data.filter(d=>d.type=='ظرف غي
 document.getElementById('cAct').textContent=data.filter(d=>d.type=='سلوك غير آمن').length;
 document.getElementById('cOpen').textContent=data.filter(d=>d.status=='مفتوح').length;
 document.getElementById('cClosed').textContent=data.filter(d=>d.status=='مغلق').length;
-
 function topLow(arr,key){
 if(!arr.length) return ['-','-'];
 let c={}; arr.forEach(d=>{c[d[key]]=(c[d[key]]||0)+1});
@@ -132,7 +139,6 @@ document.getElementById('topLoc').textContent=tLoc;
 document.getElementById('lowLoc').textContent=lLoc;
 document.getElementById('topPerson').textContent=tPer;
 document.getElementById('lowPerson').textContent=lPer;
-
 document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
 <tr>
 <td>${d.date}</td><td>${d.time}</td><td>${d.reporter}</td><td>${d.type}</td><td>${d.place}</td>
@@ -145,7 +151,6 @@ document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
 }
 function toggle(i){ data[i].status = data[i].status=='مفتوح'?'مغلق':'مفتوح'; localStorage.setItem('safety_obs',JSON.stringify(data)); render(); }
 function delObs(i){ if(confirm('متأكد تحذف الملاحظة؟')){ data.splice(i,1); localStorage.setItem('safety_obs',JSON.stringify(data)); render(); } }
-
 function exportExcel(){
 let csv='\uFEFFالتاريخ,الساعة,المبلغ,النوع,المكان,الوصف,الاجراء التصحيحي,الحالة\n';
 data.forEach(d=>{ csv+=`"${d.date}","${d.time}","${d.reporter}","${d.type}","${d.place}","${d.desc}","${d.action}","${d.status}"\n`; });
