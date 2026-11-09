@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تسجيل حساب جديد - RMED</title>
-<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1F44;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#fff;width:100%;max-width:480px;border-radius:20px;padding:24px}label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}input,select{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px}button{width:100%;background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}img{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px solid #0A1F44;display:none;margin:auto}</style>
+<style>*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1F44;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}.box{background:#fff;width:100%;max-width:480px;border-radius:20px;padding:24px}label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}input,select{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px}button{width:100%;background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}img{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px solid #0A1F44;display:none;margin:auto}</style>
 </head>
 <body><div class="box">
-<h2 style="text-align:center;margin:0;">RMED • تسجيل حساب جديد</h2><p style="text-align:center;color:#78909C;font-size:13px;">سجل بياناتك، والمدير هيوافق عليك قبل ما تدخل</p>
+<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل حساب جديد</h2><p style="text-align:center;color:#78909C;font-size:13px;">سجل بياناتك، والمدير هيوافق عليك قبل ما تدخل</p>
 <img id="preview">
 <label>🖼️ صورتك الشخصية</label><input type="file" accept="image/*" onchange="readPhoto(event)">
 <label>👤 الاسم بالكامل *</label><input id="r-name" placeholder="مثال: محمد زين">
 <label>👷 المهنة *</label><input id="r-job" placeholder="مثال: مشرف سلامة - مهندس - فني">
+<label>🎭 الدور المطلوب *</label><select id="r-role"><option value="employee">👷 موظف</option><option value="supervisor">🦺 مشرف</option><option value="manager">👑 مدير</option></select><small style="color:#78909C;font-size:12px;">المدير هيراجع الدور اللي طلبته قبل الموافقة</small>
 <label>📧 الإيميل *</label><input id="r-email" type="email" placeholder="example@gmail.com">
 <label>🔒 الباسورد *</label><input id="r-pass" type="password" placeholder="اختار باسورد قوي">
 <button onclick="doRegister()">📝 تسجيل الحساب</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 الرئيسية</button>
 <p style="text-align:center;font-size:13px;">عندك حساب؟ <a href="login.html">ادخل من هنا</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;"></p>
 </div>
@@ -20,17 +22,17 @@ let photoData='';
 function readPhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=()=>{ photoData=r.result; let im=document.getElementById('preview'); im.src=photoData; im.style.display='block'; }; r.readAsDataURL(f); }
 function doRegister(){
   let name=document.getElementById('r-name').value.trim(), job=document.getElementById('r-job').value.trim(), email=document.getElementById('r-email').value.trim().toLowerCase(), pass=document.getElementById('r-pass').value;
+  let wantedRole=document.getElementById('r-role').value;
   if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='اكمل كل البيانات';
   if(pass.length<6) return document.getElementById('msg').innerText='الباسورد لازم 6 حروف على الأقل';
   let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); if(!DB.users) DB.users=[];
   if(DB.users.find(u=>u.email===email)) return document.getElementById('msg').innerText='الإيميل ده مسجل قبل كده، ادخل من صفحة الدخول';
   let isManager=email==='mzain.hse@gmail.com';
-  let user={name,job,email,pass,photo:photoData,role:isManager?'manager':'pending',status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
+  let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':'pending',requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
   DB.users.push(user); localStorage.setItem('safetyDB',JSON.stringify(DB));
   if(!isManager){
-    // إشعار للمدير - الحل المؤقت لحد السيرفر - بيفتح ميل جاهز
     let subject=encodeURIComponent('طلب تسجيل جديد - RMED - '+name);
-    let body=encodeURIComponent('في حساب جديد مستني موافقتك:\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nادخل على صفحة المستخدمين عشان تحدد دوره وتوافق عليه.');
+    let body=encodeURIComponent('في حساب جديد مستني موافقتك:\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nالدور المطلوب: '+wantedRole+'\nادخل على صفحة المستخدمين عشان تحدد دوره وتوافق عليه.');
     window.open('mailto:mzain.hse@gmail.com?subject='+subject+'&body='+body,'_blank');
     alert('✅ تم التسجيل! حسابك في انتظار موافقة المدير.\nهيوصلك إشعار أول ما المدير يوافق عليك.');
   } else {
