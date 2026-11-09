@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الحوادث الوشيكة - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#FF9800;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.orange{border-top-color:#FF9800;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:60px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:19px;display:block;line-height:1.3;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
+.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.user-bar input{width:auto;flex:1;min-width:180px;}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #ECEFF1;cursor:pointer;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
+.badge.open{background:#FFEBEE;color:#D32F2F;}
+.badge.closed{background:#E8F5E9;color:#2E7D32;}
+.mail-box{background:#FFF3E0;border:1.5px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> الحوادث الوشيكة</h1><small>Near Miss Reports</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html" class="active">⚡ الحوادث الوشيكة</a>
+</div>
+
+<div class="user-bar">
+<span style="font-weight:bold;">🦺 مسئول السلامة اللي بيرفع التقرير:</span>
+<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('nm-reporter').value=this.value; renderNM();">
+<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل تقرير</span>
+</div>
+
+<div class="mail-box">
+<b>📧 إيميلات الإشعار - أول ما تحفظ هيبعت أوتوماتيك:</b>
+<div class="grid">
+<div><label>📧 إيميل المدير</label><input id="mgrEmail" placeholder="manager@rmed.com" oninput="localStorage.setItem('mgrEmail',this.value)"></div>
+<div><label>📧 إيميل المشرف</label><input id="supEmail" placeholder="supervisor@rmed.com" oninput="localStorage.setItem('supEmail',this.value)"></div>
+</div>
+<small style="color:#E65100;">ملحوظة: الموقع هيفتح برنامج الميل عندك جاهز بالتفاصيل، دوس Send وهيتبعت. لو عايز يتبعت أوتوماتيك من غير ما تفتح الميل، هنحتاج نربطه بـ Google Apps Script بعدين.</small>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi"><b id="k-total">0</b><small>إجمالي عدد التقارير</small></div>
+<div class="kpi red"><b id="k-open">0</b><small>عدد المفتوح</small></div>
+<div class="kpi green"><b id="k-closed">0</b><small>عدد المغلق</small></div>
+<div class="kpi green"><b id="k-close-p">0%</b><small>نسبة الغلق</small></div>
+<div class="kpi red"><b id="k-open-p">0%</b><small>نسبة المفتوح</small></div>
+<div class="kpi orange"><b id="k-top-place">-</b><small>المكان صاحب أعلى تقارير</small></div>
+<div class="kpi"><b id="k-low-place">-</b><small>المكان صاحب أقل تقارير</small></div>
+<div class="kpi green"><b id="k-top-close-comp">-</b><small>الشركة صاحبة أعلى نسبة غلق</small></div>
+<div class="kpi red"><b id="k-top-open-comp">-</b><small>الشركة صاحبة أعلى نسبة تقارير مفتوحة</small></div>
+<div class="kpi"><b id="k-top-person">-</b><small>الشخص صاحب أعلى عدد تقارير</small></div>
+<div class="kpi"><b id="k-low-person">-</b><small>الشخص صاحب أقل عدد تقارير</small></div>
+<div class="kpi orange"><b id="k-top-comp">-</b><small>الشركة صاحبة أعلى عدد تقارير</small></div>
+</div>
+
+<div class="card orange">
+<h2 style="margin:0 0 5px;">⚡ تسجيل حادث وشيك جديد</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">املى البيانات، وارفع الصور، والحالة الافتراضية مفتوح</p>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="nm-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="nm-time"></div>
+<div><label>🏢 الشركة *</label><input id="nm-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>👤 اسم المبلغ - أوتوماتيك</label><input id="nm-reporter" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
+<div><label>📍 المكان *</label><input id="nm-place" placeholder="مثال: مبنى A - الدور الثالث..." list="placesList"><datalist id="placesList"></datalist></div>
+<div><label>📌 الحالة *</label><select id="nm-status"><option value="مفتوح" selected>🔴 مفتوح</option><option value="مغلق">🟢 مغلق</option></select></div>
+<div style="grid-column:1/-1;"><label>📝 وصف الحادث الوشيك *</label><textarea id="nm-desc" placeholder="اشرح اللي حصل بالتفصيل..."></textarea></div>
+<div style="grid-column:1/-1;"><label>⚡ السبب المباشر *</label><textarea id="nm-direct" placeholder="مثال: عدم استخدام حزام أمان - سقوط أدوات من ارتفاع..."></textarea></div>
+<div style="grid-column:1/-1;"><label>🔍 السبب الجذري *</label><textarea id="nm-root" placeholder="مثال: عدم وجود إشراف - عدم التدريب الكافي - عدم توفير مهمات..."></textarea></div>
+<div style="grid-column:1/-1;"><label>✅ الإجراء التصحيحي *</label><textarea id="nm-corrective" placeholder="الإجراء اللي اتعمل عشان نصلح المشكلة دي..."></textarea></div>
+<div style="grid-column:1/-1;"><label>🛡️ الإجراء الوقائي *</label><textarea id="nm-preventive" placeholder="الإجراء اللي هيمنع تكرار الحادث ده تاني..."></textarea></div>
+<div><label>📸 صور الحادث - ممكن تختار أكتر من صورة</label><input type="file" id="nm-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident')"><div class="thumbs" id="prev-incident"></div></div>
+<div><label>📸 صور الإجراءات التصحيحية والوقائية - ممكن تختار أكتر من صورة</label><input type="file" id="nm-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action')"><div class="thumbs" id="prev-action"></div></div>
+</div>
+<button class="btn orange" onclick="addNM()">💾 حفظ التقرير + إرسال إشعار للمدير والمشرف</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل الحوادث الوشيكة</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchNM" placeholder="ابحث بالشركة أو المكان أو الوصف أو المبلغ..." oninput="renderNM()" style="flex:2;">
+<select id="filterStatus" onchange="renderNM()" style="flex:1;"><option value="">كل الحالات</option><option>مفتوح</option><option>مغلق</option></select>
+<select id="filterCompany" onchange="renderNM()" style="flex:1;"><option value="">كل الشركات</option></select>
+</div>
+<div id="nmTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn2" onclick="exportNM()" style="flex:1;padding:12px;">📥 تصدير السجل كله Excel / CSV</button>
+<button class="btn2" onclick="clearNM()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+if(!DB.nearMiss) DB.nearMiss=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+
+let tempIncidentImgs=[], tempActionImgs=[];
+function previewImgs(input, prevId){
+  let files=[...input.files];
+  let target = prevId==='prev-incident' ? 'incident' : 'action';
+  let container=document.getElementById(prevId);
+  container.innerHTML='';
+  let arr = target==='incident' ? tempIncidentImgs : tempActionImgs;
+  arr.length=0;
+  files.forEach(f=>{
+    let r=new FileReader();
+    r.onload=e=>{
+      arr.push(e.target.result);
+      let img=document.createElement('img'); img.src=e.target.result; img.onclick=()=>window.open(e.target.result,'_blank');
+      container.appendChild(img);
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function addNM(){
+  if(!val('nm-date')) return alert('اختار التاريخ');
+  if(!val('nm-time')) return alert('اختار الوقت');
+  if(!val('nm-company')) return alert('اكتب الشركة');
+  if(!val('nm-reporter')) return alert('اكتب اسم المبلغ');
+  if(!val('nm-place')) return alert('اكتب المكان');
+  if(!val('nm-desc')) return alert('اكتب وصف الحادث');
+  if(!val('nm-direct')) return alert('اكتب السبب المباشر');
+  if(!val('nm-root')) return alert('اكتب السبب الجذري');
+  if(!val('nm-corrective')) return alert('اكتب الإجراء التصحيحي');
+  if(!val('nm-preventive')) return alert('اكتب الإجراء الوقائي');
+  let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),reporter:val('nm-reporter'),place:val('nm-place'),desc:val('nm-desc'),direct:val('nm-direct'),root:val('nm-root'),corrective:val('nm-corrective'),preventive:val('nm-preventive'),status:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
+  DB.nearMiss.push(rec); save(); renderNM();
+  sendEmailNotify(rec);
+  alert('✅ تم حفظ تقرير الحادث الوشيك\nوهيفتح الميل دلوقتي عشان يبعت إشعار للمدير والمشرف');
+  ['nm-company','nm-place','nm-desc','nm-direct','nm-root','nm-corrective','nm-preventive'].forEach(id=>setVal(id,''));
+  setVal('nm-status','مفتوح');
+  document.getElementById('nm-img-incident').value=''; document.getElementById('nm-img-action').value='';
+  document.getElementById('prev-incident').innerHTML=''; document.getElementById('prev-action').innerHTML='';
+  tempIncidentImgs=[]; tempActionImgs=[];
+}
+
+function sendEmailNotify(r){
+  let mgr=document.getElementById('mgrEmail').value.trim();
+  let sup=document.getElementById('supEmail').value.trim();
+  let to=[mgr,sup].filter(Boolean).join(',');
+  if(!to){ alert('⚠️ اكتب إيميل المدير والمشرف فوق عشان الإشعار يتبعت'); return; }
+  let subject=encodeURIComponent('⚡ تقرير حادث وشيك جديد - '+r.company+' - '+r.date+' - '+r.place);
+  let body=encodeURIComponent('تقرير حادث وشيك جديد - RMED\n\n'+'📅 التاريخ: '+r.date+'\n⏰ الوقت: '+r.time+'\n🏢 الشركة: '+r.company+'\n👤 المبلغ: '+r.reporter+'\n📍 المكان: '+r.place+'\n📌 الحالة: '+r.status+'\n\n📝 وصف الحادث:\n'+r.desc+'\n\n⚡ السبب المباشر:\n'+r.direct+'\n\n🔍 السبب الجذري:\n'+r.root+'\n\n✅ الإجراء التصحيحي:\n'+r.corrective+'\n\n🛡️ الإجراء الوقائي:\n'+r.preventive+'\n\nعدد صور الحادث: '+r.incidentImgs.length+'\nعدد صور الإجراءات: '+r.actionImgs.length+'\n\nبرجاء المراجعة واتخاذ اللازم.');
+  window.location.href='mailto:'+to+'?subject='+subject+'&body='+body;
+}
+
+function topOf(arr,key){
+  let m={}; arr.forEach(x=>{ let k=x[key]; if(!k) return; m[k]=(m[k]||0)+1; });
+  let keys=Object.keys(m); if(!keys.length) return null;
+  keys.sort((a,b)=>m[b]-m[a]);
+  return {name:keys[0],count:m[keys[0]],all:m,low:{name:keys[keys.length-1],count:m[keys[keys.length-1]]}};
+}
+
+function renderNM(){
+  let q=(document.getElementById('searchNM').value||'').toLowerCase();
+  let fs=document.getElementById('filterStatus').value;
+  let fc=document.getElementById('filterCompany').value;
+  let all=DB.nearMiss||[];
+  let comps=[...new Set(all.map(x=>x.company))];
+  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  let sel=document.getElementById('filterCompany'); let cur=sel.value;
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  let places=[...new Set(all.map(x=>x.place))];
+  document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${p}">`).join('');
+
+  let total=all.length;
+  let open=all.filter(x=>x.status==='مفتوح').length;
+  let closed=all.filter(x=>x.status==='مغلق').length;
+  document.getElementById('k-total').innerText=total;
+  document.getElementById('k-open').innerText=open;
+  document.getElementById('k-closed').innerText=closed;
+  document.getElementById('k-close-p').innerText=total?Math.round(closed/total*100)+'%':'0%';
+  document.getElementById('k-open-p').innerText=total?Math.round(open/total*100)+'%':'0%';
+
+  let tPlace=topOf(all,'place');
+  document.getElementById('k-top-place').innerText=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
+  document.getElementById('k-low-place').innerText=tPlace?tPlace.low.name+' ('+tPlace.low.count+')':'-';
+  let tPerson=topOf(all,'reporter');
+  document.getElementById('k-top-person').innerText=tPerson?tPerson.name+' ('+tPerson.count+')':'-';
+  document.getElementById('k-low-person').innerText=tPerson?tPerson.low.name+' ('+tPerson.low.count+')':'-';
+  let tComp=topOf(all,'company');
+  document.getElementById('k-top-comp').innerText=tComp?tComp.name+' ('+tComp.count+')':'-';
+
+  // الشركات - نسبة الغلق والمفتوح
+  let byComp={};
+  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0}; byComp[x.company].total++; if(x.status==='مغلق') byComp[x.company].closed++; else byComp[x.company].open++; });
+  let compArr=Object.entries(byComp).map(([name,v])=>({name,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0,total:v.total}));
+  compArr.sort((a,b)=>b.closeP-a.closeP);
+  document.getElementById('k-top-close-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].closeP+'% غلق)':'-';
+  compArr.sort((a,b)=>b.openP-a.openP);
+  document.getElementById('k-top-open-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].openP+'% مفتوح)':'-';
+
+  let list=all.filter(x=>{
+    let okQ=(x.company+x.place+x.desc+x.reporter).toLowerCase().includes(q);
+    let okS=!fs||x.status===fs;
+    let okC=!fc||x.company===fc;
+    return okQ&&okS&&okC;
+  });
+  if(!list.length){ document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تقارير حوادث وشيكة لسه</p>'; return; }
+  document.getElementById('nmTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>المبلغ</th><th>المكان</th><th>الوصف</th><th>السبب المباشر</th><th>الحالة</th><th>الصور</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.nearMiss.indexOf(x);
+    let imgs='';
+    if(x.incidentImgs && x.incidentImgs.length) imgs+='<br>📸 حادث: '+x.incidentImgs.length;
+    if(x.actionImgs && x.actionImgs.length) imgs+='<br>📸 إجراءات: '+x.actionImgs.length;
+    return `<tr><td>${x.date}<br>${x.time}</td><td><b>${x.company}</b></td><td>${x.reporter}</td><td>${x.place}</td><td style="text-align:right;max-width:220px;">${x.desc}<br><small style="color:#78909C;">جذري: ${x.root}</small><br><small style="color:#2E7D32;">تصحيحي: ${x.corrective}</small><br><small style="color:#FF9800;">وقائي: ${x.preventive}</small></td><td style="max-width:150px;">${x.direct}</td><td><span class="badge ${x.status==='مفتوح'?'open':'closed'}">${x.status}</span></td><td style="font-size:11px;">${imgs||'-'}<br>${x.incidentImgs && x.incidentImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'incident')">👁️ صور الحادث</button>`:''} ${x.actionImgs && x.actionImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'action')">👁️ صور الإجراءات</button>`:''}</td><td><button class="btn2" onclick="toggleStatus(${idx})">${x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNM(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function viewImgs(idx,type){
+  let x=DB.nearMiss[idx];
+  let arr=type==='incident'?x.incidentImgs:x.actionImgs;
+  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;direction:rtl;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 صور الحادث':'📸 صور الإجراءات')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>`<img src="${src}" style="width:300px;border-radius:12px;">`).join('')+'</div>');
+}
+function toggleStatus(i){ DB.nearMiss[i].status = DB.nearMiss[i].status==='مفتوح'?'مغلق':'مفتوح'; save(); renderNM(); }
+function delNM(i){ if(!confirm('تحذف التقرير ده؟')) return; DB.nearMiss.splice(i,1); save(); renderNM(); }
+function clearNM(){ if(!confirm('تمسح كل تقارير الحوادث الوشيكة؟')) return; DB.nearMiss=[]; save(); renderNM(); }
+function exportNM(){
+  if(!DB.nearMiss.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,الشركة,اسم المبلغ,المكان,وصف الحادث الوشيك,السبب المباشر,السبب الجذري,الاجراء التصحيحي,الاجراء الوقائي,الحالة,عدد صور الحادث,عدد صور الاجراءات\n'+DB.nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+(x.corrective||'').replace(/"/g,'""')+'"','"'+(x.preventive||'').replace(/"/g,'""')+'"',x.status,(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='near-miss-reports.csv'; a.click();
+}
+let savedUser=localStorage.getItem('safetyUser')||'';
+document.getElementById('currentUser').value=savedUser;
+document.getElementById('nm-reporter').value=savedUser;
+document.getElementById('mgrEmail').value=localStorage.getItem('mgrEmail')||'';
+document.getElementById('supEmail').value=localStorage.getItem('supEmail')||'';
+document.getElementById('nm-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('nm-time').value=new Date().toTimeString().slice(0,5);
+renderNM();
+</script>
+</body>
+</html>
