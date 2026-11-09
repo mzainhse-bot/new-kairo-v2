@@ -26,7 +26,7 @@ label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
 .btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
 .nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
 .nav a.active{background:#0A1F44;color:#fff;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
@@ -51,16 +51,18 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </header>
 <div class="container">
 <div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
 <a href="induction.html">📘 المحاضرة الأولية</a>
-<a href="workers.html">👷 الموظفين</a>
+<a href="workers.html">👥 الموظفين</a>
 <a href="train.html">🎓 التدريبات</a>
 <a href="weekly.html">📅 المحاضرة الأسبوعية</a>
 <a href="permits.html">📋 التصاريح</a>
 <a href="daily-count.html" class="active">👷‍♂️ إعداد العمال اليومي</a>
-<a href="stats.html">📈 الإحصائيات</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">👷 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
 </div>
 
-<!-- فلتر اليوم -->
 <div class="card">
 <div class="grid">
 <div><label>📅 اختار اليوم اللي عايز تشوف إحصائيته</label><input type="date" id="filterDate" onchange="renderDaily()"></div>
@@ -68,7 +70,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
-<!-- الاحصائيات فوق -->
 <div class="kpi-grid">
 <div class="kpi"><b id="k-total-day">0</b><small>إجمالي العمال في اليوم</small></div>
 <div class="kpi"><b id="k-companies">0</b><small>عدد الشركات في اليوم</small></div>
@@ -143,7 +144,6 @@ function addDaily(){
   ROLES.forEach((r,i)=>{ counts[r]=parseInt(document.getElementById('role-'+i).value)||0; });
   let total=Object.values(counts).reduce((a,b)=>a+b,0);
   if(total===0) return alert('اكتب عدد واحد على الأقل');
-  // لو نفس الشركة ونفس اليوم موجود، اسأله يحدث ولا يضيف
   let existIdx=DB.dailyCount.findIndex(x=>x.company===val('d-company') && x.date===val('d-date'));
   if(existIdx>=0){
     if(!confirm('الشركة دي ليها إعداد في اليوم ده already\nعايز تحدثه بالجديد؟ دوس OK للتحديث')) return;
@@ -160,18 +160,13 @@ function renderDaily(){
   let filterDate=document.getElementById('filterDate').value;
   let filterComp=document.getElementById('filterCompany').value;
   let q=(document.getElementById('searchD').value||'').toLowerCase();
-
-  // قائمة الشركات للفلتر
   let allComps=[...new Set(DB.dailyCount.map(x=>x.company))];
   let sel=document.getElementById('filterCompany');
   let cur=sel.value;
   sel.innerHTML='<option value="">كل الشركات</option>'+allComps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
   document.getElementById('compList').innerHTML=allComps.map(c=>`<option value="${c}">`).join('');
-
-  // بيانات اليوم المختار
   let dayList=DB.dailyCount.filter(x=>x.date===filterDate);
   if(filterComp) dayList=dayList.filter(x=>x.company===filterComp);
-
   let totalDay=dayList.reduce((s,x)=>s+x.total,0);
   let compCount=dayList.length;
   document.getElementById('k-total-day').innerText=totalDay;
@@ -183,7 +178,6 @@ function renderDaily(){
     document.getElementById('k-min').innerText=minRec.total+' - '+minRec.company;
     document.getElementById('k-max-label').innerText='الشركة صاحبة أعلى عدد - '+filterDate;
     document.getElementById('k-min-label').innerText='الشركة صاحبة أقل عدد - '+filterDate;
-    // إجمالي كل شركة
     let sorted=[...dayList].sort((a,b)=>b.total-a.total);
     let maxT=Math.max(...dayList.map(x=>x.total),1);
     document.getElementById('companyTotals').innerHTML=sorted.map(x=>{
@@ -194,10 +188,7 @@ function renderDaily(){
     document.getElementById('k-min').innerText='-';
     document.getElementById('companyTotals').innerHTML='<p style="text-align:center;color:#999;">مفيش إعداد في اليوم ده لسه - سجل أول شركة فوق</p>';
   }
-
-  // الجدول الكامل
   let list=DB.dailyCount.filter(x=>(!filterComp||x.company===filterComp) && x.company.toLowerCase().includes(q));
-  // لو فلتر التاريخ مش فاضي، الجدول يعرض اليوم ده بس؟ لا - اعرض الكل مرتب بالتاريخ
   if(!list.length){ document.getElementById('dailyTable').innerHTML='<p style="text-align:center;color:#999;">مفيش إعداد مسجل لسه</p>'; return; }
   document.getElementById('dailyTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>الإجمالي</th><th>أكبر 3 وظايف</th><th>عرض التفاصيل</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
     let idx=DB.dailyCount.indexOf(x);
@@ -233,19 +224,4 @@ document.getElementById('filterDate').value=new Date().toISOString().slice(0,10)
 renderDaily();
 </script>
 </body>
-  <div class="navbar">
-<a href="index.html">🏠 الرئيسية</a>
-<a href="induction.html">📖 المحاضرة الأولية</a>
-<a href="workers.html">👥 الموظفين</a>
-<a href="train.html">🎓 التدريبات</a>
-<a href="weekly.html">📅 الاجتماع الأسبوعي</a>
-<a href="permits.html">📄 التصاريح</a>
-<a href="daily-count.html">📊 الحصر اليومي</a>
-<a href="violations.html">⚠️ مخالفات المقاولين</a>
-<a href="employee-violations.html">👷 مخالفات الموظفين</a>
-<a href="safety-observations.html">📋 ملاحظات السلامة</a>
-</div>
-  .navbar{background:#111;border:1px solid #C9A227;border-radius:14px;padding:10px;display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
-.navbar a{color:#fff;text-decoration:none;background:#1e1e1e;border:1px solid #333;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:bold}
-.navbar a.active{background:#C9A227;color:#000;border-color:#C9A227}
 </html>
