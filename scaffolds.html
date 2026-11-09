@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فحص السقالات - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#FF9800;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.orange{border-top-color:#FF9800;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+textarea{min-height:60px;resize:vertical;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
+.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.user-bar input{width:auto;flex:1;min-width:180px;}
+.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
+.badge.on{background:#E8F5E9;color:#2E7D32;}
+.badge.off{background:#FFEBEE;color:#D32F2F;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> فحص السقالات</h1><small>Scaffolding Inspection</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
+<a href="accidents.html">🚑 الحوادث</a>
+<a href="scaffolds.html" class="active">🏗️ فحص السقالات</a>
+</div>
+
+<div class="user-bar">
+<span style="font-weight:bold;">🦺 اسم الفاحص:</span>
+<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('sc-inspector').value=this.value; renderSc();">
+<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل فحص</span>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi"><b id="k-total">0</b><small>إجمالي عدد السقالات في السجل</small></div>
+<div class="kpi green"><b id="k-on">0</b><small>عدد السقالات القائمة</small></div>
+<div class="kpi red"><b id="k-off">0</b><small>عدد السقالات اللي تم فكها</small></div>
+<div class="kpi orange"><b id="k-on-p">0%</b><small>نسبة السقالات القائمة</small></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🏢 تفصيلة كل شركة - قائمة / تم فكها</h3>
+<div id="compTable"></div>
+</div>
+
+<div class="card orange">
+<h2 style="margin:0 0 5px;">🏗️ تسجيل فحص سقالة جديدة</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">رقم السقالة هيتولد أوتوماتيك، والحالة الافتراضية قائمة</p>
+<div class="grid">
+<div><label>🏗️ رقم السقالة - أوتوماتيك</label><input id="sc-num" class="auto" placeholder="هيتولد أوتوماتيك" readonly></div>
+<div><label>🏢 اسم الشركة *</label><input id="sc-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>🔧 نوع السقالة *</label><select id="sc-type"><option value="">-- اختار النوع --</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select></div>
+<div><label>⚖️ الحمولة *</label><select id="sc-load"><option value="">-- اختار الحمولة --</option><option>خفيفة الحمولة</option><option>متوسطة الحمولة</option><option>عالية الأحمال</option></select></div>
+<div><label>🏢 رقم المبنى *</label><input id="sc-building" placeholder="مثال: A - B - 1..."></div>
+<div><label>🏠 رقم الدور *</label><input id="sc-floor" placeholder="مثال: الأرضي - الأول - الثاني..."></div>
+<div><label>📍 رقم الكلاستر *</label><input id="sc-cluster" placeholder="مثال: C1 - C2..."></div>
+<div><label>📅 تاريخ الإنشاء *</label><input type="date" id="sc-date"></div>
+<div><label>🦺 اسم الفاحص - أوتوماتيك</label><input id="sc-inspector" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
+<div><label>📌 الحالة *</label><select id="sc-status"><option value="قائمة" selected>🟢 قائمة</option><option value="تم الفك">🔴 تم الفك</option></select></div>
+<div style="grid-column:1/-1;"><label>📝 ملاحظات الفحص - اختياري</label><textarea id="sc-notes" placeholder="أي ملاحظات على السقالة... حالة الألواح - الربط - السلم..."></textarea></div>
+</div>
+<button class="btn orange" onclick="addSc()">💾 حفظ فحص السقالة</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل السقالات</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchSc" placeholder="ابحث برقم السقالة أو الشركة أو المبنى..." oninput="renderSc()" style="flex:2;">
+<select id="filterStatus" onchange="renderSc()" style="flex:1;"><option value="">كل الحالات</option><option>قائمة</option><option>تم الفك</option></select>
+<select id="filterType" onchange="renderSc()" style="flex:1;"><option value="">كل الأنواع</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select>
+<select id="filterCompany" onchange="renderSc()" style="flex:1;"><option value="">كل الشركات</option></select>
+</div>
+<div id="scTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn2" onclick="exportSc()" style="flex:1;padding:12px;">📥 تصدير السجل كله Excel / CSV</button>
+<button class="btn2" onclick="clearSc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+if(!DB.scaffolds) DB.scaffolds=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+
+// توليد رقم سقالة أوتوماتيك: SC-2026-001
+function genScNum(){
+  let year=new Date().getFullYear();
+  let count=(DB.scaffolds||[]).length+1;
+  // لو فيه أرقام قديمة، خد أكبر رقم + 1
+  let nums=(DB.scaffolds||[]).map(x=>{ let m=(x.num||'').match(/(\d+)$/); return m?parseInt(m[1]):0; });
+  let max=nums.length?Math.max(...nums):0;
+  let next=Math.max(count, max+1);
+  return 'SC-'+year+'-'+String(next).padStart(3,'0');
+}
+function refreshNum(){ document.getElementById('sc-num').value=genScNum(); }
+
+function addSc(){
+  if(!val('sc-company')) return alert('اكتب اسم الشركة');
+  if(!val('sc-type')) return alert('اختار نوع السقالة');
+  if(!val('sc-load')) return alert('اختار الحمولة');
+  if(!val('sc-building')) return alert('اكتب رقم المبنى');
+  if(!val('sc-floor')) return alert('اكتب رقم الدور');
+  if(!val('sc-cluster')) return alert('اكتب رقم الكلاستر');
+  if(!val('sc-date')) return alert('اختار تاريخ الإنشاء');
+  if(!val('sc-inspector')) return alert('اكتب اسم الفاحص');
+  if(!val('sc-status')) return alert('اختار الحالة');
+  let rec={num:val('sc-num')||genScNum(),company:val('sc-company'),type:val('sc-type'),load:val('sc-load'),building:val('sc-building'),floor:val('sc-floor'),cluster:val('sc-cluster'),date:val('sc-date'),inspector:val('sc-inspector'),status:val('sc-status'),notes:val('sc-notes'),createdAt:new Date().toISOString()};
+  DB.scaffolds.push(rec); save(); renderSc(); refreshNum();
+  alert('✅ تم حفظ السقالة '+rec.num+' - '+rec.company+' - '+rec.status);
+  ['sc-company','sc-building','sc-floor','sc-cluster','sc-notes'].forEach(id=>setVal(id,''));
+  setVal('sc-type',''); setVal('sc-load',''); setVal('sc-status','قائمة');
+}
+
+function renderSc(){
+  let all=DB.scaffolds||[];
+  let comps=[...new Set(all.map(x=>x.company))];
+  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  let sel=document.getElementById('filterCompany'); let cur=sel.value;
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+
+  let total=all.length;
+  let on=all.filter(x=>x.status==='قائمة').length;
+  let off=all.filter(x=>x.status==='تم الفك').length;
+  document.getElementById('k-total').innerText=total;
+  document.getElementById('k-on').innerText=on;
+  document.getElementById('k-off').innerText=off;
+  document.getElementById('k-on-p').innerText=total?Math.round(on/total*100)+'%':'0%';
+
+  // تفصيلة كل شركة
+  let byComp={};
+  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,on:0,off:0}; byComp[x.company].total++; if(x.status==='قائمة') byComp[x.company].on++; else byComp[x.company].off++; });
+  let compArr=Object.entries(byComp).sort((a,b)=>b[1].total-a[1].total);
+  if(!compArr.length) document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات لسه</p>';
+  else document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي السقالات</th><th>🟢 قائمة</th><th>🔴 تم فكها</th><th>نسبة القائمة</th></tr>'+compArr.map(([name,v])=>`<tr><td><b>${name}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:bold;">${v.on}</td><td style="color:#D32F2F;font-weight:bold;">${v.off}</td><td>${v.total?Math.round(v.on/v.total*100)+'%':'0%'}</td></tr>`).join('')+'</table>';
+
+  let q=(document.getElementById('searchSc').value||'').toLowerCase();
+  let fs=document.getElementById('filterStatus').value;
+  let ft=document.getElementById('filterType').value;
+  let fc=document.getElementById('filterCompany').value;
+  let list=all.filter(x=>{
+    let okQ=(x.num+x.company+x.building+x.floor+x.cluster+x.type).toLowerCase().includes(q);
+    let okS=!fs||x.status===fs;
+    let okT=!ft||x.type===ft;
+    let okC=!fc||x.company===fc;
+    return okQ&&okS&&okT&&okC;
+  });
+  if(!list.length){ document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات مسجلة لسه</p>'; return; }
+  document.getElementById('scTable').innerHTML='<table><tr><th>رقم السقالة</th><th>الشركة</th><th>النوع</th><th>الحمولة</th><th>المبنى / الدور / الكلاستر</th><th>تاريخ الإنشاء</th><th>الفاحص</th><th>الحالة</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.scaffolds.indexOf(x);
+    return `<tr><td><b style="color:#FF9800;">${x.num}</b></td><td><b>${x.company}</b></td><td>${x.type}</td><td>${x.load}</td><td>مبنى ${x.building}<br>دور ${x.floor}<br>كلاستر ${x.cluster}</td><td>${x.date}</td><td>${x.inspector}</td><td><span class="badge ${x.status==='قائمة'?'on':'off'}">${x.status}</span><br><small style="color:#78909C;">${x.notes||''}</small></td><td><button class="btn2" onclick="toggleSc(${idx})">${x.status==='قائمة'?'🔴 فك السقالة':'🟢 رجعها قائمة'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function toggleSc(i){ DB.scaffolds[i].status = DB.scaffolds[i].status==='قائمة'?'تم الفك':'قائمة'; save(); renderSc(); }
+function delSc(i){ if(!confirm('تحذف السقالة دي؟')) return; DB.scaffolds.splice(i,1); save(); renderSc(); refreshNum(); }
+function clearSc(){ if(!confirm('تمسح كل سجل السقالات؟')) return; DB.scaffolds=[]; save(); renderSc(); refreshNum(); }
+function exportSc(){
+  if(!DB.scaffolds.length) return alert('مفيش بيانات');
+  let csv='رقم السقالة,اسم الشركة,نوع السقالة,الحمولة,رقم المبنى,رقم الدور,رقم الكلاستر,تاريخ الانشاء,اسم الفاحص,الحالة,ملاحظات\n'+DB.scaffolds.map(x=>[x.num,x.company,x.type,x.load,x.building,x.floor,x.cluster,x.date,x.inspector,x.status,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='scaffolds.csv'; a.click();
+}
+let savedUser=localStorage.getItem('safetyUser')||'';
+document.getElementById('currentUser').value=savedUser;
+document.getElementById('sc-inspector').value=savedUser;
+document.getElementById('sc-date').value=new Date().toISOString().slice(0,10);
+refreshNum();
+renderSc();
+</script>
+</body>
+</html>
