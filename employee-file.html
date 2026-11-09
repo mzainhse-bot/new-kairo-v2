@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملفات الموظفين - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#2E7D32;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.green{border-top-color:#2E7D32;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.green{background:#2E7D32;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;justify-content:center;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+.profile{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}
+.profile-photo{width:160px;height:200px;object-fit:cover;border-radius:14px;border:3px solid #0A1F44;background:#ECEFF1;flex-shrink:0;}
+.profile-info{flex:1;min-width:280px;}
+.info-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:600px){.info-row{grid-template-columns:1fr;}}
+.info-item{background:#F4F6F9;padding:10px 12px;border-radius:10px;}
+.info-item b{color:#78909C;font-size:12px;display:block;}
+.info-item span{font-weight:bold;font-size:14px;}
+.section-title{background:#0A1F44;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
+.badge{padding:5px 14px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;}
+.badge.work{background:#E8F5E9;color:#2E7D32;}
+.badge.resign{background:#FFF3E0;color:#E65100;}
+.badge.excluded{background:#FFEBEE;color:#D32F2F;}
+.timeline{border-right:3px solid #0A1F44;padding-right:16px;margin-right:8px;}
+.timeline-item{position:relative;padding-bottom:14px;}
+.timeline-item::before{content:'';position:absolute;right:-24px;top:4px;width:12px;height:12px;background:#0A1F44;border-radius:50%;border:2px solid #fff;}
+@media print{
+  header,.nav,.no-print{display:none!important;}
+  body{background:#fff;}
+  .container{max-width:100%;padding:0;}
+  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;}
+  .print-header{display:block!important;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:14px;}
+}
+.print-header{display:none;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> ملفات الموظفين</h1><small>Employee Files</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav no-print">
+<a href="index.html">🏠 الرئيسية</a>
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👥 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html">👷‍♂️ الإعداد اليومي</a>
+<a href="violations.html">⚠️ مخالفات المقاولين</a>
+<a href="employee-violations.html">🚨 مخالفات الموظفين</a>
+<a href="safety-observations.html">📋 ملاحظات السلامة</a>
+<a href="near-miss.html">⚡ الحوادث الوشيكة</a>
+<a href="accidents.html">🚑 الحوادث</a>
+<a href="scaffolds.html">🏗️ فحص السقالات</a>
+<a href="employee-file.html" class="active">📁 ملفات الموظفين</a>
+</div>
+
+<div class="card no-print">
+<h2 style="margin:0 0 10px;">🔍 البحث عن موظف</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchInput" placeholder="ابحث بالاسم أو الكود أو رقم البطاقة..." list="allEmp" style="flex:2;" oninput="if(this.value) showFile(this.value)">
+<datalist id="allEmp"></datalist>
+<button class="btn2" onclick="showFile(document.getElementById('searchInput').value)" style="padding:12px 20px;">🔍 بحث</button>
+<button class="btn2" onclick="clearFile()" style="padding:12px 20px;">🔄 بحث جديد</button>
+</div>
+<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اكتب الاسم أو الكود أو رقم البطاقة، الملف هيظهر لوحده</p>
+</div>
+
+<div id="fileArea" style="display:none;">
+<div class="print-header">
+<h1 style="margin:0;">RMED - ملف موظف</h1>
+<p style="margin:4px 0;color:#666;">تقرير شامل - تاريخ التقرير: <span id="printDate"></span></p>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi red"><b id="f-viol">0</b><small>عدد المخالفات</small></div>
+<div class="kpi orange"><b id="f-acc">0</b><small>عدد الإصابات / الحوادث</small></div>
+<div class="kpi green"><b id="f-train">0</b><small>عدد التدريبات</small></div>
+<div class="kpi"><b id="f-days">0</b><small>اشتغل كام يوم في الموقع</small></div>
+</div>
+
+<div class="card green">
+<div class="profile">
+<img id="f-photo" class="profile-photo" src="" onerror="this.src='https://via.placeholder.com/160x200?text=No+Photo'">
+<div class="profile-info">
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+<h2 id="f-name" style="margin:0;">-</h2>
+<span id="f-status" class="badge work">شغال</span>
+</div>
+<p id="f-job-company" style="color:#78909C;margin:6px 0;">-</p>
+<div class="info-row" style="margin-top:12px;">
+<div class="info-item"><b>🔢 الكود</b><span id="f-code">-</span></div>
+<div class="info-item"><b>🪪 رقم البطاقة</b><span id="f-nid">-</span></div>
+<div class="info-item"><b>👷 المهنة</b><span id="f-job">-</span></div>
+<div class="info-item"><b>🏢 الشركة</b><span id="f-company">-</span></div>
+<div class="info-item"><b>📞 رقم التليفون</b><span id="f-phone">-</span></div>
+<div class="info-item"><b>📅 تاريخ التعيين</b><span id="f-hire">-</span></div>
+<div class="info-item"><b>📅 تاريخ التقرير</b><span id="f-report-date">-</span></div>
+<div class="info-item"><b>⏰ مدة العمل في الموقع</b><span id="f-duration">-</span></div>
+</div>
+<div id="f-leave-box" style="display:none;margin-top:12px;padding:12px;border-radius:10px;background:#FFEBEE;border:1px solid #FFCDD2;">
+<b id="f-leave-title">-</b><br><span id="f-leave-detail" style="font-size:13px;"></span>
+</div>
+</div>
+</div>
+<div style="display:flex;gap:8px;margin-top:14px;" class="no-print">
+<button class="btn2" onclick="exportPDF()" style="flex:1;padding:13px;background:#0A1F44;color:#fff;">🖨️ تصدير الملف PDF / طباعة</button>
+<button class="btn2" onclick="exportFileExcel()" style="flex:1;padding:13px;">📥 تصدير Excel</button>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title">📜 دورة حياة الموظف في الموقع - من أول يوم لحد النهاردة</div>
+<div class="timeline" id="timeline"></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🚨 سجل المخالفات - كل مرة اتسجل فيها + إجراءات الخصم</h3>
+<div id="violList"></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🚑 سجل الإصابات / الحوادث</h3>
+<div id="accList"></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🎓 سجل التدريبات - خد كام تدريب</h3>
+<div id="trainList"></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">📋 سجل ملاحظات السلامة / الحوادث الوشيكة اللي بلغ عنها</h3>
+<div id="obsList"></div>
+</div>
+</div>
+
+<div id="emptyState" style="text-align:center;color:#999;padding:40px;">
+<p style="font-size:40px;margin:0;">📁</p>
+<p>ابحث عن موظف بالاسم أو الكود أو رقم البطاقة عشان ملفه يظهر هنا</p>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+let currentPerson=null, currentViol=[], currentAcc=[], currentTrain=[];
+
+function getField(obj, keys){
+  for(let k of keys){ if(obj[k]!==undefined && obj[k]!=='' && obj[k]!==null) return obj[k]; }
+  return '';
+}
+function getAllPeople(){
+  let list=[];
+  let push=(x, src)=>{
+    let name=getField(x,['name']);
+    if(!name) return;
+    if(list.find(p=>p.name===name && getField(p,['code','id'])===getField(x,['code','id']))) return;
+    list.push({...x, _src:src});
+  };
+  (DB.workers||[]).forEach(x=>push(x,'workers'));
+  (DB.induction||[]).forEach(x=>push(x,'induction'));
+  return list;
+}
+function fillDatalist(){
+  let people=getAllPeople();
+  document.getElementById('allEmp').innerHTML=people.map(p=>{
+    let code=getField(p,['code','id']); let nid=getField(p,['nid','nationalId','idNumber','card','بطاقة']);
+    return `<option value="${p.name}">${code? 'كود: '+code+' ':''}${nid? 'بطاقة: '+nid:''}</option><option value="${code}"></option><option value="${nid}"></option>`;
+  }).join('');
+}
+function findPerson(q){
+  q=(q||'').trim(); if(!q) return null;
+  let people=getAllPeople();
+  return people.find(p=>{
+    let name=getField(p,['name']); let code=String(getField(p,['code','id'])||'');
+    let nid=String(getField(p,['nid','nationalId','idNumber','card','بطاقة'])||'');
+    let phone=String(getField(p,['phone','mobile','tel'])||'');
+    return name===q || code===q || nid===q || phone===q || name.includes(q);
+  }) || null;
+}
+function calcDays(from, to){
+  if(!from) return 0;
+  let d1=new Date(from); let d2=new Date(to);
+  if(isNaN(d1)) return 0;
+  return Math.max(0, Math.floor((d2-d1)/(1000*60*60*24))+1);
+}
+function showFile(q){
+  let p=findPerson(q);
+  if(!p){ alert('⚠️ الموظف مش موجود، اتأكد من الاسم أو الكود أو رقم البطاقة'); return; }
+  currentPerson=p;
+  let name=getField(p,['name']);
+  let code=getField(p,['code','id']);
+  let nid=getField(p,['nid','nationalId','idNumber','card','بطاقة']);
+  let job=getField(p,['job','profession']);
+  let company=getField(p,['company'])||'RMED';
+  let phone=getField(p,['phone','mobile','tel']);
+  let hire=getField(p,['hireDate','startDate','joinDate','date','تعيين']);
+  let photo=getField(p,['photo','image','img','pic']);
+  let resignDate=getField(p,['resignDate','resignationDate','leaveDate','تاريخ_الاستقالة']);
+  let resignReason=getField(p,['resignReason','resignationReason','سبب_الاستقالة']);
+  let statusRaw=getField(p,['status','حالة']);
+  
+  // المخالفات
+  currentViol=(DB.empViolations||[]).filter(x=>x.name===name || String(x.code||'')===String(code||''));
+  // الاستبعاد أوتوماتيك من المخالفات
+  let exclViol=currentViol.find(x=>x.action==='استبعاد نهائي');
+  let isExcluded = exclViol || statusRaw==='مستبعد' || statusRaw==='استبعاد نهائي' || statusRaw==='استبعاد';
+  let isResigned = resignDate || statusRaw==='استقال' || statusRaw==='مستقيل' || statusRaw==='استقالة';
+  // تاريخ نهاية العمل
+  let endDate=null, endLabel='', endDetail='';
+  let today=new Date().toISOString().slice(0,10);
+  let reportDate=today;
+  if(isExcluded){
+    endDate=exclViol?exclViol.date:getField(p,['excludeDate','exclusionDate']);
+    endLabel='🚫 مستبعد';
+    endDetail='تاريخ الاستبعاد: '+(endDate||'-')+' | سبب الاستبعاد: '+(exclViol?exclViol.desc+' - '+exclViol.action : getField(p,['excludeReason','exclusionReason'])||'استبعاد نهائي');
+  } else if(isResigned){
+    endDate=resignDate;
+    endLabel='👋 استقال';
+    endDetail='تاريخ الاستقالة: '+(resignDate||'-')+(resignReason?' | السبب: '+resignReason:'');
+  }
+  let days=calcDays(hire, endDate||reportDate);
+  let statusEl=document.getElementById('f-status');
+  if(isExcluded){ statusEl.className='badge excluded'; statusEl.innerText='🚫 مستبعد'; }
+  else if(isResigned){ statusEl.className='badge resign'; statusEl.innerText='👋 استقال'; }
+  else { statusEl.className='badge work'; statusEl.innerText='🟢 شغال'; }
+
+  document.getElementById('fileArea').style.display='block';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('f-name').innerText=name;
+  document.getElementById('f-job-company').innerText=(job||'')+' - '+(company||'');
+  document.getElementById('f-code').innerText=code||'-';
+  document.getElementById('f-nid').innerText=nid||'-';
+  document.getElementById('f-job').innerText=job||'-';
+  document.getElementById('f-company').innerText=company||'-';
+  document.getElementById('f-phone').innerText=phone||'-';
+  document.getElementById('f-hire').innerText=hire||'-';
+  document.getElementById('f-report-date').innerText=reportDate;
+  document.getElementById('printDate').innerText=reportDate;
+  document.getElementById('f-duration').innerText=days+' يوم';
+  document.getElementById('f-days').innerText=days;
+  document.getElementById('f-photo').src=photo||'https://via.placeholder.com/160x200?text=No+Photo';
+  let leaveBox=document.getElementById('f-leave-box');
+  if(isExcluded||isResigned){ leaveBox.style.display='block'; document.getElementById('f-leave-title').innerText=endLabel; document.getElementById('f-leave-detail').innerText=endDetail; }
+  else leaveBox.style.display='none';
+
+  // الإصابات
+  currentAcc=(DB.accidents||[]).filter(x=>x.injured===name || String(x.code||'')===String(code||''));
+  // التدريبات - من كل مصادر التدريب
+  currentTrain=[];
+  (DB.train||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'تدريب',...x}); });
+  (DB.weeklyLect||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'محاضرة أسبوعية',...x}); });
+  (DB.induction||[]).forEach(x=>{ if(x.name===name) currentTrain.push({src:'محاضرة أولية',...x}); });
+  // الحوادث الوشيكة والملاحظات اللي بلغ عنها
+  let near=(DB.nearMiss||[]).filter(x=>x.reporter===name);
+  let obs=(DB.observations||DB.safetyObs||[]).filter(x=>JSON.stringify(x).includes(name));
+
+  document.getElementById('f-viol').innerText=currentViol.length;
+  document.getElementById('f-acc').innerText=currentAcc.length;
+  document.getElementById('f-train').innerText=currentTrain.length;
+
+  // Timeline
+  let events=[];
+  if(hire) events.push({date:hire,title:'📅 تعيين في الموقع',desc:'بدأ العمل - '+job+' - '+company});
+  currentTrain.forEach(t=>{ let d=getField(t,['date']); events.push({date:d||'',title:'🎓 '+ (t.src||'تدريب'),desc:getField(t,['topic','title','desc'])||'تم حضور تدريب'}); });
+  currentViol.forEach(v=>events.push({date:v.date,title:'🚨 مخالفة - '+v.action,desc:v.desc+' | مكان: '+v.place}));
+  currentAcc.forEach(a=>events.push({date:a.date,title:'🚑 إصابة / حادث - '+(a.classes||[]).join(' + '),desc:a.desc+' | جزء مصاب: '+a.body+' - '+a.nature}));
+  if(isResigned) events.push({date:resignDate||'',title:'👋 استقال',desc:resignReason||'استقال من الموقع'});
+  if(isExcluded) events.push({date:endDate||'',title:'🚫 استبعاد نهائي',desc:exclViol?exclViol.desc:'تم استبعاده'});
+  events.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  document.getElementById('timeline').innerHTML=events.length?events.map(e=>`<div class="timeline-item"><b>${e.date||'-'} - ${e.title}</b><br><span style="color:#666;font-size:13px;">${e.desc}</span></div>`).join(''):'<p style="color:#999;">مفيش أحداث مسجلة</p>';
+
+  // المخالفات
+  if(!currentViol.length) document.getElementById('violList').innerHTML='<p style="color:#2E7D32;">✅ مفيش مخالفات</p>';
+  else document.getElementById('violList').innerHTML='<table><tr><th>التاريخ</th><th>وصف المخالفة</th><th>المكان</th><th>الإجراء / الخصم</th><th>المبلغ</th></tr>'+currentViol.map(v=>`<tr><td>${v.date} ${v.time||''}</td><td style="text-align:right;">${v.desc}</td><td>${v.place}</td><td><b style="color:#D32F2F;">${v.action}</b></td><td>${v.safety||'-'}</td></tr>`).join('')+'</table>';
+
+  // الإصابات
+  if(!currentAcc.length) document.getElementById('accList').innerHTML='<p style="color:#2E7D32;">✅ مفيش إصابات</p>';
+  else document.getElementById('accList').innerHTML='<table><tr><th>التاريخ</th><th>وصف الحادث</th><th>التصنيف</th><th>الجزء المصاب</th><th>طبيعة الإصابة</th></tr>'+currentAcc.map(a=>`<tr><td>${a.date}</td><td style="text-align:right;">${a.desc}</td><td>${(a.classes||[]).join(' + ')}</td><td>${a.body}</td><td>${a.nature}</td></tr>`).join('')+'</table>';
+
+  // التدريبات
+  if(!currentTrain.length) document.getElementById('trainList').innerHTML='<p style="color:#999;">مفيش تدريبات مسجلة</p>';
+  else document.getElementById('trainList').innerHTML='<table><tr><th>التاريخ</th><th>نوع التدريب</th><th>الموضوع / التفاصيل</th></tr>'+currentTrain.map(t=>`<tr><td>${getField(t,['date'])||'-'}</td><td>${t.src}</td><td style="text-align:right;">${getField(t,['topic','title','desc','subject'])||JSON.stringify(t).slice(0,120)}</td></tr>`).join('')+'</table>';
+
+  // الملاحظات
+  if(!near.length && !obs.length) document.getElementById('obsList').innerHTML='<p style="color:#999;">مفيش بلاغات مسجلة باسمه</p>';
+  else document.getElementById('obsList').innerHTML='<p>بلغ عن <b>'+near.length+'</b> حادث وشيك، و <b>'+obs.length+'</b> ملاحظة سلامة</p>'+near.map(n=>`<div style="background:#FFF3E0;padding:10px;border-radius:10px;margin-bottom:6px;">⚡ ${n.date} - ${n.place} - ${n.desc}</div>`).join('');
+}
+function clearFile(){ document.getElementById('searchInput').value=''; document.getElementById('fileArea').style.display='none'; document.getElementById('emptyState').style.display='block'; currentPerson=null; }
+function exportPDF(){ if(!currentPerson) return alert('ابحث عن موظف الأول'); window.print(); }
+function exportFileExcel(){
+  if(!currentPerson) return alert('ابحث عن موظف الأول');
+  let name=getField(currentPerson,['name']);
+  let csv='ملف موظف - '+name+'\nالاسم,الكود,رقم البطاقة,المهنة,الشركة,التليفون,تاريخ التعيين,عدد ايام العمل,عدد المخالفات,عدد الاصابات,عدد التدريبات\n'+[name,getField(currentPerson,['code','id']),getField(currentPerson,['nid','nationalId','idNumber','card']),getField(currentPerson,['job','profession']),getField(currentPerson,['company']),getField(currentPerson,['phone','mobile']),getField(currentPerson,['hireDate','startDate','joinDate','date']),document.getElementById('f-days').innerText,currentViol.length,currentAcc.length,currentTrain.length].join(',')+'\n\nالمخالفات\nالتاريخ,الوصف,المكان,الاجراء\n'+currentViol.map(v=>[v.date,v.desc,v.place,v.action].join(',')).join('\n')+'\n\nالاصابات\nالتاريخ,الوصف,التصنيف,الجزء المصاب,طبيعة الاصابة\n'+currentAcc.map(a=>[a.date,a.desc,(a.classes||[]).join(' + '),a.body,a.nature].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='employee-file-'+name+'.csv'; a.click();
+}
+fillDatalist();
+</script>
+</body>
+</html>
