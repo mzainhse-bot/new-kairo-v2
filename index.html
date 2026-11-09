@@ -32,7 +32,6 @@ table th{ background:var(--gold); color:#000; padding:8px; }
 table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
 .hidden{ display:none; }
 .badge{ background:var(--gold); color:#000; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:bold; display:inline-block; margin:3px; }
-.stats-wrap{ background:#F7F3EC; color:#222; border-radius:14px; padding:16px; }
 .kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px; }
 @media(max-width:700px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
 .kpi{ background:#fff; border-radius:10px; padding:12px; text-align:center; border-right:4px solid #ccc; }
@@ -55,20 +54,11 @@ table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
 .idcard-back ol{ margin:0; padding-right:20px; font-size:15px; line-height:2.1; }
 .idcard-back .back-footer{ background:#1A1A1A; padding:10px 14px; text-align:center; font-size:13px; color:#ccc; border-top:1px solid #333; }
 .flex{ display:flex; gap:8px; flex-wrap:wrap; }
-.thumb{ width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid var(--gold); margin:2px; }
 .profile-box{ background:#fff; color:#000; border-radius:14px; padding:16px; }
 .profile-box h3{ color:#D4AF37; margin:0 0 8px; }
 .profile-box h4{ margin:14px 0 6px; border-bottom:2px solid #D4AF37; padding-bottom:4px; }
 .profile-box ul{ margin:0; padding-right:18px; line-height:1.9; font-size:14px; }
-@media print{
-  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-  body{ background:#fff !important; }
-  header, nav, .no-print, .container > div:not(#sec-cards){ display:none !important; }
-  #sec-cards{ display:block !important; }
-  #sec-cards .card{ border:none !important; padding:0 !important; background:#fff !important; }
-  .idcard-wrap{ width:100%; margin:0 auto; break-after:page; page-break-after:always; }
-  .card-actions{ display:none !important; }
-}
+@media print{ *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; } body{ background:#fff !important; } header, nav, .no-print, .container > div:not(#sec-cards){ display:none !important; } #sec-cards{ display:block !important; } #sec-cards .card{ border:none !important; padding:0 !important; background:#fff !important; } .idcard-wrap{ width:100%; margin:0 auto; break-after:page; page-break-after:always; } .card-actions{ display:none !important; } }
 </style>
 </head>
 <body>
@@ -96,28 +86,12 @@ table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
   <button onclick="show('acc')">الحوادث</button>
 </nav>
 <div class="container">
-<div id="sec-dashboard"><div class="card"><h2>📊 لوحة التحكم</h2><div id="statsMini" class="flex"></div><p id="syncMsg" style="font-size:13px;color:#D4AF37;margin-top:8px;">جاري المزامنة مع الشيت...</p></div><div class="card"><h2>💾 النسخة الاحتياطية</h2><div class="flex"><button class="btn2" onclick="exportBackup()">📥 تصدير</button><label class="btn2" style="cursor:pointer;">📤 استيراد <input type="file" accept=".json" onchange="importBackup(event)" style="display:none;"></label><button class="btn2" onclick="loadFromSheet()">🔄 تحديث من الشيت</button></div><p style="font-size:12px; color:#aaa;">اعمل تصدير كل أسبوع واحفظ الملف في جوجل درايف</p></div></div>
-<div id="sec-search" class="hidden">
-  <div class="card"><h2>🔍 بحث عن عامل - إحصائية خاصة بالعامل</h2>
-  <label>اكتب اسم العامل أو الكود</label>
-  <input id="searchInput" placeholder="مثال: أحمد أو 101" oninput="searchWorker()">
-  <div id="searchResults" class="flex" style="margin-top:10px;"></div>
-  <div id="searchBox" style="margin-top:14px;"></div></div>
-</div>
-<div id="sec-companies" class="hidden">
-  <div class="card"><h2>🏢 تقرير الشركات - كل شركة لوحدها</h2>
-  <label>اختار الشركة</label>
-  <select id="compSelect" onchange="renderCompany()"></select>
-  <div id="companyBox" style="margin-top:14px;"></div></div>
-</div>
-<div id="sec-verify" class="hidden"><div class="card"><h2>🔍 التحقق من الكارنيه - بيفتح من الـ QR</h2><label>اكتب الكود للتحقق يدوياً</label><input id="verifyInput" placeholder="اكتب الكود ودوس تحقق"><button class="btn" onclick="showVerify(val('verifyInput'))">تحقق</button><div id="verifyBox" style="margin-top:14px;"></div></div></div>
-<div id="sec-workers" class="hidden">
-  <div class="card"><h2>👷 إضافة عامل</h2><p style="font-size:13px; color:#FFD700;">تسجيل الموظف = توعية 0.25 ساعة أوتوماتيك + كارنيه</p>
-    <div class="grid"><div><label>اسم العامل</label><input id="w-name"></div><div><label>الكود</label><input id="w-code"></div><div><label>الوظيفة</label><input id="w-job"></div><div><label>الشركة</label><input id="w-company" list="companyList"></div><div><label>القسم</label><input id="w-dept" list="deptList"></div><div><label>تاريخ التعيين</label><input type="date" id="w-hire"></div><div><label>رقم التليفون</label><input id="w-phone"></div><div><label>رقم الطوارئ</label><input id="w-emergency"></div><div><label>صلة القرابة</label><input id="w-kin" list="kinList"></div><div><label>الحالة الصحية</label><input id="w-health" list="healthList"></div><div><label>الحالة</label><select id="w-status"><option value="نشط">✅ نشط</option><option value="استقال">⚠️ استقال</option><option value="استبعاد">⛔ استبعاد</option></select></div><div><label>تاريخ الانتهاء</label><input type="date" id="w-exp"></div></div>
-    <label>صورة العامل</label><input type="file" id="w-img" accept="image/*"><button class="btn" onclick="addWorker()">حفظ + كارنيه + توعية</button></div>
-  <div class="card"><h2>قائمة العمال</h2><div id="workersTable"></div></div>
-</div>
-<div id="sec-cards" class="hidden"><div class="card"><h2 class="no-print">🪪 الكارنيهات - وش + ضهر + QR لينك</h2><div class="flex no-print card-actions" style="margin-bottom:10px;"><button class="btn2" onclick="filterCard('all')">الكل</button><button class="btn2" onclick="filterCard('نشط')">نشط</button><button class="btn2" onclick="filterCard('استقال')">استقال</button><button class="btn2" onclick="filterCard('استبعاد')">استبعاد</button><button class="btn2" onclick="window.print()">🖨️ طباعة بنفس التصميم</button><button class="btn2" onclick="exportAllCards()">📸 تصدير الكل كصور</button></div><div id="cardsList"></div></div></div>
+<div id="sec-dashboard"><div class="card"><h2>📊 لوحة التحكم</h2><div id="statsMini" class="flex"></div><p id="syncMsg" style="font-size:13px;color:#D4AF37;margin-top:8px;">جاري المزامنة مع الشيت...</p></div><div class="card"><h2>💾 النسخة الاحتياطية</h2><div class="flex"><button class="btn2" onclick="exportBackup()">📥 تصدير</button><label class="btn2" style="cursor:pointer;">📤 استيراد <input type="file" accept=".json" onchange="importBackup(event)" style="display:none;"></label><button class="btn2" onclick="loadFromSheet()">🔄 تحديث من الشيت</button></div></div></div>
+<div id="sec-search" class="hidden"><div class="card"><h2>🔍 بحث عن عامل</h2><label>اكتب اسم العامل أو الكود</label><input id="searchInput" placeholder="مثال: أحمد أو 101" oninput="searchWorker()"><div id="searchResults" class="flex" style="margin-top:10px;"></div><div id="searchBox" style="margin-top:14px;"></div></div></div>
+<div id="sec-companies" class="hidden"><div class="card"><h2>🏢 تقرير الشركات</h2><label>اختار الشركة</label><select id="compSelect" onchange="renderCompany()"></select><div id="companyBox" style="margin-top:14px;"></div></div></div>
+<div id="sec-verify" class="hidden"><div class="card"><h2>🔍 التحقق من الكارنيه</h2><label>اكتب الكود للتحقق يدوياً</label><input id="verifyInput" placeholder="اكتب الكود ودوس تحقق"><button class="btn" onclick="showVerify(val('verifyInput'))">تحقق</button><div id="verifyBox" style="margin-top:14px;"></div></div></div>
+<div id="sec-workers" class="hidden"><div class="card"><h2>👷 إضافة عامل</h2><p style="font-size:13px; color:#FFD700;">تسجيل الموظف = توعية 0.25 ساعة أوتوماتيك + كارنيه</p><div class="grid"><div><label>اسم العامل</label><input id="w-name"></div><div><label>الكود</label><input id="w-code"></div><div><label>الوظيفة</label><input id="w-job"></div><div><label>الشركة</label><input id="w-company" list="companyList"></div><div><label>القسم</label><input id="w-dept" list="deptList"></div><div><label>تاريخ التعيين</label><input type="date" id="w-hire"></div><div><label>رقم التليفون</label><input id="w-phone"></div><div><label>رقم الطوارئ</label><input id="w-emergency"></div><div><label>صلة القرابة</label><input id="w-kin" list="kinList"></div><div><label>الحالة الصحية</label><input id="w-health" list="healthList"></div><div><label>الحالة</label><select id="w-status"><option value="نشط">✅ نشط</option><option value="استقال">⚠️ استقال</option><option value="استبعاد">⛔ استبعاد</option></select></div><div><label>تاريخ الانتهاء</label><input type="date" id="w-exp"></div></div><label>صورة العامل</label><input type="file" id="w-img" accept="image/*"><button class="btn" onclick="addWorker()">حفظ + كارنيه + توعية</button></div><div class="card"><h2>قائمة العمال</h2><div id="workersTable"></div></div></div>
+<div id="sec-cards" class="hidden"><div class="card"><h2 class="no-print">🪪 الكارنيهات</h2><div class="flex no-print card-actions" style="margin-bottom:10px;"><button class="btn2" onclick="filterCard('all')">الكل</button><button class="btn2" onclick="filterCard('نشط')">نشط</button><button class="btn2" onclick="filterCard('استقال')">استقال</button><button class="btn2" onclick="filterCard('استبعاد')">استبعاد</button><button class="btn2" onclick="window.print()">🖨️ طباعة</button><button class="btn2" onclick="exportAllCards()">📸 تصدير الكل كصور</button></div><div id="cardsList"></div></div></div>
 <div id="sec-train" class="hidden"><div class="card"><h2>🎓 التدريبات</h2><div id="f-train"></div><div class="grid"><div><label>اسم الشركة</label><input id="t-comp" list="companyList"></div><div><label>المكان</label><input id="t-place"></div><div><label>العنوان</label><input id="t-title"></div><div><label>عدد الحضور</label><input id="t-count" type="number"></div><div><label>المحاضر</label><input id="t-trainer"></div></div><label>مدة التدريب</label><input id="t-hours" type="number" value="3" step="0.25"><label>صورة التدريب</label><input type="file" id="t-img" accept="image/*"><button class="btn" onclick="addTrain()">حفظ</button></div><div class="card"><h2>سجل التدريبات</h2><div id="trainTable"></div></div></div>
 <div id="sec-weekly" class="hidden"><div class="card"><h2>📅 المحاضرات الأسبوعية</h2><div id="f-weekly"></div><div class="grid"><div><label>اسم الشركة</label><input id="wk-comp" list="companyList"></div><div><label>المكان</label><input id="wk-place"></div><div><label>العنوان</label><input id="wk-title"></div><div><label>عدد الحضور</label><input id="wk-count" type="number"></div><div><label>المحاضر</label><input id="wk-trainer"></div></div><label>صورة المحاضرة</label><input type="file" id="wk-img" accept="image/*"><button class="btn" onclick="addWeekly()">حفظ</button></div><div class="card"><h2>السجل</h2><div id="weeklyTable"></div></div></div>
 <div id="sec-stats" class="hidden"><div class="card"><h2>إحصائيات السلامة</h2><div id="statsReport"></div></div></div>
@@ -134,7 +108,6 @@ table td{ padding:8px; border-bottom:1px solid #333; text-align:center; }
 <datalist id="kinList"><option value="أب"><option value="أم"><option value="أخ"><option value="أخت"><option value="زوجة"><option value="زوج"></datalist>
 <datalist id="healthList"><option value="سليم"><option value="سكر"><option value="ضغط"><option value="قلب"><option value="حساسية"><option value="ربو"></datalist>
 <script>
-// ===== التعديل الأخير - ربط الشيت =====
 let SITE_URL = "https://mzainhse-bot.github.io/new-kairo-v2";
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbzjCowWlVK4eKpvwDZTqqMJ_Dz3vrkPZZAfFWHmo5bI7DdYyYfU2Fht4Qj-1yycm2T2/exec";
 let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"empViol":[],"conViol":[],"obs":[],"near":[],"acc":[],"train":[],"weekly":[]}');
@@ -147,36 +120,8 @@ function baseHTML(id){ return `<div class="grid"><div><label>التاريخ</lab
 ['f-empViol','f-conViol','f-obs','f-near','f-acc','f-train','f-weekly'].forEach(id=>{ let e=document.getElementById(id); if(e) e.innerHTML=baseHTML(id); });
 function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
 function readFiles(id, cb){ let files=document.getElementById(id)?.files; if(!files || !files.length) return cb([]); let out=[]; let done=0; Array.from(files).forEach(f=>{ let r=new FileReader(); r.onload=e=>{ out.push(e.target.result); done++; if(done===files.length) cb(out); }; r.readAsDataURL(f); }); }
-function imgsHTML(item){ let arr=item.imgs || (item.img ? [item.img] : []); if(!arr.length) return '-'; return arr.length+' صورة'; }
-function workerByName(n){ return DB.workers.find(w=>w.name===n); }
-// ===== دوال الشيت - جديد =====
-async function saveWorkerToSheet(w){
-  try{
-    await fetch(SHEET_URL, {method:'POST', body: JSON.stringify({id:w.code, name:w.name, nationalId:'', job:w.job, company:w.company, phone:w.phone, safetyExpiry:w.exp||'', status:w.status||'نشط'})});
-  }catch(e){}
-}
-async function loadFromSheet(){
-  let msg = document.getElementById('syncMsg'); if(msg) msg.innerText = "جاري التحميل من الشيت...";
-  try{
-    let res = await fetch(SHEET_URL);
-    let data = await res.json();
-    if(data && data.length > 0){
-      data.forEach(row=>{
-        if(!row.name && !row.id) return;
-        let code = String(row.id || row.code || '');
-        if(!code) return;
-        let exists = DB.workers.find(x=>String(x.code)===code);
-        if(!exists){
-          let w = {name:row.name||'', code:code, job:row.job||'', company:row.company||'', dept:'', hire:'', exp:row.safetyExpiry||'', phone:row.phone||'', emergency:'', kin:'', health:'', status:row.status||'نشط', img:''};
-          DB.workers.push(w);
-          DB.cards.push({...w});
-        }
-      });
-      save(); render();
-    }
-    if(msg) msg.innerText = "✅ تم التحديث من الشيت - العمال: " + DB.workers.length;
-  }catch(e){ if(msg) msg.innerText = "شغال من الذاكرة المحلية - الشيت مش متاح دلوقتي"; }
-}
+async function saveWorkerToSheet(w){ try{ await fetch(SHEET_URL, {method:'POST', body: JSON.stringify({id:w.code, name:w.name, nationalId:'', job:w.job, company:w.company, phone:w.phone, safetyExpiry:w.exp||'', status:w.status||'نشط'})}); }catch(e){} }
+async function loadFromSheet(){ let msg=document.getElementById('syncMsg'); if(msg) msg.innerText="جاري التحميل من الشيت..."; try{ let res=await fetch(SHEET_URL); let data=await res.json(); if(data && data.length>0){ data.forEach(row=>{ if(!row.name && !row.id) return; let code=String(row.id||row.code||''); if(!code) return; if(!DB.workers.find(x=>String(x.code)===code)){ let w={name:row.name||'',code:code,job:row.job||'',company:row.company||'',dept:'',hire:'',exp:row.safetyExpiry||'',phone:row.phone||'',emergency:'',kin:'',health:'',status:row.status||'نشط',img:''}; DB.workers.push(w); DB.cards.push({...w}); } }); save(); render(); } if(msg) msg.innerText="✅ تم التحديث من الشيت - العمال: "+DB.workers.length; }catch(e){ if(msg) msg.innerText="شغال من الذاكرة المحلية"; } }
 function addWorker(){ if(!val('w-name')) return alert('اكتب اسم العامل'); readFile('w-img', img=>{ let w={name:val('w-name'),code:val('w-code'),job:val('w-job'),company:val('w-company'),dept:val('w-dept'),hire:val('w-hire'),exp:val('w-exp'),phone:val('w-phone'),emergency:val('w-emergency'),kin:val('w-kin'),health:val('w-health'),status:val('w-status'),img}; DB.workers.push(w); DB.cards.push({...w}); DB.train.push({date:w.hire,place:w.company||'',reporter:'تسجيل موظف',reporterCompany:w.company||'',comp:w.company||'',title:'محاضرة توعية - تسجيل موظف: '+w.name,count:1,trainer:'HSE',type:'aware',hoursPer:0.25,totalHours:0.25,img:''}); save(); saveWorkerToSheet(w); render(); alert('✅ تم الحفظ في الموقع والشيت'); }); }
 function addEmpViol(){ let b=getBase('f-empViol'); let act=val('v-act'); readFile('v-img', img=>{ DB.empViol.push({...b,name:val('v-name'),code:val('v-code'),job:val('v-job'),dept:val('v-dept'),desc:val('v-desc'),act,img}); save(); render(); alert('✅ تم حفظ مخالفة الموظف'); }); }
 function addConViol(){ let b=getBase('f-conViol'); readFile('c-img', img=>{ DB.conViol.push({...b,comp:val('c-comp'),desc:val('c-desc'),amount:val('c-amount'),act:val('c-act'),img}); save(); render(); alert('✅ تم حفظ مخالفة المقاول'); }); }
@@ -187,111 +132,24 @@ function addTrain(){ let b=getBase('f-train'); readFile('t-img', img=>{ let coun
 function addWeekly(){ let b=getBase('f-weekly'); readFile('wk-img', img=>{ let count=parseInt(val('wk-count')||0); DB.weekly.push({...b,comp:val('wk-comp'),place2:val('wk-place'),title:val('wk-title'),count,trainer:val('wk-trainer'),hoursPer:0.5,totalHours:count*0.5,img}); save(); render(); alert('✅ تم حفظ المحاضرة'); }); }
 let cardFilter='all';
 function filterCard(f){ cardFilter=f; render(); }
-function changeStatus(code,s){ let w=DB.workers.find(x=>x.code===code); if(w) w.status=s; let c=DB.cards.find(x=>x.code===code); if(c) c.status=s; save(); render(); }
 function statusClass(s){ if(s==='نشط') return 'status-active'; if(s==='استقال') return 'status-resign'; return 'status-excluded'; }
-function makeQR(el, c){
-  el.innerHTML="";
-  new QRCode(el, { text: SITE_URL + "/?verify=" + encodeURIComponent(c.code), width:90, height:90, colorDark:"#000000", colorLight:"#ffffff", correctLevel: QRCode.CorrectLevel.M });
-}
+function makeQR(el, c){ el.innerHTML=""; let url=SITE_URL+"/?verify="+encodeURIComponent(c.code); el.innerHTML=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=${encodeURIComponent(url)}" style="width:90px;height:90px;display:block;">`; }
 function exportCard(index){ setTimeout(()=>{ let el=document.querySelectorAll('.idcard-wrap')[index]; if(!el) return; html2canvas(el,{scale:2,useCORS:true}).then(canvas=>{ let a=document.createElement('a'); a.download=`ROWAD-ID-${DB.cards[index]?.code||index}.png`; a.href=canvas.toDataURL('image/png'); a.click(); }); },300); }
 function exportAllCards(){ let els=document.querySelectorAll('.idcard-wrap'); els.forEach((el,i)=>setTimeout(()=>exportCard(i), i*700)); }
 function exportBackup(){ let blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`ROWAD-Backup-${new Date().toISOString().slice(0,10)}.json`; a.click(); }
 function importBackup(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ try{ DB=JSON.parse(ev.target.result); save(); render(); alert('✅ رجعت الداتا'); }catch(err){ alert('❌ الملف مش مظبوط'); } }; r.readAsText(f); }
-function workerProfileHTML(w){
-  if(!w) return '<p>العامل مش موجود</p>';
-  let tr = DB.train.filter(x=> (x.title||'').includes(w.name));
-  let wk = DB.weekly.filter(x=> (x.title||'').includes(w.name));
-  let ev = DB.empViol.filter(x=>x.name===w.name);
-  let ac = DB.acc.filter(x=>x.name===w.name);
-  let ne = DB.near.filter(x=>x.name===w.name);
-  let ob = DB.obs.filter(x=>x.name===w.name);
-  let list = (arr, empty, fn) => arr.length ? arr.map(fn).join('') : `<li>${empty}</li>`;
-  let totalHours = tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0) + wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0);
-  return `<div class="profile-box">
-    <h3>👷 ${w.name} - كود ${w.code}</h3>
-    <p><b>الوظيفة:</b> ${w.job||'-'} | <b>الشركة:</b> ${w.company||'-'} | <b>القسم:</b> ${w.dept||'-'} | <b>الحالة:</b> ${w.status||'نشط'} | <b>التليفون:</b> ${w.phone||'-'}</p>
-    <div class="kpi-grid"><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات</small><b>${totalHours.toFixed(2)}</b></div><div class="kpi"><small>⚠️ مخالفات</small><b>${ev.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div>
-    <h4>🎓 التدريبات</h4><ul>${list(tr,'لا توجد تدريبات', x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`)}</ul>
-    <h4>📅 المحاضرات الأسبوعية</h4><ul>${list(wk,'لا توجد محاضرات', x=>`<li>${x.date} - ${x.title}</li>`)}</ul>
-    <h4>⚠️ مخالفات الموظفين</h4><ul>${list(ev,'لا توجد مخالفات ✅', x=>`<li>${x.date} - ${x.desc} - ${x.act}</li>`)}</ul>
-    <h4>🚨 الحوادث</h4><ul>${list(ac,'لا توجد حوادث ✅', x=>`<li>${x.date} - ${x.class} - ${x.desc}</li>`)}</ul>
-    <h4>⚡ حوادث وشيكة</h4><ul>${list(ne,'لا توجد حوادث وشيكة ✅', x=>`<li>${x.date} - ${x.desc}</li>`)}</ul>
-    <h4>📝 ملاحظات السلامة</h4><ul>${list(ob,'لا توجد ملاحظات', x=>`<li>${x.date} - ${x.desc} - ${x.status}</li>`)}</ul>
-    <h4>🏆 التكريم</h4><ul><li>لسه مفيش تكريم مسجل</li></ul>
-  </div>`;
-}
-async function showVerify(code){
-  show('verify');
-  document.getElementById('verifyInput').value = code||'';
-  let box = document.getElementById('verifyBox');
-  // 1. دور في الموبايل الأول
-  let w = DB.workers.find(x=>String(x.code)===String(code)) || DB.workers.find(x=>x.name===code);
-  // 2. لو مش موجود، هاته من الشيت على طول
-  if(!w){
-    box.innerHTML = `<div class="profile-box"><h3>⏳ جاري البحث في الشيت عن كود ${code}...</h3></div>`;
-    await loadFromSheet();
-    w = DB.workers.find(x=>String(x.code)===String(code)) || DB.workers.find(x=>x.name===code);
-  }
-  if(!w){ 
-    box.innerHTML = `<div class="profile-box"><h3 style="color:red;">❌ الكود ${code} مش موجود</h3><p>اتأكد إنك سجلت العامل ده في الشيت، أو افتح لوحة التحكم ودوس "تحديث من الشيت"</p></div>`; 
-    return; 
-  }
-  box.innerHTML = workerProfileHTML(w);
-}
-  show('verify');
-  document.getElementById('verifyInput').value = code||'';
-  let w = DB.workers.find(x=>x.code===String(code)) || DB.workers.find(x=>x.name===code);
-  if(!w){ document.getElementById('verifyBox').innerHTML = `<div class="profile-box"><h3 style="color:red;">❌ الكود ${code} مش موجود</h3><p>ممكن يكون الكود اتسجل في جهاز تاني، اعمل استيراد للنسخة الاحتياطية</p></div>`; return; }
-  document.getElementById('verifyBox').innerHTML = workerProfileHTML(w);
-}
-function searchWorker(){
-  let q = val('searchInput').trim().toLowerCase();
-  let box = document.getElementById('searchBox');
-  let res = document.getElementById('searchResults');
-  if(!q){ box.innerHTML=''; res.innerHTML=''; return; }
-  let found = DB.workers.filter(w=> (w.name||'').toLowerCase().includes(q) || (w.code||'').toLowerCase().includes(q));
-  res.innerHTML = found.map(w=>`<button class="btn2" onclick="document.getElementById('searchBox').innerHTML=workerProfileHTML(DB.workers.find(x=>x.code==='${w.code}'))">${w.name} - ${w.code}</button>`).join('') || '<span>مفيش نتائج</span>';
-  if(found.length===1) box.innerHTML = workerProfileHTML(found[0]);
-}
-function initCompanies(){
-  let comps = [...new Set(DB.workers.map(w=>w.company).filter(Boolean))];
-  let sel = document.getElementById('compSelect');
-  sel.innerHTML = comps.map(c=>`<option value="${c}">${c}</option>`).join('') || '<option>مفيش شركات</option>';
-  renderCompany();
-}
-function renderCompany(){
-  let comp = val('compSelect');
-  let box = document.getElementById('companyBox');
-  if(!comp){ box.innerHTML=''; return; }
-  let workers = DB.workers.filter(w=>w.company===comp);
-  let tr = DB.train.filter(x=>x.comp===comp);
-  let wk = DB.weekly.filter(x=>x.comp===comp);
-  let ev = DB.empViol.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let ac = DB.acc.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let ne = DB.near.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; });
-  let cv = DB.conViol.filter(x=>x.comp===comp);
-  let totalHours = tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0) + wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0);
-  box.innerHTML = `<div class="profile-box">
-    <h3>🏢 تقرير شركة: ${comp}</h3>
-    <div class="kpi-grid"><div class="kpi"><small>👷 عمال</small><b>${workers.length}</b></div><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات تدريب</small><b>${totalHours.toFixed(1)}</b></div><div class="kpi"><small>⚠️ مخالفات موظفين</small><b>${ev.length}</b></div><div class="kpi"><small>🏗️ مخالفات مقاولين</small><b>${cv.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div>
-    <h4>👷 العمال (${workers.length})</h4><ul>${workers.map(w=>`<li>${w.name} - ${w.code} - ${w.job} - ${w.status}</li>`).join('')||'<li>مفيش</li>'}</ul>
-    <h4>🎓 التدريبات</h4><ul>${tr.map(x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`).join('')||'<li>مفيش</li>'}</ul>
-    <h4>⚠️ مخالفات الموظفين</h4><ul>${ev.map(x=>`<li>${x.date} - ${x.name} - ${x.desc} - ${x.act}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <h4>🏗️ مخالفات المقاولين</h4><ul>${cv.map(x=>`<li>${x.date} - ${x.desc} - ${x.amount||''} - ${x.act}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <h4>🚨 الحوادث</h4><ul>${ac.map(x=>`<li>${x.date} - ${x.name} - ${x.class}</li>`).join('')||'<li>مفيش ✅</li>'}</ul>
-    <button class="btn2" onclick="window.print()">🖨️ طباعة تقرير الشركة</button>
-  </div>`;
-}
+function workerProfileHTML(w){ if(!w) return '<p>العامل مش موجود</p>'; let tr=DB.train.filter(x=>(x.title||'').includes(w.name)); let wk=DB.weekly.filter(x=>(x.title||'').includes(w.name)); let ev=DB.empViol.filter(x=>x.name===w.name); let ac=DB.acc.filter(x=>x.name===w.name); let ne=DB.near.filter(x=>x.name===w.name); let ob=DB.obs.filter(x=>x.name===w.name); let list=(arr,empty,fn)=>arr.length?arr.map(fn).join(''):`<li>${empty}</li>`; let totalHours=tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0)+wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0); return `<div class="profile-box"><h3>👷 ${w.name} - كود ${w.code}</h3><p><b>الوظيفة:</b> ${w.job||'-'} | <b>الشركة:</b> ${w.company||'-'} | <b>القسم:</b> ${w.dept||'-'} | <b>الحالة:</b> ${w.status||'نشط'} | <b>التليفون:</b> ${w.phone||'-'}</p><div class="kpi-grid"><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات</small><b>${totalHours.toFixed(2)}</b></div><div class="kpi"><small>⚠️ مخالفات</small><b>${ev.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div><h4>🎓 التدريبات</h4><ul>${list(tr,'لا توجد تدريبات', x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`)}</ul><h4>📅 المحاضرات الأسبوعية</h4><ul>${list(wk,'لا توجد محاضرات', x=>`<li>${x.date} - ${x.title}</li>`)}</ul><h4>⚠️ مخالفات الموظفين</h4><ul>${list(ev,'لا توجد مخالفات ✅', x=>`<li>${x.date} - ${x.desc} - ${x.act}</li>`)}</ul><h4>🚨 الحوادث</h4><ul>${list(ac,'لا توجد حوادث ✅', x=>`<li>${x.date} - ${x.class} - ${x.desc}</li>`)}</ul><h4>⚡ حوادث وشيكة</h4><ul>${list(ne,'لا توجد حوادث وشيكة ✅', x=>`<li>${x.date} - ${x.desc}</li>`)}</ul><h4>📝 ملاحظات السلامة</h4><ul>${list(ob,'لا توجد ملاحظات', x=>`<li>${x.date} - ${x.desc} - ${x.status}</li>`)}</ul></div>`; }
+async function showVerify(code){ show('verify'); document.getElementById('verifyInput').value=code||''; let box=document.getElementById('verifyBox'); let w=DB.workers.find(x=>String(x.code)===String(code))||DB.workers.find(x=>x.name===code); if(!w){ box.innerHTML=`<div class="profile-box"><h3>⏳ جاري البحث في الشيت عن كود ${code}...</h3></div>`; await loadFromSheet(); w=DB.workers.find(x=>String(x.code)===String(code))||DB.workers.find(x=>x.name===code); } if(!w){ box.innerHTML=`<div class="profile-box"><h3 style="color:red;">❌ الكود ${code} مش موجود</h3></div>`; return; } box.innerHTML=workerProfileHTML(w); }
+function searchWorker(){ let q=val('searchInput').trim().toLowerCase(); let box=document.getElementById('searchBox'); let res=document.getElementById('searchResults'); if(!q){ box.innerHTML=''; res.innerHTML=''; return; } let found=DB.workers.filter(w=>(w.name||'').toLowerCase().includes(q)||(w.code||'').toLowerCase().includes(q)); res.innerHTML=found.map(w=>`<button class="btn2" onclick="document.getElementById('searchBox').innerHTML=workerProfileHTML(DB.workers.find(x=>x.code==='${w.code}'))">${w.name} - ${w.code}</button>`).join('')||'<span>مفيش نتائج</span>'; if(found.length===1) box.innerHTML=workerProfileHTML(found[0]); }
+function initCompanies(){ let comps=[...new Set(DB.workers.map(w=>w.company).filter(Boolean))]; let sel=document.getElementById('compSelect'); sel.innerHTML=comps.map(c=>`<option value="${c}">${c}</option>`).join('')||'<option>مفيش شركات</option>'; renderCompany(); }
+function renderCompany(){ let comp=val('compSelect'); let box=document.getElementById('companyBox'); if(!comp){ box.innerHTML=''; return; } let workers=DB.workers.filter(w=>w.company===comp); let tr=DB.train.filter(x=>x.comp===comp); let wk=DB.weekly.filter(x=>x.comp===comp); let ev=DB.empViol.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; }); let ac=DB.acc.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; }); let ne=DB.near.filter(x=>{ let w=DB.workers.find(y=>y.name===x.name); return w && w.company===comp; }); let cv=DB.conViol.filter(x=>x.comp===comp); let totalHours=tr.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0)+wk.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0); box.innerHTML=`<div class="profile-box"><h3>🏢 تقرير شركة: ${comp}</h3><div class="kpi-grid"><div class="kpi"><small>👷 عمال</small><b>${workers.length}</b></div><div class="kpi"><small>🎓 تدريبات</small><b>${tr.length}</b></div><div class="kpi"><small>📅 أسبوعية</small><b>${wk.length}</b></div><div class="kpi"><small>⏱️ ساعات</small><b>${totalHours.toFixed(1)}</b></div><div class="kpi"><small>⚠️ مخالفات</small><b>${ev.length}</b></div><div class="kpi"><small>🏗️ مخالفات مقاولين</small><b>${cv.length}</b></div><div class="kpi"><small>🚨 حوادث</small><b>${ac.length}</b></div><div class="kpi"><small>⚡ وشيكة</small><b>${ne.length}</b></div></div><h4>👷 العمال (${workers.length})</h4><ul>${workers.map(w=>`<li>${w.name} - ${w.code} - ${w.job} - ${w.status}</li>`).join('')||'<li>مفيش</li>'}</ul><h4>🎓 التدريبات</h4><ul>${tr.map(x=>`<li>${x.date} - ${x.title} - ${x.totalHours} ساعة</li>`).join('')||'<li>مفيش</li>'}</ul></div>`; }
 function renderStats(){ let totalH=DB.train.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0)+DB.weekly.reduce((s,x)=>s+(parseFloat(x.totalHours)||0),0); document.getElementById('statsReport').innerHTML=`<div class="kpi-grid"><div class="kpi"><small>عمال</small><b>${DB.workers.length}</b></div><div class="kpi"><small>تدريبات</small><b>${DB.train.length}</b></div><div class="kpi"><small>أسبوعية</small><b>${DB.weekly.length}</b></div><div class="kpi"><small>ساعات</small><b>${totalH.toFixed(1)}</b></div><div class="kpi"><small>حوادث</small><b>${DB.acc.length}</b></div><div class="kpi"><small>وشيكة</small><b>${DB.near.length}</b></div></div>`; }
 function table(heads, rows){ if(!rows.length) return '<p style="color:#999; text-align:center;">لا توجد بيانات بعد</p>'; return '<table><tr>'+heads.map(x=>`<th>${x}</th>`).join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(c=>`<td>${c}</td>`).join('')+'</tr>').join('')+'</table>'; }
-function render(){ document.getElementById('statsMini').innerHTML=`<span class="badge">عمال: ${DB.workers.length}</span><span class="badge">تدريبات: ${DB.train.length}</span><span class="badge">حوادث: ${DB.acc.length}</span>`; let wt=document.getElementById('workersTable'); if(wt) wt.innerHTML=table(['الاسم','الكود','الوظيفة','الشركة','تاريخ التعيين','الحالة'], DB.workers.map(w=>[w.name,w.code,w.job,w.company||'-',w.hire||'-',w.status||'نشط'])); let list=DB.cards.filter(c=> cardFilter==='all' || c.status===cardFilter); let cl=document.getElementById('cardsList'); if(cl) cl.innerHTML=list.map((c,i)=>`<div class="idcard-wrap"><div class="idcard-h"><div class="top"><b>ROWAD</b><span>SAFETY ID CARD</span><span class="status ${statusClass(c.status||'نشط')}">${c.status||'نشط'}</span></div><div class="body">${c.photo?`<img src="${c.photo}" class="photo">`:'<div class="photo" style="display:flex;align-items:center;justify-content:center;font-size:40px;">👷</div>'}<div class="info"><div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 14px;"><div><b>الاسم:</b> ${c.name}</div><div><b>الكود:</b> ${c.code}</div><div><b>الوظيفة:</b> ${c.job}</div><div><b>القسم:</b> ${c.dept||'-'}</div><div><b>الشركة:</b> ${c.company||'-'}</div><div><b>تاريخ التعيين:</b> ${c.hire||'-'}</div><div><b>التليفون:</b> ${c.phone||'-'}</div><div><b>الحالة الصحية:</b> ${c.health||'-'}</div><div><b>رقم الطوارئ:</b> ${c.emergency||'-'}</div><div><b>صلة القرابة:</b> ${c.kin||'-'}</div></div><div style="margin-top:6px;"><b>الحالة:</b> <span class="status ${statusClass(c.status||'نشط')}">${c.status||'نشط'}</span></div></div></div><div class="qr-box"><div class="qr-holder" data-code="${c.code}" style="width:90px; height:90px; background:#fff; padding:2px; border:1px solid #ddd; border-radius:6px;"></div><div style="font-size:12px; text-align:right;"><b>ROWAD - ${c.code}</b><br>${c.name}<br><span style="color:#666;">امسح الكود لعرض ملف العامل</span></div><div class="no-print card-actions" style="margin-right:auto; display:flex; gap:6px;"><button class="btn2" onclick="exportCard(${i})">📸 تصدير كصورة</button><button class="btn2" onclick="window.print()">🖨️ طباعة</button></div></div></div><div class="idcard-back"><div class="back-top"><b>ROWAD</b><span style="color:#fff; font-size:13px;">تعليمات السلامة</span></div><div class="back-body"><h3>⚠️ تعليمات السلامة - يجب الالتزام بها</h3><ol><li>الالتزام الكامل بمهمات الوقاية الشخصية طوال وقت العمل</li><li>ممنوع العمل بدون تصريح عمل ساري</li><li>الإبلاغ فوراً عن أي حادث أو حادث وشيك أو خطر</li><li>ممنوع التدخين إلا في الأماكن المخصصة لذلك</li><li>الكارنيه شخصي ولا يجوز إعطاؤه لأي شخص آخر</li><li>عند فقدان الكارنيه إبلاغ قسم السلامة فوراً</li><li>ممنوع تشغيل أي معدة بدون تدريب وتصريح</li><li>حافظ على نظافة مكان عملك وممرات الطوارئ</li></ol></div><div class="back-footer">في حالة الطوارئ اتصل فوراً بقسم السلامة | ROWAD - Safety Department</div></div></div>`).join('')||'<p style="text-align:center; color:#999;">لسه مفيش كارنيهات</p>'; document.querySelectorAll('.qr-holder').forEach(el=>{ let c=DB.cards.find(x=>x.code===el.dataset.code); if(c) makeQR(el,c); }); let t=document.getElementById('trainTable'); if(t) t.innerHTML=table(['التاريخ','الشركة','العنوان','النوع','الحضور','الساعات'], DB.train.map(x=>[x.date,x.comp,x.title,x.type==='train'?'تدريب':'توعية',x.count,x.totalHours])); let w=document.getElementById('weeklyTable'); if(w) w.innerHTML=table(['التاريخ','الشركة','العنوان','الحضور','الساعات'], DB.weekly.map(x=>[x.date,x.comp,x.title,x.count,x.totalHours])); let e=document.getElementById('empViolTable'); if(e) e.innerHTML=table(['التاريخ','العامل','المخالفة','الإجراء'], DB.empViol.map(x=>[x.date,x.name,x.desc,x.act])); let co=document.getElementById('conViolTable'); if(co) co.innerHTML=table(['التاريخ','الشركة','المخالفة','الإجراء','المبلغ'], DB.conViol.map(x=>[x.date,x.comp,x.desc,x.act,x.amount])); let o=document.getElementById('obsTable'); if(o) o.innerHTML=table(['التاريخ','الشخص','النوع','الحالة'], DB.obs.map(x=>[x.date,x.name,x.type,x.status])); let n=document.getElementById('nearTable'); if(n) n.innerHTML=table(['التاريخ','الشخص','الوصف'], DB.near.map(x=>[x.date,x.name,x.desc])); let a=document.getElementById('accTable'); if(a) a.innerHTML=table(['التاريخ','الشخص','التصنيف'], DB.acc.map(x=>[x.date,x.name,x.class])); }
+function render(){ document.getElementById('statsMini').innerHTML=`<span class="badge">عمال: ${DB.workers.length}</span><span class="badge">تدريبات: ${DB.train.length}</span><span class="badge">حوادث: ${DB.acc.length}</span>`; let wt=document.getElementById('workersTable'); if(wt) wt.innerHTML=table(['الاسم','الكود','الوظيفة','الشركة','تاريخ التعيين','الحالة'], DB.workers.map(w=>[w.name,w.code,w.job,w.company||'-',w.hire||'-',w.status||'نشط'])); let list=DB.cards.filter(c=> cardFilter==='all' || c.status===cardFilter); let cl=document.getElementById('cardsList'); if(cl) cl.innerHTML=list.map((c,i)=>`<div class="idcard-wrap"><div class="idcard-h"><div class="top"><b>ROWAD</b><span>SAFETY ID CARD</span><span class="status ${statusClass(c.status||'نشط')}">${c.status||'نشط'}</span></div><div class="body">${c.img?`<img src="${c.img}" class="photo">`:'<div class="photo" style="display:flex;align-items:center;justify-content:center;font-size:40px;">👷</div>'}<div class="info"><div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 14px;"><div><b>الاسم:</b> ${c.name}</div><div><b>الكود:</b> ${c.code}</div><div><b>الوظيفة:</b> ${c.job}</div><div><b>القسم:</b> ${c.dept||'-'}</div><div><b>الشركة:</b> ${c.company||'-'}</div><div><b>تاريخ التعيين:</b> ${c.hire||'-'}</div><div><b>التليفون:</b> ${c.phone||'-'}</div><div><b>الحالة الصحية:</b> ${c.health||'-'}</div><div><b>رقم الطوارئ:</b> ${c.emergency||'-'}</div><div><b>صلة القرابة:</b> ${c.kin||'-'}</div></div></div></div><div class="qr-box"><div class="qr-holder" data-code="${c.code}" style="width:90px; height:90px; background:#fff; padding:2px; border:1px solid #ddd; border-radius:6px;"></div><div style="font-size:12px; text-align:right;"><b>ROWAD - ${c.code}</b><br>${c.name}<br><span style="color:#666;">امسح الكود لعرض ملف العامل</span></div><div class="no-print card-actions" style="margin-right:auto; display:flex; gap:6px;"><button class="btn2" onclick="exportCard(${i})">📸 تصدير كصورة</button><button class="btn2" onclick="window.print()">🖨️ طباعة</button></div></div></div><div class="idcard-back"><div class="back-top"><b>ROWAD</b><span style="color:#fff; font-size:13px;">تعليمات السلامة</span></div><div class="back-body"><h3>⚠️ تعليمات السلامة - يجب الالتزام بها</h3><ol><li>الالتزام الكامل بمهمات الوقاية الشخصية طوال وقت العمل</li><li>ممنوع العمل بدون تصريح عمل ساري</li><li>الإبلاغ فوراً عن أي حادث أو حادث وشيك أو خطر</li><li>ممنوع التدخين إلا في الأماكن المخصصة لذلك</li><li>الكارنيه شخصي ولا يجوز إعطاؤه لأي شخص آخر</li><li>عند فقدان الكارنيه إبلاغ قسم السلامة فوراً</li><li>ممنوع تشغيل أي معدة بدون تدريب وتصريح</li><li>حافظ على نظافة مكان عملك وممرات الطوارئ</li></ol></div><div class="back-footer">في حالة الطوارئ اتصل فوراً بقسم السلامة | ROWAD - Safety Department</div></div></div>`).join('')||'<p style="text-align:center; color:#999;">لسه مفيش كارنيهات</p>'; document.querySelectorAll('.qr-holder').forEach(el=>{ let c=DB.cards.find(x=>x.code===el.dataset.code); if(c) makeQR(el,c); }); let t=document.getElementById('trainTable'); if(t) t.innerHTML=table(['التاريخ','الشركة','العنوان','النوع','الحضور','الساعات'], DB.train.map(x=>[x.date,x.comp,x.title,x.type==='train'?'تدريب':'توعية',x.count,x.totalHours])); let w=document.getElementById('weeklyTable'); if(w) w.innerHTML=table(['التاريخ','الشركة','العنوان','الحضور','الساعات'], DB.weekly.map(x=>[x.date,x.comp,x.title,x.count,x.totalHours])); let e=document.getElementById('empViolTable'); if(e) e.innerHTML=table(['التاريخ','العامل','المخالفة','الإجراء'], DB.empViol.map(x=>[x.date,x.name,x.desc,x.act])); let co=document.getElementById('conViolTable'); if(co) co.innerHTML=table(['التاريخ','الشركة','المخالفة','الإجراء','المبلغ'], DB.conViol.map(x=>[x.date,x.comp,x.desc,x.act,x.amount])); let o=document.getElementById('obsTable'); if(o) o.innerHTML=table(['التاريخ','الشخص','النوع','الحالة'], DB.obs.map(x=>[x.date,x.name,x.type,x.status])); let n=document.getElementById('nearTable'); if(n) n.innerHTML=table(['التاريخ','الشخص','الوصف'], DB.near.map(x=>[x.date,x.name,x.desc])); let a=document.getElementById('accTable'); if(a) a.innerHTML=table(['التاريخ','الشخص','التصنيف'], DB.acc.map(x=>[x.date,x.name,x.class])); }
 function uploadLogo(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ localStorage.setItem('siteLogo',ev.target.result); showLogo(); }; r.readAsDataURL(f); }
 function showLogo(){ let l=localStorage.getItem('siteLogo'); let img=document.getElementById('siteLogo'); if(l){ img.src=l; img.style.display='block'; } }
 showLogo();
-window.addEventListener('load', ()=>{
-  let p = new URLSearchParams(location.search);
-  if(p.get('verify')){ setTimeout(()=>showVerify(p.get('verify')), 300); }
-});
+window.addEventListener('load', ()=>{ let p=new URLSearchParams(location.search); if(p.get('verify')){ setTimeout(()=>showVerify(p.get('verify')), 500); } });
 render(); renderStats(); loadFromSheet();
 </script>
 </body>
