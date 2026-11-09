@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التدريبات - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1100px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:1fr;}}
+.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+.hours-box{display:flex;gap:8px;}
+.hours-box button{flex:1;padding:12px;border:2px solid #CFD8DC;background:#fff;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px;}
+.hours-box button.active{background:#0A1F44;color:#fff;border-color:#0A1F44;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> التدريبات</h1><small>تسجيل التدريبات اليومية</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👷 الموظفين</a>
+<a href="train.html" class="active">🎓 التدريبات</a>
+<a href="weekly.html">📅 أسبوعية</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<!-- الاحصائيات فوق -->
+<div class="kpi-grid">
+<div class="kpi"><b id="k-train">0</b><small>عدد التدريبات</small></div>
+<div class="kpi"><b id="k-att">0</b><small>إجمالي الحضور</small></div>
+<div class="kpi red"><b id="k-hours">0</b><small>إجمالي ساعات التدريب</small></div>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 5px;">🎓 تسجيل تدريب جديد</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">اكتب الاسم هيجيب الكود والمهنة لوحدهم، أو اكتب الكود هيجيب الاسم والمهنة لوحدهم</p>
+<div class="grid">
+<div><label>📅 التاريخ *</label><input type="date" id="t-date"></div>
+<div><label>⏰ الوقت *</label><input type="time" id="t-time"></div>
+<div><label>📚 عنوان التدريب *</label><input id="t-title" placeholder="مثال: العمل على ارتفاع - الحريق - السقالات"></div>
+<div><label>📍 مكان التدريب *</label><input id="t-place" placeholder="مثال: الموقع - قاعة التدريب"></div>
+<div><label>👤 اسم المتدرب *</label><input id="t-name" list="workersList" placeholder="اكتب الاسم..." oninput="autoFromName()"><datalist id="workersList"></datalist></div>
+<div><label>🆔 الكود</label><input id="t-code" placeholder="اكتب الكود..." oninput="autoFromCode()"></div>
+<div><label>👷 المهنة - تحمل تلقائي</label><input id="t-job" placeholder="هتتحمل لوحدها" readonly style="background:#F4F6F9;"></div>
+<div><label>🏢 اسم الشركة</label><input id="t-company" value="RMED" placeholder="RMED"></div>
+<div><label>⏱️ عدد الساعات *</label><div class="hours-box" id="hoursBox">
+<button type="button" onclick="setHours(1,this)">1 ساعة</button>
+<button type="button" onclick="setHours(2,this)">2 ساعة</button>
+<button type="button" onclick="setHours(3,this)">3 ساعة</button>
+</div></div>
+<div><label>🧑‍🏫 اسم المدرب *</label><input id="t-trainer" placeholder="اسم المدرب"></div>
+</div>
+<button class="btn red" onclick="addTraining()">💾 حفظ التدريب</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل التدريبات</h2>
+<input id="searchT" placeholder="ابحث بالاسم أو الكود أو عنوان التدريب أو المدرب..." oninput="renderTrain()">
+<div id="trainTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button class="btn2" onclick="exportTrain()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV</button>
+<button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[]}');
+if(!DB.train) DB.train=[];
+if(!DB.workers) DB.workers=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value=v||''; }
+let selHours = 0;
+function setHours(h,btn){
+  selHours=h;
+  document.querySelectorAll('#hoursBox button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function refreshWorkersList(){
+  let dl=document.getElementById('workersList');
+  dl.innerHTML=DB.workers.map(w=>`<option value="${w.name}">`).join('');
+}
+function autoFromName(){
+  let name=val('t-name');
+  let w=DB.workers.find(x=>x.name===name || x.name.toLowerCase()===name.toLowerCase());
+  if(w){ setVal('t-code',w.code); setVal('t-job',w.job||''); setVal('t-company',w.company||'RMED'); }
+}
+function autoFromCode(){
+  let code=val('t-code');
+  let w=DB.workers.find(x=>String(x.code)===String(code));
+  if(w){ setVal('t-name',w.name); setVal('t-job',w.job||''); setVal('t-company',w.company||'RMED'); }
+}
+function addTraining(){
+  if(!val('t-date')) return alert('اختار التاريخ');
+  if(!val('t-time')) return alert('اختار الوقت');
+  if(!val('t-title')) return alert('اكتب عنوان التدريب');
+  if(!val('t-name')) return alert('اكتب اسم المتدرب');
+  if(!selHours) return alert('اختار عدد الساعات 1 أو 2 أو 3');
+  if(!val('t-trainer')) return alert('اكتب اسم المدرب');
+  let rec={date:val('t-date'),time:val('t-time'),title:val('t-title'),place:val('t-place'),name:val('t-name'),code:val('t-code'),job:val('t-job'),company:val('t-company')||'RMED',hours:selHours,trainer:val('t-trainer'),createdAt:new Date().toISOString()};
+  DB.train.push(rec); save(); renderTrain();
+  alert('✅ تم حفظ التدريب - '+rec.name+' - '+rec.hours+' ساعة');
+  ['t-title','t-place','t-name','t-code','t-job','t-trainer'].forEach(id=>setVal(id,''));
+  setVal('t-company','RMED'); selHours=0;
+  document.querySelectorAll('#hoursBox button').forEach(b=>b.classList.remove('active'));
+}
+function renderTrain(){
+  let q=(document.getElementById('searchT').value||'').toLowerCase();
+  let list=DB.train.filter(x=>(x.name+x.code+x.title+x.trainer+x.job).toLowerCase().includes(q));
+  // الاحصائيات: عدد التدريبات = عدد السجلات، الحضور = عدد السجلات، ساعات = مجموع (1 * ساعات كل مرة)
+  let totalTrain=DB.train.length;
+  let totalAtt=DB.train.length;
+  let totalHours=DB.train.reduce((s,x)=>s+(parseInt(x.hours)||0),0);
+  document.getElementById('k-train').innerText=totalTrain;
+  document.getElementById('k-att').innerText=totalAtt;
+  document.getElementById('k-hours').innerText=totalHours+' ساعة';
+  if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تدريبات لسه - سجل أول تدريب فوق</p>'; return; }
+  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.slice().reverse().map((x,i)=>{
+    let realIdx=DB.train.indexOf(x);
+    return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.name}</td><td>${x.code||'-'}</td><td>${x.job||'-'}</td><td>${x.place||'-'}</td><td><span class="badge">${x.hours} ساعة</span></td><td>${x.trainer}</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain(${realIdx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function delTrain(i){ if(!confirm('تحذف التدريب ده؟')) return; DB.train.splice(i,1); save(); renderTrain(); }
+function clearTrain(){ if(!confirm('تمسح كل التدريبات؟')) return; DB.train=[]; save(); renderTrain(); }
+function exportTrain(){
+  if(!DB.train.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,عنوان التدريب,المتدرب,الكود,المهنة,المكان,الساعات,الشركة,المدرب\n'+DB.train.map(x=>[x.date,x.time,x.title,x.name,x.code,x.job,x.place,x.hours,x.company,x.trainer].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trainings.csv'; a.click();
+}
+document.getElementById('t-date').value=new Date().toISOString().slice(0,10);
+refreshWorkersList(); renderTrain();
+</script>
+</body>
+</html>
