@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إعداد العمال اليومي - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+body{margin:0;background:#F4F6F9;color:#0A1F44;}
+header{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:10;}
+header h1{margin:0;font-size:21px;} header h1 span{color:#D32F2F;} header small{color:#B0BEC5;}
+header a{background:#fff;color:#0A1F44;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;}
+.container{max-width:1150px;margin:auto;padding:16px;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card.red{border-top-color:#D32F2F;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;}
+@media(max-width:800px){.roles-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:450px){.roles-grid{grid-template-columns:1fr;}}
+.role-box{background:#F4F6F9;border:1.5px solid #ECEFF1;border-radius:12px;padding:10px;text-align:center;}
+.role-box label{font-size:12px;margin:0 0 6px;display:block;}
+.role-box input{width:100%;padding:10px;border:1.5px solid #CFD8DC;border-radius:8px;font-size:16px;text-align:center;font-weight:bold;outline:none;}
+.role-box input:focus{border-color:#0A1F44;background:#fff;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.nav a{background:#fff;color:#0A1F44;text-decoration:none;padding:9px 14px;border-radius:20px;border:1px solid #CFD8DC;font-size:13px;font-weight:bold;}
+.nav a.active{background:#0A1F44;color:#fff;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi.green{border-bottom-color:#2E7D32;} .kpi.red{border-bottom-color:#D32F2F;} .kpi.orange{border-bottom-color:#FF9800;}
+.kpi b{font-size:24px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+.total-box{background:#0A1F44;color:#fff;border-radius:12px;padding:14px;text-align:center;margin-top:14px;}
+.total-box b{font-size:28px;color:#FFD54F;}
+.total-box span{font-size:14px;}
+</style>
+</head>
+<body>
+<header>
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="logo.png" style="width:130px;height:48px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'">
+<div><h1>RMED <span>•</span> إعداد العمال اليومي</h1><small>توزيع العمالة اليومية حسب الوظيفة والشركة</small></div>
+</div>
+<a href="index.html">🏠 الرئيسية</a>
+</header>
+<div class="container">
+<div class="nav">
+<a href="induction.html">📘 المحاضرة الأولية</a>
+<a href="workers.html">👷 الموظفين</a>
+<a href="train.html">🎓 التدريبات</a>
+<a href="weekly.html">📅 المحاضرة الأسبوعية</a>
+<a href="permits.html">📋 التصاريح</a>
+<a href="daily-count.html" class="active">👷‍♂️ إعداد العمال اليومي</a>
+<a href="stats.html">📈 الإحصائيات</a>
+</div>
+
+<!-- فلتر اليوم -->
+<div class="card">
+<div class="grid">
+<div><label>📅 اختار اليوم اللي عايز تشوف إحصائيته</label><input type="date" id="filterDate" onchange="renderDaily()"></div>
+<div><label>🏢 فلتر شركة معينة - اختياري</label><select id="filterCompany" onchange="renderDaily()"><option value="">كل الشركات</option></select></div>
+</div>
+</div>
+
+<!-- الاحصائيات فوق -->
+<div class="kpi-grid">
+<div class="kpi"><b id="k-total-day">0</b><small>إجمالي العمال في اليوم</small></div>
+<div class="kpi"><b id="k-companies">0</b><small>عدد الشركات في اليوم</small></div>
+<div class="kpi green"><b id="k-max">-</b><small id="k-max-label">الشركة صاحبة أعلى عدد</small></div>
+<div class="kpi red"><b id="k-min">-</b><small id="k-min-label">الشركة صاحبة أقل عدد</small></div>
+</div>
+
+<div class="card">
+<h3 style="margin:0 0 8px;">🏢 إجمالي كل شركة في اليوم ده</h3>
+<div id="companyTotals"></div>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 5px;">📝 تسجيل إعداد يومي جديد</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">اكتب العدد قصاد كل وظيفة، والإجمالي هيتحسب لوحده تحت</p>
+<div class="grid">
+<div><label>🏢 اسم الشركة *</label><input id="d-company" placeholder="مثال: RMED - شركة المقاولات..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>📅 التاريخ *</label><input type="date" id="d-date"></div>
+</div>
+
+<div><label>👷 أعداد العمال حسب الوظيفة - سيب الفاضي = صفر</label>
+<div class="roles-grid" id="rolesGrid"></div>
+</div>
+
+<div class="total-box">إجمالي الشركة دي: <b id="liveTotal">0</b> <span>عامل / موظف</span><br><small id="liveDetail" style="color:#B0BEC5;">اكتب الأعداد فوق</small></div>
+
+<button class="btn red" onclick="addDaily()">💾 حفظ إعداد اليوم</button>
+</div>
+
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 سجل الإعداد اليومي</h2>
+<input id="searchD" placeholder="ابحث باسم الشركة..." oninput="renderDaily()">
+<div id="dailyTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn2" onclick="exportDaily()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV - اليوم المختار</button>
+<button class="btn2" onclick="exportAllDaily()" style="flex:1;padding:12px;">📥 تصدير الكل</button>
+<button class="btn2" onclick="clearDaily()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+</div>
+</div>
+</div>
+
+<script>
+let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[],"permits":[],"dailyCount":[]}');
+if(!DB.dailyCount) DB.dailyCount=[];
+function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+function val(id){ return document.getElementById(id).value.trim(); }
+
+const ROLES=[
+'مدير مشروع','مدير تنفيذ','مدير موقع','مكتب فني','مهندس موقع','مهندس جوده','قسم السلامه','مهندس كهرباء','مشرف كهرباء','كهربائي صيانه','كهربائي تركيبات','مسئول مستندات','مشرف تنفيذ','امين مخزن','مساعد امين مخزن','مساح','مساعد مساح','سائق','امن اداري','مهندس ميكانيكا','مشرف ميكانيكا','نجار','حداد','فني شدة','مساعد فني شدة','فورمجي خرسانه','مبيض محارة','بناء','وناش','بحري','لحام','فني عزل','عامل'
+];
+
+function buildRoles(){
+  document.getElementById('rolesGrid').innerHTML=ROLES.map((r,i)=>{
+    return `<div class="role-box"><label>${r}</label><input type="number" min="0" id="role-${i}" value="" placeholder="0" oninput="calcLive()" inputmode="numeric"></div>`;
+  }).join('');
+}
+function calcLive(){
+  let total=0, details=[];
+  ROLES.forEach((r,i)=>{
+    let v=parseInt(document.getElementById('role-'+i).value)||0;
+    total+=v;
+    if(v>0) details.push(r+' '+v);
+  });
+  document.getElementById('liveTotal').innerText=total;
+  document.getElementById('liveDetail').innerText=details.length?details.join(' - '):'اكتب الأعداد فوق';
+  return total;
+}
+function addDaily(){
+  if(!val('d-company')) return alert('اكتب اسم الشركة');
+  if(!val('d-date')) return alert('اختار التاريخ');
+  let counts={};
+  ROLES.forEach((r,i)=>{ counts[r]=parseInt(document.getElementById('role-'+i).value)||0; });
+  let total=Object.values(counts).reduce((a,b)=>a+b,0);
+  if(total===0) return alert('اكتب عدد واحد على الأقل');
+  // لو نفس الشركة ونفس اليوم موجود، اسأله يحدث ولا يضيف
+  let existIdx=DB.dailyCount.findIndex(x=>x.company===val('d-company') && x.date===val('d-date'));
+  if(existIdx>=0){
+    if(!confirm('الشركة دي ليها إعداد في اليوم ده already\nعايز تحدثه بالجديد؟ دوس OK للتحديث')) return;
+    DB.dailyCount[existIdx]={company:val('d-company'),date:val('d-date'),counts:counts,total:total,updatedAt:new Date().toISOString()};
+  } else {
+    DB.dailyCount.push({company:val('d-company'),date:val('d-date'),counts:counts,total:total,createdAt:new Date().toISOString()});
+  }
+  save(); renderDaily();
+  alert('✅ تم حفظ إعداد '+val('d-company')+' - '+total+' عامل في يوم '+val('d-date'));
+  ROLES.forEach((r,i)=>{ document.getElementById('role-'+i).value=''; });
+  calcLive();
+}
+function renderDaily(){
+  let filterDate=document.getElementById('filterDate').value;
+  let filterComp=document.getElementById('filterCompany').value;
+  let q=(document.getElementById('searchD').value||'').toLowerCase();
+
+  // قائمة الشركات للفلتر
+  let allComps=[...new Set(DB.dailyCount.map(x=>x.company))];
+  let sel=document.getElementById('filterCompany');
+  let cur=sel.value;
+  sel.innerHTML='<option value="">كل الشركات</option>'+allComps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  document.getElementById('compList').innerHTML=allComps.map(c=>`<option value="${c}">`).join('');
+
+  // بيانات اليوم المختار
+  let dayList=DB.dailyCount.filter(x=>x.date===filterDate);
+  if(filterComp) dayList=dayList.filter(x=>x.company===filterComp);
+
+  let totalDay=dayList.reduce((s,x)=>s+x.total,0);
+  let compCount=dayList.length;
+  document.getElementById('k-total-day').innerText=totalDay;
+  document.getElementById('k-companies').innerText=compCount;
+  if(dayList.length){
+    let maxRec=[...dayList].sort((a,b)=>b.total-a.total)[0];
+    let minRec=[...dayList].sort((a,b)=>a.total-b.total)[0];
+    document.getElementById('k-max').innerText=maxRec.total+' - '+maxRec.company;
+    document.getElementById('k-min').innerText=minRec.total+' - '+minRec.company;
+    document.getElementById('k-max-label').innerText='الشركة صاحبة أعلى عدد - '+filterDate;
+    document.getElementById('k-min-label').innerText='الشركة صاحبة أقل عدد - '+filterDate;
+    // إجمالي كل شركة
+    let sorted=[...dayList].sort((a,b)=>b.total-a.total);
+    let maxT=Math.max(...dayList.map(x=>x.total),1);
+    document.getElementById('companyTotals').innerHTML=sorted.map(x=>{
+      return `<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🏢 ${x.company}</span><b>${x.total} عامل</b></div><div style="height:12px;background:#ECEFF1;border-radius:10px;overflow:hidden;margin:6px 0;"><div style="height:100%;background:#0A1F44;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px;"></div></div>`;
+    }).join('');
+  } else {
+    document.getElementById('k-max').innerText='-';
+    document.getElementById('k-min').innerText='-';
+    document.getElementById('companyTotals').innerHTML='<p style="text-align:center;color:#999;">مفيش إعداد في اليوم ده لسه - سجل أول شركة فوق</p>';
+  }
+
+  // الجدول الكامل
+  let list=DB.dailyCount.filter(x=>(!filterComp||x.company===filterComp) && x.company.toLowerCase().includes(q));
+  // لو فلتر التاريخ مش فاضي، الجدول يعرض اليوم ده بس؟ لا - اعرض الكل مرتب بالتاريخ
+  if(!list.length){ document.getElementById('dailyTable').innerHTML='<p style="text-align:center;color:#999;">مفيش إعداد مسجل لسه</p>'; return; }
+  document.getElementById('dailyTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>الإجمالي</th><th>أكبر 3 وظايف</th><th>عرض التفاصيل</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
+    let idx=DB.dailyCount.indexOf(x);
+    let top3=Object.entries(x.counts).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v).join(' - ')||'-';
+    return `<tr><td>${x.date}</td><td>${x.company}</td><td><b style="color:#D32F2F;">${x.total}</b></td><td style="font-size:11px;">${top3}</td><td><button class="btn2" onclick="showDetail(${idx})">👁️ تفاصيل</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delDaily(${idx})">🗑️</button></td></tr>`;
+  }).join('')+'</table>';
+}
+function showDetail(idx){
+  let x=DB.dailyCount[idx];
+  let txt='🏢 '+x.company+' - '+x.date+' - إجمالي '+x.total+'\n\n';
+  txt+=Object.entries(x.counts).filter(([k,v])=>v>0).map(([k,v])=>k+': '+v).join('\n');
+  alert(txt);
+}
+function delDaily(i){ if(!confirm('تحذف الإعداد ده؟')) return; DB.dailyCount.splice(i,1); save(); renderDaily(); }
+function clearDaily(){ if(!confirm('تمسح كل الإعداد؟')) return; DB.dailyCount=[]; save(); renderDaily(); }
+function exportDaily(){
+  let filterDate=document.getElementById('filterDate').value;
+  let list=DB.dailyCount.filter(x=>x.date===filterDate);
+  if(!list.length) return alert('مفيش بيانات في اليوم ده');
+  let header='الشركة,التاريخ,'+ROLES.join(',')+',الاجمالي\n';
+  let csv=header+list.map(x=>[x.company,x.date,...ROLES.map(r=>x.counts[r]||0),x.total].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-count-'+filterDate+'.csv'; a.click();
+}
+function exportAllDaily(){
+  if(!DB.dailyCount.length) return alert('مفيش بيانات');
+  let header='الشركة,التاريخ,'+ROLES.join(',')+',الاجمالي\n';
+  let csv=header+DB.dailyCount.map(x=>[x.company,x.date,...ROLES.map(r=>x.counts[r]||0),x.total].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-count-all.csv'; a.click();
+}
+buildRoles();
+document.getElementById('d-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('filterDate').value=new Date().toISOString().slice(0,10);
+renderDaily();
+</script>
+</body>
+</html>
