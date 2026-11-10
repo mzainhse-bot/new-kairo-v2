@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -63,7 +62,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -105,7 +103,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> فحص السقالات</h1><small>Scaffolding Inspection</small></div>
+<div><h1>RMED <span>•</span> فحص السقالات</h1><small>Scaffolding - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -164,14 +162,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -184,21 +184,35 @@ function getReporter(){
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
-if(!DB.scaffolds) DB.scaffolds=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+// ✅ FIREBASE - بدل localStorage
+let scaffolds = [];
+
+async function loadSc(){
+  try{
+    if(window.db){
+      let snap = await db.collection('scaffolds').orderBy('createdAt','desc').get();
+      scaffolds = [];
+      snap.forEach(d=> scaffolds.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!scaffolds.length && old.scaffolds) scaffolds=old.scaffolds;
+  }catch(e){}
+  renderSc(); refreshNum();
+}
+
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 function genScNum(){
   let year=new Date().getFullYear();
-  let count=(DB.scaffolds||[]).length+1;
-  let nums=(DB.scaffolds||[]).map(x=>{ let m=(x.num||'').match(/(\d+)$/); return m?parseInt(m[1]):0; });
+  let nums=(scaffolds||[]).map(x=>{ let m=(x.num||'').match(/(\d+)$/); return m?parseInt(m[1]):0; });
   let max=nums.length?Math.max(...nums):0;
-  let next=Math.max(count, max+1);
+  let next=Math.max(scaffolds.length+1, max+1);
   return 'SC-'+year+'-'+String(next).padStart(3,'0');
 }
 function refreshNum(){ document.getElementById('sc-num').value=genScNum(); }
-function addSc(){
+async function addSc(){
   if(!val('sc-company')) return alert('اكتب اسم الشركة');
   if(!val('sc-type')) return alert('اختار نوع السقالة');
   if(!val('sc-load')) return alert('اختار الحمولة');
@@ -209,18 +223,24 @@ function addSc(){
   let insp=val('sc-inspector')||getReporter();
   if(!insp) return alert('اكتب اسم الفاحص');
   if(!val('sc-status')) return alert('اختار الحالة');
+  if(!window.db) return alert('فايربيز مش متصل');
   let rec={num:val('sc-num')||genScNum(),company:val('sc-company'),type:val('sc-type'),load:val('sc-load'),building:val('sc-building'),floor:val('sc-floor'),cluster:val('sc-cluster'),date:val('sc-date'),inspector:insp,reporter:insp,reporterName:insp,status:val('sc-status'),notes:val('sc-notes'),createdAt:new Date().toISOString()};
-  DB.scaffolds.push(rec); save(); renderSc(); refreshNum();
-  alert('✅ تم حفظ السقالة '+rec.num+' - '+rec.company+' - '+rec.status);
+  try{
+    let ref = await db.collection('scaffolds').add(rec);
+    rec.id = ref.id;
+    scaffolds.unshift(rec);
+  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  renderSc(); refreshNum();
+  alert('✅ تم حفظ السقالة في فايربيز '+rec.num+' - '+rec.company+' - '+rec.status);
   ['sc-company','sc-building','sc-floor','sc-cluster','sc-notes'].forEach(id=>setVal(id,''));
   setVal('sc-type',''); setVal('sc-load',''); setVal('sc-status','قائمة');
 }
 function renderSc(){
-  let all=DB.scaffolds||[];
+  let all=scaffolds||[];
   let comps=[...new Set(all.map(x=>x.company))];
-  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
   let total=all.length;
   let on=all.filter(x=>x.status==='قائمة').length;
   let off=all.filter(x=>x.status==='تم الفك').length;
@@ -232,7 +252,7 @@ function renderSc(){
   all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,on:0,off:0}; byComp[x.company].total++; if(x.status==='قائمة') byComp[x.company].on++; else byComp[x.company].off++; });
   let compArr=Object.entries(byComp).sort((a,b)=>b[1].total-a[1].total);
   if(!compArr.length) document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات لسه</p>';
-  else document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي السقالات</th><th>🟢 قائمة</th><th>🔴 تم فكها</th><th>نسبة القائمة</th></tr>'+compArr.map(([name,v])=>`<tr><td><b>${name}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:bold;">${v.on}</td><td style="color:#D32F2F;font-weight:bold;">${v.off}</td><td>${v.total?Math.round(v.on/v.total*100)+'%':'0%'}</td></tr>`).join('')+'</table>';
+  else document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي السقالات</th><th>🟢 قائمة</th><th>🔴 تم فكها</th><th>نسبة القائمة</th></tr>'+compArr.map(([name,v])=>'<tr><td><b>'+name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.on+'</td><td style="color:#D32F2F;font-weight:bold;">'+v.off+'</td><td>'+(v.total?Math.round(v.on/v.total*100)+'%':'0%')+'</td></tr>').join('')+'</table>';
   let q=(document.getElementById('searchSc').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
   let ft=document.getElementById('filterType').value;
@@ -245,25 +265,43 @@ function renderSc(){
     return okQ&&okS&&okT&&okC;
   });
   if(!list.length){ document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات مسجلة لسه</p>'; return; }
-  document.getElementById('scTable').innerHTML='<table><tr><th>رقم السقالة</th><th>الشركة</th><th>النوع</th><th>الحمولة</th><th>المبنى / الدور / الكلاستر</th><th>تاريخ الإنشاء</th><th>الفاحص</th><th>الحالة</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
-    let idx=DB.scaffolds.indexOf(x);
-    return `<tr><td><b style="color:#FF9800;">${x.num}</b></td><td><b>${x.company}</b></td><td>${x.type}</td><td>${x.load}</td><td>مبنى ${x.building}<br>دور ${x.floor}<br>كلاستر ${x.cluster}</td><td>${x.date}</td><td>${x.inspector}</td><td><span class="badge ${x.status==='قائمة'?'on':'off'}">${x.status}</span><br><small style="color:#78909C;">${x.notes||''}</small></td><td><button class="btn2" onclick="toggleSc(${idx})">${x.status==='قائمة'?'🔴 فك السقالة':'🟢 رجعها قائمة'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc(${idx})">🗑️</button></td></tr>`;
+  document.getElementById('scTable').innerHTML='<table><tr><th>رقم السقالة</th><th>الشركة</th><th>النوع</th><th>الحمولة</th><th>المبنى / الدور / الكلاستر</th><th>تاريخ الإنشاء</th><th>الفاحص</th><th>الحالة</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+    let idx=scaffolds.indexOf(x);
+    return '<tr><td><b style="color:#FF9800;">'+x.num+'</b></td><td><b>'+x.company+'</b></td><td>'+x.type+'</td><td>'+x.load+'</td><td>مبنى '+x.building+'<br>دور '+x.floor+'<br>كلاستر '+x.cluster+'</td><td>'+x.date+'</td><td>'+x.inspector+'</td><td><span class="badge '+(x.status==='قائمة'?'on':'off')+'">'+x.status+'</span><br><small style="color:#78909C;">'+(x.notes||'')+'</small></td><td><button class="btn2" onclick="toggleSc('+idx+')">'+(x.status==='قائمة'?'🔴 فك السقالة':'🟢 رجعها قائمة')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
-function toggleSc(i){ DB.scaffolds[i].status = DB.scaffolds[i].status==='قائمة'?'تم الفك':'قائمة'; save(); renderSc(); }
-function delSc(i){ if(!confirm('تحذف السقالة دي؟')) return; DB.scaffolds.splice(i,1); save(); renderSc(); refreshNum(); }
-function clearSc(){ if(!confirm('تمسح كل سجل السقالات؟')) return; DB.scaffolds=[]; save(); renderSc(); refreshNum(); }
+async function toggleSc(i){
+  let rec=scaffolds[i];
+  let newStatus = rec.status==='قائمة'?'تم الفك':'قائمة';
+  try{ if(rec && rec.id && window.db) await db.collection('scaffolds').doc(rec.id).update({status:newStatus}); }catch(e){}
+  rec.status=newStatus; renderSc();
+}
+async function delSc(i){
+  if(!confirm('تحذف السقالة دي؟')) return;
+  let rec=scaffolds[i];
+  try{ if(rec && rec.id && window.db) await db.collection('scaffolds').doc(rec.id).delete(); }catch(e){}
+  scaffolds.splice(i,1); renderSc(); refreshNum();
+}
+async function clearSc(){
+  if(!confirm('تمسح كل سجل السقالات من فايربيز؟')) return;
+  try{
+    if(window.db){
+      let snap = await db.collection('scaffolds').get();
+      for(let d of snap.docs){ await db.collection('scaffolds').doc(d.id).delete(); }
+    }
+  }catch(e){}
+  scaffolds=[]; renderSc(); refreshNum();
+}
 function exportSc(){
-  if(!DB.scaffolds.length) return alert('مفيش بيانات');
-  let csv='رقم السقالة,اسم الشركة,نوع السقالة,الحمولة,رقم المبنى,رقم الدور,رقم الكلاستر,تاريخ الانشاء,اسم الفاحص,الحالة,ملاحظات\n'+DB.scaffolds.map(x=>[x.num,x.company,x.type,x.load,x.building,x.floor,x.cluster,x.date,x.inspector,x.status,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  if(!scaffolds.length) return alert('مفيش بيانات');
+  let csv='رقم السقالة,اسم الشركة,نوع السقالة,الحمولة,رقم المبنى,رقم الدور,رقم الكلاستر,تاريخ الانشاء,اسم الفاحص,الحالة,ملاحظات\n'+scaffolds.map(x=>[x.num,x.company,x.type,x.load,x.building,x.floor,x.cluster,x.date,x.inspector,x.status,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='scaffolds.csv'; a.click();
 }
 let savedUser=getReporter();
 document.getElementById('currentUser').value=savedUser;
 document.getElementById('sc-inspector').value=savedUser;
 document.getElementById('sc-date').value=new Date().toISOString().slice(0,10);
-refreshNum();
-renderSc();
+loadSc();
 </script>
 </body>
 </html>
