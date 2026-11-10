@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>تقييم المقاولين - RMED</title>
+<title>Contractor Evaluation - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -20,120 +20,120 @@
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
-@media(max-width:900px){.sidebar{right:-270px}.sidebar.open{right:0}.main{margin-right:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}}
+@media(max-width:900px){.sidebar{left:-270px}.sidebar.open{left:0}.main{margin-left:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px}.page-head h1 span{color:#D32F2F}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D}
 .card.red{border-top-color:#D32F2F}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:700px){.grid{grid-template-columns:1fr}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px}
 input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px}
 .btn.red{background:#D32F2F}.btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D}
 .kpi.red{border-bottom-color:#D32F2F}.kpi b{font-size:24px;display:block}.kpi small{color:#78909C;font-size:12px}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
+table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
 .badge.red{background:#FFEBEE;color:#D32F2F}.badge.green{background:#E8F5E9;color:#2E7D32}.badge.orange{background:#FFF3E0;color:#EF6C00}
 .auto-box{background:#E3F2FD;border:1px solid #90CAF9;border-radius:12px;padding:14px;margin-top:12px;font-size:13px;line-height:2}
-.auto-box b{color:#0A1F44}
+.auto-box b{color:#0F2A4D}
 .range-row{display:flex;gap:10px;align-items:center}
 .range-row input[type=range]{flex:1}
-.range-row b{min-width:40px;text-align:center;background:#0A1F44;color:#fff;padding:6px 10px;border-radius:8px}
+.range-row b{min-width:40px;text-align:center;background:#0F2A4D;color:#fff;padding:6px 10px;border-radius:8px}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
-  <div class="user-box"><img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div></div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="contractor-eval.html" class="active"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
+  <div class="user-box"><img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div></div>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval" class="active"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
-<div class="page-head"><div><h1>RMED <span>•</span> تقييم المقاولين</h1><small>تقييم أوتوماتيك 100% - من فايربيز</small></div><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button></div>
+<div class="page-head"><div><h1>RMED <span>•</span> Contractor Evaluation</h1><small>100% Automatic Evaluation - From Firebase</small></div><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button></div>
 <div class="container">
 
-<div id="debugBox" style="background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:2;">⏳ جاري التشخيص...</div>
+<div id="debugBox" style="background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:2;">⏳ Running diagnostics...</div>
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-companies">0</b><small>عدد الشركات</small></div>
-<div class="kpi"><b id="k-evals">0</b><small>عدد التقييمات</small></div>
-<div class="kpi red"><b id="k-avgScore">0</b><small>متوسط التقييم الأوتوماتيك</small></div>
-<div class="kpi red"><b id="k-totalDeduct">0 نقطة</b><small>إجمالي الخصم الأوتوماتيك</small></div>
+<div class="kpi"><b id="k-companies">0</b><small>Companies Count</small></div>
+<div class="kpi"><b id="k-evals">0</b><small>Evaluations Count</small></div>
+<div class="kpi red"><b id="k-avgScore">0</b><small>Average Automatic Score</small></div>
+<div class="kpi red"><b id="k-totalDeduct">0 points</b><small>Total Automatic Deduction</small></div>
 </div>
 
 <div class="card red">
-<h2 style="margin:0 0 6px;">🤖 التقييم الأوتوماتيك - لكل الشركات (من غير أي تدخل)</h2>
-<p style="color:#78909C;font-size:13px;margin:0 0 10px;">بيتحسب لوحده أول ما الصفحة تفتح: النتيجة = 100 - الخصم الأوتوماتيك (مخالفة×3 + NCR مفتوح×2 + حادث×10 + وشيكة مفتوحة×1 + ملاحظة مفتوحة×0.5 - أقصى خصم 60)</p>
-<table><thead><tr><th>الشركة</th><th>مخالفات ×3</th><th>NCR مفتوح ×2</th><th>حوادث ×10</th><th>وشيكة ×1</th><th>ملاحظات ×0.5</th><th>خصم</th><th>النتيجة</th><th>الحالة</th></tr></thead><tbody id="autoEvalBody"><tr><td colspan="9">جاري الحساب الأوتوماتيك...</td></tr></tbody></table>
-<button class="btn red" onclick="saveAllAuto()">💾 حفظ كل التقييمات الأوتوماتيك في فايربيز بضغطة واحدة (اختياري)</button>
+<h2 style="margin:0 0 6px;">🤖 Automatic Evaluation - For All Companies (No Manual Input)</h2>
+<p style="color:#78909C;font-size:13px;margin:0 0 10px;">Calculated automatically when page opens: Score = 100 - Automatic Deduction (Violation x3 + Open NCR x2 + Accident x10 + Open Near Miss x1 + Open Observation x0.5 - Max deduction 60)</p>
+<table><thead><tr><th>Company</th><th>Violations x3</th><th>Open NCR x2</th><th>Accidents x10</th><th>Near Miss x1</th><th>Observations x0.5</th><th>Deduction</th><th>Score</th><th>Status</th></tr></thead><tbody id="autoEvalBody"><tr><td colspan="9">Calculating automatically...</td></tr></tbody></table>
+<button class="btn red" onclick="saveAllAuto()">💾 Save All Automatic Evaluations To Firebase In One Click (Optional)</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">✏️ تعديل يدوي لشركة واحدة (اختياري - مش لازم)</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">لو عايز تعدل درجة شركة واحدة يدوي بس، اختارها هنا. لو مش عايز، سيبه خالص، الجدول الأوتوماتيك اللي فوق هو الأساسي.</p>
-<label>الشركة *</label>
-<select id="e-company" onchange="onCompanyChange()"><option value="">-- اختار شركة للتعديل اليدوي --</option></select>
-<input id="e-company-new" placeholder="أو اكتب شركة جديدة هنا لو مش موجودة...">
-<div class="auto-box" id="autoBox" style="display:none;"><b>📊 بيانات الشركة دي من كل الجداول (أوتوماتيك):</b><br><span id="autoText">-</span></div>
+<h2 style="margin:0 0 10px;">✏️ Manual Edit For One Company (Optional - Not Required)</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">If you want to manually edit one company score only, select it here. If not, leave it, the automatic table above is the main one.</p>
+<label>Company *</label>
+<select id="e-company" onchange="onCompanyChange()"><option value="">-- Select company for manual edit --</option></select>
+<input id="e-company-new" placeholder="Or type a new company here if not listed...">
+<div class="auto-box" id="autoBox" style="display:none;"><b>📊 This Company Data From All Tables (Automatic):</b><br><span id="autoText">-</span></div>
 <div class="grid">
-<div><label>الفترة</label><select id="e-period"><option>شهري</option><option>ربع سنوي</option><option>نصف سنوي</option><option>سنوي</option></select></div>
-<div><label>الشهر / السنة</label><input id="e-month" type="month"></div>
+<div><label>Period</label><select id="e-period"><option>Monthly</option><option>Quarterly</option><option>Semi-Annual</option><option>Annual</option></select></div>
+<div><label>Month / Year</label><input id="e-month" type="month"></div>
 </div>
-<h3 style="margin:16px 0 6px;">⭐ التقييم اليدوي (0 - 10)</h3>
-<p style="color:#78909C;font-size:13px;margin:0;">دي درجاتك انت كمقيم، وهتتجمع مع الخصم الأوتوماتيك من المخالفات.</p>
+<h3 style="margin:16px 0 6px;">⭐ Manual Evaluation (0 - 10)</h3>
+<p style="color:#78909C;font-size:13px;margin:0;">These are your scores as evaluator, they will be combined with automatic deduction from violations.</p>
 <div id="criteriaBox"></div>
 <div class="grid">
-<div><label>ملاحظات</label><textarea id="e-notes" rows="2" placeholder="ملاحظات..."></textarea></div>
-<div><label>توصية</label><select id="e-recommend"><option>مقبول</option><option>مقبول بشروط</option><option>غير مقبول</option><option>إيقاف</option></select></div>
+<div><label>Notes</label><textarea id="e-notes" rows="2" placeholder="Notes..."></textarea></div>
+<div><label>Recommendation</label><select id="e-recommend"><option>Acceptable</option><option>Conditionally Accepted</option><option>Not Accepted</option><option>Suspended</option></select></div>
 </div>
 <div class="card" style="background:#FFF3E0;border-top-color:#EF6C00;margin-top:14px;">
-<b>🧮 النتيجة النهائية (يدوي):</b><br>
-درجة يدوية: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; خصم أوتوماتيك: <b id="calc-deduct" style="color:#D32F2F;">0</b> نقطة &nbsp;|&nbsp; <b>النتيجة: <span id="calc-final" style="color:#0A1F44;">0</span></b><br>
-<small style="color:#78909C;">المعادلة: يدوي - (مخالفة×3 + NCR مفتوح×2 + حادث×10 + وشيكة مفتوحة×1 + ملاحظة مفتوحة×0.5) - أقصى خصم 60</small><br>
-<button class="btn red" onclick="saveEval()">💾 حفظ التقييم اليدوي ده في فايربيز</button>
+<b>🧮 Final Score (Manual):</b><br>
+Manual Score: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; Automatic Deduction: <b id="calc-deduct" style="color:#D32F2F;">0</b> points &nbsp;|&nbsp; <b>Score: <span id="calc-final" style="color:#0A1F44;">0</span></b><br>
+<small style="color:#78909C;">Formula: Manual - (Violation x3 + Open NCR x2 + Accident x10 + Open Near Miss x1 + Open Observation x0.5) - Max deduction 60</small><br>
+<button class="btn red" onclick="saveEval()">💾 Save This Manual Evaluation To Firebase</button>
 </div>
 </div>
 
 <div class="card">
-<h2 style="margin:0;">📋 التقييمات المحفوظة</h2>
-<table><thead><tr><th>الشركة</th><th>الفترة</th><th>يدوي</th><th>خصم</th><th>نهائي</th><th>توصية</th></tr></thead><tbody id="evalTableBody"><tr><td colspan="6">جاري التحميل...</td></tr></tbody></table>
+<h2 style="margin:0;">📋 Saved Evaluations</h2>
+<table><thead><tr><th>Company</th><th>Period</th><th>Manual</th><th>Deduction</th><th>Final</th><th>Recommendation</th></tr></thead><tbody id="evalTableBody"><tr><td colspan="6">Loading...</td></tr></tbody></table>
 </div>
 
 </div>
@@ -145,6 +145,22 @@ table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-b
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
+// === TRANSLATION MAP: Read AR + EN, Display EN only ===
+const T_MAP = {
+  'مقبول':'Acceptable','Acceptable':'Acceptable',
+  'مقبول بشروط':'Conditionally Accepted','Conditionally Accepted':'Conditionally Accepted',
+  'غير مقبول':'Not Accepted','Not Accepted':'Not Accepted',
+  'إيقاف':'Suspended','Suspended':'Suspended',
+  'شهري':'Monthly','Monthly':'Monthly',
+  'ربع سنوي':'Quarterly','Quarterly':'Quarterly',
+  'نصف سنوي':'Semi-Annual','Semi-Annual':'Semi-Annual',
+  'سنوي':'Annual','Annual':'Annual',
+  'أوتوماتيك':'Automatic','Automatic':'Automatic',
+  'غير محدد':'Not Specified','Not Specified':'Not Specified',
+  'مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'
+};
+function T(v){ if(v==null) return v; return T_MAP[String(v).trim()] || v; }
+
 let DB={violations:[],ncr:[],accidents:[],nearMiss:[],observations:[],permits:[],workers:[],evals:[]};
 async function fetchCol(names){
   for(let n of names){
@@ -154,8 +170,8 @@ async function fetchCol(names){
 }
 async function loadAll(){
   let dbg=document.getElementById('debugBox');
-  dbg.innerHTML='🔍 التشخيص:<br>1. window.db موجود؟ <b>'+(!!window.db)+'</b><br>2. projectId: <b>'+(typeof firebaseConfig!=='undefined'?firebaseConfig.projectId:'مش موجود - firebase-config.js مش متحمل')+'</b>';
-  if(!window.db){ dbg.innerHTML+='<br><br>❌ <b>السبب: firebase-config.js مش متحمل</b> - ارفعه في نفس فولدر new-kairo-v2'; return; }
+  dbg.innerHTML='🔍 Diagnostics:<br>1. window.db exists? <b>'+(!!window.db)+'</b><br>2. projectId: <b>'+(typeof firebaseConfig!=='undefined'?firebaseConfig.projectId:'Not found - firebase-config.js not loaded')+'</b>';
+  if(!window.db){ dbg.innerHTML+='<br><br>❌ <b>Reason: firebase-config.js not loaded</b> - Upload it in same folder'; return; }
   try{
     DB.violations=await fetchCol(['violations']);
     DB.ncr=await fetchCol(['ncr']);
@@ -166,17 +182,17 @@ async function loadAll(){
     DB.workers=await fetchCol(['workers']);
     DB.evals=await fetchCol(['contractorEval','contractor-eval','contractorEvaluations']);
   }catch(e){
-    dbg.innerHTML+='<br><br>❌ خطأ: '+e.message+' | كود: '+e.code;
-    if(e.code==='permission-denied') dbg.innerHTML+='<br>👉 الحل: Firestore > Rules > allow read, write: if true';
+    dbg.innerHTML+='<br><br>❌ Error: '+e.message+' | Code: '+e.code;
+    if(e.code==='permission-denied') dbg.innerHTML+='<br>👉 Fix: Firestore > Rules > allow read, write: if true';
     return;
   }
-  dbg.innerHTML+='<br>✅ اتصل بفايربيز | مخالفات: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | حوادث: <b>'+DB.accidents.length+'</b> | وشيكة: <b>'+DB.nearMiss.length+'</b> | ملاحظات: <b>'+DB.observations.length+'</b> | عمال: <b>'+DB.workers.length+'</b> | تقييمات: <b>'+DB.evals.length+'</b>';
+  dbg.innerHTML+='<br>✅ Connected to Firebase | Violations: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | Accidents: <b>'+DB.accidents.length+'</b> | Near Miss: <b>'+DB.nearMiss.length+'</b> | Observations: <b>'+DB.observations.length+'</b> | Workers: <b>'+DB.workers.length+'</b> | Evaluations: <b>'+DB.evals.length+'</b>';
   buildCompanyList(); renderTable(); renderAutoEvals(); calcFinal();
 }
-function getCompanyName(r){ return r.company||r.contractor||r.companyName||r.contractorName||'غير محدد'; }
+function getCompanyName(r){ return r.company||r.contractor||r.companyName||r.contractorName||'Not Specified'; }
 function isOpen(r){
   let s=String(r.status||r.state||r.caseStatus||'open').toLowerCase();
-  if(s.includes('closed')||s.includes('resolved')||s.includes('done')||s.includes('مغلق')||s.includes('تم الحل')||s.includes('مقفول')) return false;
+  if(s.includes('closed')||s.includes('resolved')||s.includes('done')||s.includes('مغلق')||s.includes('تم الحل')||s.includes('مقفول')||s.includes('closed')) return false;
   return true;
 }
 function calcDeduction(company){
@@ -197,19 +213,19 @@ function calcDeduction(company){
 }
 function getAllCompanies(){
   let set=new Set();
-  [...DB.violations,...DB.ncr,...DB.accidents,...DB.nearMiss,...DB.observations,...DB.workers,...DB.evals].forEach(r=>{ if(getCompanyName(r)!=='غير محدد') set.add(getCompanyName(r)); });
+  [...DB.violations,...DB.ncr,...DB.accidents,...DB.nearMiss,...DB.observations,...DB.workers,...DB.evals].forEach(r=>{ if(getCompanyName(r)!=='Not Specified') set.add(getCompanyName(r)); });
   return [...set].sort();
 }
 function getAutoStatus(final){
-  if(final>=80) return '<span class="badge green">مقبول ✅</span>';
-  if(final>=60) return '<span class="badge orange">مقبول بشروط ⚠️</span>';
-  return '<span class="badge red">غير مقبول ❌</span>';
+  if(final>=80) return '<span class="badge green">Acceptable ✅</span>';
+  if(final>=60) return '<span class="badge orange">Conditionally Accepted ⚠️</span>';
+  return '<span class="badge red">Not Accepted ❌</span>';
 }
 function renderAutoEvals(){
   let tb=document.getElementById('autoEvalBody');
   if(!tb) return;
   let companies=getAllCompanies();
-  if(!companies.length){ tb.innerHTML='<tr><td colspan="9">لا توجد شركات في فايربيز</td></tr>'; return; }
+  if(!companies.length){ tb.innerHTML='<tr><td colspan="9">No companies in Firebase</td></tr>'; return; }
   let sum=0;
   tb.innerHTML=companies.map(c=>{
     let d=calcDeduction(c);
@@ -220,28 +236,28 @@ function renderAutoEvals(){
   document.getElementById('k-avgScore').textContent=Math.round(sum/companies.length);
 }
 async function saveAllAuto(){
-  if(!confirm('هتحفظ تقييم أوتوماتيك لكل الشركات؟')) return;
+  if(!confirm('Save automatic evaluation for all companies?')) return;
   for(let c of getAllCompanies()){
     let d=calcDeduction(c);
     let final=Math.max(0,100-d.capped);
-    await window.db.collection('contractorEval').add({company:c,period:'أوتوماتيك',month:new Date().toISOString().slice(0,7),manualScore:100,deduct:d.capped,finalScore:final,recommend:final>=80?'مقبول':final>=60?'مقبول بشروط':'غير مقبول',breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},auto:true,createdAt:new Date().toISOString()});
+    await window.db.collection('contractorEval').add({company:c,period:'Automatic',month:new Date().toISOString().slice(0,7),manualScore:100,deduct:d.capped,finalScore:final,recommend:final>=80?'Acceptable':final>=60?'Conditionally Accepted':'Not Accepted',breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},auto:true,createdAt:new Date().toISOString()});
   }
-  alert('✅ اتحفظ الكل أوتوماتيك'); loadAll();
+  alert('✅ All saved automatically'); loadAll();
 }
 function buildCompanyList(){
   let companies=getAllCompanies();
-  document.getElementById('e-company').innerHTML='<option value="">-- اختار شركة للتعديل اليدوي --</option>'+companies.map(c=>`<option value="${c}">${c}</option>`).join('');
+  document.getElementById('e-company').innerHTML='<option value="">-- Select company for manual edit --</option>'+companies.map(c=>`<option value="${c}">${c}</option>`).join('');
   document.getElementById('k-companies').textContent=companies.length;
   document.getElementById('k-evals').textContent=DB.evals.length;
   let totalPoints=DB.violations.length*3 + DB.ncr.filter(isOpen).length*2 + DB.accidents.length*10 + DB.nearMiss.filter(isOpen).length*1 + DB.observations.filter(isOpen).length*0.5;
-  document.getElementById('k-totalDeduct').textContent=Math.min(60,totalPoints)+' نقطة';
+  document.getElementById('k-totalDeduct').textContent=Math.min(60,totalPoints)+' points';
 }
 function onCompanyChange(){
   let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();
   if(!company) return;
   let d=calcDeduction(company);
   document.getElementById('autoBox').style.display='block';
-  document.getElementById('autoText').innerHTML=`مخالفات: <b>${d.v}</b> × 3 = <b style="color:#D32F2F">-${d.dV}</b> | NCR مفتوح: <b>${d.n}</b> × 2 = <b style="color:#D32F2F">-${d.dN}</b> | حوادث: <b>${d.a}</b> × 10 = <b style="color:#D32F2F">-${d.dA}</b><br>وشيكة مفتوحة: <b>${d.nm}</b> × 1 = <b style="color:#D32F2F">-${d.dNM}</b> | ملاحظات مفتوحة: <b>${d.o}</b> × 0.5 = <b style="color:#D32F2F">-${d.dO}</b> | عمال: <b>${d.w}</b><br><b>إجمالي الخصم: ${d.total} - أقصى خصم 60 = ${d.capped} نقطة</b>`;
+  document.getElementById('autoText').innerHTML=`Violations: <b>${d.v}</b> x 3 = <b style="color:#D32F2F">-${d.dV}</b> | Open NCR: <b>${d.n}</b> x 2 = <b style="color:#D32F2F">-${d.dN}</b> | Accidents: <b>${d.a}</b> x 10 = <b style="color:#D32F2F">-${d.dA}</b><br>Open Near Miss: <b>${d.nm}</b> x 1 = <b style="color:#D32F2F">-${d.dNM}</b> | Open Observations: <b>${d.o}</b> x 0.5 = <b style="color:#D32F2F">-${d.dO}</b> | Workers: <b>${d.w}</b><br><b>Total Deduction: ${d.total} - Max 60 = ${d.capped} points</b>`;
   document.getElementById('calc-deduct').textContent=d.capped;
   calcFinal();
 }
@@ -256,26 +272,24 @@ function calcFinal(){
 }
 function renderTable(){
   let tb=document.getElementById('evalTableBody');
-  if(!DB.evals.length){ tb.innerHTML='<tr><td colspan="6">لا توجد تقييمات محفوظة بعد - التقييم الأوتوماتيك فوق هو الأساسي</td></tr>'; return; }
-  tb.innerHTML=DB.evals.map(e=>`<tr><td>${getCompanyName(e)}</td><td>${e.period||''} ${e.month||''}</td><td>${e.manualScore||0}</td><td>${e.deduct||0}</td><td><b>${e.finalScore||0}</b></td><td>${e.recommend||''}</td></tr>`).join('');
+  if(!DB.evals.length){ tb.innerHTML='<tr><td colspan="6">No saved evaluations yet - Automatic evaluation above is the main one</td></tr>'; return; }
+  tb.innerHTML=DB.evals.map(e=>`<tr><td>${getCompanyName(e)}</td><td>${T(e.period)||''} ${e.month||''}</td><td>${e.manualScore||0}</td><td>${e.deduct||0}</td><td><b>${e.finalScore||0}</b></td><td>${T(e.recommend)||''}</td></tr>`).join('');
 }
 async function saveEval(){
   let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();
-  if(!company) return alert('اختار الشركة الأول');
+  if(!company) return alert('Select company first');
   let manual=Number(document.getElementById('calc-manual').textContent||0);
   let deduct=Number(document.getElementById('calc-deduct').textContent||0);
   let final=calcFinal();
   let d=calcDeduction(company);
-  try{ await window.db.collection('contractorEval').add({company,period:document.getElementById('e-period').value,month:document.getElementById('e-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},createdAt:new Date().toISOString()}); alert('✅ اتحفظ في فايربيز'); loadAll(); }
-  catch(e){ alert('خطأ في الحفظ: '+e.message); }
+  try{ await window.db.collection('contractorEval').add({company,period:document.getElementById('e-period').value,month:document.getElementById('e-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},createdAt:new Date().toISOString()}); alert('✅ Saved to Firebase'); loadAll(); }
+  catch(e){ alert('Save error: '+e.message); }
 }
-function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); document.getElementById('overlay').classList.toggle('show'); }
-function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
-let criteria=['الالتزام بتعليمات السلامة','جودة العمل','الالتزام بالجدول الزمني','نظافة الموقع','التعاون مع فريق السلامة','توفر مهمات الوقاية'];
+let criteria=['Safety Instructions Compliance','Work Quality','Schedule Compliance','Site Cleanliness','Cooperation With Safety Team','PPE Availability'];
 let cb=document.getElementById('criteriaBox');
 if(cb) cb.innerHTML=criteria.map(c=>`<div><label>${c}</label><div class="range-row"><input type="range" class="crit-range" min="0" max="10" value="10" oninput="this.nextElementSibling.textContent=this.value;calcFinal()"><b>10</b></div></div>`).join('');
 document.addEventListener('DOMContentLoaded',()=>{
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(u.name){ document.getElementById('sideName').textContent=u.name; document.getElementById('sideRole').textContent=u.role||''; }
   loadAll();
 });
