@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إصلاح حساب المدير</title>
+<style>body{font-family:'Segoe UI',Tahoma;text-align:center;padding:20px;background:#F4F6F9} .box{background:#fff;max-width:450px;margin:auto;padding:20px;border-radius:16px} button{background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px} input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;margin-top:8px;box-sizing:border-box}</style></head>
+<body><div class="box">
+<h2>🔧 إصلاح حساب المدير</h2>
+<p style="color:#78909C;font-size:14px;">الصفحة دي هتعمل حساب المدير على الجهاز ده، وتفتحلك صفحة المستخدمين</p>
+<p id="info" style="background:#FFF3E0;padding:10px;border-radius:10px;font-size:13px;text-align:right;"></p>
+<label>باسورد المدير اللي انت عايزه</label>
+<input id="pass" type="text" value="123456" placeholder="اكتب الباسورد">
+<button onclick="fix()">✅ أصلح حساب المدير وادخل</button>
+<button onclick="clearAll()" style="background:#D32F2F;">🗑️ امسح كل حاجة وابدأ من جديد</button>
+<p><a href="index.html">روح للرئيسية</a></p>
+</div>
+<script>
+function show(){
+  let me=localStorage.getItem('currentUser');
+  let db=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+  document.getElementById('info').innerHTML='اللي مسجل دخول دلوقتي:<br><b>'+(me||'مفيش حد')+'</b><br><br>عدد المستخدمين على الجهاز ده: <b>'+((db.users||[]).length)+'</b><br>'+(db.users||[]).map(u=>u.email+' - '+u.role+' - '+u.status).join('<br>');
+}
+show();
+function fix(){
+  let pass=document.getElementById('pass').value||'123456';
+  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); if(!DB.users) DB.users=[];
+  let email='mzain.hse@gmail.com';
+  let idx=DB.users.findIndex(u=>u.email===email);
+  let admin={name:'محمد زين - المدير',job:'مدير السلامة',email:email,pass:pass,photo:'',img:'',role:'manager',requestedRole:'manager',status:'approved',createdAt:new Date().toISOString()};
+  if(idx>=0){ DB.users[idx]=admin; } else { DB.users.push(admin); }
+  localStorage.setItem('safetyDB',JSON.stringify(DB));
+  let session={email:email,name:admin.name,job:admin.job,role:'manager',photo:'',img:'',code:'ADMIN'};
+  localStorage.setItem('currentUser',JSON.stringify(session));
+  localStorage.setItem('safetyUser',JSON.stringify(session));
+  localStorage.setItem('safetyUserName',admin.name);
+  alert('✅ اتصلح! دلوقتي انت مدير. الباسورد بتاعك: '+pass);
+  location.href='users.html';
+}
+function clearAll(){
+  if(!confirm('هتمسح كل البيانات على الجهاز ده؟')) return;
+  localStorage.clear();
+  location.reload();
+}
+</script></body></html>
