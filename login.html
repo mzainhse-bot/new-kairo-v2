@@ -91,7 +91,7 @@ button.login-btn:hover{background:#1A3A6A}
 
 <div class="main">
 <div class="box">
-<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد</p>
+<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد - من فايربيز</p>
 <label>📧 الإيميل</label><input id="l-email" type="email" placeholder="example@gmail.com">
 <label>🔒 الباسورد</label><input id="l-pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') doLogin()">
 <span class="show-pass" onclick="togglePass()">👁️ إظهار الباسورد</span>
@@ -104,7 +104,6 @@ button.login-btn:hover{background:#1A3A6A}
 </div>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -133,10 +132,10 @@ async function doLogin(){
   debug.style.display='none';
   if(!email) return msg.innerText='اكتب الإيميل';
   if(!pass) return msg.innerText='اكتب الباسورد';
+  if(!window.db) return msg.innerText='فايربيز مش متصل - اتأكد إن firebase-config.js موجود';
 
   msg.innerText='جارى التحقق...';
   try{
-    // ✅ البحث في Firestore - مجموعة users
     let snap = await db.collection('users').where('email','==',email).get();
     if(snap.empty){
       msg.innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
@@ -157,7 +156,6 @@ async function doLogin(){
     if(status==='pending') return msg.innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
     if(status==='rejected' || status==='blocked') return msg.innerText='❌ حسابك اترفض من المدير';
 
-    // لو الدور لسه pending بس الحالة approved - خد الدور المطلوب
     let finalRole = user.role==='pending' ? (user.requestedRole||'employee') : (user.role||'employee');
 
     let session={id:user.id,email:user.email,name:user.name||user.fullName||email,job:user.job||finalRole||'',role:finalRole,photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
