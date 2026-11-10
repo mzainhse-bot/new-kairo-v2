@@ -15,15 +15,17 @@
 .container{max-width:1000px;margin:auto}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}select,input{padding:10px;border-radius:8px;border:1.5px solid #CFD8DC}.btn2{background:#ECEFF1;border:1px solid #CFD8DC;padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;border-bottom:3px solid #0A1F44}.kpi b{font-size:20px;display:block}.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold}.badge.pending{background:#FFF3E0;color:#E65100}.badge.approved{background:#E8F5E9;color:#2E7D32}.badge.manager{background:#E3F2FD;color:#1565C0}
 .debug{background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.grid2{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#ECEFF1}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}.modal.show{display:flex}.modal-box{background:#fff;width:95%;max-width:420px;border-radius:16px;padding:18px}
 </style></head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b></div>
 <aside class="sidebar" id="sidebar">
 <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
-<div style="background:#132E5E;border-radius:12px;padding:12px;margin-bottom:14px;"><b id="sideName">اسم الموظف</b><br><small id="sideRole">الدور</small></div>
+<div style="background:#132E5E;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;align-items:center;"><img id="sideImg" class="avatar" src="" style="width:50px;height:50px;"><div><b id="sideName">اسم الموظف</b><br><small id="sideRole">الدور</small></div></div>
 <div class="menu-title">📊 الرئيسية</div>
-<a href="index.html">🏠 الرئيسية</a><a href="dashboard.html">📊 إنجازاتي</a><a href="stats.html">📈 إحصائيات الموقع</a><a href="employee-evaluation.html">🏆 تقييم الموظفين</a><a href="companies.html">🏢 تقرير الشركات</a><a href="contractor-eval.html">🏆 تقييم المقاولين</a>
+<a href="index.html">🏠 الرئيسية</a><a href="dashboard.html">📊 إنجازاتي</a><a href="stats.html">📈 إحصائيات الموقع</a><a href="employee-evaluation.html">🏆 تقييم الموظفين</a><a href="contractor-eval.html">🏆 تقييم المقاولين</a>
 <div class="menu-title">👷 العمال والتدريب</div>
 <a href="users.html" class="active">👥 الموظفين</a><a href="daily-count.html">👷‍♂️ الإعداد اليومي</a><a href="workers.html">👥 الموظفين - بديل</a><a href="induction.html">📘 المحاضرة الأولية</a><a href="train.html">🎓 التدريبات</a><a href="weekly.html">📅 المحاضرة الأسبوعية</a><a href="employee-file.html">📁 ملفات الموظفين</a>
 <div class="menu-title">🛡️ السلامة</div>
@@ -37,8 +39,21 @@
 <div class="container" id="main"><p style="text-align:center;">⏳ جاري تحميل المستخدمين من فايربيز...</p></div>
 </div>
 
+<!-- مودال تعديل الملف الشخصي -->
+<div class="modal" id="profileModal"><div class="modal-box">
+<h3 style="margin-top:0">✏️ تعديل الملف الشخصي</h3>
+<center><img id="previewPhoto" class="avatar" style="width:90px;height:90px;" src=""></center>
+<label>الاسم:</label><input id="editName" type="text" style="width:100%;margin:6px 0;">
+<label>المهنة:</label><input id="editJob" type="text" style="width:100%;margin:6px 0;">
+<label>الصورة:</label><input id="editPhoto" type="file" accept="image/*" style="width:100%;margin:6px 0;">
+<div style="display:flex;gap:8px;margin-top:10px;"><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="saveProfile()">💾 حفظ</button><button class="btn2" style="flex:1;" onclick="closeProfile()">إلغاء</button></div>
+<p id="saveMsg" style="font-size:12px;color:#2E7D32;"></p>
+</div></div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -47,12 +62,16 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); if(firebase.auth) firebase.auth().signOut(); }catch(e){} location.href='login.html'; }
 let me = null;
 try{ me = (typeof requireLogin==='function') ? requireLogin() : JSON.parse(localStorage.getItem('currentUser')||'null'); }catch(e){ me=null; }
 let users = [];
+let editingId = null;
 
-function roleLabel(r){ return r==='manager'||r==='admin'?'مدير':r==='supervisor'?'مشرف':r==='employee'?'موظف':r==='visitor'?'زائر':'معلق'; }
+function normRole(r){ if(!r) return 'Employee'; r=String(r).trim().toLowerCase(); if(r==='manager'||r==='مدير'||r==='admin') return 'Manager'; if(r==='supervisor'||r==='مشرف') return 'Supervisor'; if(r==='employee'||r==='موظف') return 'Employee'; if(r==='visitor'||r==='زائر') return 'Visitor'; return r; }
+function roleLabel(r){ r=normRole(r); return r==='Manager'?'مدير':r==='Supervisor'?'مشرف':r==='Employee'?'موظف':r==='Visitor'?'زائر':r; }
+function isManager(){ return me && normRole(me.role)==='Manager'; }
+function getPhoto(u){ return u.photoURL || u.photo || u.img || 'https://via.placeholder.com/42?text=👤'; }
 
 async function loadUsers(){
   users = [];
@@ -72,21 +91,27 @@ async function loadUsers(){
 }
 
 function render(){
-  let pending=users.filter(u=>u.status==='pending').length, approved=users.filter(u=>u.status==='approved').length, mgr=users.filter(u=>u.role==='manager'||u.role==='admin').length, sup=users.filter(u=>u.role==='supervisor').length;
-  if(me && me.name){ document.getElementById('sideName').innerText=me.name; document.getElementById('sideRole').innerText=roleLabel(me.role)+' - '+(me.email||''); }
+  let pending=users.filter(u=>u.status==='pending').length, approved=users.filter(u=>u.status==='approved').length, mgr=users.filter(u=>normRole(u.role)==='Manager').length, sup=users.filter(u=>normRole(u.role)==='Supervisor').length;
+  if(me && me.name){ document.getElementById('sideName').innerText=me.name; document.getElementById('sideRole').innerText=roleLabel(me.role)+' - '+(me.email||''); document.getElementById('sideImg').src=getPhoto(me); }
 
   let pendingRows = users.map((u,i)=>{
     if(u.status!=='pending') return '';
-    return '<tr><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td>'+ roleLabel(u.requestedRole||u.role) +'</td><td><select id="role-'+i+'"><option value="visitor">زائر</option><option value="employee" selected>موظف</option><option value="supervisor">مشرف</option><option value="manager">مدير</option></select></td><td><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="approve(\''+u.id+'\','+i+')">✅ قبول</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="reject(\''+u.id+'\','+i+')">❌ رفض</button></td></tr>';
+    if(!isManager()) return '';
+    return '<tr><td><img class="avatar" src="'+getPhoto(u)+'"></td><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td>'+ roleLabel(u.requestedRole||u.role) +'</td><td><select id="role-'+i+'"><option value="Visitor">زائر</option><option value="Employee" selected>موظف</option><option value="Supervisor">مشرف</option><option value="Manager">مدير</option></select></td><td><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="approve(\''+u.id+'\','+i+')">✅ قبول</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="reject(\''+u.id+'\','+i+')">❌ رفض</button></td></tr>';
   }).join('');
 
   let allRows = users.map((u,i)=>{
-    let badgeClass = (u.role==='manager'||u.role==='admin') ? 'manager' : 'approved';
-    let sel = function(v){ return u.role===v ? 'selected' : ''; };
-    return '<tr><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td><span class="badge '+badgeClass+'">'+ roleLabel(u.role) +'</span></td><td>'+ (u.status==='approved'?'✅ مقبول':'⏳ معلق') +'</td><td><select onchange="changeRole(\''+u.id+'\','+i+',this.value)"><option value="visitor" '+sel('visitor')+'>زائر</option><option value="employee" '+sel('employee')+'>موظف</option><option value="supervisor" '+sel('supervisor')+'>مشرف</option><option value="manager" '+sel('manager')+'>مدير</option></select></td><td><button class="btn2" style="color:#D32F2F;" onclick="delUser(\''+u.id+'\','+i+')">🗑️ حذف</button></td></tr>';
+    let badgeClass = (normRole(u.role)==='Manager') ? 'manager' : 'approved';
+    let sel = function(v){ return normRole(u.role)===v ? 'selected' : ''; };
+    let canEdit = isManager() || (me && me.uid===u.id) || (me && me.email===u.email);
+    let editBtn = canEdit ? '<button class="btn2" onclick="openProfile(\''+u.id+'\')">✏️ تعديل بروفايلي</button>' : '';
+    let roleCell = isManager() ? '<select onchange="changeRole(\''+u.id+'\','+i+',this.value)"><option value="Visitor" '+sel('Visitor')+'>زائر</option><option value="Employee" '+sel('Employee')+'>موظف</option><option value="Supervisor" '+sel('Supervisor')+'>مشرف</option><option value="Manager" '+sel('Manager')+'>مدير</option></select>' : roleLabel(u.role);
+    let delBtn = isManager() ? '<button class="btn2" style="color:#D32F2F;" onclick="delUser(\''+u.id+'\','+i+')">🗑️ حذف</button>' : '-';
+    return '<tr><td><img class="avatar" src="'+getPhoto(u)+'"></td><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td><span class="badge '+badgeClass+'">'+ roleLabel(u.role) +'</span></td><td>'+ (u.status==='approved'?'✅ مقبول':'⏳ معلق') +'</td><td>'+roleCell+'</td><td>'+editBtn+'</td><td>'+delBtn+'</td></tr>';
   }).join('');
 
-  let pendingSection = users.filter(u=>u.status==='pending').length ? '<div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور المطلوب</th><th>اختار الدور</th><th>قبول</th><th>رفض</th></tr>'+pendingRows+'</table></div>' : '<p style="color:#2E7D32;">✅ مفيش طلبات جديدة</p>';
+  let pendingSection = isManager() ? (users.filter(u=>u.status==='pending').length ? '<div style="overflow-x:auto;"><table><tr><th>صورة</th><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور المطلوب</th><th>اختار الدور</th><th>قبول</th><th>رفض</th></tr>'+pendingRows+'</table></div>' : '<p style="color:#2E7D32;">✅ مفيش طلبات جديدة</p>') : '<p>الطلبات المعلقة تظهر للمدير فقط.</p>';
+  let addSection = isManager() ? '<div class="card"><h3>➕ إضافة مستخدم يدوياً</h3><div class="grid2"><input id="m-name" placeholder="الاسم بالكامل"><input id="m-job" placeholder="المهنة"><input id="m-email" placeholder="الإيميل"><input id="m-pass" placeholder="الباسورد - مثال 123456"></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><select id="m-role"><option value="Employee">موظف</option><option value="Supervisor">مشرف</option><option value="Visitor">زائر</option><option value="Manager">مدير</option></select><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="addManual()">➕ إضافة وموافقة فورية</button></div></div>' : '';
 
   document.getElementById('main').innerHTML=`
   <div class="debug">🔍 <b>متصل بفايربيز:</b><br>
@@ -94,9 +119,51 @@ function render(){
   عدد المستخدمين في قاعدة البيانات: <b>${users.length}</b> - لو حد سجل من موبايل تاني هيظهر هنا على طول.
   </div>
   <div class="kpi-grid"><div class="kpi"><b>${users.length}</b><small>إجمالي</small></div><div class="kpi"><b>${pending}</b><small>مستني موافقة</small></div><div class="kpi"><b>${approved}</b><small>مقبولين</small></div><div class="kpi"><b>${mgr} مدير / ${sup} مشرف</b><small>أدوار عليا</small></div></div>
-  <div class="card"><h3>➕ إضافة مستخدم يدوياً</h3><div class="grid2"><input id="m-name" placeholder="الاسم بالكامل"><input id="m-job" placeholder="المهنة"><input id="m-email" placeholder="الإيميل"><input id="m-pass" placeholder="الباسورد - مثال 123456"></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><select id="m-role"><option value="employee">موظف</option><option value="supervisor">مشرف</option><option value="visitor">زائر</option><option value="manager">مدير</option></select><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="addManual()">➕ إضافة وموافقة فورية</button></div></div>
+  ${addSection}
   <div class="card"><h3>⏳ طلبات مستنية موافقة</h3>${pendingSection}</div>
-  <div class="card"><h3>👥 كل المستخدمين</h3><div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور</th><th>الحالة</th><th>تغيير الدور</th><th>حذف</th></tr>${allRows}</table></div></div>`;
+  <div class="card"><h3>👥 كل المستخدمين</h3><div style="overflow-x:auto;"><table><tr><th>صورة</th><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور</th><th>الحالة</th><th>تغيير الدور</th><th>تعديل بروفايل</th><th>حذف</th></tr>${allRows}</table></div></div>`;
+}
+
+function openProfile(id){
+  let u = users.find(x=>x.id===id);
+  if(!u) return;
+  if(!isManager() && me.uid!==id && me.email!==u.email){ alert('تقدر تعدل بروفايلك انت بس'); return; }
+  editingId = id;
+  document.getElementById('editName').value = u.name||'';
+  document.getElementById('editJob').value = u.job||'';
+  document.getElementById('previewPhoto').src = getPhoto(u);
+  document.getElementById('saveMsg').innerText='';
+  document.getElementById('profileModal').classList.add('show');
+  document.getElementById('editPhoto').onchange = e=>{ let f=e.target.files[0]; if(f) document.getElementById('previewPhoto').src=URL.createObjectURL(f); };
+}
+function closeProfile(){ document.getElementById('profileModal').classList.remove('show'); }
+
+async function saveProfile(){
+  if(!editingId) return;
+  let newName=document.getElementById('editName').value.trim();
+  let newJob=document.getElementById('editJob').value.trim();
+  let file=document.getElementById('editPhoto').files[0];
+  if(!newName) return alert('اكتب الاسم');
+  document.getElementById('saveMsg').innerText='⏳ جاري الحفظ...';
+  let updateData={ name:newName, job:newJob };
+  try{
+    if(file){
+      let ref=firebase.storage().ref('profile_pics/'+editingId+'.jpg');
+      await ref.put(file);
+      let url=await ref.getDownloadURL();
+      updateData.photoURL=url;
+      updateData.photo=url;
+      updateData.img=url;
+    }
+    if(window.db) await db.collection('users').doc(editingId).update(updateData);
+    let idx=users.findIndex(x=>x.id===editingId);
+    if(idx>-1) users[idx]={...users[idx], ...updateData};
+    if(me && (me.uid===editingId || me.email===users[idx].email)){
+      me={...me, ...updateData}; localStorage.setItem('currentUser', JSON.stringify(me));
+    }
+    document.getElementById('saveMsg').innerText='✅ تم الحفظ، الصورة اتسجلت في Firebase';
+    setTimeout(()=>{ closeProfile(); render(); },800);
+  }catch(e){ alert('مشكلة في الحفظ: '+e.message); document.getElementById('saveMsg').innerText=''; }
 }
 
 async function saveToFirebase(id, data){
@@ -105,17 +172,18 @@ async function saveToFirebase(id, data){
   }
 }
 async function addManual(){
+  if(!isManager()) return alert('المدير بس اللي يقدر يضيف');
   let name=document.getElementById('m-name').value.trim(), job=document.getElementById('m-job').value.trim(), email=document.getElementById('m-email').value.trim().toLowerCase(), pass=document.getElementById('m-pass').value||'123456', role=document.getElementById('m-role').value;
   if(!name||!email) return alert('اكتب الاسم والإيميل');
   if(users.find(u=>u.email===email)) return alert('الإيميل ده موجود قبل كده');
-  let obj={name,job,email,pass,photo:'',img:'',role,requestedRole:role,status:'approved',createdAt:new Date().toISOString()};
+  let obj={name,job,email,pass,photo:'',img:'',photoURL:'',role,requestedRole:role,status:'approved',createdAt:new Date().toISOString()};
   try{ if(window.db){ let ref=await db.collection('users').add(obj); obj.id=ref.id; } else return alert('فايربيز مش متصل'); }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
-  users.push(obj); render(); alert('✅ تم إضافة '+name);
+  users.push(obj); render(); alert('✅ تم إضافة '+name+' - لازم بعد كده تعمله حساب في Authentication بنفس الإيميل عشان يدخل بـ Firebase Auth');
 }
-async function approve(id,i){ let role=document.getElementById('role-'+i).value; users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); alert('✅ تم قبول '+users[i].name); }
-async function reject(id,i){ if(!confirm('ترفض '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
-async function changeRole(id,i,role){ users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); }
-async function delUser(id,i){ if(!confirm('تحذف '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
+async function approve(id,i){ if(!isManager()) return alert('المدير بس'); let role=document.getElementById('role-'+i).value; users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); alert('✅ تم قبول '+users[i].name); }
+async function reject(id,i){ if(!isManager()) return; if(!confirm('ترفض '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
+async function changeRole(id,i,role){ if(!isManager()) return alert('المدير بس اللي يغير الدور'); users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); }
+async function delUser(id,i){ if(!isManager()) return; if(!confirm('تحذف '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
 function exportUsers(){ let csv='الاسم,المهنة,الايميل,الدور,الحالة\n'+users.map(u=>[u.name,u.job,u.email,u.role,u.status].join(',')).join('\n'); let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='users.csv'; a.click(); }
 function refreshUsers(){ loadUsers(); }
 
