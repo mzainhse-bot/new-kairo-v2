@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -62,7 +61,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -104,7 +102,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> تسجيل التصاريح</h1><small>تصاريح العمل - Permit To Work</small></div>
+<div><h1>RMED <span>•</span> تسجيل التصاريح</h1><small>تصاريح العمل - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -174,14 +172,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -194,15 +194,34 @@ function getReporter(){
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[],"weeklyLect":[],"permits":[]}');
-if(!DB.permits) DB.permits=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+// ✅ FIREBASE - بدل localStorage
+let permits = [];
+const SUPERVISOR_CODE='1234';
+
+async function loadPermits(){
+  try{
+    if(window.db){
+      let snap = await db.collection('permits').orderBy('createdAt','desc').get();
+      permits = [];
+      snap.forEach(d=> permits.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!permits.length && old.permits) permits=old.permits;
+  }catch(e){}
+  renderPermits(); genPermitNum();
+}
+
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
-const SUPERVISOR_CODE='1234';
 function genPermitNum(){
   let year=new Date().getFullYear();
-  let next=(DB.permits.length+1).toString().padStart(4,'0');
+  // خد أعلى رقم موجود عشان ميكررش
+  let max=0;
+  permits.forEach(p=>{ let m=String(p.num||'').match(/(\d+)$/); if(m){ let n=parseInt(m[1]); if(n>max) max=n; } });
+  if(!max) max=permits.length;
+  let next=(max+1).toString().padStart(4,'0');
   let num='PRM-'+year+'-'+next;
   document.getElementById('p-num').innerText=num;
   return num;
@@ -216,7 +235,7 @@ function checkSupervisor(sel){
     }
   }
 }
-function addPermit(){
+async function addPermit(){
   if(!val('p-company')) return alert('اكتب اسم الشركة');
   if(!val('p-start-date')) return alert('اختار تاريخ البدء');
   if(!val('p-start-time')) return alert('اختار وقت البدء');
@@ -227,59 +246,80 @@ function addPermit(){
   if(!val('p-engineer')) return alert('اكتب المهندس المسئول');
   let safety=val('p-safety')||getReporter();
   if(!safety) return alert('اكتب مسئول السلامة');
+  if(!window.db) return alert('فايربيز مش متصل');
   let num=document.getElementById('p-num').innerText;
   let rec={num:num,company:val('p-company'),startDate:val('p-start-date'),startTime:val('p-start-time'),type:val('p-type'),endDate:val('p-end-date'),endTime:val('p-end-time'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:safety,reporter:safety,reporterName:safety,status:val('p-status'),notes:val('p-notes'),createdAt:new Date().toISOString()};
-  DB.permits.push(rec); save(); renderPermits(); genPermitNum();
-  alert('✅ تم حفظ التصريح - '+num+' - '+rec.type+' - '+rec.status);
+  try{
+    let ref = await db.collection('permits').add(rec);
+    rec.id = ref.id;
+    permits.unshift(rec);
+  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  renderPermits(); genPermitNum();
+  alert('✅ تم حفظ التصريح في فايربيز - '+num+' - '+rec.type+' - '+rec.status);
   ['p-supervisor','p-engineer','p-safety','p-notes'].forEach(id=>setVal(id,''));
   setVal('p-type',''); setVal('p-status','مفتوح'); setVal('p-company','RMED');
 }
-function changeStatus(i,newStatus){
+async function changeStatus(i,newStatus){
   if(newStatus!=='مفتوح'){
     let code=prompt('🔐 تغيير الحالة صلاحية المشرف فقط\nاكتب كود المشرف:');
     if(code!==SUPERVISOR_CODE){ alert('❌ كود غلط'); renderPermits(); return; }
   }
-  DB.permits[i].status=newStatus; save(); renderPermits();
+  let rec=permits[i];
+  try{ if(rec && rec.id && window.db) await db.collection('permits').doc(rec.id).update({status:newStatus}); }catch(e){}
+  rec.status=newStatus; renderPermits();
 }
 function renderPermits(){
   let q=(document.getElementById('searchP').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
   let ft=document.getElementById('filterType').value;
-  let list=DB.permits.filter(x=>{
+  let list=permits.filter(x=>{
     let okQ=(x.num+x.type+x.company+x.supervisor+x.engineer+x.safety).toLowerCase().includes(q);
     let okS=!fs||x.status===fs;
     let okT=!ft||x.type===ft;
     return okQ&&okS&&okT;
   });
-  document.getElementById('k-total').innerText=DB.permits.length;
-  document.getElementById('k-open').innerText=DB.permits.filter(x=>x.status==='مفتوح').length;
-  document.getElementById('k-closed').innerText=DB.permits.filter(x=>x.status==='تم الغلق').length;
-  document.getElementById('k-cancel').innerText=DB.permits.filter(x=>x.status==='تم الالغاء').length;
+  document.getElementById('k-total').innerText=permits.length;
+  document.getElementById('k-open').innerText=permits.filter(x=>x.status==='مفتوح').length;
+  document.getElementById('k-closed').innerText=permits.filter(x=>x.status==='تم الغلق').length;
+  document.getElementById('k-cancel').innerText=permits.filter(x=>x.status==='تم الالغاء').length;
   let types=['بارد','ساخن','عمل علي ارتفاع','اعمال رفع','اماكن مغلقة','صب خرسانه','كارت تحليل المخاطر','حفر','وردية ليليه','اختبار ضغط'];
   let icons={'بارد':'🧊','ساخن':'🔥','عمل علي ارتفاع':'🪜','اعمال رفع':'🏗️','اماكن مغلقة':'🚪','صب خرسانه':'🧱','كارت تحليل المخاطر':'⚠️','حفر':'⛏️','وردية ليليه':'🌙','اختبار ضغط':'🧪'};
   document.getElementById('typeStats').innerHTML=types.map(t=>{
-    let c=DB.permits.filter(x=>x.type===t).length;
-    return `<div class="type-box"><b>${c}</b><small>${icons[t]||''} ${t}</small></div>`;
+    let c=permits.filter(x=>x.type===t).length;
+    return '<div class="type-box"><b>'+c+'</b><small>'+(icons[t]||'')+' '+t+'</small></div>';
   }).join('');
   if(!list.length){ document.getElementById('permitsTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تصاريح لسه - سجل أول تصريح فوق</p>'; return; }
-  document.getElementById('permitsTable').innerHTML='<table><tr><th>رقم التصريح</th><th>النوع</th><th>الشركة</th><th>البدء</th><th>النهاية</th><th>المشرف</th><th>المهندس</th><th>السلامة</th><th>الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
-    let idx=DB.permits.indexOf(x);
+  document.getElementById('permitsTable').innerHTML='<table><tr><th>رقم التصريح</th><th>النوع</th><th>الشركة</th><th>البدء</th><th>النهاية</th><th>المشرف</th><th>المهندس</th><th>السلامة</th><th>الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+    let idx=permits.indexOf(x);
     let badgeCls=x.status==='مفتوح'?'open':x.status==='تم الغلق'?'closed':'cancel';
-    return `<tr><td><b style="color:#D32F2F;">${x.num}</b></td><td>${x.type}</td><td>${x.company}</td><td>${x.startDate}<br>${x.startTime}</td><td>${x.endDate}<br>${x.endTime}</td><td>${x.supervisor}</td><td>${x.engineer}</td><td>${x.safety}</td><td><select onchange="changeStatus(${idx},this.value)" style="width:auto;padding:6px;"><option ${x.status==='مفتوح'?'selected':''}>مفتوح</option><option ${x.status==='تم الغلق'?'selected':''}>تم الغلق</option><option ${x.status==='تم الالغاء'?'selected':''}>تم الالغاء</option></select><br><span class="badge ${badgeCls}">${x.status}</span></td><td><button class="btn2" style="color:#D32F2F;" onclick="delPermit(${idx})">🗑️</button></td></tr>`;
+    return '<tr><td><b style="color:#D32F2F;">'+x.num+'</b></td><td>'+x.type+'</td><td>'+x.company+'</td><td>'+x.startDate+'<br>'+x.startTime+'</td><td>'+x.endDate+'<br>'+x.endTime+'</td><td>'+x.supervisor+'</td><td>'+x.engineer+'</td><td>'+x.safety+'</td><td><select onchange="changeStatus('+idx+',this.value)" style="width:auto;padding:6px;"><option '+(x.status==='مفتوح'?'selected':'')+'>مفتوح</option><option '+(x.status==='تم الغلق'?'selected':'')+'>تم الغلق</option><option '+(x.status==='تم الالغاء'?'selected':'')+'>تم الالغاء</option></select><br><span class="badge '+badgeCls+'">'+x.status+'</span></td><td><button class="btn2" style="color:#D32F2F;" onclick="delPermit('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
-function delPermit(i){ if(!confirm('تحذف التصريح ده؟')) return; DB.permits.splice(i,1); save(); renderPermits(); genPermitNum(); }
-function clearPermits(){ if(!confirm('تمسح كل التصاريح؟')) return; DB.permits=[]; save(); renderPermits(); genPermitNum(); }
+async function delPermit(i){
+  if(!confirm('تحذف التصريح ده؟')) return;
+  let rec=permits[i];
+  try{ if(rec && rec.id && window.db) await db.collection('permits').doc(rec.id).delete(); }catch(e){}
+  permits.splice(i,1); renderPermits(); genPermitNum();
+}
+async function clearPermits(){
+  if(!confirm('تمسح كل التصاريح من فايربيز؟')) return;
+  try{
+    if(window.db){
+      let snap = await db.collection('permits').get();
+      for(let d of snap.docs){ await db.collection('permits').doc(d.id).delete(); }
+    }
+  }catch(e){}
+  permits=[]; renderPermits(); genPermitNum();
+}
 function exportPermits(){
-  if(!DB.permits.length) return alert('مفيش بيانات');
-  let csv='رقم التصريح,اسم الشركة,تاريخ البدء,وقت البدء,نوع التصريح,تاريخ النهاية,نهاية الوقت,المشرف,المهندس,مسئول السلامة,الحالة,ملاحظات\n'+DB.permits.map(x=>[x.num,x.company,x.startDate,x.startTime,x.type,x.endDate,x.endTime,x.supervisor,x.engineer,x.safety,x.status,x.notes||''].join(',')).join('\n');
+  if(!permits.length) return alert('مفيش بيانات');
+  let csv='رقم التصريح,اسم الشركة,تاريخ البدء,وقت البدء,نوع التصريح,تاريخ النهاية,نهاية الوقت,المشرف,المهندس,مسئول السلامة,الحالة,ملاحظات\n'+permits.map(x=>[x.num,x.company,x.startDate,x.startTime,x.type,x.endDate,x.endTime,x.supervisor,x.engineer,x.safety,x.status,x.notes||''].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='permits.csv'; a.click();
 }
 document.getElementById('p-start-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('p-end-date').value=new Date().toISOString().slice(0,10);
-// ✅ املى مسئول السلامة من الحساب
 let _rep=getReporter(); if(_rep) document.getElementById('p-safety').value=_rep;
-genPermitNum(); renderPermits();
+loadPermits();
 </script>
 </body>
 </html>
