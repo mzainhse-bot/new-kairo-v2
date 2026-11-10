@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -81,7 +80,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -123,7 +121,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> ملفات الموظفين</h1><small>Employee Files</small></div>
+<div><h1>RMED <span>•</span> ملفات الموظفين</h1><small>Employee Files - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -136,7 +134,8 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <button class="btn2" onclick="showFile(document.getElementById('searchInput').value)" style="padding:12px 20px;">🔍 بحث</button>
 <button class="btn2" onclick="clearFile()" style="padding:12px 20px;">🔄 بحث جديد</button>
 </div>
-<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اكتب الاسم أو الكود أو رقم البطاقة، الملف هيظهر لوحده</p>
+<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اكتب الاسم أو الكود أو رقم البطاقة، الملف هيظهر لوحده - البيانات من فايربيز</p>
+<p id="loadStatus" style="font-size:12px;color:#1565C0;">⏳ جاري تحميل ملفات الموظفين من فايربيز...</p>
 </div>
 
 <div id="fileArea" style="display:none;">
@@ -188,7 +187,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🚨 سجل المخالفات - كل مرة اتسجل فيها + إجراءات الخصم</h3>
+<h3 style="margin:0 0 8px;">🚨 سجل المخالفات</h3>
 <div id="violList"></div>
 </div>
 
@@ -198,7 +197,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🎓 سجل التدريبات - خد كام تدريب</h3>
+<h3 style="margin:0 0 8px;">🎓 سجل التدريبات</h3>
 <div id="trainList"></div>
 </div>
 
@@ -215,14 +214,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
@@ -230,8 +231,38 @@ function logout(){ localStorage.removeItem('currentUser'); localStorage.removeIt
   if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role==='manager'?'مدير':u.role==='supervisor'?'مشرف':u.role==='employee'?'موظف':u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
+// ✅ FIREBASE
+let DB = {workers:[], induction:[], empViolations:[], accidents:[], train:[], weeklyLect:[], nearMiss:[], observations:[], safetyObs:[]};
 let currentPerson=null, currentViol=[], currentAcc=[], currentTrain=[];
+
+async function fetchCol(names){
+  if(!window.db) return [];
+  for(let n of names){
+    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+  }
+  return [];
+}
+async function loadAll(){
+  document.getElementById('loadStatus').innerText='⏳ جاري تحميل ملفات الموظفين من فايربيز...';
+  DB.workers = await fetchCol(['workers']);
+  DB.induction = await fetchCol(['induction']);
+  DB.empViolations = await fetchCol(['employeeViolations','employee-violations','empViolations']);
+  DB.accidents = await fetchCol(['accidents']);
+  DB.train = await fetchCol(['train','trainings']);
+  DB.weeklyLect = await fetchCol(['weekly','weeklyLect']);
+  DB.nearMiss = await fetchCol(['nearMiss','near-miss']);
+  DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
+  DB.safetyObs = DB.observations;
+  // fallback قديم
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
+    if(!DB.empViolations.length && old.employeeViolations) DB.empViolations=old.employeeViolations;
+  }catch(e){}
+  document.getElementById('loadStatus').innerText='✅ تم تحميل '+getAllPeople().length+' موظف من فايربيز';
+  fillDatalist();
+}
+
 function getField(obj, keys){
   for(let k of keys){ if(obj[k]!==undefined && obj[k]!=='' && obj[k]!==null) return obj[k]; }
   return '';
@@ -252,7 +283,7 @@ function fillDatalist(){
   let people=getAllPeople();
   document.getElementById('allEmp').innerHTML=people.map(p=>{
     let code=getField(p,['code','id']); let nid=getField(p,['nid','nationalId','idNumber','card','بطاقة']);
-    return `<option value="${p.name}">${code? 'كود: '+code+' ':''}${nid? 'بطاقة: '+nid:''}</option><option value="${code}"></option><option value="${nid}"></option>`;
+    return '<option value="'+p.name+'">'+(code? 'كود: '+code+' ':'')+(nid? 'بطاقة: '+nid:'')+'</option><option value="'+code+'"></option><option value="'+nid+'"></option>';
   }).join('');
 }
 function findPerson(q){
@@ -287,6 +318,7 @@ function showFile(q){
   let resignReason=getField(p,['resignReason','resignationReason','سبب_الاستقالة']);
   let statusRaw=getField(p,['status','حالة']);
   currentViol=(DB.empViolations||[]).filter(x=>x.name===name || String(x.code||'')===String(code||''));
+  // لو المخالفات العامة فيها اسم الموظف، ضيفها برضه
   let exclViol=currentViol.find(x=>x.action==='استبعاد نهائي');
   let isExcluded = exclViol || statusRaw==='مستبعد' || statusRaw==='استبعاد نهائي' || statusRaw==='استبعاد';
   let isResigned = resignDate || statusRaw==='استقال' || statusRaw==='مستقيل' || statusRaw==='استقالة';
@@ -330,8 +362,8 @@ function showFile(q){
   (DB.train||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'تدريب',...x}); });
   (DB.weeklyLect||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'محاضرة أسبوعية',...x}); });
   (DB.induction||[]).forEach(x=>{ if(x.name===name) currentTrain.push({src:'محاضرة أولية',...x}); });
-  let near=(DB.nearMiss||[]).filter(x=>x.reporter===name);
-  let obs=(DB.observations||DB.safetyObs||[]).filter(x=>JSON.stringify(x).includes(name));
+  let near=(DB.nearMiss||[]).filter(x=>(x.reporter||x.reporterName||'')===name);
+  let obs=(DB.observations||[]).filter(x=>JSON.stringify(x).includes(name));
   document.getElementById('f-viol').innerText=currentViol.length;
   document.getElementById('f-acc').innerText=currentAcc.length;
   document.getElementById('f-train').innerText=currentTrain.length;
@@ -339,19 +371,19 @@ function showFile(q){
   if(hire) events.push({date:hire,title:'📅 تعيين في الموقع',desc:'بدأ العمل - '+job+' - '+company});
   currentTrain.forEach(t=>{ let d=getField(t,['date']); events.push({date:d||'',title:'🎓 '+ (t.src||'تدريب'),desc:getField(t,['topic','title','desc'])||'تم حضور تدريب'}); });
   currentViol.forEach(v=>events.push({date:v.date,title:'🚨 مخالفة - '+v.action,desc:v.desc+' | مكان: '+v.place}));
-  currentAcc.forEach(a=>events.push({date:a.date,title:'🚑 إصابة / حادث - '+(a.classes||[]).join(' + '),desc:a.desc+' | جزء مصاب: '+a.body+' - '+a.nature}));
+  currentAcc.forEach(a=>events.push({date:a.date,title:'🚑 إصابة / حادث - '+((a.classes||[]).join(' + ')),desc:a.desc+' | جزء مصاب: '+a.body+' - '+a.nature}));
   if(isResigned) events.push({date:resignDate||'',title:'👋 استقال',desc:resignReason||'استقال من الموقع'});
   if(isExcluded) events.push({date:endDate||'',title:'🚫 استبعاد نهائي',desc:exclViol?exclViol.desc:'تم استبعاده'});
   events.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-  document.getElementById('timeline').innerHTML=events.length?events.map(e=>`<div class="timeline-item"><b>${e.date||'-'} - ${e.title}</b><br><span style="color:#666;font-size:13px;">${e.desc}</span></div>`).join(''):'<p style="color:#999;">مفيش أحداث مسجلة</p>';
+  document.getElementById('timeline').innerHTML=events.length?events.map(e=>'<div class="timeline-item"><b>'+(e.date||'-')+' - '+e.title+'</b><br><span style="color:#666;font-size:13px;">'+e.desc+'</span></div>').join(''):'<p style="color:#999;">مفيش أحداث مسجلة</p>';
   if(!currentViol.length) document.getElementById('violList').innerHTML='<p style="color:#2E7D32;">✅ مفيش مخالفات</p>';
-  else document.getElementById('violList').innerHTML='<table><tr><th>التاريخ</th><th>وصف المخالفة</th><th>المكان</th><th>الإجراء / الخصم</th><th>المبلغ</th></tr>'+currentViol.map(v=>`<tr><td>${v.date} ${v.time||''}</td><td style="text-align:right;">${v.desc}</td><td>${v.place}</td><td><b style="color:#D32F2F;">${v.action}</b></td><td>${v.safety||'-'}</td></tr>`).join('')+'</table>';
+  else document.getElementById('violList').innerHTML='<table><tr><th>التاريخ</th><th>وصف المخالفة</th><th>المكان</th><th>الإجراء / الخصم</th><th>المبلغ</th></tr>'+currentViol.map(v=>'<tr><td>'+v.date+' '+(v.time||'')+'</td><td style="text-align:right;">'+v.desc+'</td><td>'+v.place+'</td><td><b style="color:#D32F2F;">'+v.action+'</b></td><td>'+(v.safety||'-')+'</td></tr>').join('')+'</table>';
   if(!currentAcc.length) document.getElementById('accList').innerHTML='<p style="color:#2E7D32;">✅ مفيش إصابات</p>';
-  else document.getElementById('accList').innerHTML='<table><tr><th>التاريخ</th><th>وصف الحادث</th><th>التصنيف</th><th>الجزء المصاب</th><th>طبيعة الإصابة</th></tr>'+currentAcc.map(a=>`<tr><td>${a.date}</td><td style="text-align:right;">${a.desc}</td><td>${(a.classes||[]).join(' + ')}</td><td>${a.body}</td><td>${a.nature}</td></tr>`).join('')+'</table>';
+  else document.getElementById('accList').innerHTML='<table><tr><th>التاريخ</th><th>وصف الحادث</th><th>التصنيف</th><th>الجزء المصاب</th><th>طبيعة الإصابة</th></tr>'+currentAcc.map(a=>'<tr><td>'+a.date+'</td><td style="text-align:right;">'+a.desc+'</td><td>'+((a.classes||[]).join(' + '))+'</td><td>'+a.body+'</td><td>'+a.nature+'</td></tr>').join('')+'</table>';
   if(!currentTrain.length) document.getElementById('trainList').innerHTML='<p style="color:#999;">مفيش تدريبات مسجلة</p>';
-  else document.getElementById('trainList').innerHTML='<table><tr><th>التاريخ</th><th>نوع التدريب</th><th>الموضوع / التفاصيل</th></tr>'+currentTrain.map(t=>`<tr><td>${getField(t,['date'])||'-'}</td><td>${t.src}</td><td style="text-align:right;">${getField(t,['topic','title','desc','subject'])||JSON.stringify(t).slice(0,120)}</td></tr>`).join('')+'</table>';
+  else document.getElementById('trainList').innerHTML='<table><tr><th>التاريخ</th><th>نوع التدريب</th><th>الموضوع / التفاصيل</th></tr>'+currentTrain.map(t=>'<tr><td>'+(getField(t,['date'])||'-')+'</td><td>'+t.src+'</td><td style="text-align:right;">'+(getField(t,['topic','title','desc','subject'])||JSON.stringify(t).slice(0,120))+'</td></tr>').join('')+'</table>';
   if(!near.length && !obs.length) document.getElementById('obsList').innerHTML='<p style="color:#999;">مفيش بلاغات مسجلة باسمه</p>';
-  else document.getElementById('obsList').innerHTML='<p>بلغ عن <b>'+near.length+'</b> حادث وشيك، و <b>'+obs.length+'</b> ملاحظة سلامة</p>'+near.map(n=>`<div style="background:#FFF3E0;padding:10px;border-radius:10px;margin-bottom:6px;">⚡ ${n.date} - ${n.place} - ${n.desc}</div>`).join('');
+  else document.getElementById('obsList').innerHTML='<p>بلغ عن <b>'+near.length+'</b> حادث وشيك، و <b>'+obs.length+'</b> ملاحظة سلامة</p>'+near.map(n=>'<div style="background:#FFF3E0;padding:10px;border-radius:10px;margin-bottom:6px;">⚡ '+n.date+' - '+n.place+' - '+n.desc+'</div>').join('');
 }
 function clearFile(){ document.getElementById('searchInput').value=''; document.getElementById('fileArea').style.display='none'; document.getElementById('emptyState').style.display='block'; currentPerson=null; }
 function exportPDF(){ if(!currentPerson) return alert('ابحث عن موظف الأول'); window.print(); }
@@ -361,7 +393,7 @@ function exportFileExcel(){
   let csv='ملف موظف - '+name+'\nالاسم,الكود,رقم البطاقة,المهنة,الشركة,التليفون,تاريخ التعيين,عدد ايام العمل,عدد المخالفات,عدد الاصابات,عدد التدريبات\n'+[name,getField(currentPerson,['code','id']),getField(currentPerson,['nid','nationalId','idNumber','card']),getField(currentPerson,['job','profession']),getField(currentPerson,['company']),getField(currentPerson,['phone','mobile']),getField(currentPerson,['hireDate','startDate','joinDate','date']),document.getElementById('f-days').innerText,currentViol.length,currentAcc.length,currentTrain.length].join(',')+'\n\nالمخالفات\nالتاريخ,الوصف,المكان,الاجراء\n'+currentViol.map(v=>[v.date,v.desc,v.place,v.action].join(',')).join('\n')+'\n\nالاصابات\nالتاريخ,الوصف,التصنيف,الجزء المصاب,طبيعة الاصابة\n'+currentAcc.map(a=>[a.date,a.desc,(a.classes||[]).join(' + '),a.body,a.nature].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='employee-file-'+name+'.csv'; a.click();
 }
-fillDatalist();
+loadAll();
 </script>
 </body>
 </html>
