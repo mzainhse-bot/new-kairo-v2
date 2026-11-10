@@ -57,6 +57,46 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
 .filters button{padding:8px 14px;border-radius:20px;border:1px solid #CFD8DC;background:#fff;cursor:pointer;font-weight:bold;}
 .filters button.active{background:#0F2A4D;color:#fff;}
+
+/* ===== ID CARD - ARABIC - HORIZONTAL - SAME SIZE ===== */
+.id-card{position:relative;overflow:hidden;border-radius:16px;width:100%;height:340px;direction:rtl;text-align:right;font-family:'Segoe UI',Tahoma,Arial;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.id-card-front{background:linear-gradient(115deg,#0F2A4D 0%,#132E5E 42%,#1A3A6A 68%,#0A1F44 100%);color:#fff;}
+.id-card-front:before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,79,.35) 0%,rgba(255,213,79,0) 70%);top:-140px;left:-80px;}
+.id-card-front:after{content:'';position:absolute;width:220px;height:220px;border-radius:50%;border:28px solid rgba(211,47,47,.55);bottom:-110px;right:-60px;}
+.id-card-gold-circle{position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,213,79,.45);top:118px;left:210px;z-index:1;}
+.id-card-gold-circle2{position:absolute;width:90px;height:90px;border-radius:50%;border:2px solid rgba(255,213,79,.28);top:150px;left:242px;z-index:1;}
+.id-card-red-bar{position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#D32F2F 0%,#FF5252 30%,#FFD54F 55%,#D32F2F 100%);z-index:5;}
+.id-card-top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 0;position:relative;z-index:3;}
+.id-card-logo-box{background:#fff;border-radius:10px;padding:4px 8px;display:flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.25);}
+.id-card-logo-box img{width:110px;height:36px;object-fit:contain;}
+.id-card-top-title{text-align:left;direction:ltr;}
+.id-card-top-title b{font-size:20px;letter-spacing:1px;display:block;line-height:1;}
+.id-card-top-title small{color:#FFD54F;font-size:11px;font-weight:bold;letter-spacing:2px;}
+.id-card-title-pill{background:#D32F2F;color:#fff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.25);}
+.id-card-body{display:flex;gap:16px;padding:14px 18px 10px;position:relative;z-index:3;}
+.id-card-photo-wrap{flex-shrink:0;text-align:center;}
+.id-card-photo-wrap img{width:112px;height:142px;object-fit:cover;border-radius:12px;border:3px solid #FFD54F;box-shadow:0 6px 16px rgba(0,0,0,.35);background:#fff;}
+.id-card-code-under{margin-top:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,213,79,.5);border-radius:20px;padding:3px 8px;font-size:12px;font-weight:bold;}
+.id-card-code-under span{color:#FFD54F;}
+.id-card-data{flex:1;}
+.id-card-name{font-size:21px;font-weight:bold;line-height:1.2;margin-bottom:8px;}
+.id-card-name small{display:block;font-size:12px;color:#FFD54F;font-weight:bold;margin-top:2px;}
+.id-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px;line-height:1.6;}
+.id-card-grid .lbl{color:#B0BEC5;font-size:11px;display:block;line-height:1.2;}
+.id-card-grid .val{font-weight:bold;border-bottom:1px dashed rgba(255,255,255,.22);padding-bottom:2px;}
+.id-card-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:8px 18px;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(211,47,47,.75));font-size:11px;color:#fff;z-index:3;}
+.id-card-status{padding:3px 12px;border-radius:20px;font-weight:bold;font-size:12px;background:#2E7D32;color:#fff;}
+.id-card-back{background:linear-gradient(115deg,#0A1F44 0%,#132E5E 50%,#1A3A6A 100%);color:#fff;}
+.id-card-back:before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,79,.28) 0%,rgba(255,213,79,0) 70%);top:-120px;right:-70px;}
+.id-card-back:after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;border:22px solid rgba(211,47,47,.5);bottom:-90px;left:-50px;}
+.id-card-back-inner{position:relative;z-index:3;padding:14px 18px;}
+.id-card-back-head{display:flex;justify-content:space-between;align-items:center;}
+.id-card-back-head h4{margin:0;font-size:16px;}
+.id-card-back-head h4 span{color:#FFD54F;}
+.id-card-instructions{background:#fff;color:#0A1F44;border-radius:12px;padding:10px 14px;margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:12.5px;line-height:1.9;border-right:5px solid #D32F2F;box-shadow:0 6px 16px rgba(0,0,0,.25);}
+.id-card-instructions b{color:#D32F2F;}
+.id-card-back-footer{margin-top:10px;background:#D32F2F;border-radius:10px;padding:8px;text-align:center;font-weight:bold;font-size:12.5px;border:1px solid rgba(255,213,79,.6);}
+@media(max-width:700px){ .id-card{height:auto;} .id-card-body{flex-direction:column;} .id-card-instructions{grid-template-columns:1fr;} .id-card-bottom{position:relative;margin-top:10px;} }
 </style>
 </head>
 <body>
@@ -161,32 +201,61 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
 <div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 Worker ID Card</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div>
-<div id="cardFront" style="background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;">
-<div style="background:#0A1F44;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-<div style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;" onerror="this.style.display='none'"><b>RMED - JOINT VENTURE</b></div>
-<span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">Worker ID Card</span>
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
+
+<!-- FRONT - ARABIC -->
+<div id="cardFront" class="id-card id-card-front" style="margin-top:12px;">
+<div class="id-card-red-bar"></div>
+<div class="id-card-gold-circle"></div><div class="id-card-gold-circle2"></div>
+<div class="id-card-top">
+<div class="id-card-logo-box"><img src="logo.png" onerror="this.style.display='none'"></div>
+<div class="id-card-top-title"><b>RMED</b><small>JOINT VENTURE</small></div>
+<span class="id-card-title-pill">🪪 كارنيه موظف</span>
 </div>
-<div style="display:flex;gap:14px;padding:14px;">
-<img id="c-photo" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #0A1F44;">
-<div style="flex:1;font-size:14px;line-height:1.9;"><div style="font-size:18px;font-weight:bold;" id="c-name"></div>
-<div><b>Code:</b> <span id="c-code"></span> | <b>Job:</b> <span id="c-job"></span></div>
-<div><b>Company:</b> <span id="c-company"></span></div>
-<div><b>National ID:</b> <span id="c-national"></span></div>
-<div><b>Health Status:</b> <span id="c-health"></span></div>
-<div><b>Phone:</b> <span id="c-phone"></span> | <b>Emergency:</b> <span id="c-emergency"></span> (<span id="c-kin"></span>)</div>
-<div><b>Status:</b> <span id="c-status" style="background:#E8F5E9;color:#2E7D32;padding:2px 10px;border-radius:20px;font-weight:bold;"></span></div>
-</div></div>
-<div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">Code: <span id="c-code2"></span> - RMED</div>
+<div class="id-card-body">
+<div class="id-card-photo-wrap">
+<img id="c-photo" src="">
+<div class="id-card-code-under">الكود: <span id="c-code"></span></div>
 </div>
-<div id="cardBack" style="background:#0A1F44;color:#fff;border-radius:14px;padding:16px;margin-top:12px;">
-<div style="text-align:center;margin-bottom:8px;"><img src="logo.png" style="width:130px;height:44px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;" onerror="this.style.display='none'"></div>
-<h4 style="margin:0 0 10px;text-align:center;">⚠️ Safety Instructions - Must Be Followed</h4>
-<div style="font-size:13px;line-height:2;">1. Wear PPE all working time<br>2. No work without work permit<br>3. No work at height without safety harness<br>4. Report immediately any accident or near miss<br>5. No smoking except in designated areas<br>6. Keep emergency exits clear<br>7. In case of emergency go to assembly point immediately<br>8. ID Card is personal and must not be given to another person</div>
-<div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">In case of losing ID Card report to Safety immediately - RMED</div>
+<div class="id-card-data">
+<div class="id-card-name"><span id="c-name"></span><small id="c-company-top"></small></div>
+<div class="id-card-grid">
+<div><span class="lbl">المهنة</span><span class="val" id="c-job"></span></div>
+<div><span class="lbl">الشركة</span><span class="val" id="c-company"></span></div>
+<div><span class="lbl">الرقم القومي</span><span class="val" id="c-national"></span></div>
+<div><span class="lbl">الحالة الصحية</span><span class="val" id="c-health"></span></div>
+<div><span class="lbl">الهاتف</span><span class="val" id="c-phone"></span></div>
+<div><span class="lbl">طوارئ</span><span class="val"><span id="c-emergency"></span> (<span id="c-kin"></span>)</span></div>
 </div>
-<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 Download ID Card Front & Back As Image</button>
-<button class="btn" onclick="downloadCard('front')">📥 Download Front Only</button>
+</div>
+</div>
+<div class="id-card-bottom"><span>الكود: <span id="c-code2"></span> - RMED</span><span>الحالة: <span class="id-card-status" id="c-status"></span></span></div>
+</div>
+
+<!-- BACK - ARABIC -->
+<div id="cardBack" class="id-card id-card-back" style="margin-top:12px;">
+<div class="id-card-red-bar"></div>
+<div class="id-card-back-inner">
+<div class="id-card-back-head">
+<div style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'"></div>
+<h4>⚠️ <span>تعليمات السلامة</span> - يجب الالتزام بها</h4>
+</div>
+<div class="id-card-instructions">
+<div><b>1.</b> ارتداء مهمات الوقاية الشخصية PPE طوال وقت العمل</div>
+<div><b>2.</b> ممنوع العمل بدون تصريح عمل</div>
+<div><b>3.</b> ممنوع العمل على ارتفاع بدون حزام أمان</div>
+<div><b>4.</b> الإبلاغ فوراً عن أي حادث أو حادث وشيك</div>
+<div><b>5.</b> ممنوع التدخين إلا في الأماكن المخصصة</div>
+<div><b>6.</b> الحفاظ على ممرات الطوارئ خالية</div>
+<div><b>7.</b> في حالة الطوارئ التوجه لنقطة التجمع فوراً</div>
+<div><b>8.</b> الكارنيه شخصي وممنوع إعطاؤه لشخص آخر</div>
+</div>
+<div class="id-card-back-footer">في حالة فقدان الكارنيه إبلاغ السلامة فوراً - RMED</div>
+</div>
+</div>
+
+<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
+<button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
 </div>
 </div>
 
@@ -219,6 +288,8 @@ let workersList = [];
 // Translate old AR -> EN display, new saves EN only
 const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded','Active':'Active','Resigned':'Resigned','Excluded':'Excluded'};
 function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Active'; }
+const STATUS_AR={'Active':'نشط','Resigned':'استقال','Excluded':'استبعاد','نشط':'نشط','استقال':'استقال','استبعاد':'استبعاد'};
+function TStatusAR(v){ return STATUS_AR[TStatus(v)]||'نشط'; }
 
 async function loadWorkers(){
   workersList = [];
@@ -290,12 +361,13 @@ let curCard=null, issueImgData='';
 function previewIssuePhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{issueImgData=ev.target.result;}; r.readAsDataURL(f); }
 function fillCardData(x){
   curCard=x;
-  document.getElementById('c-photo').src=x.img||x.photo||issueImgData||'https://via.placeholder.com/110x140?text=No+Photo';
+  document.getElementById('c-photo').src=x.img||x.photo||issueImgData||'https://via.placeholder.com/112x142?text=No+Photo';
   document.getElementById('c-name').innerText=x.name||'-'; document.getElementById('c-code').innerText=x.code||'-'; document.getElementById('c-code2').innerText=x.code||'-';
   document.getElementById('c-job').innerText=x.job||'-'; document.getElementById('c-company').innerText=x.company||'RMED';
+  document.getElementById('c-company-top').innerText=x.company||'RMED';
   document.getElementById('c-national').innerText=x.nationalId||'-'; document.getElementById('c-health').innerText=x.health||'-';
   document.getElementById('c-phone').innerText=x.phone||'-'; document.getElementById('c-emergency').innerText=x.emergency||'-'; document.getElementById('c-kin').innerText=x.kin||'-';
-  document.getElementById('c-status').innerText=TStatus(x.status);
+  document.getElementById('c-status').innerText=TStatusAR(x.status);
   document.getElementById('cardModal').style.display='block';
 }
 function openCard(idx){ fillCardData(DB.workers[idx]); }
