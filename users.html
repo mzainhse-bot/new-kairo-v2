@@ -6,6 +6,7 @@
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}.sidebar .logo small{color:#90A4AE}
 .sidebar a{display:flex;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}.sidebar a:hover{background:#1A3A6A}.sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-right:260px;padding:16px}
 @media(max-width:900px){.sidebar{right:-270px}.sidebar.open{right:0}.main{margin-right:0}}
 .page-head{background:#0A1F44;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;border-radius:12px}
@@ -25,55 +26,75 @@
 <a href="permits.html">📋 التصاريح</a><a href="violations.html">⚠️ مخالفات المقاولين</a><a href="safety-observations.html">📋 ملاحظات السلامة</a><a href="near-miss.html">⚡ الحوادث الوشيكة</a><a href="accidents.html">🚑 الحوادث</a><a href="ncr.html">📄 عدم المطابقة</a><a href="scaffolds.html">🏗️ فحص السقالات</a>
 <div class="menu-title">⚙️ الحساب</div>
 <a href="login.html">🔑 تسجيل دخول</a><a href="register.html">📝 حساب جديد</a>
+<a href="#" onclick="logout();return false;" class="logout">🚪 تسجيل خروج</a>
 </aside>
 <div class="main">
-<div class="page-head"><h2 style="margin:0">👑 إدارة المستخدمين</h2><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn2" style="background:#fff;color:#0A1F44;" onclick="exportUsers()">📥 تصدير</button><button class="btn2" style="background:#FFD54F;color:#0A1F44;" onclick="importUsers()">📤 استيراد</button><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="makeMeAdmin()">👑 خليني مدير دلوقتي</button></div></div>
-<div class="container" id="main"></div>
+<div class="page-head"><h2 style="margin:0">👑 إدارة المستخدمين</h2><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn2" style="background:#fff;color:#0A1F44;" onclick="exportUsers()">📥 تصدير</button><button class="btn2" style="background:#FFD54F;color:#0A1F44;" onclick="refreshUsers()">🔄 تحديث</button></div></div>
+<div class="container" id="main"><p style="text-align:center;">⏳ جاري تحميل المستخدمين من فايربيز...</p></div>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ مفيش شرط مدير خالص - الصفحة هتفتح دايما
-let DB={}; try{ DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); }catch(e){ DB={}; }
-if(!DB.users) DB.users=[];
-let me=null; try{ me=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'null'); }catch(e){ me=null; }
+let me = requireLogin();
+let users = []; // [{id, name, job, email, pass, role, status}]
 
-function save(){ localStorage.setItem('safetyDB',JSON.stringify(DB)); render(); }
-function roleLabel(r){ return r==='manager'?'مدير':r==='supervisor'?'مشرف':r==='employee'?'موظف':r==='visitor'?'زائر':'معلق'; }
+function roleLabel(r){ return r==='manager'||r==='admin'?'مدير':r==='supervisor'?'مشرف':r==='employee'?'موظف':r==='visitor'?'زائر':'معلق'; }
 
-function makeMeAdmin(){
-  let admin={name:'محمد زين - المدير',job:'مدير السلامة',email:'mzain.hse@gmail.com',pass:'123456',photo:'',img:'',role:'manager',requestedRole:'manager',status:'approved',createdAt:new Date().toISOString()};
-  let idx=DB.users.findIndex(u=>u.email===admin.email);
-  if(idx>=0) DB.users[idx]=admin; else DB.users.push(admin);
-  localStorage.setItem('safetyDB',JSON.stringify(DB));
-  let sess={email:admin.email,name:admin.name,job:admin.job,role:'manager',photo:'',img:'',code:'ADMIN'};
-  localStorage.setItem('currentUser',JSON.stringify(sess));
-  localStorage.setItem('safetyUser',JSON.stringify(sess));
-  alert('✅ بقيت مدير دلوقتي - الباسورد: 123456');
-  location.reload();
+async function loadUsers(){
+  users = [];
+  try{
+    if(window.db){
+      let snap = await db.collection('users').get();
+      snap.forEach(d=> users.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  // لو فايربيز فاضي، هات القديم من localStorage كـ backup
+  if(users.length===0){
+    try{
+      let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+      (DB.users||[]).forEach((u,i)=> users.push({id:'local-'+i, ...u}));
+    }catch(e){}
+  }
+  render();
 }
 
 function render(){
-  let users=DB.users;
-  let pending=users.filter(u=>u.status==='pending').length, approved=users.filter(u=>u.status==='approved').length, mgr=users.filter(u=>u.role==='manager').length, sup=users.filter(u=>u.role==='supervisor').length;
-  // تحديث اسم الشريط
-  if(me && me.name){ document.getElementById('sideName').innerText=me.name; document.getElementById('sideRole').innerText=(me.role||'')+' - '+(me.email||''); }
+  let pending=users.filter(u=>u.status==='pending').length, approved=users.filter(u=>u.status==='approved').length, mgr=users.filter(u=>u.role==='manager'||u.role==='admin').length, sup=users.filter(u=>u.role==='supervisor').length;
+  if(me && me.name){ document.getElementById('sideName').innerText=me.name; document.getElementById('sideRole').innerText=roleLabel(me.role)+' - '+(me.email||''); }
 
   document.getElementById('main').innerHTML=`
-  <div class="debug">🔍 <b>تشخيص - عشان نعرف المشكلة:</b><br>
-  انت مسجل دخول كـ: <b>${me? (me.name+' - '+me.role+' - '+me.email) : 'مش مسجل دخول خالص - عشان كده الصفحة كانت فاضية'}</b><br>
-  عدد المستخدمين على اللابتوب ده: <b>${users.length}</b><br>
-  لو العدد 0، يبقى مفيش حد سجل على اللابتوب ده، اللي سجل سجل على موبايل تاني. دوس زرار <b>👑 خليني مدير دلوقتي</b> اللي فوق، وبعدها ضيف الناس يدوي من تحت.
+  <div class="debug">🔍 <b>متصل بفايربيز:</b><br>
+  انت مسجل دخول كـ: <b>${me? (me.name+' - '+roleLabel(me.role)+' - '+me.email) : 'مش مسجل'}</b><br>
+  عدد المستخدمين في قاعدة البيانات: <b>${users.length}</b> - لو حد سجل من موبايل تاني هيظهر هنا على طول.
   </div>
   <div class="kpi-grid"><div class="kpi"><b>${users.length}</b><small>إجمالي</small></div><div class="kpi"><b>${pending}</b><small>مستني موافقة</small></div><div class="kpi"><b>${approved}</b><small>مقبولين</small></div><div class="kpi"><b>${mgr} مدير / ${sup} مشرف</b><small>أدوار عليا</small></div></div>
   <div class="card"><h3>➕ إضافة مستخدم يدوياً</h3><div class="grid2"><input id="m-name" placeholder="الاسم بالكامل"><input id="m-job" placeholder="المهنة"><input id="m-email" placeholder="الإيميل"><input id="m-pass" placeholder="الباسورد - مثال 123456"></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><select id="m-role"><option value="employee">موظف</option><option value="supervisor">مشرف</option><option value="visitor">زائر</option><option value="manager">مدير</option></select><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="addManual()">➕ إضافة وموافقة فورية</button></div></div>
-  <div class="card"><h3>⏳ طلبات مستنية موافقة</h3>${users.filter(u=>u.status==='pending').length? '<div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور المطلوب</th><th>اختار الدور</th><th>قبول</th><th>رفض</th></tr>'+users.map((u,i)=>u.status==='pending'? `<tr><td><b>${u.name}</b></td><td>${u.job}</td><td>${u.email}</td><td>${roleLabel(u.requestedRole||u.role)}</td><td><select id="role-${i}"><option value="visitor">زائر</option><option value="employee" selected>موظف</option><option value="supervisor">مشرف</option><option value="manager">مدير</option></select></td><td><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="approve(${i})">✅ قبول</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="reject(${i})">❌ رفض</button></td></tr>`:'').join('')+'</table></div>':'<p style="color:#2E7D32;">✅ مفيش طلبات جديدة على الجهاز ده</p>'}</div>
-  <div class="card"><h3>👥 كل المستخدمين</h3><div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور</th><th>الحالة</th><th>تغيير الدور</th><th>حذف</th></tr>${users.map((u,i)=>`<tr><td><b>${u.name}</b></td><td>${u.job}</td><td>${u.email}</td><td><span class="badge ${u.role==='manager'?'manager':'approved'}">${roleLabel(u.role)}</span></td><td>${u.status==='approved'?'✅ مقبول':'⏳ معلق'}</td><td><select onchange="changeRole(${i},this.value)"><option value="visitor" ${u.role==='visitor'?'selected':''}>زائر</option><option value="employee" ${u.role==='employee'?'selected':''}>موظف</option><option value="supervisor" ${u.role==='supervisor'?'selected':''}>مشرف</option><option value="manager" ${u.role==='manager'?'selected':''}>مدير</option></select></td><td><button class="btn2" style="color:#D32F2F;" onclick="delUser(${i})">🗑️ حذف</button></td></tr>`).join('')+'</table></div></div>`;
+  <div class="card"><h3>⏳ طلبات مستنية موافقة</h3>${users.filter(u=>u.status==='pending').length? '<div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور المطلوب</th><th>اختار الدور</th><th>قبول</th><th>رفض</th></tr>'+users.map((u,i)=>u.status==='pending'? `<tr><td><b>${u.name}</b></td><td>${u.job||''}</td><td>${u.email}</td><td>${roleLabel(u.requestedRole||u.role)}</td><td><select id="role-${i}"><option value="visitor">زائر</option><option value="employee" selected>موظف</option><option value="supervisor">مشرف</option><option value="manager">مدير</option></select></td><td><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="approve('${u.id}',${i})">✅ قبول</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="reject('${u.id}',${i})">❌ رفض</button></td></tr>`:'').join('')+'</table></div>':'<p style="color:#2E7D32;">✅ مفيش طلبات جديدة</p>'}</div>
+  <div class="card"><h3>👥 كل المستخدمين</h3><div style="overflow-x:auto;"><table><tr><th>الاسم</th><th>المهنة</th><th>الإيميل</th><th>الدور</th><th>الحالة</th><th>تغيير الدور</th><th>حذف</th></tr>${users.map((u,i)=>`<tr><td><b>${u.name}</b></td><td>${u.job||''}</td><td>${u.email}</td><td><span class="badge ${u.role==='manager'||u.role==='admin'?'manager':'approved'}">${roleLabel(u.role)}</span></td><td>${u.status==='approved'?'✅ مقبول':'⏳ معلق'}</td><td><select onchange="changeRole('${u.id}',${i},this.value)"><option value="visitor" ${u.role==='visitor'?'selected':''}>زائر</option><option value="employee" ${u.role==='employee'?'selected':''}>موظف</option><option value="supervisor" ${u.role==='supervisor'?'selected':''}>مشرف</option><option value="manager" ${u.role==='manager'?'selected':''}>مدير</option></select></td><td><button class="btn2" style="color:#D32F2F;" onclick="delUser('${u.id}',${i})">🗑️ حذف</button></td></tr>`).join('')+'</table></div></div>`;
 }
-function addManual(){ let name=document.getElementById('m-name').value.trim(), job=document.getElementById('m-job').value.trim(), email=document.getElementById('m-email').value.trim().toLowerCase(), pass=document.getElementById('m-pass').value||'123456', role=document.getElementById('m-role').value; if(!name||!email) return alert('اكتب الاسم والإيميل'); if(DB.users.find(u=>u.email===email)) return alert('الإيميل ده موجود قبل كده'); DB.users.push({name,job,email,pass,photo:'',img:'',role,requestedRole:role,status:'approved',createdAt:new Date().toISOString()}); save(); alert('✅ تم إضافة '+name); }
-function approve(i){ let role=document.getElementById('role-'+i).value; DB.users[i].role=role; DB.users[i].status='approved'; save(); alert('✅ تم قبول '+DB.users[i].name); }
-function reject(i){ if(!confirm('ترفض '+DB.users[i].name+'؟')) return; DB.users.splice(i,1); save(); }
-function changeRole(i,role){ DB.users[i].role=role; DB.users[i].status='approved'; save(); }
-function delUser(i){ if(!confirm('تحذف '+DB.users[i].name+'؟')) return; DB.users.splice(i,1); save(); }
-function exportUsers(){ let data=JSON.stringify(DB.users); prompt('انسخ الكود ده:',data); }
-function importUsers(){ let txt=prompt('الصق كود المستخدمين:'); if(!txt) return; try{ let arr=JSON.parse(txt); let added=0; arr.forEach(u=>{ if(!DB.users.find(x=>x.email===u.email)){ DB.users.push(u); added++; } }); save(); alert('تم استيراد '+added+' ✅'); }catch(e){ alert('الكود مش مظبوط'); } }
-render();
+
+async function saveToFirebase(id, data){
+  if(id && !String(id).startsWith('local-') && window.db){
+    await db.collection('users').doc(id).update(data);
+  }
+}
+async function addManual(){
+  let name=document.getElementById('m-name').value.trim(), job=document.getElementById('m-job').value.trim(), email=document.getElementById('m-email').value.trim().toLowerCase(), pass=document.getElementById('m-pass').value||'123456', role=document.getElementById('m-role').value;
+  if(!name||!email) return alert('اكتب الاسم والإيميل');
+  if(users.find(u=>u.email===email)) return alert('الإيميل ده موجود قبل كده');
+  let obj={name,job,email,pass,photo:'',img:'',role,requestedRole:role,status:'approved',createdAt:new Date().toISOString()};
+  try{ if(window.db){ let ref=await db.collection('users').add(obj); obj.id=ref.id; } }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
+  users.push(obj); render(); alert('✅ تم إضافة '+name);
+}
+async function approve(id,i){ let role=document.getElementById('role-'+i).value; users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); alert('✅ تم قبول '+users[i].name); }
+async function reject(id,i){ if(!confirm('ترفض '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
+async function changeRole(id,i,role){ users[i].role=role; users[i].status='approved'; await saveToFirebase(id,{role,status:'approved'}); render(); }
+async function delUser(id,i){ if(!confirm('تحذف '+users[i].name+'؟')) return; try{ if(!String(id).startsWith('local-') && window.db) await db.collection('users').doc(id).delete(); }catch(e){} users.splice(i,1); render(); }
+function exportUsers(){ let data=JSON.stringify(users); prompt('انسخ الكود ده:',data); }
+function refreshUsers(){ loadUsers(); }
+
+loadUsers();
 </script></body></html>
