@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -59,7 +58,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -136,7 +134,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div class="card">
 <h2 style="margin:0 0 10px;">📋 سجل التدريبات</h2>
 <input id="searchT" placeholder="ابحث بالاسم أو الكود أو عنوان التدريب أو المدرب..." oninput="renderTrain()">
-<div id="trainTable"></div>
+<div id="trainTable"><p style="text-align:center;">⏳ جاري التحميل من فايربيز...</p></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
 <button class="btn2" onclick="exportTrain()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV</button>
 <button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
@@ -145,30 +143,14 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
-function getReporter(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
-  if(typeof u==='object' && u.name) return u.name;
-  return localStorage.getItem('safetyUser')||'';
-}
-(function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
-  let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
-})();
-
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{"workers":[],"cards":[],"induction":[],"train":[]}');
-if(!DB.train) DB.train=[];
-if(!DB.workers) DB.workers=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+let me = requireLogin();
+let DB = {workers:[], train:[]};
+function saveLocal(){ try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); old.train=DB.train; old.workers=DB.workers; localStorage.setItem('safetyDB', JSON.stringify(old)); }catch(e){} }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 let selHours = 0;
@@ -177,13 +159,25 @@ function setHours(h,btn){
   document.querySelectorAll('#hoursBox button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
+async function loadAll(){
+  try{
+    if(window.db){
+      let s1=await db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()}));
+      let s2=await db.collection('train').get(); DB.train=[]; s2.forEach(d=>DB.train.push({id:d.id,...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  if(DB.train.length===0 && DB.workers.length===0){
+    try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); DB.train=old.train||[]; DB.workers=old.workers||[]; }catch(e){}
+  }
+  refreshWorkersList(); renderTrain();
+}
 function refreshWorkersList(){
   let dl=document.getElementById('workersList');
   dl.innerHTML=DB.workers.map(w=>`<option value="${w.name}">`).join('');
 }
 function autoFromName(){
   let name=val('t-name');
-  let w=DB.workers.find(x=>x.name===name || x.name.toLowerCase()===name.toLowerCase());
+  let w=DB.workers.find(x=>x.name===name || (x.name||'').toLowerCase()===name.toLowerCase());
   if(w){ setVal('t-code',w.code); setVal('t-job',w.job||''); setVal('t-company',w.company||'RMED'); }
 }
 function autoFromCode(){
@@ -191,16 +185,19 @@ function autoFromCode(){
   let w=DB.workers.find(x=>String(x.code)===String(code));
   if(w){ setVal('t-name',w.name); setVal('t-job',w.job||''); setVal('t-company',w.company||'RMED'); }
 }
-function addTraining(){
+async function addTraining(){
   if(!val('t-date')) return alert('اختار التاريخ');
   if(!val('t-time')) return alert('اختار الوقت');
   if(!val('t-title')) return alert('اكتب عنوان التدريب');
   if(!val('t-name')) return alert('اكتب اسم المتدرب');
   if(!selHours) return alert('اختار عدد الساعات 1 أو 2 أو 3');
-  let trainer=val('t-trainer')||getReporter();
+  let trainer=val('t-trainer')||(me?me.name:'');
   if(!trainer) return alert('اكتب اسم المدرب');
   let rec={date:val('t-date'),time:val('t-time'),title:val('t-title'),place:val('t-place'),name:val('t-name'),code:val('t-code'),job:val('t-job'),company:val('t-company')||'RMED',hours:selHours,trainer:trainer,reporter:trainer,reporterName:trainer,createdAt:new Date().toISOString()};
-  DB.train.push(rec); save(); renderTrain();
+  try{
+    if(window.db){ let ref=await db.collection('train').add(rec); rec.id=ref.id; }
+  }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
+  DB.train.push(rec); saveLocal(); renderTrain();
   alert('✅ تم حفظ التدريب - '+rec.name+' - '+rec.hours+' ساعة');
   ['t-title','t-place','t-name','t-code','t-job'].forEach(id=>setVal(id,''));
   setVal('t-company','RMED'); selHours=0;
@@ -208,7 +205,7 @@ function addTraining(){
 }
 function renderTrain(){
   let q=(document.getElementById('searchT').value||'').toLowerCase();
-  let list=DB.train.filter(x=>(x.name+x.code+x.title+x.trainer+x.job).toLowerCase().includes(q));
+  let list=DB.train.filter(x=>((x.name||'')+(x.code||'')+(x.title||'')+(x.trainer||'')+(x.job||'')).toLowerCase().includes(q));
   let totalTrain=DB.train.length;
   let totalAtt=DB.train.length;
   let totalHours=DB.train.reduce((s,x)=>s+(parseInt(x.hours)||0),0);
@@ -216,22 +213,21 @@ function renderTrain(){
   document.getElementById('k-att').innerText=totalAtt;
   document.getElementById('k-hours').innerText=totalHours+' ساعة';
   if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تدريبات لسه - سجل أول تدريب فوق</p>'; return; }
-  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.slice().reverse().map((x,i)=>{
+  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.slice().reverse().map((x)=>{
     let realIdx=DB.train.indexOf(x);
     return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.name}</td><td>${x.code||'-'}</td><td>${x.job||'-'}</td><td>${x.place||'-'}</td><td><span class="badge">${x.hours} ساعة</span></td><td>${x.trainer}</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain(${realIdx})">🗑️</button></td></tr>`;
   }).join('')+'</table>';
 }
-function delTrain(i){ if(!confirm('تحذف التدريب ده؟')) return; DB.train.splice(i,1); save(); renderTrain(); }
-function clearTrain(){ if(!confirm('تمسح كل التدريبات؟')) return; DB.train=[]; save(); renderTrain(); }
+async function delTrain(i){ if(!confirm('تحذف التدريب ده؟')) return; let rec=DB.train[i]; try{ if(rec.id && window.db) await db.collection('train').doc(rec.id).delete(); }catch(e){} DB.train.splice(i,1); saveLocal(); renderTrain(); }
+async function clearTrain(){ if(!confirm('تمسح كل التدريبات؟')) return; try{ if(window.db){ let snap=await db.collection('train').get(); for(let d of snap.docs) await db.collection('train').doc(d.id).delete(); } }catch(e){} DB.train=[]; saveLocal(); renderTrain(); }
 function exportTrain(){
   if(!DB.train.length) return alert('مفيش بيانات');
   let csv='التاريخ,الوقت,عنوان التدريب,المتدرب,الكود,المهنة,المكان,الساعات,الشركة,المدرب\n'+DB.train.map(x=>[x.date,x.time,x.title,x.name,x.code,x.job,x.place,x.hours,x.company,x.trainer].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trainings.csv'; a.click();
 }
 document.getElementById('t-date').value=new Date().toISOString().slice(0,10);
-// ✅ املى اسم المدرب من الحساب
-let _rep=getReporter(); if(_rep) document.getElementById('t-trainer').value=_rep;
-refreshWorkersList(); renderTrain();
+if(me && me.name) document.getElementById('t-trainer').value=me.name;
+loadAll();
 </script>
 </body>
 </html>
