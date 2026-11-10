@@ -131,7 +131,6 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
-<!-- EDIT PROFILE MODAL -->
 <div class="modal" id="editModal">
 <div class="modal-box">
 <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">✏️ Edit Profile</h3><button class="btn2" onclick="closeEdit()">✕ Close</button></div>
@@ -157,28 +156,24 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
-function getMe(){
-  try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
-  return null;
-}
+// FIX: renamed to USERS_ROLE_MAP so it does NOT clash with ROLE_MAP in auth.js
+const USERS_ROLE_MAP={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+function normRole(r){ return USERS_ROLE_MAP[String(r||'').trim().toLowerCase()]||USERS_ROLE_MAP[String(r||'').trim()]||'Visitor'; }
+function isManager(){ let m=getMe(); return normRole(m?m.role:'')==='Manager'; }
+function val(id){ return document.getElementById(id).value.trim(); }
+function showMsg(html,ok){ let d=document.getElementById('loadMsg'); d.style.display='block'; d.innerHTML=html; d.className=ok?'alert green':'alert'; if(ok) setTimeout(()=>{d.style.display='none';},4000); }
+
+// Use shared helpers from auth.js if they exist, otherwise define them locally
+if(typeof toggleSidebar!=='function'){ function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } } }
+if(typeof logout!=='function'){ function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; } }
+if(typeof getMe!=='function'){ function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; } }
+
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
-  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=normRole(nm.role)||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
-
-const ROLE_MAP={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
-function normRole(r){ return ROLE_MAP[String(r||'').trim().toLowerCase()]||ROLE_MAP[String(r||'').trim()]||'Visitor'; }
-function isManager(){ let m=getMe(); return normRole(m?m.role:'')==='Manager'; }
-function val(id){ return document.getElementById(id).value.trim(); }
-function showMsg(html,ok){ let d=document.getElementById('loadMsg'); d.style.display='block'; d.innerHTML=html; d.className=ok?'alert green':'alert'; if(ok) setTimeout(()=>{d.style.display='none';},4000); }
 
 let usersList=[];
 let editIdx=-1;
@@ -190,33 +185,31 @@ async function loadUsers(force){
   document.getElementById('loadMsg').style.display='none';
   usersList=[];
   let errors=[];
-  // 1) Try Firebase - 3 possible collection names
+  let seenEmails=new Set();
   if(window.db){
     for(let col of ['users','appUsers','employees']){
       try{
         let snap=await window.db.collection(col).get();
         snap.forEach(d=>{
           let data=d.data();
-          // Avoid duplicates by email / id
-          let key=(data.email||'')+'|'+d.id;
-          if(!usersList.some(u=>u._key===key)){
-            usersList.push({id:d.id,_col:col,_key:key,name:data.name||data.fullName||'',email:data.email||'',job:data.job||data.title||'',company:data.company||'RMED',phone:data.phone||'',role:normRole(data.role),img:data.img||data.photo||data.photoURL||'',createdAt:data.createdAt||''});
-          }
+          let email=String(data.email||'').toLowerCase().trim();
+          // Dedupe by email - same user in 2 collections = show once
+          if(email && seenEmails.has(email)) return;
+          if(email) seenEmails.add(email);
+          usersList.push({id:d.id,_col:col,_key:email+'|'+d.id,name:data.name||data.fullName||'',email:data.email||'',job:data.job||data.title||'',company:data.company||'RMED',phone:data.phone||'',role:normRole(data.role),img:data.img||data.photo||data.photoURL||'',createdAt:data.createdAt||''});
         });
       }catch(e){ errors.push(col+': '+e.message); }
     }
   } else { errors.push('Firebase db is not loaded - check firebase-config.js'); }
-  // 2) Fallback localStorage
   if(!usersList.length){
     try{
       let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
       let arr=old.users||old.employees||[];
-      arr.forEach((u,i)=> usersList.push({id:u.id||('local-'+i),_col:'local',_key:(u.email||'')+'|local-'+i,name:u.name||'',email:u.email||'',job:u.job||'',company:u.company||'RMED',phone:u.phone||'',role:normRole(u.role),img:u.img||u.photo||''}));
+      arr.forEach((u,i)=>{ let em=String(u.email||'').toLowerCase().trim(); if(em && seenEmails.has(em)) return; if(em) seenEmails.add(em); usersList.push({id:u.id||('local-'+i),_col:'local',_key:em+'|local-'+i,name:u.name||'',email:u.email||'',job:u.job||'',company:u.company||'RMED',phone:u.phone||'',role:normRole(u.role),img:u.img||u.photo||''}); });
     }catch(e){}
   }
-  // 3) Always include current logged user if not in list
   let me=getMe();
-  if(me && me.email && !usersList.some(u=>u.email===me.email)){
+  if(me && me.email && !seenEmails.has(String(me.email).toLowerCase().trim())){
     usersList.push({id:me.id||'me',_col:'local',_key:me.email+'|me',name:me.name||'',email:me.email||'',job:me.job||'',company:me.company||'RMED',phone:me.phone||'',role:normRole(me.role),img:me.img||me.photo||''});
   }
   lastError=errors.join(' | ');
@@ -262,7 +255,6 @@ function openEdit(idx){
   document.getElementById('e-company').value=u.company||'RMED';
   document.getElementById('e-phone').value=u.phone||'';
   document.getElementById('e-role').value=u.role||'Visitor';
-  // Role lock: only Manager can change
   let roleSel=document.getElementById('e-role');
   roleSel.disabled=!isManager();
   document.getElementById('roleLockMsg').style.display=isManager()?'none':'block';
@@ -291,16 +283,14 @@ async function saveProfile(){
   if(editIdx<0) return;
   if(!val('e-name')) return alert('Write name');
   let u=usersList[editIdx];
-  let newRole=isManager()?val('e-role'):u.role; // Non-manager cannot change role even if he edits HTML
+  let newRole=isManager()?val('e-role'):u.role;
   let updated={name:val('e-name'),job:val('e-job'),company:val('e-company')||'RMED',phone:val('e-phone'),role:newRole,img:editPhotoData,photo:editPhotoData};
-  // Save to Firebase if real doc
   try{
     if(window.db && u._col && u._col!=='local'){
       await window.db.collection(u._col).doc(u.id).update(updated);
     }
   }catch(e){ alert('Save problem in Firebase: '+e.message); return; }
   Object.assign(u,updated);
-  // If editing my own profile, update localStorage + sidebar
   let me=getMe();
   if(me && me.email===u.email){
     let merged={...me,...updated};
