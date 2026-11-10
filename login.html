@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>تسجيل الدخول - RMED</title>
+<title>Login - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,83 +22,82 @@ body{margin:0;background:#F4F6F9;color:#0A1F44}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:fixed;top:0;right:0;left:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
   .main{padding-top:70px}
 }
-.page-head{position:fixed;top:0;left:0;right:260px;background:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #D32F2F;z-index:80}
-@media(max-width:900px){.page-head{right:0;top:48px}}
-.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0A1F44;margin-top:50px}
+.page-head{position:fixed;top:0;left:260px;right:0;background:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #D32F2F;z-index:80}
+@media(max-width:900px){.page-head{left:0;top:48px}}
+.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0F2A4D;margin-top:50px}
 label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}
 input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none}
-input:focus{border-color:#0A1F44}
-button.login-btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
+input:focus{border-color:#0F2A4D}
+button.login-btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
 button.login-btn:hover{background:#1A3A6A}
 .btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}
-.show-pass{font-size:12px;color:#0A1F44;cursor:pointer;font-weight:bold;display:inline-block;margin-top:5px}
+.show-pass{font-size:12px;color:#0F2A4D;cursor:pointer;font-weight:bold;display:inline-block;margin-top:5px}
 .debug{background:#FFF3E0;border:1px solid #FF9800;border-radius:10px;padding:10px;font-size:12px;color:#333;margin-top:12px;display:none}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-    <div><b id="sideName">ضيف</b><small id="sideRole">مش مسجل دخول</small></div>
+    <div><b id="sideName">Guest</b><small id="sideRole">Not logged in</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login" class="active"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login" class="active"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
 </aside>
 
-<div class="page-head"><b>🏗️ RMED • تسجيل الدخول</b><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button></div>
+<div class="page-head"><b>🏗️ RMED • Login</b><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button></div>
 
 <div class="main">
 <div class="box">
-<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل الدخول</h2><p style="text-align:center;color:#78909C;font-size:13px;">ادخل بالإيميل والباسورد - من فايربيز</p>
-<label>📧 الإيميل</label><input id="l-email" type="email" placeholder="example@gmail.com">
-<label>🔒 الباسورد</label><input id="l-pass" type="password" placeholder="الباسورد" onkeydown="if(event.key==='Enter') doLogin()">
-<span class="show-pass" onclick="togglePass()">👁️ إظهار الباسورد</span>
-<button class="login-btn" onclick="doLogin()">🚀 دخول</button>
-<button class="btn2" onclick="loginAsVisitor()">👁️ دخول كزائر - عرض بس بدون تعديل</button>
-<button class="btn2" onclick="location.href='index.html'">🏠 الرئيسية</button>
-<p style="text-align:center;font-size:13px;">معندكش حساب؟ <a href="register.html">سجل حساب جديد</a></p>
+<h2 style="text-align:center;margin:0;">🏗️ RMED • Login</h2><p style="text-align:center;color:#78909C;font-size:13px;">Login with email and password - From Firebase</p>
+<label>📧 Email</label><input id="l-email" type="email" placeholder="example@gmail.com">
+<label>🔒 Password</label><input id="l-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') doLogin()">
+<span class="show-pass" onclick="togglePass()">👁️ Show Password</span>
+<button class="login-btn" onclick="doLogin()">🚀 Login</button>
+<button class="btn2" onclick="loginAsVisitor()">👁️ Login As Visitor - View Only Without Edit</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 Home</button>
+<p style="text-align:center;font-size:13px;">No account? <a href="register.html">Create new account</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;min-height:18px;"></p>
 <div id="debugBox" class="debug"></div>
 </div>
@@ -111,7 +110,7 @@ button.login-btn:hover{background:#1A3A6A}
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); document.querySelector('.page-head').style.right = s.classList.contains('closed') ? '0' : '260px'; }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); document.querySelector('.page-head').style.left = s.classList.contains('closed') ? '0' : '260px'; }
 }
 function togglePass(){
   let p=document.getElementById('l-pass');
@@ -130,17 +129,17 @@ async function doLogin(){
   let debug=document.getElementById('debugBox');
   msg.innerText=''; msg.style.color='#D32F2F';
   debug.style.display='none';
-  if(!email) return msg.innerText='اكتب الإيميل';
-  if(!pass) return msg.innerText='اكتب الباسورد';
-  if(!window.db) return msg.innerText='فايربيز مش متصل - اتأكد إن firebase-config.js موجود';
+  if(!email) return msg.innerText='Write email';
+  if(!pass) return msg.innerText='Write password';
+  if(!window.db) return msg.innerText='Firebase not connected - Check firebase-config.js exists';
 
-  msg.innerText='جارى التحقق...';
+  msg.innerText='Checking...';
   try{
-    let snap = await db.collection('users').where('email','==',email).get();
+    let snap = await window.db.collection('users').where('email','==',email).get();
     if(snap.empty){
-      msg.innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
+      msg.innerText='This email is not registered, create new account first';
       debug.style.display='block';
-      debug.innerHTML='🔍 مفيش حساب بالإيميل ده في قاعدة البيانات. لو سجلت من صفحة التسجيل الجديدة، اتأكد إنك رفعت register.html الجديد و firebase-config.js';
+      debug.innerHTML='🔍 No account with this email in database. If you registered from new Register page, make sure you uploaded new register.html and firebase-config.js';
       return;
     }
     let doc = snap.docs[0];
@@ -149,29 +148,34 @@ async function doLogin(){
 
     let savedPass = user.pass || user.password || user.pwd || '';
     if(String(savedPass)!==String(pass)){
-      msg.innerText='الباسورد غلط - اتأكد انك كاتبه صح، ودوس إظهار الباسورد';
+      msg.innerText='Wrong password - Check it, and press Show Password';
       return;
     }
-    let status=(user.status||'approved').toLowerCase();
-    if(status==='pending') return msg.innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
-    if(status==='rejected' || status==='blocked') return msg.innerText='❌ حسابك اترفض من المدير';
+    // Read old AR + new EN status
+    let statusMap={'معلق':'pending','مرفوض':'rejected','محظور':'blocked','مقبول':'approved','موافق عليه':'approved','pending':'pending','rejected':'rejected','blocked':'blocked','approved':'approved'};
+    let status=statusMap[String(user.status||'approved').trim().toLowerCase()]||statusMap[String(user.status||'approved').trim()]||'approved';
+    if(status==='pending') return msg.innerText='⏳ Your account is still waiting for manager approval, wait a bit';
+    if(status==='rejected' || status==='blocked') return msg.innerText='❌ Your account was rejected by manager';
 
-    let finalRole = user.role==='pending' ? (user.requestedRole||'employee') : (user.role||'employee');
+    let roleMap={'معلق':'pending','مدير':'manager','مشرف':'supervisor','موظف':'employee','زائر':'visitor'};
+    let rawRole=String(user.role||'employee').trim();
+    let normRole=roleMap[rawRole]||roleMap[rawRole.toLowerCase()]||rawRole.toLowerCase();
+    let finalRole = normRole==='pending' ? (user.requestedRole||'employee') : (normRole||'employee');
 
     let session={id:user.id,email:user.email,name:user.name||user.fullName||email,job:user.job||finalRole||'',role:finalRole,photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
     localStorage.setItem('safetyUser',JSON.stringify(session));
     localStorage.setItem('currentUser',JSON.stringify(session));
     localStorage.setItem('safetyUserName',session.name);
     msg.style.color='#2E7D32';
-    msg.innerText='✅ تم الدخول بنجاح، جاري تحويلك...';
+    msg.innerText='✅ Logged in successfully, redirecting...';
     setTimeout(()=>location.href='dashboard.html',600);
   }catch(err){
     console.error(err);
-    msg.innerText='حصل خطأ في الاتصال - اتأكد إن النت شغال وإن Rules معمولة Publish - '+err.message;
+    msg.innerText='Connection error - Check internet and Rules are Published - '+err.message;
   }
 }
 function loginAsVisitor(){
-  let session={email:'visitor@rmed.com',name:'زائر',job:'زائر',role:'visitor',photo:'',img:''};
+  let session={email:'visitor@rmed.com',name:'Visitor',job:'Visitor',role:'visitor',photo:'',img:''};
   localStorage.setItem('safetyUser',JSON.stringify(session));
   localStorage.setItem('currentUser',JSON.stringify(session));
   location.href='dashboard.html';
