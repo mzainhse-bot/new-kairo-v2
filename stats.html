@@ -3,7 +3,6 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>إحصائيات الموقع - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -70,7 +69,6 @@ canvas{max-width:260px;margin:auto;display:block}
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -158,14 +156,16 @@ canvas{max-width:260px;margin:auto;display:block}
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -177,6 +177,38 @@ function getReporter(){
   let nm=getReporter();
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
+
+// ✅ FIREBASE - بدل localStorage
+let DB={dailyWorkers:[], induction:[], weeklyLect:[], train:[], accidents:[], violations:[], empViolations:[], ncr:[], nearMiss:[], observations:[]};
+let loaded=false;
+
+async function fetchCol(names){
+  if(!window.db) return [];
+  for(let n of names){
+    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+  }
+  return [];
+}
+async function loadAll(){
+  DB.dailyWorkers = await fetchCol(['dailyWorkers','daily-count','dailyCount']);
+  DB.induction = await fetchCol(['induction']);
+  DB.weeklyLect = await fetchCol(['weekly','weeklyLect']);
+  DB.train = await fetchCol(['train','trainings']);
+  DB.accidents = await fetchCol(['accidents']);
+  DB.violations = await fetchCol(['violations']);
+  DB.empViolations = await fetchCol(['employeeViolations','employee-violations']);
+  DB.ncr = await fetchCol(['ncr']);
+  DB.nearMiss = await fetchCol(['nearMiss','near-miss']);
+  DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
+  // fallback قديم
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
+    if(!DB.observations.length){ try{ let extra=JSON.parse(localStorage.getItem('safety_obs')||'[]'); if(extra.length) DB.observations=extra; }catch(e){} }
+  }catch(e){}
+  loaded=true;
+  render();
+}
 
 let PROJECT_START=new Date('2026-05-01');
 let period='month';
@@ -284,11 +316,8 @@ function drawPie(canvasId, closed, open){
   ctx.font='12px Arial'; ctx.fillStyle='#2E7D32'; ctx.fillText('■ مغلق '+closed,130,200); ctx.fillStyle='#D32F2F'; ctx.fillText('■ مفتوح '+open,130,220);
 }
 function render(){
-  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-  // ✅ ملاحظات السلامة: اقرا من safety_obs كمان عشان الصفحة الأصلية بتحفظ هناك
-  let obsExtra=[]; try{ obsExtra=JSON.parse(localStorage.getItem('safety_obs')||'[]'); }catch(e){}
-  let obsAll=[...(DB.observations||DB.safetyObservations||[]), ...obsExtra];
-  // شيل التكرار
+  if(!loaded) return;
+  let obsAll=[...(DB.observations||[])];
   let seen=new Set(); obsAll=obsAll.filter(o=>{ let k=(o.date||'')+'|'+(o.reporter||'')+'|'+(o.desc||''); if(seen.has(k)) return false; seen.add(k); return true; });
   let r=getRange();
   let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
@@ -300,7 +329,7 @@ function render(){
   document.getElementById('periodLabel').innerText='من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG');
   document.getElementById('summaryPeriod').innerText=pName+detail;
   let btn=document.getElementById('ramadanBtn'); btn.innerText=ramadan?'🌙 رمضان: شغال - اضرب في 6':'🌙 رمضان: متوقف'; btn.classList.toggle('on', ramadan);
-  let daily=(DB.dailyWorkers||DB.workersDaily||DB.workers||[]).filter(x=>inRange(x.date||x.day, r));
+  let daily=(DB.dailyWorkers||[]).filter(x=>inRange(x.date||x.day, r));
   let avgWorkers=daily.length? daily.reduce((a,x)=>a+((+x.workers||+x.count||+x.total||+x.num||0)),0)/daily.length : 0;
   let workDays=0;
   if(period==='all'){ workDays=new Set(daily.map(x=>x.date||x.day)).size; if(workDays===0){ workDays=Math.ceil((r.end-r.start)/(1000*60*60*24))+1; } document.getElementById('workDaysNote').style.display='inline'; }
@@ -310,11 +339,11 @@ function render(){
   while(cur<=end){ let key=cur.toISOString().slice(0,10); let w=map[key]||lastWorkers; if(map[key]) lastWorkers=map[key]; let day=cur.getDay();
     if(ramadan) safeHours+=w*6; else if(day===5) safeHours+=w*5; else safeHours+=w*12;
     cur.setDate(cur.getDate()+1); }
-  let induction=(DB.induction||DB.inductions||[]).filter(x=>inRange(x.date||x.createdAt, r));
-  let weekly=(DB.weeklyLect||DB.weekly||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let induction=(DB.induction||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let weekly=(DB.weeklyLect||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let weeklyAttend=weekly.reduce((a,x)=>a+((+x.attendance||+x.attendees||+x.present||0)),0);
   if(weeklyAttend===0) weeklyAttend=weekly.reduce((a,x)=>a+((x.attendeesList||x.list||[]).length||0),0);
-  let trains=(DB.train||DB.trainings||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let trains=(DB.train||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let trainPeople=trains.reduce((a,x)=>a+((+x.trainees||+x.count||0)),0);
   if(trainPeople===0) trainPeople=trains.reduce((a,x)=>a+((x.traineesList||[]).length||0),0);
   let trainHours=sum(trains,'hours')||sum(trains,'totalHours');
@@ -322,12 +351,12 @@ function render(){
   let nmClosed=nm.filter(isClosed).length;
   let obs=obsAll.filter(x=>inRange(x.date||x.createdAt, r));
   let obsClosed=obs.filter(isClosed).length;
-  let ncr=(DB.ncr||DB.nonConformity||DB.ncrList||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let ncr=(DB.ncr||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let ncrClosed=ncr.filter(isClosed).length;
   let ncrRate=ncr.length? Math.round(ncrClosed/ncr.length*100):0;
-  let cViol=(DB.violations||DB.contractorViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let cViol=(DB.violations||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let cMoney=sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value');
-  let eViol=(DB.empViolations||DB.employeeViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let eViol=(DB.empViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let acc=(DB.accidents||[]).filter(x=>inRange(x.date||x.createdAt, r));
   let injuries=acc.filter(x=>x.hasInjury===true||x.injury==='نعم'||x.injury==='yes'||(+x.injuryCount||0)>0||x.injuries>0).length;
   document.getElementById('s-avgWorkers').innerText=Math.round(avgWorkers*10)/10;
@@ -364,5 +393,5 @@ function render(){
   <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:13px;"><span>توقيع مشرف السلامة: ....................</span><span>توقيع مدير المشروع: ....................</span></div>`;
 }
 buildSelector();
-render();
+loadAll();
 </script></body></html>
