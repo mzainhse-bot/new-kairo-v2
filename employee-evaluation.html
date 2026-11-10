@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تقييم الموظفين - RMED</title>
+<html lang="en" dir="ltr">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Employee Evaluation - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -18,14 +18,14 @@
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -35,7 +35,7 @@
 .container{max-width:1000px;margin:auto;padding:0 16px 16px}
 .filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;min-width:140px;cursor:pointer}
-.btn{background:#0A1F44;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn{background:#0F2A4D;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 .btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 .btn2{background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center}
@@ -50,15 +50,15 @@
 .badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:13px;margin:3px}
 .badge-gold{background:#FFD700}.badge-silver{background:#C0C0C0}.badge-bronze{background:#CD7F32;color:#fff}
 .badge-green{background:#E8F5E9;color:#2E7D32}.badge-blue{background:#E3F2FD;color:#1565C0}.badge-red{background:#FFEBEE;color:#D32F2F}
-.list-row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:right}
-.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #0A1F44;flex-shrink:0}
+.list-row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
+.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #0F2A4D;flex-shrink:0}
 .rank-num{font-size:24px;font-weight:bold;width:40px;text-align:center;flex-shrink:0}
 .print-head{display:none}
 @media print{
   body{background:#fff}
   .sidebar,.topbar,.overlay,.page-head,.no-print{display:none !important}
-  .main{margin-right:0}
-  .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
+  .main{margin-left:0}
+  .print-head{display:block;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:12px}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
   .container{max-width:100%;padding:0}
   .card,.list-row{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
@@ -68,63 +68,62 @@
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation" class="active"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
-<div class="page-head"><h2>🏆 تقييم الموظفين - الموظف المثالي</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button><button class="btn2" onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div></div>
+<div class="page-head"><h2>🏆 Employee Evaluation - Employee Of The Month</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print</button><button class="btn2" onclick="toggleSidebar()">◀️ Hide Menu</button></div></div>
 <div class="container">
-<div class="print-head"><h1>🏆 تقرير تقييم الموظفين - الموظف المثالي - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
+<div class="print-head"><h1>🏆 Employee Evaluation Report - Employee Of The Month - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 
-<div class="filter"><b>🗓️ اختار الشهر:</b>
-<label>السنة:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
-<label>الشهر:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
-<span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
+<div class="filter"><b>🗓️ Select Month:</b>
+<label>Year:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
+<label>Month:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
+<span id="periodLabel" style="font-weight:bold;color:#0F2A4D;"></span>
 <span style="flex:1;"></span><span id="totalEmp" style="font-weight:bold;"></span>
 </div>
-<p id="loadStatus" style="text-align:center;color:#1565C0;font-size:13px;">⏳ جاري تحميل التقييم من فايربيز...</p>
+<p id="loadStatus" style="text-align:center;color:#1565C0;font-size:13px;">⏳ Loading evaluation from Firebase...</p>
 
 <div id="top1Box"></div>
 <div id="top23Box" class="top23"></div>
 <div id="restBox" style="margin-top:14px;"></div>
 <div id="emptyBox"></div>
 
-<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة تقرير الموظف المثالي</button><p style="color:#78909C;font-size:12px;">اختار الشهر الأول، وبعدين دوس تصدير - اختار Destination = Save as PDF</p></div>
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print Employee Of The Month Report</button><p style="color:#78909C;font-size:12px;">Select month first, then press Export - Choose Destination = Save as PDF</p></div>
 </div>
 </div>
 
@@ -138,34 +137,35 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
-  if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role==='manager'?'مدير':u.role==='supervisor'?'مشرف':u.role==='employee'?'موظف':u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
+  if(u.name){ document.getElementById('sideName').innerText=u.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
 })();
 
 let nowD=new Date();
 let selYear=nowD.getFullYear();
 let selMonth=nowD.getMonth();
-let months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+let months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-// ✅ FIREBASE - كل البيانات من فايربيز
+// ✅ FIREBASE - All data from Firebase
 let FB = {users:[], observations:[], nearMiss:[], accidents:[]};
 
 async function fetchCol(name){
   if(!window.db) return [];
-  try{ let s=await db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
+  try{ let s=await window.db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
 }
 async function loadAll(){
-  document.getElementById('loadStatus').innerText='⏳ جاري تحميل التقييم من فايربيز...';
+  document.getElementById('loadStatus').innerText='⏳ Loading evaluation from Firebase...';
   FB.users = await fetchCol('users');
   FB.observations = await fetchCol('observations');
   if(!FB.observations.length) FB.observations = await fetchCol('safety-observations');
   FB.nearMiss = await fetchCol('nearMiss');
   if(!FB.nearMiss.length) FB.nearMiss = await fetchCol('near-miss');
   FB.accidents = await fetchCol('accidents');
-  // fallback من localStorage القديم لو فايربيز فاضي
+  // fallback from old localStorage if Firebase is empty
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
     if(!FB.users.length && old.users) FB.users=old.users;
@@ -173,7 +173,7 @@ async function loadAll(){
     if(!FB.nearMiss.length && old.nearMiss) FB.nearMiss=old.nearMiss;
     if(!FB.accidents.length && old.accidents) FB.accidents=old.accidents;
   }catch(e){}
-  document.getElementById('loadStatus').innerText='✅ تم تحميل '+FB.users.length+' موظف - '+FB.observations.length+' ملاحظة - '+FB.nearMiss.length+' وشيكة - '+FB.accidents.length+' حادث من فايربيز';
+  document.getElementById('loadStatus').innerText='✅ Loaded '+FB.users.length+' employees - '+FB.observations.length+' observations - '+FB.nearMiss.length+' near miss - '+FB.accidents.length+' accidents from Firebase';
   render();
 }
 
@@ -182,13 +182,14 @@ function fillSelects(){
   let m=document.getElementById('selMonth'); m.innerHTML=''; months.forEach((mm,i)=>{ let o=document.createElement('option'); o.value=i; o.text=mm; if(i==selMonth) o.selected=true; m.appendChild(o); });
 }
 function exportPDF(){
-  document.getElementById('printPeriod').innerText='الشهر: '+months[selMonth]+' '+selYear+' - ترتيب الموظفين حسب عدد التقارير المرفوعة (ملاحظات + وشيكة + حوادث)';
-  document.getElementById('printDate').innerText='تاريخ استخراج التقرير: '+new Date().toLocaleDateString('ar-EG');
-  document.title='تقرير الموظف المثالي - '+months[selMonth]+' '+selYear+' - RMED';
+  document.getElementById('printPeriod').innerText='Month: '+months[selMonth]+' '+selYear+' - Employees ranked by uploaded reports (Observations + Near Miss + Accidents)';
+  document.getElementById('printDate').innerText='Report export date: '+new Date().toLocaleDateString('en-US');
+  document.title='Employee Of The Month Report - '+months[selMonth]+' '+selYear+' - RMED';
   window.print();
 }
 function isClosed(x){
   let s=(x.status||x.state||'').toString().trim().toLowerCase();
+  // Read old AR + new EN closed statuses
   return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || s.includes('غلق') || x.isClosed===true || x.closed===true;
 }
 function getReporter(x){
@@ -201,7 +202,7 @@ function inMonth(d){
   return dt.getFullYear()===selYear && dt.getMonth()===selMonth;
 }
 function render(){
-  document.getElementById('periodLabel').innerText='من 1 '+months[selMonth]+' '+selYear+' إلى '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
+  document.getElementById('periodLabel').innerText='From 1 '+months[selMonth]+' '+selYear+' to '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
   let allUsers = FB.users || [];
   let employees = allUsers.filter(u=>{
     let role=(u.role||u.permission||u.type||u.accountType||'').toString().trim().toLowerCase();
@@ -212,7 +213,7 @@ function render(){
   let obs=(FB.observations||[]).filter(x=>inMonth(getDate(x)));
   let near=(FB.nearMiss||[]).filter(x=>inMonth(getDate(x)));
   let acc=(FB.accidents||[]).filter(x=>inMonth(getDate(x)));
-  let allReports=[...obs.map(x=>({...x,_type:'ملاحظة'})), ...near.map(x=>({...x,_type:'وشيكة'})), ...acc.map(x=>({...x,_type:'حادث'}))];
+  let allReports=[...obs.map(x=>({...x,_type:'Observation'})), ...near.map(x=>({...x,_type:'Near Miss'})), ...acc.map(x=>({...x,_type:'Accident'}))];
   let map={};
   employees.forEach(u=>{
     let key=(u.code||u.id||u.name||'').toString();
@@ -236,15 +237,15 @@ function render(){
     let k=findKey(rep, code); if(!k) return;
     map[k].total++;
     if(isClosed(r)) map[k].closed++;
-    if(r._type==='ملاحظة') map[k].obs++;
-    if(r._type==='وشيكة') map[k].near++;
-    if(r._type==='حادث') map[k].acc++;
+    if(r._type==='Observation') map[k].obs++;
+    if(r._type==='Near Miss') map[k].near++;
+    if(r._type==='Accident') map[k].acc++;
   });
   let ranked=Object.values(map).sort((a,b)=>{
     if(b.total!==a.total) return b.total-a.total;
     return b.closed-a.closed;
   });
-  document.getElementById('totalEmp').innerText='إجمالي الموظفين: '+ranked.length+' | إجمالي التقارير في الشهر: '+allReports.length;
+  document.getElementById('totalEmp').innerText='Total Employees: '+ranked.length+' | Total Reports In Month: '+allReports.length;
   function imgHTML(u, size){
     let src=u.img||u.photo||u.image||u.avatar||'';
     if(src) return '<img src="'+src+'" alt="'+(u.name||'')+'">';
@@ -252,32 +253,32 @@ function render(){
   }
   function statsHTML(r){
     let rate=r.total? Math.round(r.closed/r.total*100):0;
-    return '<div style="margin-top:10px;"><span class="badge badge-blue">📝 رفع: '+r.total+' تقرير</span><span class="badge badge-green">✅ قفل: '+r.closed+'</span><span class="badge badge-red">🔓 مفتوح: '+(r.total-r.closed)+'</span><br><span class="badge">👀 ملاحظات: '+r.obs+'</span><span class="badge">⚡ وشيكة: '+r.near+'</span><span class="badge">🚨 حوادث: '+r.acc+'</span><br><span class="badge badge-green">نسبة الغلق: '+rate+'%</span></div>';
+    return '<div style="margin-top:10px;"><span class="badge badge-blue">📝 Uploaded: '+r.total+' reports</span><span class="badge badge-green">✅ Closed: '+r.closed+'</span><span class="badge badge-red">🔓 Open: '+(r.total-r.closed)+'</span><br><span class="badge">👀 Observations: '+r.obs+'</span><span class="badge">⚡ Near Miss: '+r.near+'</span><span class="badge">🚨 Accidents: '+r.acc+'</span><br><span class="badge badge-green">Close Rate: '+rate+'%</span></div>';
   }
   let top1=document.getElementById('top1Box');
   if(ranked.length && ranked[0].total>0){
     let r=ranked[0];
-    top1.innerHTML='<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 الموظف المثالي - '+months[selMonth]+' '+selYear+'</h2><p style="color:#78909C;margin:4px 0;">المركز الأول</p>'+imgHTML(r.user,150)+'<h2 style="margin:10px 0 0;">'+(r.user.name||'بدون اسم')+'</h2><p style="margin:4px 0;color:#78909C;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    top1.innerHTML='<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 Employee Of The Month - '+months[selMonth]+' '+selYear+'</h2><p style="color:#78909C;margin:4px 0;">1st Place</p>'+imgHTML(r.user,150)+'<h2 style="margin:10px 0 0;">'+(r.user.name||'No Name')+'</h2><p style="margin:4px 0;color:#78909C;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   } else {
-    top1.innerHTML='<div class="card"><h3>لسه مفيش تقارير في '+months[selMonth]+' '+selYear+'</h3><p style="color:#78909C;">أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>';
+    top1.innerHTML='<div class="card"><h3>No reports yet in '+months[selMonth]+' '+selYear+'</h3><p style="color:#78909C;">Once employees upload reports, ranking will appear here automatically</p></div>';
   }
   let top23=document.getElementById('top23Box');
   let html23='';
   if(ranked[1] && ranked[1].total>0){
     let r=ranked[1];
-    html23+='<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">المركز الثاني</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">2nd Place</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   if(ranked[2] && ranked[2].total>0){
     let r=ranked[2];
-    html23+='<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">المركز الثالث</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">3rd Place</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   top23.innerHTML=html23;
   let rest=document.getElementById('restBox');
   let restList=ranked.slice(3);
   if(restList.length){
-    rest.innerHTML='<h3 style="margin:10px 0;">📋 باقي الترتيب</h3>'+restList.map((r,i)=>{
+    rest.innerHTML='<h3 style="margin:10px 0;">📋 Rest Of Ranking</h3>'+restList.map((r,i)=>{
       let rank=i+4;
-      return '<div class="list-row"><div class="rank-num">'+rank+'</div>'+imgHTML(r.user,64)+'<div style="flex:1;"><b style="font-size:16px;">'+(r.user.name||'بدون اسم')+'</b><div style="color:#78909C;font-size:13px;">'+(r.user.job||'')+' '+(r.user.code?' - كود: '+r.user.code:'')+'</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">رفع: '+r.total+'</span><span class="badge badge-green">قفل: '+r.closed+'</span><span class="badge">👀 '+r.obs+' | ⚡ '+r.near+' | 🚨 '+r.acc+'</span><span class="badge badge-green">غلق: '+(r.total?Math.round(r.closed/r.total*100):0)+'%</span></div></div></div>';
+      return '<div class="list-row"><div class="rank-num">'+rank+'</div>'+imgHTML(r.user,64)+'<div style="flex:1;"><b style="font-size:16px;">'+(r.user.name||'No Name')+'</b><div style="color:#78909C;font-size:13px;">'+(r.user.job||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">Uploaded: '+r.total+'</span><span class="badge badge-green">Closed: '+r.closed+'</span><span class="badge">👀 '+r.obs+' | ⚡ '+r.near+' | 🚨 '+r.acc+'</span><span class="badge badge-green">Close: '+(r.total?Math.round(r.closed/r.total*100):0)+'%</span></div></div></div>';
     }).join('');
   } else rest.innerHTML='';
 }
