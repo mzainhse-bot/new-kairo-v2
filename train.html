@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>التدريبات - RMED</title>
+<title>Trainings - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -37,107 +37,106 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:1fr;}}
-.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
 .hours-box{display:flex;gap:8px;}
 .hours-box button{flex:1;padding:12px;border:2px solid #CFD8DC;background:#fff;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px;color:#0A1F44}
-.hours-box button.active{background:#0A1F44;color:#fff;border-color:#0A1F44;}
+.hours-box button.active{background:#0F2A4D;color:#fff;border-color:#0F2A4D;}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train" class="active"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> التدريبات</h1><small>تسجيل التدريبات اليومية - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> Trainings</h1><small>Daily Trainings Registration - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 <div class="kpi-grid">
-<div class="kpi"><b id="k-train">0</b><small>عدد التدريبات</small></div>
-<div class="kpi"><b id="k-att">0</b><small>إجمالي الحضور</small></div>
-<div class="kpi red"><b id="k-hours">0</b><small>إجمالي ساعات التدريب</small></div>
+<div class="kpi"><b id="k-train">0</b><small>Trainings Count</small></div>
+<div class="kpi"><b id="k-att">0</b><small>Total Attendance</small></div>
+<div class="kpi red"><b id="k-hours">0</b><small>Total Training Hours</small></div>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 5px;">🎓 تسجيل تدريب جديد</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">اكتب الاسم هيجيب الكود والمهنة لوحدهم، أو اكتب الكود هيجيب الاسم والمهنة لوحدهم</p>
+<h2 style="margin:0 0 5px;">🎓 Register New Training</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">Write name and code & job will load automatically, or write code and name & job will load automatically</p>
 <div class="grid">
-<div><label>📅 التاريخ *</label><input type="date" id="t-date"></div>
-<div><label>⏰ الوقت *</label><input type="time" id="t-time"></div>
-<div><label>📚 عنوان التدريب *</label><input id="t-title" placeholder="مثال: العمل على ارتفاع - الحريق - السقالات"></div>
-<div><label>📍 مكان التدريب *</label><input id="t-place" placeholder="مثال: الموقع - قاعة التدريب"></div>
-<div><label>👤 اسم المتدرب *</label><input id="t-name" list="workersList" placeholder="اكتب الاسم..." oninput="autoFromName()"><datalist id="workersList"></datalist></div>
-<div><label>🆔 الكود</label><input id="t-code" placeholder="اكتب الكود..." oninput="autoFromCode()"></div>
-<div><label>👷 المهنة - تحمل تلقائي</label><input id="t-job" placeholder="هتتحمل لوحدها" readonly style="background:#F4F6F9;"></div>
-<div><label>🏢 اسم الشركة</label><input id="t-company" value="RMED" placeholder="RMED"></div>
-<div><label>⏱️ عدد الساعات *</label><div class="hours-box" id="hoursBox">
-<button type="button" onclick="setHours(1,this)">1 ساعة</button>
-<button type="button" onclick="setHours(2,this)">2 ساعة</button>
-<button type="button" onclick="setHours(3,this)">3 ساعة</button>
+<div><label>📅 Date *</label><input type="date" id="t-date"></div>
+<div><label>⏰ Time *</label><input type="time" id="t-time"></div>
+<div><label>📚 Training Title *</label><input id="t-title" placeholder="Example: Work at Height - Fire - Scaffolds"></div>
+<div><label>📍 Training Place *</label><input id="t-place" placeholder="Example: Site - Training Hall"></div>
+<div><label>👤 Trainee Name *</label><input id="t-name" list="workersList" placeholder="Write name..." oninput="autoFromName()"><datalist id="workersList"></datalist></div>
+<div><label>🆔 Code</label><input id="t-code" placeholder="Write code..." oninput="autoFromCode()"></div>
+<div><label>👷 Job - Auto Load</label><input id="t-job" placeholder="Will load automatically" readonly style="background:#F4F6F9;"></div>
+<div><label>🏢 Company Name</label><input id="t-company" value="RMED" placeholder="RMED"></div>
+<div><label>⏱️ Hours Count *</label><div class="hours-box" id="hoursBox">
+<button type="button" onclick="setHours(1,this)">1 Hour</button>
+<button type="button" onclick="setHours(2,this)">2 Hours</button>
+<button type="button" onclick="setHours(3,this)">3 Hours</button>
 </div></div>
-<div><label>🧑‍🏫 اسم المدرب *</label><input id="t-trainer" placeholder="اسم المدرب"></div>
+<div><label>🧑‍🏫 Trainer Name *</label><input id="t-trainer" placeholder="Trainer name"></div>
 </div>
-<button class="btn red" onclick="addTraining()">💾 حفظ التدريب</button>
+<button class="btn red" onclick="addTraining()">💾 Save Training</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 سجل التدريبات</h2>
-<input id="searchT" placeholder="ابحث بالاسم أو الكود أو عنوان التدريب أو المدرب..." oninput="renderTrain()">
-<div id="trainTable"><p style="text-align:center;">⏳ جاري التحميل من فايربيز...</p></div>
+<h2 style="margin:0 0 10px;">📋 Trainings Record</h2>
+<input id="searchT" placeholder="Search by name, code, training title or trainer..." oninput="renderTrain()">
+<div id="trainTable"><p style="text-align:center;">⏳ Loading from Firebase...</p></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
-<button class="btn2" onclick="exportTrain()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV</button>
-<button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+<button class="btn2" onclick="exportTrain()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
+<button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -148,12 +147,13 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
+// ✅ Sidebar
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -163,7 +163,7 @@ function getReporter(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
 let me = null;
@@ -180,8 +180,9 @@ function setHours(h,btn){
 async function loadAll(){
   try{
     if(window.db){
-      let s1=await db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()}));
-      let s2=await db.collection('train').orderBy('createdAt','desc').get(); DB.train=[]; s2.forEach(d=>DB.train.push({id:d.id,...d.data()}));
+      let s1=await window.db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()}));
+      let s2=await window.db.collection('train').get(); DB.train=[]; s2.forEach(d=>DB.train.push({id:d.id,...d.data()}));
+      DB.train.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log(e); }
   if(DB.train.length===0 && DB.workers.length===0){
@@ -204,20 +205,20 @@ function autoFromCode(){
   if(w){ setVal('t-name',w.name); setVal('t-job',w.job||''); setVal('t-company',w.company||'RMED'); }
 }
 async function addTraining(){
-  if(!val('t-date')) return alert('اختار التاريخ');
-  if(!val('t-time')) return alert('اختار الوقت');
-  if(!val('t-title')) return alert('اكتب عنوان التدريب');
-  if(!val('t-name')) return alert('اكتب اسم المتدرب');
-  if(!selHours) return alert('اختار عدد الساعات 1 أو 2 أو 3');
+  if(!val('t-date')) return alert('Select date');
+  if(!val('t-time')) return alert('Select time');
+  if(!val('t-title')) return alert('Write training title');
+  if(!val('t-name')) return alert('Write trainee name');
+  if(!selHours) return alert('Select hours 1 or 2 or 3');
   let trainer=val('t-trainer')||(me?me.name:'')||getReporter();
-  if(!trainer) return alert('اكتب اسم المدرب');
-  if(!window.db) return alert('فايربيز مش متصل');
+  if(!trainer) return alert('Write trainer name');
+  if(!window.db) return alert('Firebase not connected');
   let rec={date:val('t-date'),time:val('t-time'),title:val('t-title'),place:val('t-place'),name:val('t-name'),code:val('t-code'),job:val('t-job'),company:val('t-company')||'RMED',hours:selHours,trainer:trainer,reporter:trainer,reporterName:trainer,createdAt:new Date().toISOString()};
   try{
-    let ref=await db.collection('train').add(rec); rec.id=ref.id;
-  }catch(e){ alert('مشكلة في الحفظ في فايربيز: '+e.message); return; }
+    let ref=await window.db.collection('train').add(rec); rec.id=ref.id;
+  }catch(e){ alert('Save problem in Firebase: '+e.message); return; }
   DB.train.unshift(rec); renderTrain();
-  alert('✅ تم حفظ التدريب في فايربيز - '+rec.name+' - '+rec.hours+' ساعة');
+  alert('✅ Saved training in Firebase - '+rec.name+' - '+rec.hours+' Hours');
   ['t-title','t-place','t-name','t-code','t-job'].forEach(id=>setVal(id,''));
   setVal('t-company','RMED'); selHours=0;
   document.querySelectorAll('#hoursBox button').forEach(b=>b.classList.remove('active'));
@@ -230,27 +231,27 @@ function renderTrain(){
   let totalHours=DB.train.reduce((s,x)=>s+(parseInt(x.hours)||0),0);
   document.getElementById('k-train').innerText=totalTrain;
   document.getElementById('k-att').innerText=totalAtt;
-  document.getElementById('k-hours').innerText=totalHours+' ساعة';
-  if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تدريبات لسه - سجل أول تدريب فوق</p>'; return; }
-  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.map((x)=>{
+  document.getElementById('k-hours').innerText=totalHours+' Hours';
+  if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">No trainings yet - Register first training above</p>'; return; }
+  document.getElementById('trainTable').innerHTML='<table><tr><th>Date</th><th>Time</th><th>Training Title</th><th>Trainee</th><th>Code</th><th>Job</th><th>Place</th><th>Hours</th><th>Trainer</th><th>Delete</th></tr>'+list.map((x)=>{
     let realIdx=DB.train.indexOf(x);
-    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.name+'</td><td>'+(x.code||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.place||'-')+'</td><td><span class="badge">'+x.hours+' ساعة</span></td><td>'+x.trainer+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain('+realIdx+')">🗑️</button></td></tr>';
+    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.name+'</td><td>'+(x.code||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.place||'-')+'</td><td><span class="badge">'+x.hours+' Hours</span></td><td>'+x.trainer+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain('+realIdx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 async function delTrain(i){
-  if(!confirm('تحذف التدريب ده؟')) return;
+  if(!confirm('Delete this training?')) return;
   let rec=DB.train[i];
-  try{ if(rec.id && window.db) await db.collection('train').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec.id && window.db) await window.db.collection('train').doc(rec.id).delete(); }catch(e){}
   DB.train.splice(i,1); renderTrain();
 }
 async function clearTrain(){
-  if(!confirm('تمسح كل التدريبات من فايربيز؟')) return;
-  try{ if(window.db){ let snap=await db.collection('train').get(); for(let d of snap.docs) await db.collection('train').doc(d.id).delete(); } }catch(e){}
+  if(!confirm('Delete all trainings from Firebase?')) return;
+  try{ if(window.db){ let snap=await window.db.collection('train').get(); for(let d of snap.docs) await window.db.collection('train').doc(d.id).delete(); } }catch(e){}
   DB.train=[]; renderTrain();
 }
 function exportTrain(){
-  if(!DB.train.length) return alert('مفيش بيانات');
-  let csv='التاريخ,الوقت,عنوان التدريب,المتدرب,الكود,المهنة,المكان,الساعات,الشركة,المدرب\n'+DB.train.map(x=>[x.date,x.time,x.title,x.name,x.code,x.job,x.place,x.hours,x.company,x.trainer].join(',')).join('\n');
+  if(!DB.train.length) return alert('No data');
+  let csv='Date,Time,Training Title,Trainee,Code,Job,Place,Hours,Company,Trainer\n'+DB.train.map(x=>[x.date,x.time,x.title,x.name,x.code,x.job,x.place,x.hours,x.company,x.trainer].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trainings.csv'; a.click();
 }
 document.getElementById('t-date').value=new Date().toISOString().slice(0,10);
