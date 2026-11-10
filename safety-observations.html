@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-/* ✅ الشريط الجانبي - التصميم الجديد - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -114,7 +113,7 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </aside>
 
 <div class="main">
-<div class="page-head"><div><h1>RMED <span>•</span> ملاحظات السلامة</h1><small>Safety Observations - التصميم الجديد</small></div><button onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div>
+<div class="page-head"><div><h1>RMED <span>•</span> ملاحظات السلامة</h1><small>Safety Observations - من فايربيز</small></div><button onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div>
 <div class="container">
 
 <h1 class="title">📋 ملاحظات <span>السلامة</span></h1>
@@ -168,13 +167,16 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -187,23 +189,32 @@ function getReporter(){
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-let data = JSON.parse(localStorage.getItem('safety_obs')||'[]');
-try{
-  let DB0=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-  let oldObs=DB0.observations||DB0.safetyObservations||DB0.obs||[];
-  if(oldObs.length && !data.length){
-    data=oldObs.map(o=>({reporter:o.reporter||o.reporterName||o.createdBy||'',date:o.date||o.createdAt||'',time:o.time||'',type:o.type||'ظرف غير آمن',place:o.place||'',status:o.status||'مفتوح',desc:o.desc||o.description||'',action:o.action||o.corrective||'',img1:o.img1||o.img||'',img2:o.img2||''}));
-    localStorage.setItem('safety_obs',JSON.stringify(data));
-  }
-}catch(e){}
-function syncToDB(){
+// ✅ FIREBASE - بدل localStorage
+let data = [];
+
+async function loadObs(){
   try{
-    let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    DB.observations=data.map(d=>({reporter:d.reporter,reporterName:d.reporter,date:d.date,time:d.time,type:d.type,place:d.place,status:d.status,desc:d.desc,action:d.action,img1:d.img1,img2:d.img2,createdAt:d.date}));
-    DB.safetyObservations=DB.observations; DB.obs=DB.observations;
-    localStorage.setItem('safetyDB',JSON.stringify(DB));
+    if(window.db){
+      let snap = await db.collection('observations').orderBy('createdAt','desc').get();
+      data = [];
+      snap.forEach(d=> data.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  // fallback قديم
+  try{
+    if(!data.length){
+      let old=JSON.parse(localStorage.getItem('safety_obs')||'[]');
+      if(old.length) data=old;
+      else{
+        let DB0=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+        let oldObs=DB0.observations||[];
+        if(oldObs.length) data=oldObs.map(o=>({reporter:o.reporter||o.reporterName||'',date:o.date||'',time:o.time||'',type:o.type||'ظرف غير آمن',place:o.place||'',status:o.status||'مفتوح',desc:o.desc||o.description||'',action:o.action||o.corrective||'',img1:o.img1||o.img||'',img2:o.img2||''}));
+      }
+    }
   }catch(e){}
+  render();
 }
+
 document.getElementById('date').value = new Date().toISOString().slice(0,10);
 document.getElementById('time').value = new Date().toTimeString().slice(0,5);
 let _rep=getReporter(); if(_rep) document.getElementById('reporter').value=_rep;
@@ -218,13 +229,19 @@ let status=document.getElementById('status').value;
 let desc=document.getElementById('desc').value.trim();
 let action=document.getElementById('action').value.trim();
 if(!reporter||!date||!place||!desc){alert('اكمل الاسم والتاريخ والمكان والوصف');return}
-readFile(document.getElementById('img1').files[0], img1=>{
-readFile(document.getElementById('img2').files[0], img2=>{
-data.unshift({reporter,date,time,type,place,status,desc,action,img1,img2});
-localStorage.setItem('safety_obs',JSON.stringify(data)); syncToDB();
+if(!window.db) return alert('فايربيز مش متصل');
+readFile(document.getElementById('img1').files[0], async img1=>{
+readFile(document.getElementById('img2').files[0], async img2=>{
+let rec={reporter,reporterName:reporter,date,time,type,place,status,desc,action,img1,img2,createdAt:new Date().toISOString()};
+try{
+  let ref = await db.collection('observations').add(rec);
+  rec.id = ref.id;
+  data.unshift(rec);
+}catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
 document.getElementById('desc').value='';document.getElementById('action').value='';document.getElementById('place').value='';
+document.getElementById('img1').value=''; document.getElementById('img2').value='';
 let _r=getReporter(); if(_r) document.getElementById('reporter').value=_r;
-render(); alert('تم حفظ الملاحظة ✅');
+render(); alert('تم حفظ الملاحظة في فايربيز ✅');
 });});
 }
 function render(){
@@ -259,15 +276,25 @@ document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
 <td><button class="del" onclick="delObs(${data.indexOf(d)})">حذف</button></td>
 </tr>`).join('') || '<tr><td colspan="11">لا توجد ملاحظات بعد</td></tr>';
 }
-function toggle(i){ data[i].status = data[i].status=='مفتوح'?'مغلق':'مفتوح'; localStorage.setItem('safety_obs',JSON.stringify(data)); syncToDB(); render(); }
-function delObs(i){ if(confirm('متأكد تحذف الملاحظة؟')){ data.splice(i,1); localStorage.setItem('safety_obs',JSON.stringify(data)); syncToDB(); render(); } }
+async function toggle(i){
+  let rec=data[i];
+  let newStatus = rec.status=='مفتوح'?'مغلق':'مفتوح';
+  try{ if(rec && rec.id && window.db) await db.collection('observations').doc(rec.id).update({status:newStatus}); }catch(e){}
+  rec.status=newStatus; render();
+}
+async function delObs(i){
+  if(!confirm('متأكد تحذف الملاحظة؟')) return;
+  let rec=data[i];
+  try{ if(rec && rec.id && window.db) await db.collection('observations').doc(rec.id).delete(); }catch(e){}
+  data.splice(i,1); render();
+}
 function exportExcel(){
 let csv='\uFEFFالتاريخ,الساعة,المبلغ,النوع,المكان,الوصف,الاجراء التصحيحي,الحالة\n';
 data.forEach(d=>{ csv+=`"${d.date}","${d.time}","${d.reporter}","${d.type}","${d.place}","${d.desc}","${d.action}","${d.status}"\n`; });
 let blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
 let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safety-observations.csv'; a.click();
 }
-render();
+loadObs();
 </script>
 </body>
 </html>
