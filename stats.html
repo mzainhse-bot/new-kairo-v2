@@ -36,7 +36,6 @@
 .filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
 .filter button{border:1px solid #CFD8DC;background:#ECEFF1;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
 .filter button.active{background:#0A1F44;color:#fff}
-.filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;cursor:pointer}
 .selector{background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .selector label{font-weight:bold}
 .selector select{padding:10px 12px;border-radius:10px;border:1px solid #FFB74D;font-weight:bold;background:#fff;min-width:140px}
@@ -53,11 +52,12 @@ table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A
 .btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px}
 canvas{max-width:260px;margin:auto;display:block}
 .print-head{display:none}
+.debug{background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8}
 @media print{
   body{background:#fff}
   .sidebar,.topbar,.overlay,.page-head{display:none !important}
   .main{margin:0}
-  .filter, .no-print{display:none !important}
+  .filter, .no-print, .debug{display:none !important}
   .print-head{display:block;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:12px}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
   .container{max-width:100%;padding:0}
@@ -71,19 +71,14 @@ canvas{max-width:260px;margin:auto;display:block}
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
-  <div class="user-box">
-    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
-  </div>
+  <div class="user-box"><img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div></div>
   <div class="menu-title">📊 الرئيسية</div>
   <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
   <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
   <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
   <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
   <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
   <div class="menu-title">👷 العمال والتدريب</div>
   <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
@@ -107,32 +102,29 @@ canvas{max-width:260px;margin:auto;display:block}
   <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
 </aside>
-
 <div class="main">
 <div class="page-head"><h2>📊 إحصائيات الموقع ككل - RMED</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 إنجازاتي</button> <button class="btn" onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div></div>
 <div class="container">
 <div class="print-head"><h1>📊 تقرير إحصائيات السلامة - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
-
+<div class="debug no-print" id="debugBox">⏳ جاري التحميل من فايربيز...</div>
 <div class="filter"><b>📅 نوع الفترة:</b>
-<button data-period="month" onclick="setPeriod('month',this)" class="active">شهري</button><button data-period="quarter" onclick="setPeriod('quarter',this)">ربع سنوي</button><button data-period="half" onclick="setPeriod('half',this)">نصف سنوي</button><button data-period="year" onclick="setPeriod('year',this)">سنوي</button><button data-period="all" onclick="setPeriod('all',this)">من بداية المشروع</button>
+<button data-period="month" onclick="setPeriod('month',this)">شهري</button><button data-period="quarter" onclick="setPeriod('quarter',this)">ربع سنوي</button><button data-period="half" onclick="setPeriod('half',this)">نصف سنوي</button><button data-period="year" onclick="setPeriod('year',this)">سنوي</button><button data-period="all" onclick="setPeriod('all',this)" class="active">من بداية المشروع</button>
 <span style="flex:1;"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 رمضان: متوقف</button>
 </div>
-
-<div class="selector" id="selectorBox">
+<div class="selector" id="selectorBox" style="display:none;">
 <span id="selectorTitle" style="font-weight:bold;">🗓️ اختار الشهر:</span>
 <span id="selectorControls"></span>
 <span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
 </div>
-
 <div class="grid">
 <div class="kpi blue"><b id="s-avgWorkers">0</b><small>متوسط عدد العمال</small></div>
-<div class="kpi blue"><b id="s-workDays">0</b><small>إجمالي أيام العمل <span id="workDaysNote" style="color:#D32F2F;">(من بداية المشروع بس)</span></small></div>
+<div class="kpi blue"><b id="s-workDays">0</b><small>إجمالي أيام العمل</small></div>
 <div class="kpi green"><b id="s-safeHours">0</b><small>إجمالي الساعات الآمنة</small></div>
 <div class="kpi"><b id="s-inductionCount">0</b><small>محاضرات التوعية - العدد</small></div>
-<div class="kpi"><b id="s-inductionHours">0</b><small>ساعات التوعية (العدد × ربع ساعة)</small></div>
+<div class="kpi"><b id="s-inductionHours">0</b><small>ساعات التوعية</small></div>
 <div class="kpi"><b id="s-weeklyCount">0</b><small>المحاضرات الأسبوعية - العدد</small></div>
 <div class="kpi"><b id="s-weeklyAttend">0</b><small>إجمالي حضور الأسبوعية</small></div>
-<div class="kpi"><b id="s-weeklyHours">0</b><small>ساعات الأسبوعية (الحضور × نص ساعة)</small></div>
+<div class="kpi"><b id="s-weeklyHours">0</b><small>ساعات الأسبوعية</small></div>
 <div class="kpi orange"><b id="s-trainCount">0</b><small>عدد التدريبات</small></div>
 <div class="kpi orange"><b id="s-trainPeople">0</b><small>عدد المتدربين</small></div>
 <div class="kpi orange"><b id="s-trainHours">0</b><small>إجمالي ساعات التدريبات</small></div>
@@ -144,50 +136,44 @@ canvas{max-width:260px;margin:auto;display:block}
 <div class="kpi red"><b id="s-ncrCount">0</b><small>حالات عدم المطابقة - العدد</small></div>
 <div class="kpi red"><b id="s-ncrRate">0%</b><small>نسبة غلق عدم المطابقة</small></div>
 </div>
-
 <div class="three">
 <div class="card"><h3 style="margin:0;">⚠️ الحوادث الوشيكة</h3><p>العدد: <b id="nm-count">0</b> | نسبة الغلق: <b id="nm-rate">0%</b><br>مغلق: <b id="nm-closed">0</b> | مفتوح: <b id="nm-open">0</b></p><canvas id="nmChart" width="260" height="260"></canvas></div>
 <div class="card"><h3 style="margin:0;">👀 ملاحظات السلامة</h3><p>العدد: <b id="obs-count">0</b> | نسبة الغلق: <b id="obs-rate">0%</b><br>مغلق: <b id="obs-closed">0</b> | مفتوح: <b id="obs-open">0</b></p><canvas id="obsChart" width="260" height="260"></canvas></div>
 <div class="card"><h3 style="margin:0;">📋 حالات عدم المطابقة - NCR</h3><p>العدد: <b id="ncr-count2">0</b> | نسبة الغلق: <b id="ncr-rate2">0%</b><br>مغلق: <b id="ncr-closed">0</b> | مفتوح: <b id="ncr-open">0</b></p><canvas id="ncrChart" width="260" height="260"></canvas></div>
 </div>
-
 <div class="card"><h3 style="margin:0 0 10px;">📋 ملخص الفترة - <span id="summaryPeriod"></span></h3><div id="summary"></div></div>
-<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة التقرير</button><p style="color:#78909C;font-size:12px;">لما تدوس، اختار من نافذة الطباعة: Destination = Save as PDF</p></div>
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 تصدير PDF / طباعة التقرير</button></div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-function getReporter(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
-  if(typeof u==='object' && u.name) return u.name;
-  return localStorage.getItem('safetyUser')||'';
-}
-(function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
-  let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
-})();
+function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
+function getReporter(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u.name; }catch(e){} return ''; }
+(function(){ let page=location.pathname.split('/').pop().replace('.html','')||'index'; document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); }); let nm=getReporter(); if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; } })();
 
-// ✅ FIREBASE - بدل localStorage
+// ✅ FIX: دمج فايربيز + localStorage القديم + إزالة التكرار
 let DB={dailyWorkers:[], induction:[], weeklyLect:[], train:[], accidents:[], violations:[], empViolations:[], ncr:[], nearMiss:[], observations:[]};
 let loaded=false;
-
+function dedupe(arr){
+  let seen=new Set(); let out=[];
+  for(let x of (arr||[])){
+    let k=(x.id||'')+'|'+(x.date||x.createdAt||'')+'|'+(x.company||'')+'|'+(x.desc||x.title||'')+'|'+(x.reporter||'');
+    if(x.id && !String(x.id).startsWith('local-')){ if(seen.has('id:'+x.id)) continue; seen.add('id:'+x.id); }
+    else if(seen.has(k)) continue; else seen.add(k);
+    out.push(x);
+  }
+  return out;
+}
 async function fetchCol(names){
   if(!window.db) return [];
+  let all=[];
   for(let n of names){
-    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+    try{ let s=await db.collection(n).get(); s.forEach(d=>all.push({id:d.id, ...d.data()})); }catch(e){}
   }
-  return [];
+  return all;
 }
 async function loadAll(){
   DB.dailyWorkers = await fetchCol(['dailyWorkers','daily-count','dailyCount']);
@@ -196,168 +182,86 @@ async function loadAll(){
   DB.train = await fetchCol(['train','trainings']);
   DB.accidents = await fetchCol(['accidents']);
   DB.violations = await fetchCol(['violations']);
-  DB.empViolations = await fetchCol(['employeeViolations','employee-violations']);
+  DB.empViolations = await fetchCol(['employeeViolations','employee-violations','empViolations']);
   DB.ncr = await fetchCol(['ncr']);
   DB.nearMiss = await fetchCol(['nearMiss','near-miss']);
   DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
-  // fallback قديم
+  // ✅ دمج القديم من localStorage - مش استبدال
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
-    if(!DB.observations.length){ try{ let extra=JSON.parse(localStorage.getItem('safety_obs')||'[]'); if(extra.length) DB.observations=extra; }catch(e){} }
+    let map={dailyWorkers:'dailyWorkers',induction:'induction',weeklyLect:'weeklyLect',train:'train',accidents:'accidents',violations:'violations',empViolations:'empViolations',ncr:'ncr',nearMiss:'nearMiss',observations:'observations'};
+    for(let k in map){
+      let extra=[];
+      if(old[map[k]]) extra=extra.concat(old[map[k]]);
+      if(k==='dailyWorkers' && old.dailyCount) extra=extra.concat(old.dailyCount);
+      if(k==='weeklyLect' && old.weekly) extra=extra.concat(old.weekly);
+      if(k==='empViolations' && old.employeeViolations) extra=extra.concat(old.employeeViolations);
+      DB[k]=dedupe([...DB[k], ...extra]);
+    }
+    let extraObs=[]; try{ extraObs=JSON.parse(localStorage.getItem('safety_obs')||'[]'); }catch(e){}
+    DB.observations=dedupe([...DB.observations, ...extraObs]);
   }catch(e){}
   loaded=true;
+  document.getElementById('debugBox').innerHTML='🔍 <b>إجمالي في قاعدة البيانات (قبل فلتر التاريخ):</b> مخالفات مقاولين: <b>'+DB.violations.length+'</b> | مخالفات موظفين: <b>'+DB.empViolations.length+'</b> | حوادث: <b>'+DB.accidents.length+'</b> | وشيكة: <b>'+DB.nearMiss.length+'</b> | ملاحظات: <b>'+DB.observations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | تدريبات: <b>'+DB.train.length+'</b><br>لو الرقم هنا صح والكارت تحت غلط، يبقى المشكلة في فلتر التاريخ - اختار "من بداية المشروع"';
   render();
 }
-
 let PROJECT_START=new Date('2026-05-01');
-let period='month';
+let period='all';
 let ramadan=localStorage.getItem('safetyRamadan')==='1';
-let nowD=new Date();
-let selYear=nowD.getFullYear();
-let selMonth=nowD.getMonth();
-let selQuarter=Math.floor(nowD.getMonth()/3)+1;
-let selHalf=nowD.getMonth()<6?1:2;
-function setPeriod(p,btn){
-  period=p;
-  document.querySelectorAll('[data-period]').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  buildSelector();
-  render();
-}
+let nowD=new Date(); let selYear=nowD.getFullYear(); let selMonth=nowD.getMonth(); let selQuarter=Math.floor(nowD.getMonth()/3)+1; let selHalf=nowD.getMonth()<6?1:2;
+function setPeriod(p,btn){ period=p; document.querySelectorAll('[data-period]').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); buildSelector(); render(); }
 function toggleRamadan(){ ramadan=!ramadan; localStorage.setItem('safetyRamadan', ramadan?'1':'0'); render(); }
-function exportPDF(){
-  let r=getRange();
-  let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
-  let detail='';
-  if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear;
-  if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear;
-  if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear;
-  if(period==='year') detail=' - سنة '+selYear;
-  document.getElementById('printPeriod').innerText='الفترة: '+pName+detail+' - من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG')+' | رمضان: '+(ramadan?'شغال - ×6':'متوقف');
-  document.getElementById('printDate').innerText='تاريخ استخراج التقرير: '+new Date().toLocaleDateString('ar-EG')+' - '+new Date().toLocaleTimeString('ar-EG');
-  document.title='تقرير إحصائيات السلامة - '+pName+detail+' - RMED';
-  window.print();
-}
+function exportPDF(){ let r=getRange(); let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period]; let detail=''; if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear; if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear; if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear; if(period==='year') detail=' - سنة '+selYear; document.getElementById('printPeriod').innerText='الفترة: '+pName+detail+' - من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG'); document.getElementById('printDate').innerText='تاريخ استخراج التقرير: '+new Date().toLocaleDateString('ar-EG'); document.title='تقرير إحصائيات السلامة - '+pName+detail+' - RMED'; window.print(); }
 function getMonthName(m){ return ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'][m]; }
-function yearOptions(selected){
-  let html=''; for(let y=2026;y<=2030;y++){ html+=`<option value="${y}" ${y==selected?'selected':''}>${y}</option>`; } return html;
-}
+function yearOptions(selected){ let html=''; for(let y=2026;y<=2030;y++){ html+='<option value="'+y+'" '+(y==selected?'selected':'')+'>'+y+'</option>'; } return html; }
 function buildSelector(){
-  let box=document.getElementById('selectorControls');
-  let title=document.getElementById('selectorTitle');
-  let selBox=document.getElementById('selectorBox');
-  if(period==='all'){ selBox.style.display='none'; return; }
-  selBox.style.display='flex';
-  if(period==='month'){
-    title.innerText='🗓️ اختار الشهر والسنة:';
-    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
-    <label>الشهر:</label><select id="inMonth" onchange="selMonth=+this.value;render();">${[0,1,2,3,4,5,6,7,8,9,10,11].map(m=>`<option value="${m}" ${m==selMonth?'selected':''}>${getMonthName(m)}</option>`).join('')}</select>`;
-  }
-  if(period==='quarter'){
-    title.innerText='🗓️ اختار الربع والسنة:';
-    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
-    <label>الربع:</label><select id="inQuarter" onchange="selQuarter=+this.value;render();">
-    <option value="1" ${selQuarter==1?'selected':''}>الربع الأول (يناير - مارس)</option>
-    <option value="2" ${selQuarter==2?'selected':''}>الربع الثاني (أبريل - يونيو)</option>
-    <option value="3" ${selQuarter==3?'selected':''}>الربع الثالث (يوليو - سبتمبر)</option>
-    <option value="4" ${selQuarter==4?'selected':''}>الربع الرابع (أكتوبر - ديسمبر)</option></select>`;
-  }
-  if(period==='half'){
-    title.innerText='🗓️ اختار النصف والسنة:';
-    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>
-    <label>النصف:</label><select id="inHalf" onchange="selHalf=+this.value;render();">
-    <option value="1" ${selHalf==1?'selected':''}>النصف الأول (يناير - يونيو)</option>
-    <option value="2" ${selHalf==2?'selected':''}>النصف الثاني (يوليو - ديسمبر)</option></select>`;
-  }
-  if(period==='year'){
-    title.innerText='🗓️ اختار السنة:';
-    box.innerHTML=`<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">${yearOptions(selYear)}</select>`;
-  }
+  let box=document.getElementById('selectorControls'); let title=document.getElementById('selectorTitle'); let selBox=document.getElementById('selectorBox');
+  if(period==='all'){ selBox.style.display='none'; return; } selBox.style.display='flex';
+  if(period==='month'){ title.innerText='🗓️ اختار الشهر والسنة:'; box.innerHTML='<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">'+yearOptions(selYear)+'</select><label>الشهر:</label><select id="inMonth" onchange="selMonth=+this.value;render();">'+[0,1,2,3,4,5,6,7,8,9,10,11].map(m=>'<option value="'+m+'" '+(m==selMonth?'selected':'')+'>'+getMonthName(m)+'</option>').join('')+'</select>'; }
+  if(period==='quarter'){ title.innerText='🗓️ اختار الربع والسنة:'; box.innerHTML='<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">'+yearOptions(selYear)+'</select><label>الربع:</label><select id="inQuarter" onchange="selQuarter=+this.value;render();"><option value="1" '+(selQuarter==1?'selected':'')+'>الربع الأول</option><option value="2" '+(selQuarter==2?'selected':'')+'>الربع الثاني</option><option value="3" '+(selQuarter==3?'selected':'')+'>الربع الثالث</option><option value="4" '+(selQuarter==4?'selected':'')+'>الربع الرابع</option></select>'; }
+  if(period==='half'){ title.innerText='🗓️ اختار النصف والسنة:'; box.innerHTML='<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">'+yearOptions(selYear)+'</select><label>النصف:</label><select id="inHalf" onchange="selHalf=+this.value;render();"><option value="1" '+(selHalf==1?'selected':'')+'>النصف الأول</option><option value="2" '+(selHalf==2?'selected':'')+'>النصف الثاني</option></select>'; }
+  if(period==='year'){ title.innerText='🗓️ اختار السنة:'; box.innerHTML='<label>السنة:</label><select id="inYear" onchange="selYear=+this.value;render();">'+yearOptions(selYear)+'</select>'; }
 }
-function getRange(){
-  let now=new Date(), start, end;
-  if(period==='month'){
-    start=new Date(selYear, selMonth, 1);
-    end=new Date(selYear, selMonth+1, 0, 23,59,59);
-    if(end>now) end=now;
-  }
-  if(period==='quarter'){
-    let sm=(selQuarter-1)*3;
-    start=new Date(selYear, sm, 1);
-    end=new Date(selYear, sm+3, 0, 23,59,59);
-    if(end>now) end=now;
-  }
-  if(period==='half'){
-    let sm=selHalf===1?0:6;
-    start=new Date(selYear, sm, 1);
-    end=new Date(selYear, sm+6, 0, 23,59,59);
-    if(end>now) end=now;
-  }
-  if(period==='year'){
-    start=new Date(selYear,0,1);
-    end=new Date(selYear,11,31,23,59,59);
-    if(end>now) end=now;
-  }
-  if(period==='all'){ start=new Date(PROJECT_START); end=now; }
-  return {start, end};
-}
-function inRange(d, r){ if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false; return dt>=r.start && dt<=r.end; }
+function getRange(){ let now=new Date(), start, end; if(period==='month'){ start=new Date(selYear, selMonth, 1); end=new Date(selYear, selMonth+1, 0, 23,59,59); if(end>now) end=now; } if(period==='quarter'){ let sm=(selQuarter-1)*3; start=new Date(selYear, sm, 1); end=new Date(selYear, sm+3, 0, 23,59,59); if(end>now) end=now; } if(period==='half'){ let sm=selHalf===1?0:6; start=new Date(selYear, sm, 1); end=new Date(selYear, sm+6, 0, 23,59,59); if(end>now) end=now; } if(period==='year'){ start=new Date(selYear,0,1); end=new Date(selYear,11,31,23,59,59); if(end>now) end=now; } if(period==='all'){ start=new Date(PROJECT_START); end=now; } return {start, end}; }
+function parseDate(d){ if(!d) return null; if(d && d.toDate) return d.toDate(); if(d && d.seconds) return new Date(d.seconds*1000); let dt=new Date(d); return isNaN(dt)?null:dt; }
+function inRange(d, r){ let dt=parseDate(d); if(!dt) return false; return dt>=r.start && dt<=r.end; }
+function getItemDate(x){ return x.date||x.createdAt||x.day||''; }
 function sum(arr, key){ return (arr||[]).reduce((a,x)=>a+(parseFloat(x[key])||0),0); }
 function isClosed(x){ let s=(x.status||x.state||x.closed||'').toString().trim().toLowerCase(); return ['closed','done','مغلق','تم','تم الغلق','مغلقة'].includes(s) || x.isClosed===true || x.closed===true; }
-function drawPie(canvasId, closed, open){
-  let c=document.getElementById(canvasId); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,260,260);
-  let total=closed+open; if(total===0){ ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',130,130); return; }
-  let a1=(closed/total)*Math.PI*2;
-  ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2, -Math.PI/2+a1); ctx.closePath(); ctx.fillStyle='#2E7D32'; ctx.fill();
-  ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2+a1, -Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fillStyle='#D32F2F'; ctx.fill();
-  ctx.beginPath(); ctx.arc(130,130,55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
-  ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',130,135);
-  ctx.font='12px Arial'; ctx.fillStyle='#2E7D32'; ctx.fillText('■ مغلق '+closed,130,200); ctx.fillStyle='#D32F2F'; ctx.fillText('■ مفتوح '+open,130,220);
-}
+function drawPie(canvasId, closed, open){ let c=document.getElementById(canvasId); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,260,260); let total=closed+open; if(total===0){ ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد بيانات',130,130); return; } let a1=(closed/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2, -Math.PI/2+a1); ctx.closePath(); ctx.fillStyle='#2E7D32'; ctx.fill(); ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2+a1, -Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fillStyle='#D32F2F'; ctx.fill(); ctx.beginPath(); ctx.arc(130,130,55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',130,135); ctx.font='12px Arial'; ctx.fillStyle='#2E7D32'; ctx.fillText('■ مغلق '+closed,130,200); ctx.fillStyle='#D32F2F'; ctx.fillText('■ مفتوح '+open,130,220); }
 function render(){
   if(!loaded) return;
-  let obsAll=[...(DB.observations||[])];
-  let seen=new Set(); obsAll=obsAll.filter(o=>{ let k=(o.date||'')+'|'+(o.reporter||'')+'|'+(o.desc||''); if(seen.has(k)) return false; seen.add(k); return true; });
   let r=getRange();
   let pName={month:'شهري',quarter:'ربع سنوي',half:'نصف سنوي',year:'سنوي',all:'من بداية المشروع'}[period];
-  let detail='';
-  if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear;
-  if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear;
-  if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear;
-  if(period==='year') detail=' - سنة '+selYear;
-  document.getElementById('periodLabel').innerText='من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG');
+  let detail=''; if(period==='month') detail=' - '+getMonthName(selMonth)+' '+selYear; if(period==='quarter') detail=' - الربع '+selQuarter+' - '+selYear; if(period==='half') detail=' - النصف '+(selHalf===1?'الأول':'الثاني')+' - '+selYear; if(period==='year') detail=' - سنة '+selYear;
+  let pl=document.getElementById('periodLabel'); if(pl) pl.innerText='من '+r.start.toLocaleDateString('ar-EG')+' إلى '+r.end.toLocaleDateString('ar-EG');
   document.getElementById('summaryPeriod').innerText=pName+detail;
   let btn=document.getElementById('ramadanBtn'); btn.innerText=ramadan?'🌙 رمضان: شغال - اضرب في 6':'🌙 رمضان: متوقف'; btn.classList.toggle('on', ramadan);
-  let daily=(DB.dailyWorkers||[]).filter(x=>inRange(x.date||x.day, r));
+  let daily=(DB.dailyWorkers||[]).filter(x=>inRange(getItemDate(x), r));
   let avgWorkers=daily.length? daily.reduce((a,x)=>a+((+x.workers||+x.count||+x.total||+x.num||0)),0)/daily.length : 0;
-  let workDays=0;
-  if(period==='all'){ workDays=new Set(daily.map(x=>x.date||x.day)).size; if(workDays===0){ workDays=Math.ceil((r.end-r.start)/(1000*60*60*24))+1; } document.getElementById('workDaysNote').style.display='inline'; }
-  else { workDays=new Set(daily.map(x=>x.date||x.day)).size; document.getElementById('workDaysNote').style.display='none'; }
-  let safeHours=0; let map={}; daily.forEach(x=>{ let d=x.date||x.day; if(d) map[d]=+x.workers||+x.count||+x.total||+x.num||0; });
+  let workDays=new Set(daily.map(x=>getItemDate(x))).size;
+  let safeHours=0; let map={}; daily.forEach(x=>{ let d=getItemDate(x); if(d) map[String(d).slice(0,10)]=+x.workers||+x.count||+x.total||+x.num||0; });
   let lastWorkers=avgWorkers; let cur=new Date(r.start); let end=new Date(r.end);
-  while(cur<=end){ let key=cur.toISOString().slice(0,10); let w=map[key]||lastWorkers; if(map[key]) lastWorkers=map[key]; let day=cur.getDay();
-    if(ramadan) safeHours+=w*6; else if(day===5) safeHours+=w*5; else safeHours+=w*12;
-    cur.setDate(cur.getDate()+1); }
-  let induction=(DB.induction||[]).filter(x=>inRange(x.date||x.createdAt, r));
-  let weekly=(DB.weeklyLect||[]).filter(x=>inRange(x.date||x.createdAt, r));
-  let weeklyAttend=weekly.reduce((a,x)=>a+((+x.attendance||+x.attendees||+x.present||0)),0);
+  while(cur<=end){ let key=cur.toISOString().slice(0,10); let w=map[key]||lastWorkers; if(map[key]) lastWorkers=map[key]; let day=cur.getDay(); if(ramadan) safeHours+=w*6; else if(day===5) safeHours+=w*5; else safeHours+=w*12; cur.setDate(cur.getDate()+1); }
+  let induction=(DB.induction||[]).filter(x=>inRange(getItemDate(x), r));
+  let weekly=(DB.weeklyLect||[]).filter(x=>inRange(getItemDate(x), r));
+  let weeklyAttend=weekly.reduce((a,x)=>a+((+x.attendance||+x.attendees||+x.present||+x.count||0)),0);
   if(weeklyAttend===0) weeklyAttend=weekly.reduce((a,x)=>a+((x.attendeesList||x.list||[]).length||0),0);
-  let trains=(DB.train||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let trains=(DB.train||[]).filter(x=>inRange(getItemDate(x), r));
   let trainPeople=trains.reduce((a,x)=>a+((+x.trainees||+x.count||0)),0);
   if(trainPeople===0) trainPeople=trains.reduce((a,x)=>a+((x.traineesList||[]).length||0),0);
   let trainHours=sum(trains,'hours')||sum(trains,'totalHours');
-  let nm=(DB.nearMiss||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let nm=(DB.nearMiss||[]).filter(x=>inRange(getItemDate(x), r));
   let nmClosed=nm.filter(isClosed).length;
-  let obs=obsAll.filter(x=>inRange(x.date||x.createdAt, r));
+  let obs=(DB.observations||[]).filter(x=>inRange(getItemDate(x), r));
   let obsClosed=obs.filter(isClosed).length;
-  let ncr=(DB.ncr||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let ncr=(DB.ncr||[]).filter(x=>inRange(getItemDate(x), r));
   let ncrClosed=ncr.filter(isClosed).length;
   let ncrRate=ncr.length? Math.round(ncrClosed/ncr.length*100):0;
-  let cViol=(DB.violations||[]).filter(x=>inRange(x.date||x.createdAt, r));
-  let cMoney=sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value');
-  let eViol=(DB.empViolations||[]).filter(x=>inRange(x.date||x.createdAt, r));
-  let acc=(DB.accidents||[]).filter(x=>inRange(x.date||x.createdAt, r));
+  let cViol=(DB.violations||[]).filter(x=>inRange(getItemDate(x), r));
+  let cMoney=sum(cViol,'deduct')||sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value');
+  let eViol=(DB.empViolations||[]).filter(x=>inRange(getItemDate(x), r));
+  let acc=(DB.accidents||[]).filter(x=>inRange(getItemDate(x), r));
   let injuries=acc.filter(x=>x.hasInjury===true||x.injury==='نعم'||x.injury==='yes'||(+x.injuryCount||0)>0||x.injuries>0).length;
   document.getElementById('s-avgWorkers').innerText=Math.round(avgWorkers*10)/10;
   document.getElementById('s-workDays').innerText=workDays;
@@ -381,17 +285,7 @@ function render(){
   document.getElementById('obs-count').innerText=obs.length; document.getElementById('obs-closed').innerText=obsClosed; document.getElementById('obs-open').innerText=obs.length-obsClosed; document.getElementById('obs-rate').innerText=obs.length? Math.round(obsClosed/obs.length*100)+'%':'0%';
   document.getElementById('ncr-count2').innerText=ncr.length; document.getElementById('ncr-closed').innerText=ncrClosed; document.getElementById('ncr-open').innerText=ncr.length-ncrClosed; document.getElementById('ncr-rate2').innerText=ncrRate+'%';
   drawPie('nmChart', nmClosed, nm.length-nmClosed); drawPie('obsChart', obsClosed, obs.length-obsClosed); drawPie('ncrChart', ncrClosed, ncr.length-ncrClosed);
-  document.getElementById('summary').innerHTML=`<table><tr><th>البند</th><th>القيمة</th><th>المعادلة</th></tr>
-  <tr><td>متوسط العمال</td><td>${Math.round(avgWorkers*10)/10}</td><td>من إعداد العاملين اليومي</td></tr>
-  <tr><td>الساعات الآمنة</td><td>${Math.round(safeHours).toLocaleString('ar-EG')}</td><td>سبت-خميس ×12، جمعة ×5، رمضان ×6</td></tr>
-  <tr><td>ساعات التوعية</td><td>${(induction.length*0.25).toFixed(2)}</td><td>عدد المحاضرات × 0.25</td></tr>
-  <tr><td>ساعات الأسبوعية</td><td>${(weeklyAttend*0.5).toFixed(1)}</td><td>إجمالي الحضور × 0.5</td></tr>
-  <tr><td>ساعات التدريبات</td><td>${trainHours.toFixed(1)}</td><td>مجموع الساعات المسجلة في صفحة التدريبات</td></tr>
-  <tr><td>نسبة غلق الوشيكة</td><td>${nm.length?Math.round(nmClosed/nm.length*100):0}%</td><td>مغلق ÷ إجمالي ×100</td></tr>
-  <tr><td>نسبة غلق الملاحظات</td><td>${obs.length?Math.round(obsClosed/obs.length*100):0}%</td><td>مغلق ÷ إجمالي ×100</td></tr>
-  <tr><td>نسبة غلق عدم المطابقة</td><td>${ncrRate}%</td><td>مغلق ÷ إجمالي ×100</td></tr></table>
-  <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:13px;"><span>توقيع مشرف السلامة: ....................</span><span>توقيع مدير المشروع: ....................</span></div>`;
+  document.getElementById('summary').innerHTML='<table><tr><th>البند</th><th>القيمة</th><th>المعادلة</th></tr><tr><td>متوسط العمال</td><td>'+(Math.round(avgWorkers*10)/10)+'</td><td>من إعداد العاملين اليومي</td></tr><tr><td>الساعات الآمنة</td><td>'+Math.round(safeHours).toLocaleString('ar-EG')+'</td><td>سبت-خميس ×12، جمعة ×5، رمضان ×6</td></tr><tr><td>ساعات التوعية</td><td>'+(induction.length*0.25).toFixed(2)+'</td><td>عدد المحاضرات × 0.25</td></tr><tr><td>ساعات الأسبوعية</td><td>'+(weeklyAttend*0.5).toFixed(1)+'</td><td>إجمالي الحضور × 0.5</td></tr><tr><td>ساعات التدريبات</td><td>'+trainHours.toFixed(1)+'</td><td>مجموع الساعات المسجلة</td></tr><tr><td>نسبة غلق الوشيكة</td><td>'+(nm.length?Math.round(nmClosed/nm.length*100):0)+'%</td><td>مغلق ÷ إجمالي ×100</td></tr><tr><td>نسبة غلق الملاحظات</td><td>'+(obs.length?Math.round(obsClosed/obs.length*100):0)+'%</td><td>مغلق ÷ إجمالي ×100</td></tr><tr><td>نسبة غلق عدم المطابقة</td><td>'+ncrRate+'%</td><td>مغلق ÷ إجمالي ×100</td></tr></table>';
 }
-buildSelector();
-loadAll();
+buildSelector(); loadAll();
 </script></body></html>
