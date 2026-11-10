@@ -99,7 +99,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> التدريبات</h1><small>تسجيل التدريبات اليومية</small></div>
+<div><h1>RMED <span>•</span> التدريبات</h1><small>تسجيل التدريبات اليومية - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -148,9 +148,27 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-let me = requireLogin();
+// ✅ الشريط الجانبي
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function getReporter(){
+  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
+  if(typeof u==='object' && u.name) return u.name;
+  return localStorage.getItem('safetyUser')||'';
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getReporter();
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+})();
+
+let me = null;
+try{ me = (typeof requireLogin==='function') ? requireLogin() : JSON.parse(localStorage.getItem('currentUser')||'null'); }catch(e){ me=null; }
 let DB = {workers:[], train:[]};
-function saveLocal(){ try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); old.train=DB.train; old.workers=DB.workers; localStorage.setItem('safetyDB', JSON.stringify(old)); }catch(e){} }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 let selHours = 0;
@@ -163,7 +181,7 @@ async function loadAll(){
   try{
     if(window.db){
       let s1=await db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()}));
-      let s2=await db.collection('train').get(); DB.train=[]; s2.forEach(d=>DB.train.push({id:d.id,...d.data()}));
+      let s2=await db.collection('train').orderBy('createdAt','desc').get(); DB.train=[]; s2.forEach(d=>DB.train.push({id:d.id,...d.data()}));
     }
   }catch(e){ console.log(e); }
   if(DB.train.length===0 && DB.workers.length===0){
@@ -173,7 +191,7 @@ async function loadAll(){
 }
 function refreshWorkersList(){
   let dl=document.getElementById('workersList');
-  dl.innerHTML=DB.workers.map(w=>`<option value="${w.name}">`).join('');
+  dl.innerHTML=DB.workers.map(w=>'<option value="'+w.name+'">').join('');
 }
 function autoFromName(){
   let name=val('t-name');
@@ -191,14 +209,15 @@ async function addTraining(){
   if(!val('t-title')) return alert('اكتب عنوان التدريب');
   if(!val('t-name')) return alert('اكتب اسم المتدرب');
   if(!selHours) return alert('اختار عدد الساعات 1 أو 2 أو 3');
-  let trainer=val('t-trainer')||(me?me.name:'');
+  let trainer=val('t-trainer')||(me?me.name:'')||getReporter();
   if(!trainer) return alert('اكتب اسم المدرب');
+  if(!window.db) return alert('فايربيز مش متصل');
   let rec={date:val('t-date'),time:val('t-time'),title:val('t-title'),place:val('t-place'),name:val('t-name'),code:val('t-code'),job:val('t-job'),company:val('t-company')||'RMED',hours:selHours,trainer:trainer,reporter:trainer,reporterName:trainer,createdAt:new Date().toISOString()};
   try{
-    if(window.db){ let ref=await db.collection('train').add(rec); rec.id=ref.id; }
-  }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
-  DB.train.push(rec); saveLocal(); renderTrain();
-  alert('✅ تم حفظ التدريب - '+rec.name+' - '+rec.hours+' ساعة');
+    let ref=await db.collection('train').add(rec); rec.id=ref.id;
+  }catch(e){ alert('مشكلة في الحفظ في فايربيز: '+e.message); return; }
+  DB.train.unshift(rec); renderTrain();
+  alert('✅ تم حفظ التدريب في فايربيز - '+rec.name+' - '+rec.hours+' ساعة');
   ['t-title','t-place','t-name','t-code','t-job'].forEach(id=>setVal(id,''));
   setVal('t-company','RMED'); selHours=0;
   document.querySelectorAll('#hoursBox button').forEach(b=>b.classList.remove('active'));
@@ -213,20 +232,31 @@ function renderTrain(){
   document.getElementById('k-att').innerText=totalAtt;
   document.getElementById('k-hours').innerText=totalHours+' ساعة';
   if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تدريبات لسه - سجل أول تدريب فوق</p>'; return; }
-  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.slice().reverse().map((x)=>{
+  document.getElementById('trainTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان التدريب</th><th>المتدرب</th><th>الكود</th><th>المهنة</th><th>المكان</th><th>الساعات</th><th>المدرب</th><th>حذف</th></tr>'+list.map((x)=>{
     let realIdx=DB.train.indexOf(x);
-    return `<tr><td>${x.date}</td><td>${x.time}</td><td>${x.title}</td><td>${x.name}</td><td>${x.code||'-'}</td><td>${x.job||'-'}</td><td>${x.place||'-'}</td><td><span class="badge">${x.hours} ساعة</span></td><td>${x.trainer}</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain(${realIdx})">🗑️</button></td></tr>`;
+    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.name+'</td><td>'+(x.code||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.place||'-')+'</td><td><span class="badge">'+x.hours+' ساعة</span></td><td>'+x.trainer+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain('+realIdx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
-async function delTrain(i){ if(!confirm('تحذف التدريب ده؟')) return; let rec=DB.train[i]; try{ if(rec.id && window.db) await db.collection('train').doc(rec.id).delete(); }catch(e){} DB.train.splice(i,1); saveLocal(); renderTrain(); }
-async function clearTrain(){ if(!confirm('تمسح كل التدريبات؟')) return; try{ if(window.db){ let snap=await db.collection('train').get(); for(let d of snap.docs) await db.collection('train').doc(d.id).delete(); } }catch(e){} DB.train=[]; saveLocal(); renderTrain(); }
+async function delTrain(i){
+  if(!confirm('تحذف التدريب ده؟')) return;
+  let rec=DB.train[i];
+  try{ if(rec.id && window.db) await db.collection('train').doc(rec.id).delete(); }catch(e){}
+  DB.train.splice(i,1); renderTrain();
+}
+async function clearTrain(){
+  if(!confirm('تمسح كل التدريبات من فايربيز؟')) return;
+  try{ if(window.db){ let snap=await db.collection('train').get(); for(let d of snap.docs) await db.collection('train').doc(d.id).delete(); } }catch(e){}
+  DB.train=[]; renderTrain();
+}
 function exportTrain(){
   if(!DB.train.length) return alert('مفيش بيانات');
   let csv='التاريخ,الوقت,عنوان التدريب,المتدرب,الكود,المهنة,المكان,الساعات,الشركة,المدرب\n'+DB.train.map(x=>[x.date,x.time,x.title,x.name,x.code,x.job,x.place,x.hours,x.company,x.trainer].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='trainings.csv'; a.click();
 }
 document.getElementById('t-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('t-time').value=new Date().toTimeString().slice(0,5);
 if(me && me.name) document.getElementById('t-trainer').value=me.name;
+else { let r=getReporter(); if(r) document.getElementById('t-trainer').value=r; }
 loadAll();
 </script>
 </body>
