@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>حالات عدم المطابقة - RMED</title>
+<title>NCR - Non Conformance - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -37,22 +37,22 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FF9800;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#FF9800;} .page-head small{color:#78909C;}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.orange{border-top-color:#FF9800;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
 textarea{min-height:70px;resize:vertical;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
 .kpi b{font-size:20px;display:block;line-height:1.2;} .kpi small{color:#78909C;font-size:12px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
 .auto{background:#FFF8E1!important;border-color:#FF9800!important;}
 .user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .user-bar input{width:auto;flex:1;min-width:180px;}
@@ -68,127 +68,126 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr" class="active"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> حالات عدم المطابقة</h1><small>NCR - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> NCR - Non Conformance</h1><small>NCR - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div class="user-bar">
-<span style="font-weight:bold;">🦺 اسم معد التقرير:</span>
-<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ncr-reporter').value=this.value;">
-<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل تقرير</span>
+<span style="font-weight:bold;">🦺 Report Preparer Name:</span>
+<input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ncr-reporter').value=this.value;">
+<span style="font-size:12px;color:#2E7D32;">Will appear automatically in every report</span>
 </div>
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-total">0</b><small>إجمالي عدد حالات عدم المطابقة</small></div>
-<div class="kpi green"><b id="k-close-p">0%</b><small>نسبة الغلق</small></div>
-<div class="kpi orange"><b id="k-open">0</b><small>عدد الحالات المفتوحة</small></div>
-<div class="kpi red"><b id="k-critical">0</b><small>عدد الحالات الحرجة</small></div>
+<div class="kpi"><b id="k-total">0</b><small>Total Non Conformance Cases</small></div>
+<div class="kpi green"><b id="k-close-p">0%</b><small>Closing Percentage</small></div>
+<div class="kpi orange"><b id="k-open">0</b><small>Open Cases Count</small></div>
+<div class="kpi red"><b id="k-critical">0</b><small>Critical Cases Count</small></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 10px;">📊 رسم بياني - نسبة الغلق</h3>
+<h3 style="margin:0 0 10px;">📊 Chart - Closing Percentage</h3>
 <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
 <canvas id="chart" width="160" height="160" style="flex-shrink:0;"></canvas>
 <div style="flex:1;min-width:220px;">
-<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟢 تم الغلق: <b id="leg-closed">0</b></span><span id="leg-closed-p">0%</span></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟢 Closed: <b id="leg-closed">0</b></span><span id="leg-closed-p">0%</span></div>
 <div class="bar"><div class="bar-fill" id="bar-closed" style="width:0%"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟠 مفتوح: <b id="leg-open">0</b></span><span id="leg-open-p">0%</span></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🟠 Open: <b id="leg-open">0</b></span><span id="leg-open-p">0%</span></div>
 <div class="bar"><div class="bar-fill open" id="bar-open" style="width:0%"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🔴 حرج: <b id="leg-crit">0</b></span><span>🔵 بسيط: <b id="leg-simple">0</b></span></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🔴 Critical: <b id="leg-crit">0</b></span><span>🔵 Simple: <b id="leg-simple">0</b></span></div>
 </div>
 </div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 10px;">🏆 ترتيب الشركات</h3>
+<h3 style="margin:0 0 10px;">🏆 Company Ranking</h3>
 <div class="grid">
 <div style="background:#FFF3E0;padding:14px;border-radius:12px;text-align:center;">
-<small style="color:#78909C;">🏢 الشركة صاحبة أعلى عدد تقارير عدم مطابقة</small><br>
+<small style="color:#78909C;">🏢 Company With Highest NCR Reports Count</small><br>
 <b id="top-count-name" style="font-size:18px;">-</b><br>
-<span id="top-count-detail" style="font-size:13px;color:#E65100;">0 تقرير - 0 مغلق - 0 مفتوح</span>
+<span id="top-count-detail" style="font-size:13px;color:#E65100;">0 reports - 0 closed - 0 open</span>
 </div>
 <div style="background:#E8F5E9;padding:14px;border-radius:12px;text-align:center;">
-<small style="color:#78909C;">✅ الشركة صاحبة أعلى نسبة غلق</small><br>
+<small style="color:#78909C;">✅ Company With Highest Closing Percentage</small><br>
 <b id="top-close-name" style="font-size:18px;">-</b><br>
-<span id="top-close-detail" style="font-size:13px;color:#2E7D32;">0% غلق - إجمالي 0 تقرير</span>
+<span id="top-close-detail" style="font-size:13px;color:#2E7D32;">0% closed - Total 0 reports</span>
 </div>
 <div style="background:#FFEBEE;padding:14px;border-radius:12px;text-align:center;">
-<small style="color:#78909C;">⚠️ الشركة صاحبة أعلى نسبة تقارير مفتوحة</small><br>
+<small style="color:#78909C;">⚠️ Company With Highest Open Reports Percentage</small><br>
 <b id="top-open-name" style="font-size:18px;">-</b><br>
-<span id="top-open-detail" style="font-size:13px;color:#D32F2F;">0% مفتوح - إجمالي 0 تقرير</span>
+<span id="top-open-detail" style="font-size:13px;color:#D32F2F;">0% open - Total 0 reports</span>
 </div>
 </div>
 <div id="compTable"></div>
 </div>
 
 <div class="card orange">
-<h2 style="margin:0 0 5px;">📄 تسجيل حالة عدم مطابقة جديدة</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">الحالة الافتراضية مفتوح، وتاريخ الغلق بيتسجل لما تقفل الحالة</p>
+<h2 style="margin:0 0 5px;">📄 Register New NCR Case</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">Default status is Open, closing date is recorded when you close the case</p>
 <div class="grid">
-<div><label>🏢 اسم الشركة *</label><input id="ncr-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
-<div><label>📅 التاريخ *</label><input type="date" id="ncr-date"></div>
-<div><label>📌 تصنيف الحالة *</label><select id="ncr-class"><option value="">-- اختار التصنيف --</option><option>بسيط</option><option>حرج</option></select></div>
-<div><label>🦺 اسم معد التقرير - أوتوماتيك</label><input id="ncr-reporter" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
-<div><label>📋 الحالة *</label><select id="ncr-status" onchange="toggleCloseDate()"><option value="مفتوح" selected>🟠 مفتوح</option><option value="تم الغلق">🟢 تم الغلق</option></select></div>
-<div><label>📅 تاريخ الغلق</label><input type="date" id="ncr-close" disabled style="background:#ECEFF1;"></div>
-<div style="grid-column:1/-1;"><label>📝 وصف الحالة *</label><textarea id="ncr-desc" placeholder="اكتب وصف الحالة بالتفصيل... ايه اللي مش مطابق و فين و ايه المطلوب..."></textarea></div>
+<div><label>🏢 Company Name *</label><input id="ncr-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>📅 Date *</label><input type="date" id="ncr-date"></div>
+<div><label>📌 Case Classification *</label><select id="ncr-class"><option value="">-- Select Classification --</option><option>Simple</option><option>Critical</option></select></div>
+<div><label>🦺 Report Preparer Name - Automatic</label><input id="ncr-reporter" class="auto" placeholder="Your name will appear automatically" readonly></div>
+<div><label>📋 Status *</label><select id="ncr-status" onchange="toggleCloseDate()"><option value="Open" selected>🟠 Open</option><option value="Closed">🟢 Closed</option></select></div>
+<div><label>📅 Closing Date</label><input type="date" id="ncr-close" disabled style="background:#ECEFF1;"></div>
+<div style="grid-column:1/-1;"><label>📝 Case Description *</label><textarea id="ncr-desc" placeholder="Write case description in detail... What is not conforming, where, and what is required..."></textarea></div>
 </div>
-<button class="btn orange" onclick="addNcr()">💾 حفظ حالة عدم المطابقة</button>
+<button class="btn orange" onclick="addNcr()">💾 Save NCR Case</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 سجل حالات عدم المطابقة</h2>
+<h2 style="margin:0 0 10px;">📋 NCR Cases Record</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchNcr" placeholder="ابحث بالشركة أو وصف الحالة..." oninput="renderNcr()" style="flex:2;">
-<select id="filterStatus" onchange="renderNcr()" style="flex:1;"><option value="">كل الحالات</option><option>مفتوح</option><option>تم الغلق</option></select>
-<select id="filterClass" onchange="renderNcr()" style="flex:1;"><option value="">كل التصنيفات</option><option>بسيط</option><option>حرج</option></select>
-<select id="filterCompany" onchange="renderNcr()" style="flex:1;"><option value="">كل الشركات</option></select>
+<input id="searchNcr" placeholder="Search by company or case description..." oninput="renderNcr()" style="flex:2;">
+<select id="filterStatus" onchange="renderNcr()" style="flex:1;"><option value="">All Statuses</option><option>Open</option><option>Closed</option></select>
+<select id="filterClass" onchange="renderNcr()" style="flex:1;"><option value="">All Classifications</option><option>Simple</option><option>Critical</option></select>
+<select id="filterCompany" onchange="renderNcr()" style="flex:1;"><option value="">All Companies</option></select>
 </div>
 <div id="ncrTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-<button class="btn2" onclick="exportNcr()" style="flex:1;padding:12px;">📥 تصدير السجل كله Excel / CSV</button>
-<button class="btn2" onclick="clearNcr()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+<button class="btn2" onclick="exportNcr()" style="flex:1;padding:12px;">📥 Export All Record Excel / CSV</button>
+<button class="btn2" onclick="clearNcr()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -204,6 +203,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -213,21 +213,27 @@ function getReporter(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-// ✅ FIREBASE - بدل localStorage
+// ✅ FIREBASE - Data from Firebase
 let ncrList = [];
+
+// Translate old AR -> EN display, new saves EN only
+const STATUS_MAP={'مفتوح':'Open','تم الغلق':'Closed','Open':'Open','Closed':'Closed'};
+const CLASS_MAP={'بسيط':'Simple','حرج':'Critical','Simple':'Simple','Critical':'Critical'};
+function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Open'; }
+function TClass(v){ return CLASS_MAP[String(v||'').trim()]||v||''; }
 
 async function loadNcr(){
   try{
     if(window.db){
-      let snap = await db.collection('ncr').orderBy('createdAt','desc').get();
+      let snap = await window.db.collection('ncr').get();
       ncrList = [];
       snap.forEach(d=> ncrList.push({id:d.id, ...d.data()}));
+      ncrList.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log(e); }
-  // fallback قديم
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
     if(!ncrList.length && old.ncr) ncrList=old.ncr;
@@ -239,49 +245,49 @@ function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 function toggleCloseDate(){
   let st=val('ncr-status'); let inp=document.getElementById('ncr-close');
-  if(st==='تم الغلق'){ inp.disabled=false; inp.style.background='#fff'; if(!inp.value) inp.value=new Date().toISOString().slice(0,10); }
+  if(st==='Closed'){ inp.disabled=false; inp.style.background='#fff'; if(!inp.value) inp.value=new Date().toISOString().slice(0,10); }
   else { inp.disabled=true; inp.style.background='#ECEFF1'; inp.value=''; }
 }
 async function addNcr(){
-  if(!val('ncr-company')) return alert('اكتب اسم الشركة');
-  if(!val('ncr-date')) return alert('اختار التاريخ');
-  if(!val('ncr-class')) return alert('اختار تصنيف الحالة');
-  if(!val('ncr-desc')) return alert('اكتب وصف الحالة');
+  if(!val('ncr-company')) return alert('Write company name');
+  if(!val('ncr-date')) return alert('Select date');
+  if(!val('ncr-class')) return alert('Select case classification');
+  if(!val('ncr-desc')) return alert('Write case description');
   let rep=val('ncr-reporter')||getReporter();
-  if(!rep) return alert('اكتب اسم معد التقرير');
-  if(val('ncr-status')==='تم الغلق' && !val('ncr-close')) return alert('اختار تاريخ الغلق');
-  if(!window.db) return alert('فايربيز مش متصل');
+  if(!rep) return alert('Write report preparer name');
+  if(val('ncr-status')==='Closed' && !val('ncr-close')) return alert('Select closing date');
+  if(!window.db) return alert('Firebase not connected');
   let rec={company:val('ncr-company'),date:val('ncr-date'),class:val('ncr-class'),desc:val('ncr-desc'),reporter:rep,reporterName:rep,status:val('ncr-status'),closeDate:val('ncr-close'),createdAt:new Date().toISOString()};
   try{
-    let ref = await db.collection('ncr').add(rec);
+    let ref = await window.db.collection('ncr').add(rec);
     rec.id = ref.id;
     ncrList.unshift(rec);
-  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  }catch(e){ return alert('Save problem in Firebase: '+e.message); }
   renderNcr();
-  alert('✅ تم حفظ حالة عدم المطابقة في فايربيز - '+rec.company+' - '+rec.class+' - '+rec.status);
-  setVal('ncr-company',''); setVal('ncr-class',''); setVal('ncr-desc',''); setVal('ncr-status','مفتوح'); toggleCloseDate();
+  alert('✅ Saved NCR case in Firebase - '+rec.company+' - '+rec.class+' - '+rec.status);
+  setVal('ncr-company',''); setVal('ncr-class',''); setVal('ncr-desc',''); setVal('ncr-status','Open'); toggleCloseDate();
 }
 function drawChart(closed, open){
   let c=document.getElementById('chart'); let ctx=c.getContext('2d');
   ctx.clearRect(0,0,160,160);
-  let total=closed+open; if(!total){ ctx.fillStyle='#ECEFF1'; ctx.beginPath(); ctx.arc(80,80,70,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#999'; ctx.font='bold 14px Arial'; ctx.textAlign='center'; ctx.fillText('لا توجد',80,84); return; }
+  let total=closed+open; if(!total){ ctx.fillStyle='#ECEFF1'; ctx.beginPath(); ctx.arc(80,80,70,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#999'; ctx.font='bold 14px Arial'; ctx.textAlign='center'; ctx.fillText('No data',80,84); return; }
   let aClosed=(closed/total)*Math.PI*2;
   ctx.fillStyle='#2E7D32'; ctx.beginPath(); ctx.moveTo(80,80); ctx.arc(80,80,70,-Math.PI/2,-Math.PI/2+aClosed); ctx.closePath(); ctx.fill();
   ctx.fillStyle='#FF9800'; ctx.beginPath(); ctx.moveTo(80,80); ctx.arc(80,80,70,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fill();
   ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(80,80,42,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',80,78);
-  ctx.font='12px Arial'; ctx.fillStyle='#78909C'; ctx.fillText('نسبة الغلق',80,96);
+  ctx.fillStyle='#0F2A4D'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',80,78);
+  ctx.font='12px Arial'; ctx.fillStyle='#78909C'; ctx.fillText('Closing %',80,96);
 }
 function renderNcr(){
   let all=ncrList||[];
   let comps=[...new Set(all.map(x=>x.company))];
   document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
+  sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
   let total=all.length;
-  let closed=all.filter(x=>x.status==='تم الغلق').length;
+  let closed=all.filter(x=>TStatus(x.status)==='Closed').length;
   let open=total-closed;
-  let crit=all.filter(x=>x.class==='حرج').length;
+  let crit=all.filter(x=>TClass(x.class)==='Critical').length;
   let simple=total-crit;
   let closeP=total?Math.round(closed/total*100):0;
   let openP=total?Math.round(open/total*100):0;
@@ -296,64 +302,64 @@ function renderNcr(){
   document.getElementById('bar-open').style.width=openP+'%';
   drawChart(closed, open);
   let byComp={};
-  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0,crit:0}; byComp[x.company].total++; if(x.status==='تم الغلق') byComp[x.company].closed++; else byComp[x.company].open++; if(x.class==='حرج') byComp[x.company].crit++; });
+  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0,crit:0}; byComp[x.company].total++; if(TStatus(x.status)==='Closed') byComp[x.company].closed++; else byComp[x.company].open++; if(TClass(x.class)==='Critical') byComp[x.company].crit++; });
   let arr=Object.entries(byComp).map(([name,v])=>({name,...v, closeP: v.total?Math.round(v.closed/v.total*100):0, openP: v.total?Math.round(v.open/v.total*100):0 }));
   arr.sort((a,b)=>b.total-a.total);
   if(!arr.length){
-    document.getElementById('top-count-name').innerText='-'; document.getElementById('top-count-detail').innerText='0 تقرير';
-    document.getElementById('top-close-name').innerText='-'; document.getElementById('top-close-detail').innerText='0% غلق';
-    document.getElementById('top-open-name').innerText='-'; document.getElementById('top-open-detail').innerText='0% مفتوح';
-    document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تقارير لسه</p>';
+    document.getElementById('top-count-name').innerText='-'; document.getElementById('top-count-detail').innerText='0 reports';
+    document.getElementById('top-close-name').innerText='-'; document.getElementById('top-close-detail').innerText='0% closed';
+    document.getElementById('top-open-name').innerText='-'; document.getElementById('top-open-detail').innerText='0% open';
+    document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">No reports yet</p>';
   } else {
     let topCount=[...arr].sort((a,b)=>b.total-a.total)[0];
     let topClose=[...arr].sort((a,b)=>b.closeP-a.closeP || b.total-a.total)[0];
     let topOpen=[...arr].sort((a,b)=>b.openP-a.openP || b.total-a.total)[0];
     document.getElementById('top-count-name').innerText=topCount.name;
-    document.getElementById('top-count-detail').innerText=topCount.total+' تقرير إجمالي - '+topCount.closed+' مغلق - '+topCount.open+' مفتوح - نسبة غلق '+topCount.closeP+'%';
+    document.getElementById('top-count-detail').innerText=topCount.total+' total reports - '+topCount.closed+' closed - '+topCount.open+' open - Closing '+topCount.closeP+'%';
     document.getElementById('top-close-name').innerText=topClose.name;
-    document.getElementById('top-close-detail').innerText=topClose.closeP+'% غلق - إجمالي '+topClose.total+' تقرير - '+topClose.closed+' مغلق - '+topClose.open+' مفتوح';
+    document.getElementById('top-close-detail').innerText=topClose.closeP+'% closed - Total '+topClose.total+' reports - '+topClose.closed+' closed - '+topClose.open+' open';
     document.getElementById('top-open-name').innerText=topOpen.name;
-    document.getElementById('top-open-detail').innerText=topOpen.openP+'% مفتوح - إجمالي '+topOpen.total+' تقرير - '+topOpen.open+' مفتوح - '+topOpen.closed+' مغلق';
-    document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي التقارير</th><th>🟢 مغلق</th><th>🟠 مفتوح</th><th>🔴 حرج</th><th>نسبة الغلق</th><th>نسبة المفتوح</th></tr>'+arr.map(v=>'<tr><td><b>'+v.name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.closed+'</td><td style="color:#E65100;font-weight:bold;">'+v.open+'</td><td>'+v.crit+'</td><td>'+v.closeP+'%</td><td>'+v.openP+'%</td></tr>').join('')+'</table>';
+    document.getElementById('top-open-detail').innerText=topOpen.openP+'% open - Total '+topOpen.total+' reports - '+topOpen.open+' open - '+topOpen.closed+' closed';
+    document.getElementById('compTable').innerHTML='<table><tr><th>Company</th><th>Total Reports</th><th>🟢 Closed</th><th>🟠 Open</th><th>🔴 Critical</th><th>Closing %</th><th>Open %</th></tr>'+arr.map(v=>'<tr><td><b>'+v.name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.closed+'</td><td style="color:#E65100;font-weight:bold;">'+v.open+'</td><td>'+v.crit+'</td><td>'+v.closeP+'%</td><td>'+v.openP+'%</td></tr>').join('')+'</table>';
   }
   let q=(document.getElementById('searchNcr').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
   let fc=document.getElementById('filterClass').value;
   let fcomp=document.getElementById('filterCompany').value;
-  let list=all.filter(x=> (x.company+x.desc+x.reporter).toLowerCase().includes(q) && (!fs||x.status===fs) && (!fc||x.class===fc) && (!fcomp||x.company===fcomp));
-  if(!list.length){ document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#999;">مفيش حالات عدم مطابقة لسه</p>'; return; }
-  document.getElementById('ncrTable').innerHTML='<table><tr><th>الشركة</th><th>التاريخ</th><th>التصنيف</th><th>وصف الحالة</th><th>معد التقرير</th><th>الحالة</th><th>تاريخ الغلق</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+  let list=all.filter(x=> (x.company+x.desc+x.reporter).toLowerCase().includes(q) && (!fs||TStatus(x.status)===fs) && (!fc||TClass(x.class)===fc) && (!fcomp||x.company===fcomp));
+  if(!list.length){ document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#999;">No NCR cases yet</p>'; return; }
+  document.getElementById('ncrTable').innerHTML='<table><tr><th>Company</th><th>Date</th><th>Classification</th><th>Case Description</th><th>Report Preparer</th><th>Status</th><th>Closing Date</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=ncrList.indexOf(x);
-    return '<tr><td><b>'+x.company+'</b></td><td>'+x.date+'</td><td><span class="badge '+(x.class==='حرج'?'critical':'simple')+'">'+x.class+'</span></td><td style="text-align:right;max-width:220px;">'+x.desc+'</td><td>'+x.reporter+'</td><td><span class="badge '+(x.status==='مفتوح'?'open':'closed')+'">'+x.status+'</span></td><td>'+(x.closeDate||'-')+'</td><td><button class="btn2" onclick="toggleNcr('+idx+')">'+(x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNcr('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td><b>'+x.company+'</b></td><td>'+x.date+'</td><td><span class="badge '+(TClass(x.class)==='Critical'?'critical':'simple')+'">'+TClass(x.class)+'</span></td><td style="text-align:left;max-width:220px;">'+x.desc+'</td><td>'+x.reporter+'</td><td><span class="badge '+(TStatus(x.status)==='Open'?'open':'closed')+'">'+TStatus(x.status)+'</span></td><td>'+(x.closeDate||'-')+'</td><td><button class="btn2" onclick="toggleNcr('+idx+')">'+(TStatus(x.status)==='Open'?'✅ Close It':'🔓 Open It')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNcr('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 async function toggleNcr(i){
   let rec=ncrList[i];
-  let newStatus = rec.status==='مفتوح' ? 'تم الغلق' : 'مفتوح';
-  let newClose = newStatus==='تم الغلق' ? new Date().toISOString().slice(0,10) : '';
-  try{ if(rec && rec.id && window.db) await db.collection('ncr').doc(rec.id).update({status:newStatus, closeDate:newClose}); }catch(e){}
+  let newStatus = TStatus(rec.status)==='Open' ? 'Closed' : 'Open';
+  let newClose = newStatus==='Closed' ? new Date().toISOString().slice(0,10) : '';
+  try{ if(rec && rec.id && window.db) await window.db.collection('ncr').doc(rec.id).update({status:newStatus, closeDate:newClose}); }catch(e){}
   rec.status=newStatus; rec.closeDate=newClose;
   renderNcr();
 }
 async function delNcr(i){
-  if(!confirm('تحذف الحالة دي؟')) return;
+  if(!confirm('Delete this case?')) return;
   let rec=ncrList[i];
-  try{ if(rec && rec.id && window.db) await db.collection('ncr').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec && rec.id && window.db) await window.db.collection('ncr').doc(rec.id).delete(); }catch(e){}
   ncrList.splice(i,1); renderNcr();
 }
 async function clearNcr(){
-  if(!confirm('تمسح كل سجل عدم المطابقة من فايربيز؟')) return;
+  if(!confirm('Delete all NCR record from Firebase?')) return;
   try{
     if(window.db){
-      let snap = await db.collection('ncr').get();
-      for(let d of snap.docs){ await db.collection('ncr').doc(d.id).delete(); }
+      let snap = await window.db.collection('ncr').get();
+      for(let d of snap.docs){ await window.db.collection('ncr').doc(d.id).delete(); }
     }
   }catch(e){}
   ncrList=[]; renderNcr();
 }
 function exportNcr(){
-  if(!ncrList.length) return alert('مفيش بيانات');
-  let csv='اسم الشركة,التاريخ,تصنيف الحالة,وصف الحالة,اسم معد التقرير,الحالة,تاريخ الغلق\n'+ncrList.map(x=>[x.company,x.date,x.class,'"'+(x.desc||'').replace(/"/g,'""')+'"',x.reporter,x.status,x.closeDate||''].join(',')).join('\n');
+  if(!ncrList.length) return alert('No data');
+  let csv='Company Name,Date,Case Classification,Case Description,Report Preparer Name,Status,Closing Date\n'+ncrList.map(x=>[x.company,x.date,TClass(x.class),'"'+(x.desc||'').replace(/"/g,'""')+'"',x.reporter,TStatus(x.status),x.closeDate||''].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ncr.csv'; a.click();
 }
 let savedUser=getReporter();
