@@ -112,7 +112,7 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 
 <div class="main">
 <div class="page-head">
-  <div><h1>RMED <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction</small></div>
+  <div><h1>RMED <span>•</span> المحاضرة الأولية</h1><small>تسجيل موظف جديد + توعية أولية - Induction - من فايربيز</small></div>
   <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -236,11 +236,13 @@ table td{ padding:9px; border-bottom:1px solid #ECEFF1; text-align:center; }
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-let me = requireLogin();
-let DB = {workers:[], induction:[], train:[], cards:[]};
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+let DB = {workers:[], induction:[]};
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
-
-function saveLocal(){ try{ localStorage.setItem('safetyDB', JSON.stringify(DB)); }catch(e){} }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v; }
 document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
@@ -253,7 +255,7 @@ async function loadAll(){
     }
   }catch(e){ console.log(e); }
   if(DB.workers.length===0 && DB.induction.length===0){
-    try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); DB.workers=old.workers||[]; DB.induction=old.induction||[]; DB.train=old.train||[]; }catch(e){}
+    try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); DB.workers=old.workers||[]; DB.induction=old.induction||[]; }catch(e){}
   }
   renderInd();
   refreshCode();
@@ -261,6 +263,7 @@ async function loadAll(){
 function nextCode(){
   let max=1000;
   (DB.workers||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
+  (DB.induction||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
   return max+1;
 }
 function refreshCode(){ if(!val('f-code')) setVal('f-code', nextCode()); }
@@ -274,7 +277,7 @@ function checkNational(){
   let nat=val('f-national');
   let box=document.getElementById('rehabAlert');
   if(nat.length<14){ box.style.display='none'; return null; }
-  let old=(DB.workers||[]).find(w=>String(w.nationalId)===nat);
+  let old=(DB.workers||[]).find(w=>String(w.nationalId)===nat) || (DB.induction||[]).find(w=>String(w.nationalId)===nat);
   if(old){
     box.style.display='block';
     document.getElementById('rehabName').innerText=old.name+' - كود '+old.code;
@@ -284,10 +287,12 @@ function checkNational(){
   } else { box.style.display='none'; return null; }
 }
 function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
+function getMeName(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); return u.name||''; }catch(e){ return ''; } }
 async function saveInductionWorker(){
   if(!val('f-name')) return alert('اكتب الاسم بالكامل');
   if(!val('f-national')) return alert('اكتب الرقم القومي');
   if(val('f-national').length!==14) return alert('الرقم القومي لازم يكون 14 رقم');
+  if(!window.db) return alert('فايربيز مش متصل');
   let code = val('f-code') || String(nextCode());
   let codeExists=(DB.workers||[]).find(w=>String(w.code)===String(code));
   if(codeExists && !confirm('الكود '+code+' متسجل قبل كده باسم '+codeExists.name+'، تكمل بنفس الكود؟')) return;
@@ -296,29 +301,22 @@ async function saveInductionWorker(){
   let notes = val('f-notes');
   if(isRehab && !notes.includes('إعادة تأهيل')) notes = (notes?notes+' - ':'')+'إعادة تأهيل';
   readFile('f-img', async img=>{
-    let w={ name:val('f-name'), code:String(code), nationalId:val('f-national'), job:val('f-job'), company:val('f-company'), hire:val('f-date'), date:val('f-date'), exp:'', health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'), kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img, dept:'', photo:img, reporter: me?me.name:'', createdAt:new Date().toISOString() };
+    let w={ name:val('f-name'), code:String(code), nationalId:val('f-national'), job:val('f-job'), company:val('f-company')||'RMED', hire:val('f-date'), date:val('f-date'), health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'), kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img, photo:img, reporter: getMeName(), createdAt:new Date().toISOString() };
     try{
-      if(window.db){
-        let refW = await db.collection('workers').add(w);
-        w.id = refW.id;
-        let rec={...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'محاضرة أولية - '+w.name};
-        let refI = await db.collection('induction').add(rec);
-        rec.id = refI.id;
-        DB.workers.push(w);
-        DB.induction.push(rec);
-        // train كمان عشان الإحصائيات القديمة
-        try{ await db.collection('train').add(rec); }catch(e){}
-      } else {
-        DB.workers.push(w); DB.induction.push({...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'محاضرة أولية - '+w.name});
-      }
+      let refW = await db.collection('workers').add(w);
+      w.id = refW.id;
+      let rec={...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'محاضرة أولية - '+w.name};
+      let refI = await db.collection('induction').add(rec);
+      rec.id = refI.id;
+      DB.workers.push(w);
+      DB.induction.push(rec);
     }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
-    saveLocal();
     try{
       let params=new URLSearchParams({action:'add', name:w.name, id:w.code, job:w.job, company:w.company, department:'', hireDate:w.hire, phone:w.phone, emergencyPhone:w.emergency, relation:w.kin, health:w.health, status:w.status, expiry:'', photo:'', nationalId:w.nationalId, notes:w.notes});
       fetch(SHEET_URL+'?'+params.toString());
     }catch(e){}
     renderInd();
-    alert('✅ تم حفظ '+w.name+' - محاضرة أولية 0.25 ساعة' + (isRehab?' - إعادة تأهيل':''));
+    alert('✅ تم حفظ '+w.name+' في فايربيز - محاضرة أولية 0.25 ساعة' + (isRehab?' - إعادة تأهيل':''));
     setVal('f-name',''); setVal('f-national',''); setVal('f-job',''); setVal('f-phone',''); setVal('f-emergency',''); setVal('f-notes',''); setVal('f-code', nextCode());
     document.getElementById('photoPrev').style.display='none';
     document.getElementById('rehabAlert').style.display='none';
@@ -337,7 +335,7 @@ function renderInd(){
   document.getElementById('k-rehab').innerText=rehab;
   document.getElementById('k-today').innerText=(DB.induction||[]).filter(x=>x.date===today).length;
   if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#999;">لسه مفيش مسجلين</p>'; return; }
-  document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th><th>كارنيه</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td>${x.date||'-'}</td><td><span class="badge ${x.status==='نشط'?'green':x.status==='استقال'?'':'red'}">${x.status}</span></td><td>${x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-')}</td><td><button class="btn2" onclick="openCard(${x._idx})">🪪 كارنيه</button></td></tr>`).join('')+'</table>';
+  document.getElementById('indTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظات</th><th>كارنيه</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td>'+(x.date||'-')+'</td><td><span class="badge '+(x.status==='نشط'?'green':x.status==='استقال'?'':'red')+'">'+x.status+'</span></td><td>'+(x.isRehab?'<span class="badge red">إعادة تأهيل</span>':(x.notes||'-'))+'</td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 كارنيه</button></td></tr>').join('')+'</table>';
 }
 let currentCardIndex = 0;
 let currentCardData = null;
@@ -370,7 +368,7 @@ function openLastCard(){
 }
 function openIssueCard(){
   let sel=document.getElementById('issue-select');
-  sel.innerHTML='<option value="">-- اختر موظف --</option>' + (DB.induction||[]).map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join('');
+  sel.innerHTML='<option value="">-- اختر موظف --</option>' + (DB.induction||[]).map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join('');
   document.getElementById('issueModal').style.display='block';
 }
 function fillIssueFromWorker(){
