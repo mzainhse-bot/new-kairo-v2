@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-/* ✅ الشريط الجانبي - التصميم الجديد - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -105,6 +104,10 @@ button.login-btn:hover{background:#1A3A6A}
 </div>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script>
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
@@ -115,79 +118,59 @@ function togglePass(){
   let p=document.getElementById('l-pass');
   p.type = p.type==='password' ? 'text' : 'password';
 }
-// ✅ متدخلش على dashboard لو انت جاي من logout - بنشيل العلامة دي
-// لو مسجل دخول أصلاً، روح على إنجازاتي على طول - بس لو مش زائر ومش جاي من تسجيل خروج
 (function(){
-  // لو الرابط فيه ?logout متدخلش تلقائي
   if(location.search.includes('logout')) return;
   let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser');
   if(u){ try{ let o=JSON.parse(u); if(o && o.name && o.role!=='visitor') location.href='dashboard.html'; }catch(e){} }
 })();
 
-function getAllUsers(){
-  let all=[];
-  let keys=['safetyDB','users','registeredUsers','safetyUsers','allUsers','appUsers'];
-  // 1 - من جوه safetyDB
-  try{
-    let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    if(Array.isArray(DB.users)) all.push(...DB.users);
-    if(Array.isArray(DB.registeredUsers)) all.push(...DB.registeredUsers);
-    if(Array.isArray(DB.accounts)) all.push(...DB.accounts);
-  }catch(e){}
-  // 2 - من مفاتيح لوحدها
-  keys.forEach(k=>{
-    if(k==='safetyDB') return;
-    try{
-      let v=JSON.parse(localStorage.getItem(k)||'null');
-      if(Array.isArray(v)) all.push(...v);
-    }catch(e){}
-  });
-  // 3 - حساب واحد متسجل لوحده
-  try{
-    let single=JSON.parse(localStorage.getItem('registeredUser')||'null');
-    if(single && single.email) all.push(single);
-  }catch(e){}
-  return all;
-}
-
-function doLogin(){
+async function doLogin(){
   let email=document.getElementById('l-email').value.trim().toLowerCase();
   let pass=document.getElementById('l-pass').value;
   let msg=document.getElementById('msg');
   let debug=document.getElementById('debugBox');
-  msg.innerText='';
+  msg.innerText=''; msg.style.color='#D32F2F';
   debug.style.display='none';
   if(!email) return msg.innerText='اكتب الإيميل';
   if(!pass) return msg.innerText='اكتب الباسورد';
 
-  let allUsers=getAllUsers();
-  // شيل التكرار
-  let unique={}; allUsers.forEach(u=>{ if(u && u.email) unique[u.email.toLowerCase()]=u; });
-  let list=Object.values(unique);
+  msg.innerText='جارى التحقق...';
+  try{
+    // ✅ البحث في Firestore - مجموعة users
+    let snap = await db.collection('users').where('email','==',email).get();
+    if(snap.empty){
+      msg.innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
+      debug.style.display='block';
+      debug.innerHTML='🔍 مفيش حساب بالإيميل ده في قاعدة البيانات. لو سجلت من صفحة التسجيل الجديدة، اتأكد إنك رفعت register.html الجديد و firebase-config.js';
+      return;
+    }
+    let doc = snap.docs[0];
+    let user = doc.data();
+    user.id = doc.id;
 
-  let user=list.find(u=>(u.email||'').toLowerCase().trim()===email);
-  if(!user){
-    msg.innerText='الإيميل ده مش مسجل، سجل حساب جديد الأول';
-    debug.style.display='block';
-    debug.innerHTML='🔍 لقيت '+list.length+' حساب متسجل: '+(list.map(u=>u.email).join(' ، ')||'مفيش حسابات خالص')+'<br>لو حسابك مش هنا، يبقى التسجيل بيحفظ في مكان تاني، ابعتلي كود register.html وأنا أظبطه.';
-    return;
-  }
-  let savedPass = user.pass || user.password || user.pwd || '';
-  if(String(savedPass)!==String(pass)){
-    msg.innerText='الباسورد غلط - اتأكد انك كاتبه صح، ودوس إظهار الباسورد';
-    return;
-  }
-  let status=(user.status||'approved').toLowerCase();
-  if(status==='pending') return msg.innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
-  if(status==='rejected' || status==='blocked') return msg.innerText='❌ حسابك اترفض من المدير';
+    let savedPass = user.pass || user.password || user.pwd || '';
+    if(String(savedPass)!==String(pass)){
+      msg.innerText='الباسورد غلط - اتأكد انك كاتبه صح، ودوس إظهار الباسورد';
+      return;
+    }
+    let status=(user.status||'approved').toLowerCase();
+    if(status==='pending') return msg.innerText='⏳ حسابك لسه في انتظار موافقة المدير، استنى شوية';
+    if(status==='rejected' || status==='blocked') return msg.innerText='❌ حسابك اترفض من المدير';
 
-  let session={email:user.email,name:user.name||user.fullName||email,job:user.job||user.role||'',role:user.role||user.job||'user',photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
-  localStorage.setItem('safetyUser',JSON.stringify(session));
-  localStorage.setItem('currentUser',JSON.stringify(session));
-  localStorage.setItem('safetyUserName',session.name);
-  msg.style.color='#2E7D32';
-  msg.innerText='✅ تم الدخول بنجاح، جاري تحويلك...';
-  setTimeout(()=>location.href='dashboard.html',600);
+    // لو الدور لسه pending بس الحالة approved - خد الدور المطلوب
+    let finalRole = user.role==='pending' ? (user.requestedRole||'employee') : (user.role||'employee');
+
+    let session={id:user.id,email:user.email,name:user.name||user.fullName||email,job:user.job||finalRole||'',role:finalRole,photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
+    localStorage.setItem('safetyUser',JSON.stringify(session));
+    localStorage.setItem('currentUser',JSON.stringify(session));
+    localStorage.setItem('safetyUserName',session.name);
+    msg.style.color='#2E7D32';
+    msg.innerText='✅ تم الدخول بنجاح، جاري تحويلك...';
+    setTimeout(()=>location.href='dashboard.html',600);
+  }catch(err){
+    console.error(err);
+    msg.innerText='حصل خطأ في الاتصال - اتأكد إن النت شغال وإن Rules معمولة Publish - '+err.message;
+  }
 }
 function loginAsVisitor(){
   let session={email:'visitor@rmed.com',name:'زائر',job:'زائر',role:'visitor',photo:'',img:''};
