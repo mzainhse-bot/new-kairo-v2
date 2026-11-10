@@ -41,13 +41,6 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-.roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;}
-@media(max-width:800px){.roles-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:450px){.roles-grid{grid-template-columns:1fr;}}
-.role-box{background:#F4F6F9;border:1.5px solid #ECEFF1;border-radius:12px;padding:10px;text-align:center;}
-.role-box label{font-size:12px;margin:0 0 6px;display:block;}
-.role-box input{width:100%;padding:10px;border:1.5px solid #CFD8DC;border-radius:8px;font-size:16px;text-align:center;font-weight:bold;outline:none;}
-.role-box input:focus{border-color:#0F2A4D;background:#fff;}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
 .btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
@@ -105,7 +98,7 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Daily Workers Count</h1><small>Daily workforce distribution by job and company - From Firebase</small></div>
+<div><h1>RMED <span>•</span> Daily Workers Count</h1><small>Safety Department + Total Company - From Firebase</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 
@@ -132,15 +125,16 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="card">
 <h2 style="margin:0 0 5px;">📝 Register New Daily Count</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">Write the number for each job, total will be calculated automatically below</p>
+<p style="color:#78909C;font-size:13px;margin:0;">Only 2 fields - Safety Department + Total Company</p>
 <div class="grid">
 <div><label>🏢 Company Name *</label><input id="d-company" placeholder="Example: RMED - Contracting Company..." list="compList"><datalist id="compList"></datalist></div>
 <div><label>📅 Date *</label><input type="date" id="d-date"></div>
 </div>
-<div><label>👷 Workers Count By Job - Leave Empty = 0</label>
-<div class="roles-grid" id="rolesGrid"></div>
+<div class="grid">
+<div><label>🦺 Safety Department Count *</label><input type="number" min="0" id="d-safety" placeholder="0" inputmode="numeric" oninput="calcLive()"></div>
+<div><label>👷 Total Company Workers *</label><input type="number" min="0" id="d-totalCompany" placeholder="0" inputmode="numeric" oninput="calcLive()"></div>
 </div>
-<div class="total-box">Total For This Company: <b id="liveTotal">0</b> <span>Worker / Employee</span><br><small id="liveDetail" style="color:#B0BEC5;">Write numbers above</small></div>
+<div class="total-box">Safety: <b id="liveSafety">0</b> <span> / Total Company: </span><b id="liveTotal">0</b><br><small id="liveDetail" style="color:#B0BEC5;">Write numbers above</small></div>
 <button class="btn red" onclick="addDaily()">💾 Save Daily Count</button>
 </div>
 
@@ -167,6 +161,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
@@ -174,15 +169,15 @@ function toggleSidebar(){
   if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
 })();
 
-// ✅ FIREBASE - Data saved to Firebase only
 let dailyCount = [];
 
 async function loadDaily(){
   try{
     if(window.db){
-      let snap = await db.collection('dailyCount').orderBy('date','desc').get();
+      let snap = await window.db.collection('dailyCount').get();
       dailyCount = [];
       snap.forEach(d=> dailyCount.push({id:d.id, ...d.data()}));
+      dailyCount.sort((a,b)=> String(b.date||'').localeCompare(String(a.date||'')));
     }
   }catch(e){ console.log(e); }
   renderDaily();
@@ -190,61 +185,60 @@ async function loadDaily(){
 
 function val(id){ return document.getElementById(id).value.trim(); }
 
-// === ROLE MAP: Old AR keys -> EN display, New saves are EN only ===
+// === ROLE MAP: Old AR -> EN, New saves EN only ===
 const ROLE_MAP = {
-'مدير مشروع':'Project Manager','مدير تنفيذ':'Execution Manager','مدير موقع':'Site Manager','مكتب فني':'Technical Office','مهندس موقع':'Site Engineer','مهندس جوده':'Quality Engineer','قسم السلامه':'Safety Department','مهندس كهرباء':'Electrical Engineer','مشرف كهرباء':'Electrical Supervisor','كهربائي صيانه':'Maintenance Electrician','كهربائي تركيبات':'Installation Electrician','مسئول مستندات':'Document Controller','مشرف تنفيذ':'Execution Supervisor','امين مخزن':'Storekeeper','مساعد امين مخزن':'Assistant Storekeeper','مساح':'Surveyor','مساعد مساح':'Assistant Surveyor','سائق':'Driver','امن اداري':'Admin Security','مهندس ميكانيكا':'Mechanical Engineer','مشرف ميكانيكا':'Mechanical Supervisor','نجار':'Carpenter','حداد':'Steel Fixer','فني شدة':'Formwork Technician','مساعد فني شدة':'Assistant Formwork Technician','فورمجي خرسانه':'Concrete Worker','مبيض محارة':'Plasterer','بناء':'Mason','وناش':'Crane Operator','بحري':'Rigger','لحام':'Welder','فني عزل':'Insulation Technician','عامل':'Laborer'
+'قسم السلامه':'Safety Department','قسم السلامة':'Safety Department','Safety Department':'Safety Department',
+'مدير مشروع':'Project Manager','مدير تنفيذ':'Execution Manager','مدير موقع':'Site Manager','مكتب فني':'Technical Office','مهندس موقع':'Site Engineer','مهندس جوده':'Quality Engineer','مهندس كهرباء':'Electrical Engineer','مشرف كهرباء':'Electrical Supervisor','كهربائي صيانه':'Maintenance Electrician','كهربائي تركيبات':'Installation Electrician','مسئول مستندات':'Document Controller','مشرف تنفيذ':'Execution Supervisor','امين مخزن':'Storekeeper','مساعد امين مخزن':'Assistant Storekeeper','مساح':'Surveyor','مساعد مساح':'Assistant Surveyor','سائق':'Driver','امن اداري':'Admin Security','مهندس ميكانيكا':'Mechanical Engineer','مشرف ميكانيكا':'Mechanical Supervisor','نجار':'Carpenter','حداد':'Steel Fixer','فني شدة':'Formwork Technician','مساعد فني شدة':'Assistant Formwork Technician','فورمجي خرسانه':'Concrete Worker','مبيض محارة':'Plasterer','بناء':'Mason','وناش':'Crane Operator','بحري':'Rigger','لحام':'Welder','فني عزل':'Insulation Technician','عامل':'Laborer'
 };
-const ROLES = Object.values(ROLE_MAP);
+const ROLES = ['Safety Department'];
 function TRole(k){ return ROLE_MAP[String(k).trim()] || k; }
-// Normalize old counts {AR: n} -> {EN: n}
 function normCounts(counts){
   let out={};
   Object.entries(counts||{}).forEach(([k,v])=>{ let ek=TRole(k); out[ek]=(out[ek]||0)+(Number(v)||0); });
   return out;
 }
-function buildRoles(){
-  document.getElementById('rolesGrid').innerHTML=ROLES.map((r,i)=>{
-    return '<div class="role-box"><label>'+r+'</label><input type="number" min="0" id="role-'+i+'" value="" placeholder="0" oninput="calcLive()" inputmode="numeric"></div>';
-  }).join('');
+function getSafety(counts){
+  let n = normCounts(counts);
+  return n['Safety Department']||0;
 }
+
 function calcLive(){
-  let total=0, details=[];
-  ROLES.forEach((r,i)=>{
-    let v=parseInt(document.getElementById('role-'+i).value)||0;
-    total+=v;
-    if(v>0) details.push(r+' '+v);
-  });
-  document.getElementById('liveTotal').innerText=total;
-  document.getElementById('liveDetail').innerText=details.length?details.join(' - '):'Write numbers above';
-  return total;
+  let s = parseInt(document.getElementById('d-safety').value)||0;
+  let t = parseInt(document.getElementById('d-totalCompany').value)||0;
+  document.getElementById('liveSafety').innerText = s;
+  document.getElementById('liveTotal').innerText = t;
+  document.getElementById('liveDetail').innerText = t>0 ? 'Safety '+s+' out of '+t+' workers' : 'Write numbers above';
+  return t;
 }
 async function addDaily(){
-  if(!val('d-company')) return alert('Write company name');
-  if(!val('d-date')) return alert('Select date');
+  let company = val('d-company');
+  let date = val('d-date');
+  let safety = parseInt(document.getElementById('d-safety').value)||0;
+  let total = parseInt(document.getElementById('d-totalCompany').value)||0;
+  if(!company) return alert('Write company name');
+  if(!date) return alert('Select date');
+  if(total===0) return alert('Write total company workers');
   if(!window.db) return alert('Firebase not connected');
-  let counts={};
-  ROLES.forEach((r,i)=>{ counts[r]=parseInt(document.getElementById('role-'+i).value)||0; });
-  let total=Object.values(counts).reduce((a,b)=>a+b,0);
-  if(total===0) return alert('Write at least one number');
-  let company = val('d-company'), date = val('d-date');
+  let counts = { 'Safety Department': safety };
   try{
-    let check = await db.collection('dailyCount').where('company','==',company).where('date','==',date).get();
+    let check = await window.db.collection('dailyCount').where('company','==',company).where('date','==',date).get();
     if(!check.empty){
-      if(!confirm('This company already has a count for this day\nDo you want to update it with the new one? Press OK to update')) return;
+      if(!confirm('This company already has a count for this day\nUpdate it? Press OK to update')) return;
       let docId = check.docs[0].id;
-      await db.collection('dailyCount').doc(docId).update({counts:counts,total:total,updatedAt:new Date().toISOString()});
+      await window.db.collection('dailyCount').doc(docId).update({counts:counts,total:total,updatedAt:new Date().toISOString()});
       let idx = dailyCount.findIndex(x=>x.id===docId);
       if(idx>=0) dailyCount[idx]={...dailyCount[idx],counts,total};
     } else {
       let rec={company:company,date:date,counts:counts,total:total,createdAt:new Date().toISOString()};
-      let ref = await db.collection('dailyCount').add(rec);
+      let ref = await window.db.collection('dailyCount').add(rec);
       rec.id = ref.id;
       dailyCount.unshift(rec);
     }
   }catch(e){ return alert('Save problem in Firebase: '+e.message); }
   renderDaily();
-  alert('✅ Saved count for '+company+' in Firebase - '+total+' workers on '+date);
-  ROLES.forEach((r,i)=>{ document.getElementById('role-'+i).value=''; });
+  alert('✅ Saved '+company+' - Safety: '+safety+' / Total: '+total);
+  document.getElementById('d-safety').value='';
+  document.getElementById('d-totalCompany').value='';
   calcLive();
 }
 function renderDaily(){
@@ -259,6 +253,7 @@ function renderDaily(){
   let dayList=dailyCount.filter(x=>x.date===filterDate);
   if(filterComp) dayList=dayList.filter(x=>x.company===filterComp);
   let totalDay=dayList.reduce((s,x)=>s+(x.total||0),0);
+  let totalSafetyDay=dayList.reduce((s,x)=>s+getSafety(x.counts),0);
   let compCount=dayList.length;
   document.getElementById('k-total-day').innerText=totalDay;
   document.getElementById('k-companies').innerText=compCount;
@@ -272,39 +267,40 @@ function renderDaily(){
     let sorted=[...dayList].sort((a,b)=>b.total-a.total);
     let maxT=Math.max(...dayList.map(x=>x.total),1);
     document.getElementById('companyTotals').innerHTML=sorted.map(x=>{
-      return '<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🏢 '+x.company+'</span><b>'+x.total+' workers</b></div><div style="height:12px;background:#ECEFF1;border-radius:10px;overflow:hidden;margin:6px 0;"><div style="height:100%;background:#0F2A4D;width:'+((x.total/maxT*100).toFixed(0))+'%;border-radius:10px;"></div></div>';
-    }).join('');
+      let s=getSafety(x.counts);
+      return '<div style="display:flex;justify-content:space-between;font-size:13px;"><span>🏢 '+x.company+' - Safety: '+s+'</span><b>'+x.total+' workers</b></div><div style="height:12px;background:#ECEFF1;border-radius:10px;overflow:hidden;margin:6px 0;"><div style="height:100%;background:#0F2A4D;width:'+((x.total/maxT*100).toFixed(0))+'%;border-radius:10px;"></div></div>';
+    }).join('')+'<p style="text-align:center;color:#78909C;font-size:12px;margin:6px 0 0;">Total Safety Today: <b>'+totalSafetyDay+'</b></p>';
   } else {
     document.getElementById('k-max').innerText='-';
     document.getElementById('k-min').innerText='-';
-    document.getElementById('companyTotals').innerHTML='<p style="text-align:center;color:#999;">No count for this day yet - Register first company above</p>';
+    document.getElementById('companyTotals').innerHTML='<p style="text-align:center;color:#999;">No count for this day yet - Register first company below</p>';
   }
-  let list=dailyCount.filter(x=>(!filterComp||x.company===filterComp) && x.company.toLowerCase().includes(q));
+  let list=dailyCount.filter(x=>(!filterComp||x.company===filterComp) && (x.company||'').toLowerCase().includes(q));
   if(!list.length){ document.getElementById('dailyTable').innerHTML='<p style="text-align:center;color:#999;">No count recorded yet</p>'; return; }
-  document.getElementById('dailyTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Total</th><th>Top 3 Jobs</th><th>View Details</th><th>Delete</th></tr>'+list.map(x=>{
+  document.getElementById('dailyTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Safety Dept</th><th>Total Company</th><th>Details</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=dailyCount.indexOf(x);
-    let top3=Object.entries(normCounts(x.counts)).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' '+v).join(' - ')||'-';
-    return '<tr><td>'+x.date+'</td><td>'+x.company+'</td><td><b style="color:#D32F2F;">'+x.total+'</b></td><td style="font-size:11px;">'+top3+'</td><td><button class="btn2" onclick="showDetail('+idx+')">👁️ Details</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delDaily('+idx+')">🗑️</button></td></tr>';
+    let s=getSafety(x.counts);
+    return '<tr><td>'+x.date+'</td><td>'+x.company+'</td><td><b>'+s+'</b></td><td><b style="color:#D32F2F;">'+x.total+'</b></td><td><button class="btn2" onclick="showDetail('+idx+')">👁️ Details</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delDaily('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 function showDetail(idx){
   let x=dailyCount[idx];
-  let txt='🏢 '+x.company+' - '+x.date+' - Total '+x.total+'\n\n';
-  txt+=Object.entries(normCounts(x.counts)).filter(([k,v])=>v>0).map(([k,v])=>k+': '+v).join('\n');
+  let txt='🏢 '+x.company+' - '+x.date+' - Safety: '+getSafety(x.counts)+' / Total: '+x.total+'\n\n';
+  txt+='Safety Department: '+getSafety(x.counts)+'\nTotal Company: '+x.total;
   alert(txt);
 }
 async function delDaily(i){
   if(!confirm('Delete this count?')) return;
   let rec=dailyCount[i];
-  try{ if(rec && rec.id && window.db) await db.collection('dailyCount').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec && rec.id && window.db) await window.db.collection('dailyCount').doc(rec.id).delete(); }catch(e){}
   dailyCount.splice(i,1); renderDaily();
 }
 async function clearDaily(){
   if(!confirm('Delete all counts from Firebase?')) return;
   try{
     if(window.db){
-      let snap = await db.collection('dailyCount').get();
-      for(let d of snap.docs){ await db.collection('dailyCount').doc(d.id).delete(); }
+      let snap = await window.db.collection('dailyCount').get();
+      for(let d of snap.docs){ await window.db.collection('dailyCount').doc(d.id).delete(); }
     }
   }catch(e){}
   dailyCount=[]; renderDaily();
@@ -313,17 +309,16 @@ function exportDaily(){
   let filterDate=document.getElementById('filterDate').value;
   let list=dailyCount.filter(x=>x.date===filterDate);
   if(!list.length) return alert('No data for this day');
-  let header='Company,Date,'+ROLES.join(',')+',Total\n';
-  let csv=header+list.map(x=>[x.company,x.date,...ROLES.map(r=>(normCounts(x.counts))[r]||0),x.total].join(',')).join('\n');
+  let header='Company,Date,Safety Department,Total Company\n';
+  let csv=header+list.map(x=>[x.company,x.date,getSafety(x.counts),x.total].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-count-'+filterDate+'.csv'; a.click();
 }
 function exportAllDaily(){
   if(!dailyCount.length) return alert('No data');
-  let header='Company,Date,'+ROLES.join(',')+',Total\n';
-  let csv=header+dailyCount.map(x=>[x.company,x.date,...ROLES.map(r=>(normCounts(x.counts))[r]||0),x.total].join(',')).join('\n');
+  let header='Company,Date,Safety Department,Total Company\n';
+  let csv=header+dailyCount.map(x=>[x.company,x.date,getSafety(x.counts),x.total].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-count-all.csv'; a.click();
 }
-buildRoles();
 document.getElementById('d-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('filterDate').value=new Date().toISOString().slice(0,10);
 loadDaily();
