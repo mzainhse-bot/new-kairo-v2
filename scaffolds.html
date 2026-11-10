@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فحص السقالات - RMED</title>
+<title>Scaffold Inspection - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -37,22 +37,22 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FF9800;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#FF9800;} .page-head small{color:#78909C;}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.orange{border-top-color:#FF9800;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
 textarea{min-height:60px;resize:vertical;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
 .kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
 .auto{background:#FFF8E1!important;border-color:#FF9800!important;}
 .user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .user-bar input{width:auto;flex:1;min-width:180px;}
@@ -63,100 +63,99 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds" class="active"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> فحص السقالات</h1><small>Scaffolding - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> Scaffold Inspection</h1><small>Scaffolding - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div class="user-bar">
-<span style="font-weight:bold;">🦺 اسم الفاحص:</span>
-<input id="currentUser" placeholder="اكتب اسمك مرة واحدة - هيتحفظ" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('sc-inspector').value=this.value; renderSc();">
-<span style="font-size:12px;color:#2E7D32;">هيظهر أوتوماتيك في كل فحص</span>
+<span style="font-weight:bold;">🦺 Inspector Name:</span>
+<input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('sc-inspector').value=this.value; renderSc();">
+<span style="font-size:12px;color:#2E7D32;">Will appear automatically in every inspection</span>
 </div>
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-total">0</b><small>إجمالي عدد السقالات في السجل</small></div>
-<div class="kpi green"><b id="k-on">0</b><small>عدد السقالات القائمة</small></div>
-<div class="kpi red"><b id="k-off">0</b><small>عدد السقالات اللي تم فكها</small></div>
-<div class="kpi orange"><b id="k-on-p">0%</b><small>نسبة السقالات القائمة</small></div>
+<div class="kpi"><b id="k-total">0</b><small>Total Scaffolds In Record</small></div>
+<div class="kpi green"><b id="k-on">0</b><small>Erected Scaffolds Count</small></div>
+<div class="kpi red"><b id="k-off">0</b><small>Dismantled Scaffolds Count</small></div>
+<div class="kpi orange"><b id="k-on-p">0%</b><small>Erected Scaffolds Percentage</small></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🏢 تفصيلة كل شركة - قائمة / تم فكها</h3>
+<h3 style="margin:0 0 8px;">🏢 Company Breakdown - Erected / Dismantled</h3>
 <div id="compTable"></div>
 </div>
 
 <div class="card orange">
-<h2 style="margin:0 0 5px;">🏗️ تسجيل فحص سقالة جديدة</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">رقم السقالة هيتولد أوتوماتيك، والحالة الافتراضية قائمة</p>
+<h2 style="margin:0 0 5px;">🏗️ Register New Scaffold Inspection</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">Scaffold number is generated automatically, default status is Erected</p>
 <div class="grid">
-<div><label>🏗️ رقم السقالة - أوتوماتيك</label><input id="sc-num" class="auto" placeholder="هيتولد أوتوماتيك" readonly></div>
-<div><label>🏢 اسم الشركة *</label><input id="sc-company" placeholder="مثال: RMED ..." list="compList"><datalist id="compList"></datalist></div>
-<div><label>🔧 نوع السقالة *</label><select id="sc-type"><option value="">-- اختار النوع --</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select></div>
-<div><label>⚖️ الحمولة *</label><select id="sc-load"><option value="">-- اختار الحمولة --</option><option>خفيفة الحمولة</option><option>متوسطة الحمولة</option><option>عالية الأحمال</option></select></div>
-<div><label>🏢 رقم المبنى *</label><input id="sc-building" placeholder="مثال: A - B - 1..."></div>
-<div><label>🏠 رقم الدور *</label><input id="sc-floor" placeholder="مثال: الأرضي - الأول - الثاني..."></div>
-<div><label>📍 رقم الكلاستر *</label><input id="sc-cluster" placeholder="مثال: C1 - C2..."></div>
-<div><label>📅 تاريخ الإنشاء *</label><input type="date" id="sc-date"></div>
-<div><label>🦺 اسم الفاحص - أوتوماتيك</label><input id="sc-inspector" class="auto" placeholder="هيظهر اسمك أوتوماتيك" readonly></div>
-<div><label>📌 الحالة *</label><select id="sc-status"><option value="قائمة" selected>🟢 قائمة</option><option value="تم الفك">🔴 تم الفك</option></select></div>
-<div style="grid-column:1/-1;"><label>📝 ملاحظات الفحص - اختياري</label><textarea id="sc-notes" placeholder="أي ملاحظات على السقالة... حالة الألواح - الربط - السلم..."></textarea></div>
+<div><label>🏗️ Scaffold Number - Automatic</label><input id="sc-num" class="auto" placeholder="Will be generated automatically" readonly></div>
+<div><label>🏢 Company Name *</label><input id="sc-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
+<div><label>🔧 Scaffold Type *</label><select id="sc-type"><option value="">-- Select Type --</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select></div>
+<div><label>⚖️ Load *</label><select id="sc-load"><option value="">-- Select Load --</option><option>Light Duty</option><option>Medium Duty</option><option>Heavy Duty</option></select></div>
+<div><label>🏢 Building Number *</label><input id="sc-building" placeholder="Example: A - B - 1..."></div>
+<div><label>🏠 Floor Number *</label><input id="sc-floor" placeholder="Example: Ground - First - Second..."></div>
+<div><label>📍 Cluster Number *</label><input id="sc-cluster" placeholder="Example: C1 - C2..."></div>
+<div><label>📅 Erection Date *</label><input type="date" id="sc-date"></div>
+<div><label>🦺 Inspector Name - Automatic</label><input id="sc-inspector" class="auto" placeholder="Your name will appear automatically" readonly></div>
+<div><label>📌 Status *</label><select id="sc-status"><option value="Erected" selected>🟢 Erected</option><option value="Dismantled">🔴 Dismantled</option></select></div>
+<div style="grid-column:1/-1;"><label>📝 Inspection Notes - Optional</label><textarea id="sc-notes" placeholder="Any notes on scaffold... Board condition - Bracing - Ladder..."></textarea></div>
 </div>
-<button class="btn orange" onclick="addSc()">💾 حفظ فحص السقالة</button>
+<button class="btn orange" onclick="addSc()">💾 Save Scaffold Inspection</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 سجل السقالات</h2>
+<h2 style="margin:0 0 10px;">📋 Scaffolds Record</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchSc" placeholder="ابحث برقم السقالة أو الشركة أو المبنى..." oninput="renderSc()" style="flex:2;">
-<select id="filterStatus" onchange="renderSc()" style="flex:1;"><option value="">كل الحالات</option><option>قائمة</option><option>تم الفك</option></select>
-<select id="filterType" onchange="renderSc()" style="flex:1;"><option value="">كل الأنواع</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select>
-<select id="filterCompany" onchange="renderSc()" style="flex:1;"><option value="">كل الشركات</option></select>
+<input id="searchSc" placeholder="Search by scaffold number, company or building..." oninput="renderSc()" style="flex:2;">
+<select id="filterStatus" onchange="renderSc()" style="flex:1;"><option value="">All Statuses</option><option>Erected</option><option>Dismantled</option></select>
+<select id="filterType" onchange="renderSc()" style="flex:1;"><option value="">All Types</option><option>Cup Lock</option><option>Tube</option><option>Frame</option></select>
+<select id="filterCompany" onchange="renderSc()" style="flex:1;"><option value="">All Companies</option></select>
 </div>
 <div id="scTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-<button class="btn2" onclick="exportSc()" style="flex:1;padding:12px;">📥 تصدير السجل كله Excel / CSV</button>
-<button class="btn2" onclick="clearSc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+<button class="btn2" onclick="exportSc()" style="flex:1;padding:12px;">📥 Export All Record Excel / CSV</button>
+<button class="btn2" onclick="clearSc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -172,6 +171,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -181,18 +181,25 @@ function getReporter(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-// ✅ FIREBASE - بدل localStorage
+// ✅ FIREBASE - Data from Firebase
 let scaffolds = [];
+
+// Translate old AR -> EN display, new saves EN only
+const STATUS_MAP={'قائمة':'Erected','تم الفك':'Dismantled','Erected':'Erected','Dismantled':'Dismantled'};
+const LOAD_MAP={'خفيفة الحمولة':'Light Duty','متوسطة الحمولة':'Medium Duty','عالية الأحمال':'Heavy Duty','Light Duty':'Light Duty','Medium Duty':'Medium Duty','Heavy Duty':'Heavy Duty'};
+function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Erected'; }
+function TLoad(v){ return LOAD_MAP[String(v||'').trim()]||v||''; }
 
 async function loadSc(){
   try{
     if(window.db){
-      let snap = await db.collection('scaffolds').orderBy('createdAt','desc').get();
+      let snap = await window.db.collection('scaffolds').get();
       scaffolds = [];
       snap.forEach(d=> scaffolds.push({id:d.id, ...d.data()}));
+      scaffolds.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log(e); }
   try{
@@ -213,88 +220,88 @@ function genScNum(){
 }
 function refreshNum(){ document.getElementById('sc-num').value=genScNum(); }
 async function addSc(){
-  if(!val('sc-company')) return alert('اكتب اسم الشركة');
-  if(!val('sc-type')) return alert('اختار نوع السقالة');
-  if(!val('sc-load')) return alert('اختار الحمولة');
-  if(!val('sc-building')) return alert('اكتب رقم المبنى');
-  if(!val('sc-floor')) return alert('اكتب رقم الدور');
-  if(!val('sc-cluster')) return alert('اكتب رقم الكلاستر');
-  if(!val('sc-date')) return alert('اختار تاريخ الإنشاء');
+  if(!val('sc-company')) return alert('Write company name');
+  if(!val('sc-type')) return alert('Select scaffold type');
+  if(!val('sc-load')) return alert('Select load');
+  if(!val('sc-building')) return alert('Write building number');
+  if(!val('sc-floor')) return alert('Write floor number');
+  if(!val('sc-cluster')) return alert('Write cluster number');
+  if(!val('sc-date')) return alert('Select erection date');
   let insp=val('sc-inspector')||getReporter();
-  if(!insp) return alert('اكتب اسم الفاحص');
-  if(!val('sc-status')) return alert('اختار الحالة');
-  if(!window.db) return alert('فايربيز مش متصل');
+  if(!insp) return alert('Write inspector name');
+  if(!val('sc-status')) return alert('Select status');
+  if(!window.db) return alert('Firebase not connected');
   let rec={num:val('sc-num')||genScNum(),company:val('sc-company'),type:val('sc-type'),load:val('sc-load'),building:val('sc-building'),floor:val('sc-floor'),cluster:val('sc-cluster'),date:val('sc-date'),inspector:insp,reporter:insp,reporterName:insp,status:val('sc-status'),notes:val('sc-notes'),createdAt:new Date().toISOString()};
   try{
-    let ref = await db.collection('scaffolds').add(rec);
+    let ref = await window.db.collection('scaffolds').add(rec);
     rec.id = ref.id;
     scaffolds.unshift(rec);
-  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  }catch(e){ return alert('Save problem in Firebase: '+e.message); }
   renderSc(); refreshNum();
-  alert('✅ تم حفظ السقالة في فايربيز '+rec.num+' - '+rec.company+' - '+rec.status);
+  alert('✅ Saved scaffold in Firebase '+rec.num+' - '+rec.company+' - '+rec.status);
   ['sc-company','sc-building','sc-floor','sc-cluster','sc-notes'].forEach(id=>setVal(id,''));
-  setVal('sc-type',''); setVal('sc-load',''); setVal('sc-status','قائمة');
+  setVal('sc-type',''); setVal('sc-load',''); setVal('sc-status','Erected');
 }
 function renderSc(){
   let all=scaffolds||[];
   let comps=[...new Set(all.map(x=>x.company))];
   document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
+  sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
   let total=all.length;
-  let on=all.filter(x=>x.status==='قائمة').length;
-  let off=all.filter(x=>x.status==='تم الفك').length;
+  let on=all.filter(x=>TStatus(x.status)==='Erected').length;
+  let off=all.filter(x=>TStatus(x.status)==='Dismantled').length;
   document.getElementById('k-total').innerText=total;
   document.getElementById('k-on').innerText=on;
   document.getElementById('k-off').innerText=off;
   document.getElementById('k-on-p').innerText=total?Math.round(on/total*100)+'%':'0%';
   let byComp={};
-  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,on:0,off:0}; byComp[x.company].total++; if(x.status==='قائمة') byComp[x.company].on++; else byComp[x.company].off++; });
+  all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,on:0,off:0}; byComp[x.company].total++; if(TStatus(x.status)==='Erected') byComp[x.company].on++; else byComp[x.company].off++; });
   let compArr=Object.entries(byComp).sort((a,b)=>b[1].total-a[1].total);
-  if(!compArr.length) document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات لسه</p>';
-  else document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي السقالات</th><th>🟢 قائمة</th><th>🔴 تم فكها</th><th>نسبة القائمة</th></tr>'+compArr.map(([name,v])=>'<tr><td><b>'+name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.on+'</td><td style="color:#D32F2F;font-weight:bold;">'+v.off+'</td><td>'+(v.total?Math.round(v.on/v.total*100)+'%':'0%')+'</td></tr>').join('')+'</table>';
+  if(!compArr.length) document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999;">No scaffolds yet</p>';
+  else document.getElementById('compTable').innerHTML='<table><tr><th>Company</th><th>Total Scaffolds</th><th>🟢 Erected</th><th>🔴 Dismantled</th><th>Erected %</th></tr>'+compArr.map(([name,v])=>'<tr><td><b>'+name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.on+'</td><td style="color:#D32F2F;font-weight:bold;">'+v.off+'</td><td>'+(v.total?Math.round(v.on/v.total*100)+'%':'0%')+'</td></tr>').join('')+'</table>';
   let q=(document.getElementById('searchSc').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
   let ft=document.getElementById('filterType').value;
   let fc=document.getElementById('filterCompany').value;
   let list=all.filter(x=>{
     let okQ=(x.num+x.company+x.building+x.floor+x.cluster+x.type).toLowerCase().includes(q);
-    let okS=!fs||x.status===fs;
+    let okS=!fs||TStatus(x.status)===fs;
     let okT=!ft||x.type===ft;
     let okC=!fc||x.company===fc;
     return okQ&&okS&&okT&&okC;
   });
-  if(!list.length){ document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#999;">مفيش سقالات مسجلة لسه</p>'; return; }
-  document.getElementById('scTable').innerHTML='<table><tr><th>رقم السقالة</th><th>الشركة</th><th>النوع</th><th>الحمولة</th><th>المبنى / الدور / الكلاستر</th><th>تاريخ الإنشاء</th><th>الفاحص</th><th>الحالة</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+  if(!list.length){ document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#999;">No scaffolds registered yet</p>'; return; }
+  document.getElementById('scTable').innerHTML='<table><tr><th>Scaffold Number</th><th>Company</th><th>Type</th><th>Load</th><th>Building / Floor / Cluster</th><th>Erection Date</th><th>Inspector</th><th>Status</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=scaffolds.indexOf(x);
-    return '<tr><td><b style="color:#FF9800;">'+x.num+'</b></td><td><b>'+x.company+'</b></td><td>'+x.type+'</td><td>'+x.load+'</td><td>مبنى '+x.building+'<br>دور '+x.floor+'<br>كلاستر '+x.cluster+'</td><td>'+x.date+'</td><td>'+x.inspector+'</td><td><span class="badge '+(x.status==='قائمة'?'on':'off')+'">'+x.status+'</span><br><small style="color:#78909C;">'+(x.notes||'')+'</small></td><td><button class="btn2" onclick="toggleSc('+idx+')">'+(x.status==='قائمة'?'🔴 فك السقالة':'🟢 رجعها قائمة')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td><b style="color:#FF9800;">'+x.num+'</b></td><td><b>'+x.company+'</b></td><td>'+x.type+'</td><td>'+TLoad(x.load)+'</td><td>Building '+x.building+'<br>Floor '+x.floor+'<br>Cluster '+x.cluster+'</td><td>'+x.date+'</td><td>'+x.inspector+'</td><td><span class="badge '+(TStatus(x.status)==='Erected'?'on':'off')+'">'+TStatus(x.status)+'</span><br><small style="color:#78909C;">'+(x.notes||'')+'</small></td><td><button class="btn2" onclick="toggleSc('+idx+')">'+(TStatus(x.status)==='Erected'?'🔴 Dismantle Scaffold':'🟢 Return To Erected')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 async function toggleSc(i){
   let rec=scaffolds[i];
-  let newStatus = rec.status==='قائمة'?'تم الفك':'قائمة';
-  try{ if(rec && rec.id && window.db) await db.collection('scaffolds').doc(rec.id).update({status:newStatus}); }catch(e){}
+  let newStatus = TStatus(rec.status)==='Erected'?'Dismantled':'Erected';
+  try{ if(rec && rec.id && window.db) await window.db.collection('scaffolds').doc(rec.id).update({status:newStatus}); }catch(e){}
   rec.status=newStatus; renderSc();
 }
 async function delSc(i){
-  if(!confirm('تحذف السقالة دي؟')) return;
+  if(!confirm('Delete this scaffold?')) return;
   let rec=scaffolds[i];
-  try{ if(rec && rec.id && window.db) await db.collection('scaffolds').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec && rec.id && window.db) await window.db.collection('scaffolds').doc(rec.id).delete(); }catch(e){}
   scaffolds.splice(i,1); renderSc(); refreshNum();
 }
 async function clearSc(){
-  if(!confirm('تمسح كل سجل السقالات من فايربيز؟')) return;
+  if(!confirm('Delete all scaffolds record from Firebase?')) return;
   try{
     if(window.db){
-      let snap = await db.collection('scaffolds').get();
-      for(let d of snap.docs){ await db.collection('scaffolds').doc(d.id).delete(); }
+      let snap = await window.db.collection('scaffolds').get();
+      for(let d of snap.docs){ await window.db.collection('scaffolds').doc(d.id).delete(); }
     }
   }catch(e){}
   scaffolds=[]; renderSc(); refreshNum();
 }
 function exportSc(){
-  if(!scaffolds.length) return alert('مفيش بيانات');
-  let csv='رقم السقالة,اسم الشركة,نوع السقالة,الحمولة,رقم المبنى,رقم الدور,رقم الكلاستر,تاريخ الانشاء,اسم الفاحص,الحالة,ملاحظات\n'+scaffolds.map(x=>[x.num,x.company,x.type,x.load,x.building,x.floor,x.cluster,x.date,x.inspector,x.status,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  if(!scaffolds.length) return alert('No data');
+  let csv='Scaffold Number,Company Name,Scaffold Type,Load,Building Number,Floor Number,Cluster Number,Erection Date,Inspector Name,Status,Notes\n'+scaffolds.map(x=>[x.num,x.company,x.type,TLoad(x.load),x.building,x.floor,x.cluster,x.date,x.inspector,TStatus(x.status),'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='scaffolds.csv'; a.click();
 }
 let savedUser=getReporter();
