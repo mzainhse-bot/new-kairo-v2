@@ -57,7 +57,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A
   <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
   <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
   <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
   <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
   <div class="menu-title">👷 العمال والتدريب</div>
   <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
@@ -99,49 +98,90 @@ table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-let me = requireLogin();
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function roleLabel(r){ return r==='manager'||r==='admin'?'مدير':r==='supervisor'?'مشرف':r==='employee'?'موظف':r==='visitor'?'زائر':'معلق'; }
+function getMe(){
+  try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
+  return null;
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=roleLabel(nm.role)+' - '+(nm.job||''); if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
+
+let me = null;
+try{ me = (typeof requireLogin==='function') ? requireLogin() : getMe(); }catch(e){ me=getMe(); }
 if(me){
   document.getElementById('u-photo').src=me.photo||me.img||'https://via.placeholder.com/70x85?text=No';
   document.getElementById('u-name').innerText='أهلاً بيك، '+me.name;
   document.getElementById('u-info').innerText=(me.job||'')+' • '+(me.email||'')+' • الدور: '+roleLabel(me.role);
-
   let roleNote={visitor:'👁️ انت زائر - هتشوف الإحصائيات والصفحات بدون تعديل',employee:'👷 انت موظف - تقدر ترفع تقارير في كل الصفحات ماعدا حالات عدم المطابقة وخانة تم التسليم في التصاريح',supervisor:'🦺 انت مشرف - ليك كل صلاحيات التعديل ماعدا صفحة المستخدمين',manager:'👑 انت المدير - ليك كل الصلاحيات المطلقة',admin:'👑 انت المدير - ليك كل الصلاحيات المطلقة'};
   document.getElementById('roleNote').innerText=roleNote[me.role]||'';
-
-  // ✅ الجديد: بنجيب من فايربيز الأول، ولو مفيش نرجع للـ localStorage القديم
-  async function loadData(){
-    let all=[];
-    function collect(arr, label){ (arr||[]).forEach(x=>{ let rep=x.reporter||x.reporterName||x.name||x.createdBy||x.user||''; if(rep===me.name||rep===me.email||(x.email&&x.email===me.email)){ all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||'', page:label}); } }); }
-
-    try{
-      if(window.db){
-        let collections = [['scaffolds','فحص السقالات'],['accidents','الحوادث'],['violations','مخالفات المقاولين'],['empViolations','مخالفات الموظفين'],['ncr','حالات عدم المطابقة'],['nearMiss','الحوادث الوشيكة'],['observations','ملاحظات السلامة'],['permits','التصاريح'],['train','التدريبات'],['weeklyLect','المحاضرة الأسبوعية'],['induction','المحاضرة الأولية']];
-        for(let [col,label] of collections){
-          let snap = await db.collection(col).get();
-          let arr=[]; snap.forEach(d=>arr.push(d.data()));
-          collect(arr, label);
-        }
-      } else {
-        let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-        collect(DB.scaffolds,'فحص السقالات'); collect(DB.accidents,'الحوادث'); collect(DB.violations,'مخالفات المقاولين'); collect(DB.empViolations,'مخالفات الموظفين'); collect(DB.ncr,'حالات عدم المطابقة'); collect(DB.nearMiss,'الحوادث الوشيكة'); collect(DB.observations,'ملاحظات السلامة'); collect(DB.permits,'التصاريح'); collect(DB.train,'التدريبات'); collect(DB.weeklyLect,'المحاضرة الأسبوعية'); collect(DB.induction,'المحاضرة الأولية');
+  loadData();
+}
+async function loadData(){
+  let all=[];
+  function collect(arr, label){
+    (arr||[]).forEach(x=>{
+      let rep=(x.reporter||x.reporterName||x.createdBy||x.user||'').toString().trim();
+      let byName = rep===me.name;
+      let byEmail = x.email && x.email===me.email;
+      let byTrainer = x.trainer===me.name;
+      if(byName||byEmail||byTrainer){
+        all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||x.description||'', page:label});
       }
-    }catch(e){
+    });
+  }
+  async function fetchCol(names){
+    if(!window.db) return [];
+    for(let n of names){
+      try{ let snap=await db.collection(n).get(); if(!snap.empty){ let arr=[]; snap.forEach(d=>arr.push(d.data())); return arr; } }catch(e){}
+    }
+    return [];
+  }
+  try{
+    if(window.db){
+      let map=[
+        [['scaffolds'],'فحص السقالات'],
+        [['accidents'],'الحوادث'],
+        [['violations'],'مخالفات المقاولين'],
+        [['employeeViolations','employee-violations'],'مخالفات الموظفين'],
+        [['ncr'],'حالات عدم المطابقة'],
+        [['nearMiss','near-miss'],'الحوادث الوشيكة'],
+        [['observations','safety-observations','safetyObs'],'ملاحظات السلامة'],
+        [['permits'],'التصاريح'],
+        [['train','trainings'],'التدريبات'],
+        [['weekly','weeklyLect'],'المحاضرة الأسبوعية'],
+        [['induction'],'المحاضرة الأولية'],
+        [['dailyWorkers','daily-count'],'الإعداد اليومي']
+      ];
+      for(let [names,label] of map){
+        let arr=await fetchCol(names);
+        collect(arr, label);
+      }
+    } else {
       let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
       collect(DB.scaffolds,'فحص السقالات'); collect(DB.accidents,'الحوادث'); collect(DB.violations,'مخالفات المقاولين'); collect(DB.empViolations,'مخالفات الموظفين'); collect(DB.ncr,'حالات عدم المطابقة'); collect(DB.nearMiss,'الحوادث الوشيكة'); collect(DB.observations,'ملاحظات السلامة'); collect(DB.permits,'التصاريح'); collect(DB.train,'التدريبات'); collect(DB.weeklyLect,'المحاضرة الأسبوعية'); collect(DB.induction,'المحاضرة الأولية');
     }
-
-    let now=new Date(); let inDays=(d,days)=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=days; };
-    document.getElementById('a-week').innerText=all.filter(x=>inDays(x.date,7)).length;
-    document.getElementById('a-month').innerText=all.filter(x=>inDays(x.date,30)).length;
-    document.getElementById('a-year').innerText=all.filter(x=>inDays(x.date,365)).length;
-    document.getElementById('a-total').innerText=all.length;
-    let byPage={}; all.forEach(x=>byPage[x.page]=(byPage[x.page]||0)+1);
-    let top=Object.entries(byPage).sort((a,b)=>b[1]-a[1])[0];
-    document.getElementById('a-top').innerText=top? top[0]+' ('+top[1]+' تقرير)':'-';
-    all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-    document.getElementById('a-last').innerText=all.length? all[0].date+' - '+all[0].page:'مفيش تقارير لسه';
-    document.getElementById('last5').innerHTML=all.length? '<table><tr><th>التاريخ</th><th>الصفحة</th><th>الوصف</th></tr>'+all.slice(0,5).map(x=>`<tr><td>${x.date||'-'}</td><td>${x.page}</td><td style="text-align:right;">${(x.desc||'').slice(0,80)}</td></tr>`).join('')+'</table>':'<p style="color:#999;text-align:center;">لسه مرفعتش تقارير، ابدأ من زرار الدخول على الموقع</p>';
-  }
-  loadData();
+  }catch(e){ console.log(e); }
+  let now=new Date();
+  let inDays=(d,days)=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=days && (now-dt)>=0; };
+  document.getElementById('a-week').innerText=all.filter(x=>inDays(x.date,7)).length;
+  document.getElementById('a-month').innerText=all.filter(x=>inDays(x.date,30)).length;
+  document.getElementById('a-year').innerText=all.filter(x=>inDays(x.date,365)).length;
+  document.getElementById('a-total').innerText=all.length;
+  let byPage={}; all.forEach(x=>byPage[x.page]=(byPage[x.page]||0)+1);
+  let top=Object.entries(byPage).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('a-top').innerText=top? top[0]+' ('+top[1]+' تقرير)':'-';
+  all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  document.getElementById('a-last').innerText=all.length? all[0].date+' - '+all[0].page:'مفيش تقارير لسه';
+  document.getElementById('last5').innerHTML=all.length? '<table><tr><th>التاريخ</th><th>الصفحة</th><th>الوصف</th></tr>'+all.slice(0,5).map(x=>'<tr><td>'+(x.date||'-')+'</td><td>'+x.page+'</td><td style="text-align:right;">'+((x.desc||'').slice(0,80))+'</td></tr>').join('')+'</table>':'<p style="color:#999;text-align:center;">لسه مرفعتش تقارير، ابدأ من زرار الدخول على الموقع</p>';
 }
 </script></body></html>
