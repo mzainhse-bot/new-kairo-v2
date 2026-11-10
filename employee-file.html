@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ملفات الموظفين - RMED</title>
+<title>Employee Files - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -37,118 +37,117 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #2E7D32;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#2E7D32;} .page-head small{color:#78909C;}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.green{border-top-color:#2E7D32;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.green{background:#2E7D32;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
 .kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
 .profile{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}
-.profile-photo{width:160px;height:200px;object-fit:cover;border-radius:14px;border:3px solid #0A1F44;background:#ECEFF1;flex-shrink:0;}
+.profile-photo{width:160px;height:200px;object-fit:cover;border-radius:14px;border:3px solid #0F2A4D;background:#ECEFF1;flex-shrink:0;}
 .profile-info{flex:1;min-width:280px;}
 .info-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 @media(max-width:600px){.info-row{grid-template-columns:1fr;}}
 .info-item{background:#F4F6F9;padding:10px 12px;border-radius:10px;}
 .info-item b{color:#78909C;font-size:12px;display:block;}
 .info-item span{font-weight:bold;font-size:14px;}
-.section-title{background:#0A1F44;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
+.section-title{background:#0F2A4D;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
 .badge{padding:5px 14px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;}
 .badge.work{background:#E8F5E9;color:#2E7D32;}
 .badge.resign{background:#FFF3E0;color:#E65100;}
 .badge.excluded{background:#FFEBEE;color:#D32F2F;}
-.timeline{border-right:3px solid #0A1F44;padding-right:16px;margin-right:8px;}
+.timeline{border-left:3px solid #0F2A4D;padding-left:16px;margin-left:8px;}
 .timeline-item{position:relative;padding-bottom:14px;}
-.timeline-item::before{content:'';position:absolute;right:-24px;top:4px;width:12px;height:12px;background:#0A1F44;border-radius:50%;border:2px solid #fff;}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:4px;width:12px;height:12px;background:#0F2A4D;border-radius:50%;border:2px solid #fff;}
 @media print{
   .sidebar,.topbar,.overlay,.page-head,.no-print{display:none!important;}
   body{background:#fff;}
-  .main{margin-right:0;}
+  .main{margin-left:0;}
   .container{max-width:100%;padding:0;}
   .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;}
-  .print-header{display:block!important;text-align:center;border-bottom:2px solid #0A1F44;padding-bottom:10px;margin-bottom:14px;}
+  .print-header{display:block!important;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:14px;}
 }
 .print-header{display:none;}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file" class="active"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> ملفات الموظفين</h1><small>Employee Files - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> Employee Files</h1><small>Employee Files - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div class="card no-print">
-<h2 style="margin:0 0 10px;">🔍 البحث عن موظف</h2>
+<h2 style="margin:0 0 10px;">🔍 Search For Employee</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchInput" placeholder="ابحث بالاسم أو الكود أو رقم البطاقة..." list="allEmp" style="flex:2;" oninput="if(this.value) showFile(this.value)">
+<input id="searchInput" placeholder="Search by name, code or national ID..." list="allEmp" style="flex:2;" oninput="if(this.value) showFile(this.value)">
 <datalist id="allEmp"></datalist>
-<button class="btn2" onclick="showFile(document.getElementById('searchInput').value)" style="padding:12px 20px;">🔍 بحث</button>
-<button class="btn2" onclick="clearFile()" style="padding:12px 20px;">🔄 بحث جديد</button>
+<button class="btn2" onclick="showFile(document.getElementById('searchInput').value)" style="padding:12px 20px;">🔍 Search</button>
+<button class="btn2" onclick="clearFile()" style="padding:12px 20px;">🔄 New Search</button>
 </div>
-<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اكتب الاسم أو الكود أو رقم البطاقة، الملف هيظهر لوحده - البيانات من فايربيز</p>
-<p id="loadStatus" style="font-size:12px;color:#1565C0;">⏳ جاري تحميل ملفات الموظفين من فايربيز...</p>
+<p style="color:#78909C;font-size:12px;margin:8px 0 0;">Write name, code or national ID, file will appear automatically - Data from Firebase</p>
+<p id="loadStatus" style="font-size:12px;color:#1565C0;">⏳ Loading employee files from Firebase...</p>
 </div>
 
 <div id="fileArea" style="display:none;">
 <div class="print-header">
-<h1 style="margin:0;">RMED - ملف موظف</h1>
-<p style="margin:4px 0;color:#666;">تقرير شامل - تاريخ التقرير: <span id="printDate"></span></p>
+<h1 style="margin:0;">RMED - Employee File</h1>
+<p style="margin:4px 0;color:#666;">Full Report - Report Date: <span id="printDate"></span></p>
 </div>
 
 <div class="kpi-grid">
-<div class="kpi red"><b id="f-viol">0</b><small>عدد المخالفات</small></div>
-<div class="kpi orange"><b id="f-acc">0</b><small>عدد الإصابات / الحوادث</small></div>
-<div class="kpi green"><b id="f-train">0</b><small>عدد التدريبات</small></div>
-<div class="kpi"><b id="f-days">0</b><small>اشتغل كام يوم في الموقع</small></div>
+<div class="kpi red"><b id="f-viol">0</b><small>Violations Count</small></div>
+<div class="kpi orange"><b id="f-acc">0</b><small>Injuries / Accidents Count</small></div>
+<div class="kpi green"><b id="f-train">0</b><small>Trainings Count</small></div>
+<div class="kpi"><b id="f-days">0</b><small>Days Worked On Site</small></div>
 </div>
 
 <div class="card green">
@@ -157,18 +156,18 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div class="profile-info">
 <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
 <h2 id="f-name" style="margin:0;">-</h2>
-<span id="f-status" class="badge work">شغال</span>
+<span id="f-status" class="badge work">Working</span>
 </div>
 <p id="f-job-company" style="color:#78909C;margin:6px 0;">-</p>
 <div class="info-row" style="margin-top:12px;">
-<div class="info-item"><b>🔢 الكود</b><span id="f-code">-</span></div>
-<div class="info-item"><b>🪪 رقم البطاقة</b><span id="f-nid">-</span></div>
-<div class="info-item"><b>👷 المهنة</b><span id="f-job">-</span></div>
-<div class="info-item"><b>🏢 الشركة</b><span id="f-company">-</span></div>
-<div class="info-item"><b>📞 رقم التليفون</b><span id="f-phone">-</span></div>
-<div class="info-item"><b>📅 تاريخ التعيين</b><span id="f-hire">-</span></div>
-<div class="info-item"><b>📅 تاريخ التقرير</b><span id="f-report-date">-</span></div>
-<div class="info-item"><b>⏰ مدة العمل في الموقع</b><span id="f-duration">-</span></div>
+<div class="info-item"><b>🔢 Code</b><span id="f-code">-</span></div>
+<div class="info-item"><b>🪪 National ID</b><span id="f-nid">-</span></div>
+<div class="info-item"><b>👷 Job</b><span id="f-job">-</span></div>
+<div class="info-item"><b>🏢 Company</b><span id="f-company">-</span></div>
+<div class="info-item"><b>📞 Phone</b><span id="f-phone">-</span></div>
+<div class="info-item"><b>📅 Hire Date</b><span id="f-hire">-</span></div>
+<div class="info-item"><b>📅 Report Date</b><span id="f-report-date">-</span></div>
+<div class="info-item"><b>⏰ Work Duration On Site</b><span id="f-duration">-</span></div>
 </div>
 <div id="f-leave-box" style="display:none;margin-top:12px;padding:12px;border-radius:10px;background:#FFEBEE;border:1px solid #FFCDD2;">
 <b id="f-leave-title">-</b><br><span id="f-leave-detail" style="font-size:13px;"></span>
@@ -176,40 +175,40 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 <div style="display:flex;gap:8px;margin-top:14px;" class="no-print">
-<button class="btn2" onclick="exportPDF()" style="flex:1;padding:13px;background:#0A1F44;color:#fff;">🖨️ تصدير الملف PDF / طباعة</button>
-<button class="btn2" onclick="exportFileExcel()" style="flex:1;padding:13px;">📥 تصدير Excel</button>
+<button class="btn2" onclick="exportPDF()" style="flex:1;padding:13px;background:#0F2A4D;color:#fff;">🖨️ Export File PDF / Print</button>
+<button class="btn2" onclick="exportFileExcel()" style="flex:1;padding:13px;">📥 Export Excel</button>
 </div>
 </div>
 
 <div class="card">
-<div class="section-title">📜 دورة حياة الموظف في الموقع - من أول يوم لحد النهاردة</div>
+<div class="section-title">📜 Employee Life Cycle On Site - From First Day To Today</div>
 <div class="timeline" id="timeline"></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🚨 سجل المخالفات</h3>
+<h3 style="margin:0 0 8px;">🚨 Violations Record</h3>
 <div id="violList"></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🚑 سجل الإصابات / الحوادث</h3>
+<h3 style="margin:0 0 8px;">🚑 Injuries / Accidents Record</h3>
 <div id="accList"></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🎓 سجل التدريبات</h3>
+<h3 style="margin:0 0 8px;">🎓 Trainings Record</h3>
 <div id="trainList"></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">📋 سجل ملاحظات السلامة / الحوادث الوشيكة اللي بلغ عنها</h3>
+<h3 style="margin:0 0 8px;">📋 Safety Observations / Near Miss He Reported</h3>
 <div id="obsList"></div>
 </div>
 </div>
 
 <div id="emptyState" style="text-align:center;color:#999;padding:40px;">
 <p style="font-size:40px;margin:0;">📁</p>
-<p>ابحث عن موظف بالاسم أو الكود أو رقم البطاقة عشان ملفه يظهر هنا</p>
+<p>Search for employee by name, code or national ID to show his file here</p>
 </div>
 </div>
 </div>
@@ -224,11 +223,12 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
-  if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role==='manager'?'مدير':u.role==='supervisor'?'مشرف':u.role==='employee'?'موظف':u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
+  if(u.name){ document.getElementById('sideName').innerText=u.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
 })();
 
 // ✅ FIREBASE
@@ -238,12 +238,12 @@ let currentPerson=null, currentViol=[], currentAcc=[], currentTrain=[];
 async function fetchCol(names){
   if(!window.db) return [];
   for(let n of names){
-    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+    try{ let s=await window.db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
   }
   return [];
 }
 async function loadAll(){
-  document.getElementById('loadStatus').innerText='⏳ جاري تحميل ملفات الموظفين من فايربيز...';
+  document.getElementById('loadStatus').innerText='⏳ Loading employee files from Firebase...';
   DB.workers = await fetchCol(['workers']);
   DB.induction = await fetchCol(['induction']);
   DB.empViolations = await fetchCol(['employeeViolations','employee-violations','empViolations']);
@@ -253,13 +253,12 @@ async function loadAll(){
   DB.nearMiss = await fetchCol(['nearMiss','near-miss']);
   DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
   DB.safetyObs = DB.observations;
-  // fallback قديم
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
     for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
     if(!DB.empViolations.length && old.employeeViolations) DB.empViolations=old.employeeViolations;
   }catch(e){}
-  document.getElementById('loadStatus').innerText='✅ تم تحميل '+getAllPeople().length+' موظف من فايربيز';
+  document.getElementById('loadStatus').innerText='✅ Loaded '+getAllPeople().length+' employees from Firebase';
   fillDatalist();
 }
 
@@ -267,6 +266,9 @@ function getField(obj, keys){
   for(let k of keys){ if(obj[k]!==undefined && obj[k]!=='' && obj[k]!==null) return obj[k]; }
   return '';
 }
+// Translate old AR values -> EN display
+function TAction(v){ let m={'استبعاد نهائي':'Final Exclusion','استبعاد':'Exclusion','استقال':'Resigned','مستبعد':'Excluded','مستقيل':'Resigned'}; return m[String(v||'').trim()]||v||''; }
+function TStatus(v){ let m={'مستبعد':'Excluded','استبعاد نهائي':'Final Exclusion','استبعاد':'Excluded','استقال':'Resigned','مستقيل':'Resigned','استقالة':'Resigned','شغال':'Working','يعمل':'Working'}; return m[String(v||'').trim()]||v||''; }
 function getAllPeople(){
   let list=[];
   let push=(x, src)=>{
@@ -283,7 +285,7 @@ function fillDatalist(){
   let people=getAllPeople();
   document.getElementById('allEmp').innerHTML=people.map(p=>{
     let code=getField(p,['code','id']); let nid=getField(p,['nid','nationalId','idNumber','card','بطاقة']);
-    return '<option value="'+p.name+'">'+(code? 'كود: '+code+' ':'')+(nid? 'بطاقة: '+nid:'')+'</option><option value="'+code+'"></option><option value="'+nid+'"></option>';
+    return '<option value="'+p.name+'">'+(code? 'Code: '+code+' ':'')+(nid? 'ID: '+nid:'')+'</option><option value="'+code+'"></option><option value="'+nid+'"></option>';
   }).join('');
 }
 function findPerson(q){
@@ -304,7 +306,7 @@ function calcDays(from, to){
 }
 function showFile(q){
   let p=findPerson(q);
-  if(!p){ alert('⚠️ الموظف مش موجود، اتأكد من الاسم أو الكود أو رقم البطاقة'); return; }
+  if(!p){ alert('⚠️ Employee not found, check name, code or national ID'); return; }
   currentPerson=p;
   let name=getField(p,['name']);
   let code=getField(p,['code','id']);
@@ -316,29 +318,28 @@ function showFile(q){
   let photo=getField(p,['photo','image','img','pic']);
   let resignDate=getField(p,['resignDate','resignationDate','leaveDate','تاريخ_الاستقالة']);
   let resignReason=getField(p,['resignReason','resignationReason','سبب_الاستقالة']);
-  let statusRaw=getField(p,['status','حالة']);
+  let statusRaw=TStatus(getField(p,['status','حالة']));
   currentViol=(DB.empViolations||[]).filter(x=>x.name===name || String(x.code||'')===String(code||''));
-  // لو المخالفات العامة فيها اسم الموظف، ضيفها برضه
-  let exclViol=currentViol.find(x=>x.action==='استبعاد نهائي');
-  let isExcluded = exclViol || statusRaw==='مستبعد' || statusRaw==='استبعاد نهائي' || statusRaw==='استبعاد';
-  let isResigned = resignDate || statusRaw==='استقال' || statusRaw==='مستقيل' || statusRaw==='استقالة';
+  let exclViol=currentViol.find(x=>TAction(x.action)==='Final Exclusion');
+  let isExcluded = exclViol || statusRaw==='Excluded' || statusRaw==='Final Exclusion' || statusRaw==='Exclusion';
+  let isResigned = resignDate || statusRaw==='Resigned';
   let endDate=null, endLabel='', endDetail='';
   let today=new Date().toISOString().slice(0,10);
   let reportDate=today;
   if(isExcluded){
     endDate=exclViol?exclViol.date:getField(p,['excludeDate','exclusionDate']);
-    endLabel='🚫 مستبعد';
-    endDetail='تاريخ الاستبعاد: '+(endDate||'-')+' | سبب الاستبعاد: '+(exclViol?exclViol.desc+' - '+exclViol.action : getField(p,['excludeReason','exclusionReason'])||'استبعاد نهائي');
+    endLabel='🚫 Excluded';
+    endDetail='Exclusion Date: '+(endDate||'-')+' | Reason: '+(exclViol?exclViol.desc+' - '+TAction(exclViol.action) : getField(p,['excludeReason','exclusionReason'])||'Final Exclusion');
   } else if(isResigned){
     endDate=resignDate;
-    endLabel='👋 استقال';
-    endDetail='تاريخ الاستقالة: '+(resignDate||'-')+(resignReason?' | السبب: '+resignReason:'');
+    endLabel='👋 Resigned';
+    endDetail='Resignation Date: '+(resignDate||'-')+(resignReason?' | Reason: '+resignReason:'');
   }
   let days=calcDays(hire, endDate||reportDate);
   let statusEl=document.getElementById('f-status');
-  if(isExcluded){ statusEl.className='badge excluded'; statusEl.innerText='🚫 مستبعد'; }
-  else if(isResigned){ statusEl.className='badge resign'; statusEl.innerText='👋 استقال'; }
-  else { statusEl.className='badge work'; statusEl.innerText='🟢 شغال'; }
+  if(isExcluded){ statusEl.className='badge excluded'; statusEl.innerText='🚫 Excluded'; }
+  else if(isResigned){ statusEl.className='badge resign'; statusEl.innerText='👋 Resigned'; }
+  else { statusEl.className='badge work'; statusEl.innerText='🟢 Working'; }
   document.getElementById('fileArea').style.display='block';
   document.getElementById('emptyState').style.display='none';
   document.getElementById('f-name').innerText=name;
@@ -351,7 +352,7 @@ function showFile(q){
   document.getElementById('f-hire').innerText=hire||'-';
   document.getElementById('f-report-date').innerText=reportDate;
   document.getElementById('printDate').innerText=reportDate;
-  document.getElementById('f-duration').innerText=days+' يوم';
+  document.getElementById('f-duration').innerText=days+' days';
   document.getElementById('f-days').innerText=days;
   document.getElementById('f-photo').src=photo||'https://via.placeholder.com/160x200?text=No+Photo';
   let leaveBox=document.getElementById('f-leave-box');
@@ -359,38 +360,38 @@ function showFile(q){
   else leaveBox.style.display='none';
   currentAcc=(DB.accidents||[]).filter(x=>x.injured===name || String(x.code||'')===String(code||''));
   currentTrain=[];
-  (DB.train||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'تدريب',...x}); });
-  (DB.weeklyLect||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'محاضرة أسبوعية',...x}); });
-  (DB.induction||[]).forEach(x=>{ if(x.name===name) currentTrain.push({src:'محاضرة أولية',...x}); });
+  (DB.train||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'Training',...x}); });
+  (DB.weeklyLect||[]).forEach(x=>{ if(JSON.stringify(x).includes(name)) currentTrain.push({src:'Weekly Meeting',...x}); });
+  (DB.induction||[]).forEach(x=>{ if(x.name===name) currentTrain.push({src:'Induction',...x}); });
   let near=(DB.nearMiss||[]).filter(x=>(x.reporter||x.reporterName||'')===name);
   let obs=(DB.observations||[]).filter(x=>JSON.stringify(x).includes(name));
   document.getElementById('f-viol').innerText=currentViol.length;
   document.getElementById('f-acc').innerText=currentAcc.length;
   document.getElementById('f-train').innerText=currentTrain.length;
   let events=[];
-  if(hire) events.push({date:hire,title:'📅 تعيين في الموقع',desc:'بدأ العمل - '+job+' - '+company});
-  currentTrain.forEach(t=>{ let d=getField(t,['date']); events.push({date:d||'',title:'🎓 '+ (t.src||'تدريب'),desc:getField(t,['topic','title','desc'])||'تم حضور تدريب'}); });
-  currentViol.forEach(v=>events.push({date:v.date,title:'🚨 مخالفة - '+v.action,desc:v.desc+' | مكان: '+v.place}));
-  currentAcc.forEach(a=>events.push({date:a.date,title:'🚑 إصابة / حادث - '+((a.classes||[]).join(' + ')),desc:a.desc+' | جزء مصاب: '+a.body+' - '+a.nature}));
-  if(isResigned) events.push({date:resignDate||'',title:'👋 استقال',desc:resignReason||'استقال من الموقع'});
-  if(isExcluded) events.push({date:endDate||'',title:'🚫 استبعاد نهائي',desc:exclViol?exclViol.desc:'تم استبعاده'});
+  if(hire) events.push({date:hire,title:'📅 Hired On Site',desc:'Started work - '+job+' - '+company});
+  currentTrain.forEach(t=>{ let d=getField(t,['date']); events.push({date:d||'',title:'🎓 '+ (t.src||'Training'),desc:getField(t,['topic','title','desc'])||'Attended training'}); });
+  currentViol.forEach(v=>events.push({date:v.date,title:'🚨 Violation - '+TAction(v.action),desc:v.desc+' | Place: '+v.place}));
+  currentAcc.forEach(a=>events.push({date:a.date,title:'🚑 Injury / Accident - '+((a.classes||[]).join(' + ')),desc:a.desc+' | Injured Part: '+a.body+' - '+a.nature}));
+  if(isResigned) events.push({date:resignDate||'',title:'👋 Resigned',desc:resignReason||'Resigned from site'});
+  if(isExcluded) events.push({date:endDate||'',title:'🚫 Final Exclusion',desc:exclViol?exclViol.desc:'Excluded'});
   events.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-  document.getElementById('timeline').innerHTML=events.length?events.map(e=>'<div class="timeline-item"><b>'+(e.date||'-')+' - '+e.title+'</b><br><span style="color:#666;font-size:13px;">'+e.desc+'</span></div>').join(''):'<p style="color:#999;">مفيش أحداث مسجلة</p>';
-  if(!currentViol.length) document.getElementById('violList').innerHTML='<p style="color:#2E7D32;">✅ مفيش مخالفات</p>';
-  else document.getElementById('violList').innerHTML='<table><tr><th>التاريخ</th><th>وصف المخالفة</th><th>المكان</th><th>الإجراء / الخصم</th><th>المبلغ</th></tr>'+currentViol.map(v=>'<tr><td>'+v.date+' '+(v.time||'')+'</td><td style="text-align:right;">'+v.desc+'</td><td>'+v.place+'</td><td><b style="color:#D32F2F;">'+v.action+'</b></td><td>'+(v.safety||'-')+'</td></tr>').join('')+'</table>';
-  if(!currentAcc.length) document.getElementById('accList').innerHTML='<p style="color:#2E7D32;">✅ مفيش إصابات</p>';
-  else document.getElementById('accList').innerHTML='<table><tr><th>التاريخ</th><th>وصف الحادث</th><th>التصنيف</th><th>الجزء المصاب</th><th>طبيعة الإصابة</th></tr>'+currentAcc.map(a=>'<tr><td>'+a.date+'</td><td style="text-align:right;">'+a.desc+'</td><td>'+((a.classes||[]).join(' + '))+'</td><td>'+a.body+'</td><td>'+a.nature+'</td></tr>').join('')+'</table>';
-  if(!currentTrain.length) document.getElementById('trainList').innerHTML='<p style="color:#999;">مفيش تدريبات مسجلة</p>';
-  else document.getElementById('trainList').innerHTML='<table><tr><th>التاريخ</th><th>نوع التدريب</th><th>الموضوع / التفاصيل</th></tr>'+currentTrain.map(t=>'<tr><td>'+(getField(t,['date'])||'-')+'</td><td>'+t.src+'</td><td style="text-align:right;">'+(getField(t,['topic','title','desc','subject'])||JSON.stringify(t).slice(0,120))+'</td></tr>').join('')+'</table>';
-  if(!near.length && !obs.length) document.getElementById('obsList').innerHTML='<p style="color:#999;">مفيش بلاغات مسجلة باسمه</p>';
-  else document.getElementById('obsList').innerHTML='<p>بلغ عن <b>'+near.length+'</b> حادث وشيك، و <b>'+obs.length+'</b> ملاحظة سلامة</p>'+near.map(n=>'<div style="background:#FFF3E0;padding:10px;border-radius:10px;margin-bottom:6px;">⚡ '+n.date+' - '+n.place+' - '+n.desc+'</div>').join('');
+  document.getElementById('timeline').innerHTML=events.length?events.map(e=>'<div class="timeline-item"><b>'+(e.date||'-')+' - '+e.title+'</b><br><span style="color:#666;font-size:13px;">'+e.desc+'</span></div>').join(''):'<p style="color:#999;">No events recorded</p>';
+  if(!currentViol.length) document.getElementById('violList').innerHTML='<p style="color:#2E7D32;">✅ No violations</p>';
+  else document.getElementById('violList').innerHTML='<table><tr><th>Date</th><th>Violation Description</th><th>Place</th><th>Action / Deduction</th><th>Amount</th></tr>'+currentViol.map(v=>'<tr><td>'+v.date+' '+(v.time||'')+'</td><td style="text-align:left;">'+v.desc+'</td><td>'+v.place+'</td><td><b style="color:#D32F2F;">'+TAction(v.action)+'</b></td><td>'+(v.safety||'-')+'</td></tr>').join('')+'</table>';
+  if(!currentAcc.length) document.getElementById('accList').innerHTML='<p style="color:#2E7D32;">✅ No injuries</p>';
+  else document.getElementById('accList').innerHTML='<table><tr><th>Date</th><th>Accident Description</th><th>Classification</th><th>Injured Part</th><th>Injury Nature</th></tr>'+currentAcc.map(a=>'<tr><td>'+a.date+'</td><td style="text-align:left;">'+a.desc+'</td><td>'+((a.classes||[]).join(' + '))+'</td><td>'+a.body+'</td><td>'+a.nature+'</td></tr>').join('')+'</table>';
+  if(!currentTrain.length) document.getElementById('trainList').innerHTML='<p style="color:#999;">No trainings recorded</p>';
+  else document.getElementById('trainList').innerHTML='<table><tr><th>Date</th><th>Training Type</th><th>Topic / Details</th></tr>'+currentTrain.map(t=>'<tr><td>'+(getField(t,['date'])||'-')+'</td><td>'+t.src+'</td><td style="text-align:left;">'+(getField(t,['topic','title','desc','subject'])||JSON.stringify(t).slice(0,120))+'</td></tr>').join('')+'</table>';
+  if(!near.length && !obs.length) document.getElementById('obsList').innerHTML='<p style="color:#999;">No reports recorded under his name</p>';
+  else document.getElementById('obsList').innerHTML='<p>Reported <b>'+near.length+'</b> near miss, and <b>'+obs.length+'</b> safety observations</p>'+near.map(n=>'<div style="background:#FFF3E0;padding:10px;border-radius:10px;margin-bottom:6px;">⚡ '+n.date+' - '+n.place+' - '+n.desc+'</div>').join('');
 }
 function clearFile(){ document.getElementById('searchInput').value=''; document.getElementById('fileArea').style.display='none'; document.getElementById('emptyState').style.display='block'; currentPerson=null; }
-function exportPDF(){ if(!currentPerson) return alert('ابحث عن موظف الأول'); window.print(); }
+function exportPDF(){ if(!currentPerson) return alert('Search for employee first'); window.print(); }
 function exportFileExcel(){
-  if(!currentPerson) return alert('ابحث عن موظف الأول');
+  if(!currentPerson) return alert('Search for employee first');
   let name=getField(currentPerson,['name']);
-  let csv='ملف موظف - '+name+'\nالاسم,الكود,رقم البطاقة,المهنة,الشركة,التليفون,تاريخ التعيين,عدد ايام العمل,عدد المخالفات,عدد الاصابات,عدد التدريبات\n'+[name,getField(currentPerson,['code','id']),getField(currentPerson,['nid','nationalId','idNumber','card']),getField(currentPerson,['job','profession']),getField(currentPerson,['company']),getField(currentPerson,['phone','mobile']),getField(currentPerson,['hireDate','startDate','joinDate','date']),document.getElementById('f-days').innerText,currentViol.length,currentAcc.length,currentTrain.length].join(',')+'\n\nالمخالفات\nالتاريخ,الوصف,المكان,الاجراء\n'+currentViol.map(v=>[v.date,v.desc,v.place,v.action].join(',')).join('\n')+'\n\nالاصابات\nالتاريخ,الوصف,التصنيف,الجزء المصاب,طبيعة الاصابة\n'+currentAcc.map(a=>[a.date,a.desc,(a.classes||[]).join(' + '),a.body,a.nature].join(',')).join('\n');
+  let csv='Employee File - '+name+'\nName,Code,National ID,Job,Company,Phone,Hire Date,Work Days,Violations,Injuries,Trainings\n'+[name,getField(currentPerson,['code','id']),getField(currentPerson,['nid','nationalId','idNumber','card']),getField(currentPerson,['job','profession']),getField(currentPerson,['company']),getField(currentPerson,['phone','mobile']),getField(currentPerson,['hireDate','startDate','joinDate','date']),document.getElementById('f-days').innerText,currentViol.length,currentAcc.length,currentTrain.length].join(',')+'\n\nViolations\nDate,Description,Place,Action\n'+currentViol.map(v=>[v.date,v.desc,v.place,TAction(v.action)].join(',')).join('\n')+'\n\nInjuries\nDate,Description,Classification,Injured Part,Injury Nature\n'+currentAcc.map(a=>[a.date,a.desc,(a.classes||[]).join(' + '),a.body,a.nature].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='employee-file-'+name+'.csv'; a.click();
 }
 loadAll();
