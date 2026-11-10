@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -65,7 +64,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -107,7 +105,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> تقييم المقاولين</h1><small>Contractor Evaluation</small></div>
+<div><h1>RMED <span>•</span> تقييم المقاولين</h1><small>Contractor Evaluation - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 
@@ -126,7 +124,8 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <option value="365">📅 سنوي - آخر 12 شهر</option>
 </select>
 </div>
-<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اختار الشركة، والفترة، كل الأرقام هتتغير أوتوماتيك حسب الفترة</p>
+<p style="color:#78909C;font-size:12px;margin:8px 0 0;">اختار الشركة، والفترة، كل الأرقام هتتغير أوتوماتيك حسب الفترة - البيانات من فايربيز</p>
+<p id="loadStatus" style="font-size:12px;color:#1565C0;">⏳ جاري تحميل البيانات من فايربيز...</p>
 </div>
 
 <div id="evalArea" style="display:none;">
@@ -147,10 +146,10 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 10px;">🎓 التدريبات - من صفحة تسجيل التدريبات</h3>
+<h3 style="margin:0 0 10px;">🎓 التدريبات</h3>
 <div class="kpi-grid">
 <div class="kpi"><b id="e-train-count">0</b><small>عدد التدريبات</small></div>
-<div class="kpi"><b id="e-train-hours">0 ساعة</b><small>إجمالي الساعات - مجموع خانة الساعات</small></div>
+<div class="kpi"><b id="e-train-hours">0 ساعة</b><small>إجمالي الساعات</small></div>
 <div class="kpi"><b id="e-train-people">0</b><small>عدد المتدربين</small></div>
 <div class="kpi"><b id="e-train-avg">0</b><small>متوسط المتدربين في التدريب</small></div>
 </div>
@@ -159,8 +158,8 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div class="card">
 <h3 style="margin:0 0 10px;">📅 المحاضرات الأسبوعية</h3>
 <div class="kpi-grid">
-<div class="kpi"><b id="e-weekly-count">0</b><small>عدد المحاضرات الأسبوعية - إجمالي</small></div>
-<div class="kpi"><b id="e-weekly-att">0</b><small>عدد الحضور - إجمالي</small></div>
+<div class="kpi"><b id="e-weekly-count">0</b><small>عدد المحاضرات الأسبوعية</small></div>
+<div class="kpi"><b id="e-weekly-att">0</b><small>عدد الحضور</small></div>
 <div class="kpi"><b id="e-weekly-h">0 ساعة</b><small>عدد الساعات - الحضور × نصف ساعة</small></div>
 <div class="kpi"><b id="e-weekly-avg">0</b><small>متوسط الحضور في المحاضرة</small></div>
 </div>
@@ -169,10 +168,10 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div class="card">
 <h3 style="margin:0 0 10px;">⚠️ المخالفات - من صفحة مخالفات المقاولين</h3>
 <div class="kpi-grid">
-<div class="kpi red"><b id="e-viol-count">0</b><small>عدد المخالفات - إجمالي</small></div>
-<div class="kpi red"><b id="e-viol-money">0 جنيه</b><small>إجمالي المبالغ المخصومة</small></div>
+<div class="kpi red"><b id="e-viol-count">0</b><small>عدد المخالفات</small></div>
+<div class="kpi red"><b id="e-viol-money">0 جنيه</b><small>إجمالي المبالغ المخصومة ✅ متصلحة</small></div>
 <div class="kpi"><b id="e-viol-avg">0 جنيه</b><small>متوسط الخصم في المخالفة</small></div>
-<div class="kpi orange"><b id="e-viol-top">-</b><small>أعلى بند مخالفة تكراراً - وصف المخالفة</small></div>
+<div class="kpi orange"><b id="e-viol-top">-</b><small>أعلى بند مخالفة تكراراً</small></div>
 </div>
 <div id="violTopTable"></div>
 </div>
@@ -204,7 +203,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 <div class="card">
 <h3 style="margin:0 0 8px;">📋 تصاريح العمل</h3>
-<b id="e-permit-total" style="font-size:26px;">0</b> <small>إجمالي التصاريح المسجلة باسم الشركة</small><br>
+<b id="e-permit-total" style="font-size:26px;">0</b> <small>إجمالي التصاريح</small><br>
 <span>نسبة التسليم: <b id="e-permit-del-p">0%</b> - مسلم <b id="e-permit-del">0</b> - غير مسلم <b id="e-permit-undel">0</b></span>
 <div class="bar"><div class="bar-fill" id="e-permit-bar" style="width:0%"></div></div>
 <canvas id="chartPermit" width="300" height="90"></canvas>
@@ -212,9 +211,9 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 10px;">🚑 الحوادث - الإصابات وتصنيفها</h3>
+<h3 style="margin:0 0 10px;">🚑 الحوادث</h3>
 <div class="kpi-grid">
-<div class="kpi red"><b id="e-acc-total">0</b><small>عدد الحوادث - إجمالي</small></div>
+<div class="kpi red"><b id="e-acc-total">0</b><small>عدد الحوادث</small></div>
 <div class="kpi red"><b id="e-acc-inj">0</b><small>عدد الإصابات</small></div>
 <div class="kpi"><b id="e-acc-rate">0</b><small>معدل الحوادث لكل 100 عامل</small></div>
 <div class="kpi"><b id="e-acc-top">-</b><small>أكثر تصنيف تكراراً</small></div>
@@ -224,7 +223,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="card">
 <h3 style="margin:0 0 10px;">📈 رسم بياني - نسبة التغيير في كل شهر</h3>
-<p style="color:#78909C;font-size:12px;margin:0 0 10px;">مقارنة كل شهر باللي قبله، من بداية التسجيل حتى لحظة العرض - اختار البند اللي عايز تقارنه</p>
+<p style="color:#78909C;font-size:12px;margin:0 0 10px;">مقارنة كل شهر باللي قبله</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
 <select id="trendMetric" onchange="renderEval()" style="flex:1;">
 <option value="viol">⚠️ عدد المخالفات</option>
@@ -243,7 +242,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 
 <div style="display:flex;gap:8px;" class="no-print">
-<button class="btn2" onclick="window.print()" style="flex:1;padding:13px;background:#0A1F44;color:#fff;">🖨️ تصدير PDF للطباعة والعرض على الإدارة</button>
+<button class="btn2" onclick="window.print()" style="flex:1;padding:13px;background:#0A1F44;color:#fff;">🖨️ تصدير PDF</button>
 <button class="btn2" onclick="exportEval()" style="flex:1;padding:13px;">📥 تصدير Excel</button>
 </div>
 </div>
@@ -255,14 +254,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
@@ -270,9 +271,58 @@ function logout(){ localStorage.removeItem('currentUser'); location.href='login.
   if(u.name){ document.getElementById('sideName').innerText=u.name; document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
-function gf(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!=='' && o[k]!==null) return o[k]; } return ''; }
-function num(v){ let n=parseFloat(String(v||'').replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n; }
+// ✅ FIREBASE - كل البيانات من فايربيز
+let DB = {dailyCount:[], workers:[], induction:[], train:[], weeklyLect:[], weekly:[], violations:[], ncr:[], observations:[], safetyObs:[], nearMiss:[], accidents:[], permits:[], permitsList:[]};
+
+async function fetchCol(names){
+  if(!window.db) return [];
+  for(let n of names){
+    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+  }
+  return [];
+}
+async function loadAll(){
+  document.getElementById('loadStatus').innerText='⏳ جاري تحميل البيانات من فايربيز...';
+  DB.dailyCount = await fetchCol(['dailyCount','daily-count','daily']);
+  DB.induction = await fetchCol(['induction']);
+  DB.train = await fetchCol(['train','trainings']);
+  DB.weeklyLect = await fetchCol(['weekly','weeklyLect']);
+  DB.weekly = DB.weeklyLect;
+  DB.violations = await fetchCol(['violations']);
+  DB.ncr = await fetchCol(['ncr']);
+  DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
+  DB.safetyObs = DB.observations;
+  DB.nearMiss = await fetchCol(['nearMiss','near-miss','nearMissReports']);
+  DB.accidents = await fetchCol(['accidents']);
+  DB.permits = await fetchCol(['permits']);
+  DB.permitsList = DB.permits;
+  DB.workers = await fetchCol(['workers']);
+  // fallback من localStorage القديم لو فايربيز فاضي
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
+    if(!DB.dailyCount.length && old.daily) DB.dailyCount=old.daily;
+  }catch(e){}
+  document.getElementById('loadStatus').innerText='✅ تم تحميل البيانات من فايربيز - المخالفات: '+DB.violations.length+' - الحوادث: '+DB.accidents.length+' - التصاريح: '+DB.permits.length;
+  fillCompanies();
+}
+
+function gf(o,keys){ if(!o) return ''; for(let k of keys){ if(o[k]!==undefined && o[k]!=='' && o[k]!==null) return o[k]; } return ''; }
+function num(v){ if(typeof v==='number') return v; let n=parseFloat(String(v||'').replace(/[^0-9.-]/g,'')); return isNaN(n)?0:n; }
+
+// ✅ FIX المبالغ المخصومة - بيدور على كل أسماء الحقول المحتملة
+function getMoney(v){
+  if(!v) return 0;
+  // لو الحقل رقم على طول
+  let direct = gf(v, ['deduction','amount','money','fine','penalty','deductionAmount','totalDeduction','total','value','price','خصم','المبلغ','المبلغ_المخصوم','amountDeducted','deductionValue','penaltyAmount','violationAmount','cost']);
+  if(direct!=='' && direct!==null && direct!==undefined) return num(direct);
+  // لو فيه مصفوفة بنود
+  if(Array.isArray(v.items)) return v.items.reduce((s,it)=>s+getMoney(it),0);
+  if(Array.isArray(v.violations)) return v.violations.reduce((s,it)=>s+getMoney(it),0);
+  // لو الحقل اسمه deduction بس بشكل تاني
+  for(let k in v){ let lk=k.toLowerCase(); if(lk.includes('deduct')||lk.includes('amount')||lk.includes('money')||lk.includes('fine')||lk.includes('penalty')||lk.includes('خصم')||lk.includes('مبلغ')){ let n=num(v[k]); if(n) return n; } }
+  return 0;
+}
 function inPeriod(dateStr, period){
   if(period==='all' || !dateStr) return true;
   let d=new Date(dateStr); if(isNaN(d)) return true;
@@ -281,13 +331,12 @@ function inPeriod(dateStr, period){
 }
 function getAllCompanies(){
   let s=new Set();
-  ['dailyCount','workers','induction','train','weeklyLect','violations','ncr','observations','safetyObs','nearMiss','accidents','permits','permitsList'].forEach(k=>{ (DB[k]||[]).forEach(x=>{ let c=gf(x,['company']); if(c) s.add(c); }); });
-  (DB.daily||[]).forEach(x=>{ if(x.company) s.add(x.company); });
+  ['dailyCount','workers','induction','train','weeklyLect','violations','ncr','observations','safetyObs','nearMiss','accidents','permits','permitsList'].forEach(k=>{ (DB[k]||[]).forEach(x=>{ let c=gf(x,['company','companyName','contractor']); if(c) s.add(String(c).trim()); }); });
   return [...s].sort();
 }
 function fillCompanies(){
   let sel=document.getElementById('companySelect');
-  sel.innerHTML='<option value="">-- اختار اسم الشركة --</option>'+getAllCompanies().map(c=>`<option>${c}</option>`).join('');
+  sel.innerHTML='<option value="">-- اختار اسم الشركة --</option>'+getAllCompanies().map(c=>'<option>'+c+'</option>').join('');
 }
 function drawPie(id, closed, open){
   let c=document.getElementById(id); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,300,90);
@@ -319,17 +368,17 @@ function renderEval(){
   document.getElementById('printCompany').innerText=comp; document.getElementById('printPeriod').innerText=periodLabel;
   document.getElementById('printDate').innerText=new Date().toISOString().slice(0,10);
   document.getElementById('scoreCompany').innerText=comp;
-  let daily=(DB.dailyCount||DB.daily||[]).filter(x=>gf(x,['company'])===comp).sort((a,b)=>(gf(a,['date'])||'').localeCompare(gf(b,['date'])||''));
+  let daily=(DB.dailyCount||[]).filter(x=>String(gf(x,['company','companyName','contractor'])||'').trim()===comp).sort((a,b)=>(gf(a,['date'])||'').localeCompare(gf(b,['date'])||''));
   let lastDaily=daily.length?daily[daily.length-1]:{};
   let workersLast=num(gf(lastDaily,['totalWorkers','workers','total','count','عدد_العمال','عاملين'])) || num(gf(lastDaily,['workersCount']));
   let safetyLast=num(gf(lastDaily,['safety','safetyCount','safetyStaff','قسم_السلامة','safetyDept'])) || 0;
-  if(!workersLast){ workersLast=(DB.workers||[]).filter(x=>gf(x,['company'])===comp).length; }
+  if(!workersLast){ workersLast=(DB.workers||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp).length; }
   document.getElementById('e-workers').innerText=workersLast;
   document.getElementById('e-safety').innerText=safetyLast;
-  let induction=(DB.induction||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let induction=(DB.induction||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
   document.getElementById('e-induction').innerText=induction.length;
   document.getElementById('e-induction-h').innerText=(induction.length*0.25).toFixed(2)+' ساعة';
-  let trains=(DB.train||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let trains=(DB.train||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
   let trainHours=trains.reduce((s,x)=>s+num(gf(x,['hours','duration','ساعات'])),0);
   let trainPeople=trains.reduce((s,x)=>s+num(gf(x,['attendees','trainees','participants','عدد_المتدربين','count'])),0);
   trains.forEach(x=>{ if(Array.isArray(x.trainees)) trainPeople+=x.trainees.length; if(Array.isArray(x.attendeesList)) trainPeople+=x.attendeesList.length; });
@@ -337,62 +386,63 @@ function renderEval(){
   document.getElementById('e-train-hours').innerText=trainHours+' ساعة';
   document.getElementById('e-train-people').innerText=trainPeople;
   document.getElementById('e-train-avg').innerText=trains.length? (trainPeople/trains.length).toFixed(1):0;
-  let weekly=(DB.weeklyLect||DB.weekly||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let weekly=(DB.weeklyLect||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
   let weeklyAtt=weekly.reduce((s,x)=>s+num(gf(x,['attendees','attendance','حضور','count'])),0);
   weekly.forEach(x=>{ if(Array.isArray(x.attendeesList)) weeklyAtt+=x.attendeesList.length; });
   document.getElementById('e-weekly-count').innerText=weekly.length;
   document.getElementById('e-weekly-att').innerText=weeklyAtt;
   document.getElementById('e-weekly-h').innerText=(weeklyAtt*0.5).toFixed(1)+' ساعة';
   document.getElementById('e-weekly-avg').innerText=weekly.length? (weeklyAtt/weekly.length).toFixed(1):0;
-  let viols=(DB.violations||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
-  let violMoney=viols.reduce((s,x)=>s+num(gf(x,['deduction','amount','خصم','money','fine'])),0);
+  let viols=(DB.violations||[]).filter(x=>String(gf(x,['company','companyName','contractor'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
+  // ✅ FIX: إجمالي المخصوم بيجمع من كل أسماء الحقول
+  let violMoney=viols.reduce((s,x)=>s+getMoney(x),0);
   document.getElementById('e-viol-count').innerText=viols.length;
   document.getElementById('e-viol-money').innerText=violMoney.toLocaleString()+' جنيه';
   document.getElementById('e-viol-avg').innerText=viols.length? Math.round(violMoney/viols.length).toLocaleString()+' جنيه': '0 جنيه';
-  let byDesc={}; viols.forEach(v=>{ let d=gf(v,['desc','description','violation','بند','item'])||'بدون وصف'; byDesc[d]=(byDesc[d]||0)+1; });
+  let byDesc={}; viols.forEach(v=>{ let d=gf(v,['desc','description','violation','بند','item','title'])||'بدون وصف'; byDesc[d]=(byDesc[d]||0)+1; });
   let topDesc=Object.entries(byDesc).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('e-viol-top').innerText=topDesc? topDesc[0]+' ('+topDesc[1]+' مرة)':'-';
-  document.getElementById('violTopTable').innerHTML=Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).length? '<table><tr><th>بند المخالفة - الوصف</th><th>عدد التكرار</th></tr>'+Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<tr><td style="text-align:right;">${k}</td><td><b>${v}</b></td></tr>`).join('')+'</table>':'';
-  let ncr=(DB.ncr||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
-  let ncrClosed=ncr.filter(x=>gf(x,['status'])==='تم الغلق').length;
+  document.getElementById('violTopTable').innerHTML=Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).length? '<table><tr><th>بند المخالفة - الوصف</th><th>عدد التكرار</th></tr>'+Object.entries(byDesc).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>'<tr><td style="text-align:right;">'+k+'</td><td><b>'+v+'</b></td></tr>').join('')+'</table>':'';
+  let ncr=(DB.ncr||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
+  let ncrClosed=ncr.filter(x=>{ let s=String(gf(x,['status'])||''); return s.includes('غلق')||s==='Closed'; }).length;
   let ncrOpen=ncr.length-ncrClosed;
   let ncrCloseP=ncr.length?Math.round(ncrClosed/ncr.length*100):0;
   document.getElementById('e-ncr-total').innerText=ncr.length;
   document.getElementById('e-ncr-closed').innerText=ncrClosed; document.getElementById('e-ncr-open').innerText=ncrOpen;
   document.getElementById('e-ncr-close-p').innerText=ncrCloseP+'%'; document.getElementById('e-ncr-bar').style.width=ncrCloseP+'%';
   drawPie('chartNcr', ncrClosed, ncrOpen);
-  let obs=(DB.observations||DB.safetyObs||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
-  let obsClosed=obs.filter(x=>{ let s=gf(x,['status']); return s==='تم الغلق'||s==='مغلق'||s==='Closed'; }).length;
+  let obs=(DB.observations||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
+  let obsClosed=obs.filter(x=>{ let s=String(gf(x,['status'])||''); return s.includes('غلق')||s==='Closed'; }).length;
   let obsOpen=obs.length-obsClosed;
   let obsCloseP=obs.length?Math.round(obsClosed/obs.length*100):0;
   document.getElementById('e-obs-total').innerText=obs.length;
   document.getElementById('e-obs-closed').innerText=obsClosed; document.getElementById('e-obs-open').innerText=obsOpen;
   document.getElementById('e-obs-close-p').innerText=obsCloseP+'%'; document.getElementById('e-obs-bar').style.width=obsCloseP+'%';
   drawPie('chartObs', obsClosed, obsOpen);
-  let near=(DB.nearMiss||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
-  let nearClosed=near.filter(x=>{ let s=gf(x,['status']); return s==='تم الغلق'||s==='مغلق'||s==='Closed'; }).length;
+  let near=(DB.nearMiss||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
+  let nearClosed=near.filter(x=>{ let s=String(gf(x,['status'])||''); return s.includes('غلق')||s==='Closed'; }).length;
   let nearOpen=near.length-nearClosed;
   let nearCloseP=near.length?Math.round(nearClosed/near.length*100):0;
   document.getElementById('e-near-total').innerText=near.length;
   document.getElementById('e-near-closed').innerText=nearClosed; document.getElementById('e-near-open').innerText=nearOpen;
   document.getElementById('e-near-close-p').innerText=nearCloseP+'%'; document.getElementById('e-near-bar').style.width=nearCloseP+'%';
   drawPie('chartNear', nearClosed, nearOpen);
-  let permits=(DB.permits||DB.permitsList||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
-  let permitDel=permits.filter(x=>{ let v=gf(x,['delivered','تم_التسليم','تسليم','status']); return v==='تم التسليم'||v==='نعم'||v===true||v==='Yes'||String(v).includes('تم'); }).length;
+  let permits=(DB.permits||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
+  let permitDel=permits.filter(x=>{ let v=String(gf(x,['delivered','تم_التسليم','تسليم','status'])||''); return v.includes('تم')||v==='Yes'||v==='true'; }).length;
   let permitUndel=permits.length-permitDel;
   let permitDelP=permits.length?Math.round(permitDel/permits.length*100):0;
   document.getElementById('e-permit-total').innerText=permits.length;
   document.getElementById('e-permit-del').innerText=permitDel; document.getElementById('e-permit-undel').innerText=permitUndel;
   document.getElementById('e-permit-del-p').innerText=permitDelP+'%'; document.getElementById('e-permit-bar').style.width=permitDelP+'%';
   drawPie('chartPermit', permitDel, permitUndel);
-  let accs=(DB.accidents||[]).filter(x=>gf(x,['company'])===comp && inPeriod(gf(x,['date']),period));
+  let accs=(DB.accidents||[]).filter(x=>String(gf(x,['company'])||'').trim()===comp && inPeriod(gf(x,['date','createdAt']),period));
   document.getElementById('e-acc-total').innerText=accs.length;
   document.getElementById('e-acc-inj').innerText=accs.length;
   document.getElementById('e-acc-rate').innerText=workersLast? (accs.length/workersLast*100).toFixed(2):0;
   let byClass={}; accs.forEach(a=>{ let arr=a.classes||[gf(a,['class','تصنيف'])]; arr.forEach(c=>{ if(c) byClass[c]=(byClass[c]||0)+1; }); });
   let topClass=Object.entries(byClass).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('e-acc-top').innerText=topClass? topClass[0]+' ('+topClass[1]+')':'-';
-  document.getElementById('accClassTable').innerHTML=Object.entries(byClass).length? '<table><tr><th>تصنيف الإصابة / الحادث</th><th>العدد</th></tr>'+Object.entries(byClass).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${k}</td><td><b>${v}</b></td></tr>`).join('')+'</table>':'<p style="color:#2E7D32;">✅ مفيش حوادث في الفترة دي</p>';
+  document.getElementById('accClassTable').innerHTML=Object.entries(byClass).length? '<table><tr><th>تصنيف الإصابة / الحادث</th><th>العدد</th></tr>'+Object.entries(byClass).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<tr><td>'+k+'</td><td><b>'+v+'</b></td></tr>').join('')+'</table>':'<p style="color:#2E7D32;">✅ مفيش حوادث في الفترة دي</p>';
   let score=100;
   score-=Math.min(30, viols.length*2);
   score-=Math.min(20, accs.length*5);
@@ -412,7 +462,7 @@ function renderEval(){
   let metricData={viol:viols, ncr:ncr, obs:obs, near:near, acc:accs, train:trains, weekly:weekly, permit:permits};
   let source=metric==='money'? viols : metricData[metric];
   let byMonth={};
-  (source||[]).forEach(x=>{ let d=gf(x,['date']); if(!d) return; let key=d.slice(0,7); if(!byMonth[key]) byMonth[key]={val:0}; if(metric==='money') byMonth[key].val+=num(gf(x,['deduction','amount','خصم','money','fine'])); else byMonth[key].val+=1; });
+  (source||[]).forEach(x=>{ let d=gf(x,['date','createdAt']); if(!d) return; let key=String(d).slice(0,7); if(!byMonth[key]) byMonth[key]={val:0}; if(metric==='money') byMonth[key].val+=getMoney(x); else byMonth[key].val+=1; });
   let months=Object.keys(byMonth).sort();
   let trend=months.map((m,i)=>{
     let prev=i>0?byMonth[months[i-1]].val:0; let cur=byMonth[m].val;
@@ -420,7 +470,7 @@ function renderEval(){
     return {label:m, val:cur, change};
   });
   drawTrend(trend);
-  document.getElementById('trendTable').innerHTML=trend.length? '<table><tr><th>الشهر</th><th>القيمة</th><th>التغيير عن الشهر اللي قبله</th></tr>'+trend.map(t=>`<tr><td>${t.label}</td><td><b>${t.val}</b></td><td style="color:${t.change===null?'#999':t.change>0?'#D32F2F':'#2E7D32'};font-weight:bold;">${t.change===null?'أول شهر':(t.change>0?'+':'')+t.change+'%'}</td></tr>`).join('')+'</table>':'<p style="color:#999;">مفيش بيانات شهرية</p>';
+  document.getElementById('trendTable').innerHTML=trend.length? '<table><tr><th>الشهر</th><th>القيمة</th><th>التغيير عن الشهر اللي قبله</th></tr>'+trend.map(t=>'<tr><td>'+t.label+'</td><td><b>'+t.val+'</b></td><td style="color:'+(t.change===null?'#999':t.change>0?'#D32F2F':'#2E7D32')+';font-weight:bold;">'+(t.change===null?'أول شهر':(t.change>0?'+':'')+t.change+'%')+'</td></tr>').join('')+'</table>':'<p style="color:#999;">مفيش بيانات شهرية</p>';
   window._evalData={comp,periodLabel,workersLast,safetyLast,induction:induction.length,inductionH:induction.length*0.25,trains:trains.length,trainHours,trainPeople,weekly:weekly.length,weeklyAtt,weeklyH:weeklyAtt*0.5,viols:viols.length,violMoney,topDesc:topDesc?topDesc[0]:'',ncr:ncr.length,ncrCloseP,obs:obs.length,obsCloseP,near:near.length,nearCloseP,permits:permits.length,permitDelP,accs:accs.length,score,label};
 }
 function exportEval(){
@@ -428,7 +478,7 @@ function exportEval(){
   let csv='تقييم مقاول\nالشركة,الفترة,درجة التقييم,اخر عدد عاملين,عدد قسم السلامة,عدد المحاضرات الاولية,ساعات المحاضرات الاولية,عدد التدريبات,ساعات التدريبات,عدد المتدربين,عدد المحاضرات الاسبوعية,عدد الحضور,ساعات الاسبوعية,عدد المخالفات,اجمالي المخصوم,اعلي بند مخالفة,عدد عدم المطابقة,نسبة غلق عدم المطابقة,عدد ملاحظات السلامة,نسبة غلق الملاحظات,عدد الحوادث الوشيكة,نسبة غلق الوشيكة,عدد التصاريح,نسبة التسليم,عدد الحوادث\n'+[d.comp,d.periodLabel,d.score+'% - '+d.label,d.workersLast,d.safetyLast,d.induction,d.inductionH,d.trains,d.trainHours,d.trainPeople,d.weekly,d.weeklyAtt,d.weeklyH,d.viols,d.violMoney,d.topDesc,d.ncr,d.ncrCloseP+'%',d.obs,d.obsCloseP+'%',d.near,d.nearCloseP+'%',d.permits,d.permitDelP+'%',d.accs].join(',')+'\n';
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='contractor-eval-'+d.comp+'.csv'; a.click();
 }
-fillCompanies();
+loadAll();
 </script>
 </body>
 </html>
