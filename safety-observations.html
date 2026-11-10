@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ملاحظات السلامة | RMED</title>
+<title>Safety Observations | RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s;padding:0}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s;padding:0}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -42,25 +42,25 @@ h1.title{text-align:center;color:#0A1F44;margin:5px 0;font-size:26px}
 h1.title span{color:#D32F2F}
 .sub{text-align:center;color:#78909C;margin-bottom:18px;font-size:14px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
-.card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 2px 12px rgba(10,31,68,.08);border-bottom:3px solid #0A1F44}
+.card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 2px 12px rgba(10,31,68,.08);border-bottom:3px solid #0F2A4D}
 .card b{font-size:24px;color:#0A1F44;display:block}
 .card span{font-size:13px;color:#78909C}
 .card.green{border-bottom-color:#2E7D32} .card.green b{color:#2E7D32}
 .card.red{border-bottom-color:#D32F2F} .card.red b{color:#D32F2F}
 .card.blue{border-bottom-color:#FF9800} .card.blue b{color:#E65100}
-.form{background:#fff;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44}
+.form{background:#fff;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D}
 .form h3{color:#0A1F44;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1.5px solid #CFD8DC;background:#fff;color:#0A1F44;font-family:inherit;font-size:14px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#0A1F44}
+input:focus,select:focus,textarea:focus{border-color:#0F2A4D}
 textarea{grid-column:1/-1;min-height:70px;resize:vertical}
 label{font-size:13px;color:#0A1F44;display:block;margin-bottom:4px;font-weight:bold}
-button.save{background:#0A1F44;color:#fff;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
+button.save{background:#0F2A4D;color:#fff;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
 button.save:hover{background:#1A3A6A}
 .btn2{background:#ECEFF1 !important;color:#0A1F44 !important;border:1px solid #CFD8DC !important;padding:11px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13px;box-shadow:0 2px 12px rgba(10,31,68,.08)}
-th{background:#0A1F44;color:#fff;padding:11px}
+th{background:#0F2A4D;color:#fff;padding:11px}
 td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;color:#0A1F44}
 img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #CFD8DC}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;color:#fff}
@@ -74,92 +74,91 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations" class="active"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
-<div class="page-head"><div><h1>RMED <span>•</span> ملاحظات السلامة</h1><small>Safety Observations - من فايربيز</small></div><button onclick="toggleSidebar()">◀️ إخفاء القائمة</button></div>
+<div class="page-head"><div><h1>RMED <span>•</span> Safety Observations</h1><small>Safety Observations - From Firebase</small></div><button onclick="toggleSidebar()">◀️ Hide Menu</button></div>
 <div class="container">
 
-<h1 class="title">📋 ملاحظات <span>السلامة</span></h1>
-<p class="sub">Safety Observations - سجل كل الملاحظات وتابع قفلها</p>
+<h1 class="title">📋 Safety <span>Observations</span></h1>
+<p class="sub">Safety Observations - Record all observations and follow closing them</p>
 
 <div class="stats">
-<div class="card"><b id="total">0</b><span>إجمالي الملاحظات</span></div>
-<div class="card blue"><b id="cCond">0</b><span>ظرف غير آمن</span></div>
-<div class="card blue"><b id="cAct">0</b><span>سلوك غير آمن</span></div>
-<div class="card red"><b id="cOpen">0</b><span>مفتوح</span></div>
-<div class="card green"><b id="cClosed">0</b><span>مغلق</span></div>
-<div class="card"><b id="topLoc">-</b><span>أعلى مكان ملاحظات</span></div>
-<div class="card"><b id="lowLoc">-</b><span>أقل مكان ملاحظات</span></div>
-<div class="card"><b id="topPerson">-</b><span>أعلى شخص تقارير</span></div>
-<div class="card"><b id="lowPerson">-</b><span>أقل شخص تقارير</span></div>
+<div class="card"><b id="total">0</b><span>Total Observations</span></div>
+<div class="card blue"><b id="cCond">0</b><span>Unsafe Condition</span></div>
+<div class="card blue"><b id="cAct">0</b><span>Unsafe Act</span></div>
+<div class="card red"><b id="cOpen">0</b><span>Open</span></div>
+<div class="card green"><b id="cClosed">0</b><span>Closed</span></div>
+<div class="card"><b id="topLoc">-</b><span>Top Place With Observations</span></div>
+<div class="card"><b id="lowLoc">-</b><span>Lowest Place With Observations</span></div>
+<div class="card"><b id="topPerson">-</b><span>Top Person Reports</span></div>
+<div class="card"><b id="lowPerson">-</b><span>Lowest Person Reports</span></div>
 </div>
 
 <div class="form">
-<h3>➕ إضافة ملاحظة جديدة</h3>
+<h3>➕ Add New Observation</h3>
 <div class="grid">
-<div><label>اسم المبلغ / صاحب التقرير</label><input id="reporter" placeholder="اكتب الاسم"></div>
-<div><label>التاريخ</label><input type="date" id="date"></div>
-<div><label>الساعة</label><input type="time" id="time"></div>
-<div><label>نوع الملاحظة</label><select id="type"><option>ظرف غير آمن</option><option>سلوك غير آمن</option></select></div>
-<div><label>مكان الملاحظة</label><input id="place" placeholder="مثال: مبنى A - الدور 3"></div>
-<div><label>الحالة</label><select id="status"><option>مفتوح</option><option>مغلق</option></select></div>
-<div><label>صورة الملاحظة</label><input type="file" id="img1" accept="image/*"></div>
-<div><label>صورة الغلق</label><input type="file" id="img2" accept="image/*"></div>
+<div><label>Reporter Name / Report Owner</label><input id="reporter" placeholder="Write name"></div>
+<div><label>Date</label><input type="date" id="date"></div>
+<div><label>Time</label><input type="time" id="time"></div>
+<div><label>Observation Type</label><select id="type"><option>Unsafe Condition</option><option>Unsafe Act</option></select></div>
+<div><label>Observation Place</label><input id="place" placeholder="Example: Building A - Floor 3"></div>
+<div><label>Status</label><select id="status"><option>Open</option><option>Closed</option></select></div>
+<div><label>Observation Photo</label><input type="file" id="img1" accept="image/*"></div>
+<div><label>Closing Photo</label><input type="file" id="img2" accept="image/*"></div>
 </div>
-<label style="margin-top:10px">وصف الملاحظة</label>
-<textarea id="desc" placeholder="اكتب وصف الملاحظة بالتفصيل..."></textarea>
-<label>الإجراء التصحيحي المقترح</label>
-<textarea id="action" placeholder="اكتب الإجراء التصحيحي المقترح..."></textarea>
-<button class="save" onclick="addObs()">💾 حفظ الملاحظة</button>
+<label style="margin-top:10px">Observation Description</label>
+<textarea id="desc" placeholder="Write observation description in detail..."></textarea>
+<label>Proposed Corrective Action</label>
+<textarea id="action" placeholder="Write proposed corrective action..."></textarea>
+<button class="save" onclick="addObs()">💾 Save Observation</button>
 </div>
 
 <div class="top">
-<input id="search" placeholder="🔍 ابحث بالاسم / المكان / الوصف..." oninput="render()">
-<select id="filterType" onchange="render()"><option value="">كل الأنواع</option><option>ظرف غير آمن</option><option>سلوك غير آمن</option></select>
-<select id="filterStatus" onchange="render()"><option value="">كل الحالات</option><option>مفتوح</option><option>مغلق</option></select>
-<button class="btn2" onclick="exportExcel()">📥 تصدير Excel</button>
+<input id="search" placeholder="🔍 Search by name / place / description..." oninput="render()">
+<select id="filterType" onchange="render()"><option value="">All Types</option><option>Unsafe Condition</option><option>Unsafe Act</option></select>
+<select id="filterStatus" onchange="render()"><option value="">All Statuses</option><option>Open</option><option>Closed</option></select>
+<button class="btn2" onclick="exportExcel()">📥 Export Excel</button>
 </div>
 
 <div class="table-wrap">
 <table>
-<thead><tr><th>التاريخ</th><th>الساعة</th><th>المبلغ</th><th>النوع</th><th>المكان</th><th>الوصف</th><th>الإجراء</th><th>الحالة</th><th>صورة الملاحظة</th><th>صورة الغلق</th><th>حذف</th></tr></thead>
+<thead><tr><th>Date</th><th>Time</th><th>Reporter</th><th>Type</th><th>Place</th><th>Description</th><th>Action</th><th>Status</th><th>Observation Photo</th><th>Closing Photo</th><th>Delete</th></tr></thead>
 <tbody id="tbody"></tbody>
 </table>
 </div>
@@ -177,6 +176,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -186,21 +186,27 @@ function getReporter(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-// ✅ FIREBASE - بدل localStorage
+// ✅ FIREBASE - Data from Firebase
 let data = [];
+
+// Translate old AR -> EN display, new saves EN only
+const TYPE_MAP={'ظرف غير آمن':'Unsafe Condition','سلوك غير آمن':'Unsafe Act','Unsafe Condition':'Unsafe Condition','Unsafe Act':'Unsafe Act'};
+const STATUS_MAP={'مفتوح':'Open','مغلق':'Closed','Open':'Open','Closed':'Closed'};
+function TType(v){ return TYPE_MAP[String(v||'').trim()]||v||'Unsafe Condition'; }
+function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Open'; }
 
 async function loadObs(){
   try{
     if(window.db){
-      let snap = await db.collection('observations').orderBy('createdAt','desc').get();
+      let snap = await window.db.collection('observations').get();
       data = [];
       snap.forEach(d=> data.push({id:d.id, ...d.data()}));
+      data.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log(e); }
-  // fallback قديم
   try{
     if(!data.length){
       let old=JSON.parse(localStorage.getItem('safety_obs')||'[]');
@@ -208,7 +214,7 @@ async function loadObs(){
       else{
         let DB0=JSON.parse(localStorage.getItem('safetyDB')||'{}');
         let oldObs=DB0.observations||[];
-        if(oldObs.length) data=oldObs.map(o=>({reporter:o.reporter||o.reporterName||'',date:o.date||'',time:o.time||'',type:o.type||'ظرف غير آمن',place:o.place||'',status:o.status||'مفتوح',desc:o.desc||o.description||'',action:o.action||o.corrective||'',img1:o.img1||o.img||'',img2:o.img2||''}));
+        if(oldObs.length) data=oldObs.map(o=>({reporter:o.reporter||o.reporterName||'',date:o.date||'',time:o.time||'',type:TType(o.type),place:o.place||'',status:TStatus(o.status),desc:o.desc||o.description||'',action:o.action||o.corrective||'',img1:o.img1||o.img||'',img2:o.img2||''}));
       }
     }
   }catch(e){}
@@ -228,32 +234,32 @@ let place=document.getElementById('place').value.trim();
 let status=document.getElementById('status').value;
 let desc=document.getElementById('desc').value.trim();
 let action=document.getElementById('action').value.trim();
-if(!reporter||!date||!place||!desc){alert('اكمل الاسم والتاريخ والمكان والوصف');return}
-if(!window.db) return alert('فايربيز مش متصل');
+if(!reporter||!date||!place||!desc){alert('Complete name, date, place and description');return}
+if(!window.db) return alert('Firebase not connected');
 readFile(document.getElementById('img1').files[0], async img1=>{
 readFile(document.getElementById('img2').files[0], async img2=>{
 let rec={reporter,reporterName:reporter,date,time,type,place,status,desc,action,img1,img2,createdAt:new Date().toISOString()};
 try{
-  let ref = await db.collection('observations').add(rec);
+  let ref = await window.db.collection('observations').add(rec);
   rec.id = ref.id;
   data.unshift(rec);
-}catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+}catch(e){ return alert('Save problem in Firebase: '+e.message); }
 document.getElementById('desc').value='';document.getElementById('action').value='';document.getElementById('place').value='';
 document.getElementById('img1').value=''; document.getElementById('img2').value='';
 let _r=getReporter(); if(_r) document.getElementById('reporter').value=_r;
-render(); alert('تم حفظ الملاحظة في فايربيز ✅');
+render(); alert('Observation saved in Firebase ✅');
 });});
 }
 function render(){
 let q=document.getElementById('search').value.toLowerCase();
 let ft=document.getElementById('filterType').value;
 let fs=document.getElementById('filterStatus').value;
-let filtered=data.filter(d=> (!ft||d.type==ft)&&(!fs||d.status==fs)&&((d.reporter+d.place+d.desc).toLowerCase().includes(q)) );
+let filtered=data.filter(d=> (!ft||TType(d.type)==ft)&&(!fs||TStatus(d.status)==fs)&&((d.reporter+d.place+d.desc).toLowerCase().includes(q)) );
 document.getElementById('total').textContent=data.length;
-document.getElementById('cCond').textContent=data.filter(d=>d.type=='ظرف غير آمن').length;
-document.getElementById('cAct').textContent=data.filter(d=>d.type=='سلوك غير آمن').length;
-document.getElementById('cOpen').textContent=data.filter(d=>d.status=='مفتوح').length;
-document.getElementById('cClosed').textContent=data.filter(d=>d.status=='مغلق').length;
+document.getElementById('cCond').textContent=data.filter(d=>TType(d.type)=='Unsafe Condition').length;
+document.getElementById('cAct').textContent=data.filter(d=>TType(d.type)=='Unsafe Act').length;
+document.getElementById('cOpen').textContent=data.filter(d=>TStatus(d.status)=='Open').length;
+document.getElementById('cClosed').textContent=data.filter(d=>TStatus(d.status)=='Closed').length;
 function topLow(arr,key){
 if(!arr.length) return ['-','-'];
 let c={}; arr.forEach(d=>{c[d[key]]=(c[d[key]]||0)+1});
@@ -268,29 +274,29 @@ document.getElementById('topPerson').textContent=tPer;
 document.getElementById('lowPerson').textContent=lPer;
 document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
 <tr>
-<td>${d.date}</td><td>${d.time}</td><td>${d.reporter}</td><td>${d.type}</td><td>${d.place}</td>
-<td style="text-align:right;max-width:200px">${d.desc}</td><td style="text-align:right;max-width:200px">${d.action}</td>
-<td><span class="badge ${d.status=='مفتوح'?'open':'closed'}" onclick="toggle(${data.indexOf(d)})" style="cursor:pointer">${d.status}</span></td>
+<td>${d.date}</td><td>${d.time}</td><td>${d.reporter}</td><td>${TType(d.type)}</td><td>${d.place}</td>
+<td style="text-align:left;max-width:200px">${d.desc}</td><td style="text-align:left;max-width:200px">${d.action}</td>
+<td><span class="badge ${TStatus(d.status)=='Open'?'open':'closed'}" onclick="toggle(${data.indexOf(d)})" style="cursor:pointer">${TStatus(d.status)}</span></td>
 <td>${d.img1?`<a href="${d.img1}" target="_blank"><img class="thumb" src="${d.img1}"></a>`:'-'}</td>
 <td>${d.img2?`<a href="${d.img2}" target="_blank"><img class="thumb" src="${d.img2}"></a>`:'-'}</td>
-<td><button class="del" onclick="delObs(${data.indexOf(d)})">حذف</button></td>
-</tr>`).join('') || '<tr><td colspan="11">لا توجد ملاحظات بعد</td></tr>';
+<td><button class="del" onclick="delObs(${data.indexOf(d)})">Delete</button></td>
+</tr>`).join('') || '<tr><td colspan="11">No observations yet</td></tr>';
 }
 async function toggle(i){
   let rec=data[i];
-  let newStatus = rec.status=='مفتوح'?'مغلق':'مفتوح';
-  try{ if(rec && rec.id && window.db) await db.collection('observations').doc(rec.id).update({status:newStatus}); }catch(e){}
+  let newStatus = TStatus(rec.status)=='Open'?'Closed':'Open';
+  try{ if(rec && rec.id && window.db) await window.db.collection('observations').doc(rec.id).update({status:newStatus}); }catch(e){}
   rec.status=newStatus; render();
 }
 async function delObs(i){
-  if(!confirm('متأكد تحذف الملاحظة؟')) return;
+  if(!confirm('Are you sure to delete observation?')) return;
   let rec=data[i];
-  try{ if(rec && rec.id && window.db) await db.collection('observations').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec && rec.id && window.db) await window.db.collection('observations').doc(rec.id).delete(); }catch(e){}
   data.splice(i,1); render();
 }
 function exportExcel(){
-let csv='\uFEFFالتاريخ,الساعة,المبلغ,النوع,المكان,الوصف,الاجراء التصحيحي,الحالة\n';
-data.forEach(d=>{ csv+=`"${d.date}","${d.time}","${d.reporter}","${d.type}","${d.place}","${d.desc}","${d.action}","${d.status}"\n`; });
+let csv='\uFEFFDate,Time,Reporter,Type,Place,Description,Corrective Action,Status\n';
+data.forEach(d=>{ csv+=`"${d.date}","${d.time}","${d.reporter}","${TType(d.type)}","${d.place}","${d.desc}","${d.action}","${TStatus(d.status)}"\n`; });
 let blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
 let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='safety-observations.csv'; a.click();
 }
