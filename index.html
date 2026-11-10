@@ -134,7 +134,14 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+// ✅ خروج صحيح - بيمسح كل مفاتيح الجلسة وبيمنع الرجوع التلقائي
+function logout(){
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('safetyUser');
+  localStorage.removeItem('safetyUserName');
+  sessionStorage.clear();
+  location.href='login.html?logout=1';
+}
 function getMe(){
   try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
   return null;
