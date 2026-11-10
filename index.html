@@ -94,7 +94,7 @@ table th{background:#0A1F44;color:#fff;padding:9px} table td{padding:9px;border-
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> الرئيسية</h1><small>التصميم الجديد - New Design</small></div>
+<div><h1>RMED <span>•</span> الرئيسية</h1><small>التصميم الجديد - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -128,13 +128,16 @@ table th{background:#0A1F44;color:#fff;padding:9px} table td{padding:9px;border-
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-// ✅ خروج صحيح - بيمسح كل مفاتيح الجلسة وبيمنع الرجوع التلقائي
 function logout(){
   localStorage.removeItem('currentUser');
   localStorage.removeItem('safetyUser');
@@ -153,38 +156,72 @@ function getMe(){
   if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; document.getElementById('topUser').innerText=nm.name; document.getElementById('welcomeName').innerText='👋 أهلاً بيك يا '+nm.name; document.getElementById('welcomeSub').innerText='دورك: '+(nm.role||'')+' - ده التصميم الجديد RMED'; }
 })();
 
-let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-['workers','induction','train','weeklyLect','violations','empViolations','observations','permits','accidents','nearMiss','ncr','scaffolds','dailyWorkers'].forEach(k=>{if(!DB[k])DB[k]=[];});
-let me=getMe(); let myName=me?me.name:'';
-document.getElementById('k-workers').innerText=DB.workers.length;
-document.getElementById('k-ind').innerText=DB.induction.length;
-document.getElementById('k-train').innerText=DB.train.length;
-document.getElementById('k-weekly').innerText=DB.weeklyLect.length;
-document.getElementById('k-obs').innerText=DB.observations.length;
-document.getElementById('k-viol').innerText=DB.violations.length;
-document.getElementById('k-empviol').innerText=(DB.empViolations||[]).length;
-document.getElementById('k-permits').innerText=DB.permits.length;
-let score = DB.induction.length*5 + DB.train.length*5 + DB.weeklyLect.length*10 + DB.observations.length*3 + DB.violations.length*2;
-document.getElementById('myScore').innerText=score;
+// ✅ FIREBASE - بدل localStorage
+let DB={workers:[],induction:[],train:[],weeklyLect:[],violations:[],empViolations:[],observations:[],permits:[],accidents:[],nearMiss:[],ncr:[],scaffolds:[],dailyWorkers:[]};
 
-let acts=[];
-(DB.induction||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📘 محاضرة أولية - '+(x.name||'')}));
-(DB.train||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🎓 تدريب - '+(x.title||'')}));
-(DB.weeklyLect||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📅 أسبوعية - '+(x.title||'')}));
-(DB.observations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📋 ملاحظة - '+(x.desc||'').slice(0,40)}));
-(DB.violations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'⚠️ مخالفة - '+(x.company||'')}));
-acts.sort((a,b)=>String(b.d).localeCompare(String(a.d)));
-document.getElementById('myActivity').innerHTML = acts.length ? '<table><tr><th>التاريخ</th><th>النشاط</th></tr>'+acts.slice(0,10).map(a=>`<tr><td>${a.d||''}</td><td style="text-align:right;">${a.t}</td></tr>`).join('')+'</table>' : '<p style="text-align:center;color:#999;">لسه مفيش نشاط - ابدأ سجل من الشريط على اليمين</p>';
+async function fetchCol(names){
+  if(!window.db) return [];
+  for(let n of names){
+    try{ let s=await db.collection(n).get(); if(!s.empty){ let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; } }catch(e){}
+  }
+  return [];
+}
+async function loadAll(){
+  DB.workers = await fetchCol(['workers']);
+  DB.induction = await fetchCol(['induction']);
+  DB.train = await fetchCol(['train','trainings']);
+  DB.weeklyLect = await fetchCol(['weekly','weeklyLect']);
+  DB.violations = await fetchCol(['violations']);
+  DB.empViolations = await fetchCol(['employeeViolations','employee-violations']);
+  DB.observations = await fetchCol(['observations','safety-observations','safetyObs']);
+  DB.permits = await fetchCol(['permits']);
+  DB.accidents = await fetchCol(['accidents']);
+  DB.nearMiss = await fetchCol(['nearMiss','near-miss']);
+  DB.ncr = await fetchCol(['ncr']);
+  // fallback قديم
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    for(let k in DB){ if(!DB[k].length && old[k] && old[k].length) DB[k]=old[k]; }
+  }catch(e){}
+  renderHome();
+}
 
-let scores={};
-function addScore(n,p){ if(!n) return; if(!scores[n]) scores[n]=0; scores[n]+=p; }
-(DB.induction||[]).forEach(x=>addScore(x.reporter||x.trainer,5));
-(DB.train||[]).forEach(x=>addScore(x.reporter||x.trainer,5));
-(DB.weeklyLect||[]).forEach(x=>addScore(x.reporter||x.trainer,10));
-(DB.observations||[]).forEach(x=>addScore(x.reporter,3));
-(DB.violations||[]).forEach(x=>addScore(x.reporter||x.by,2));
-let top=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5);
-document.getElementById('topTable').innerHTML = top.length ? '<table><tr><th>#</th><th>الاسم</th><th>النقاط</th></tr>'+top.map((e,i)=>`<tr><td>${i+1}</td><td><b>${e[0]}</b></td><td><b>${e[1]}</b></td></tr>`).join('')+'</table>' : '<p style="text-align:center;color:#999;">لسه مفيش تقييم</p>';
+function renderHome(){
+  let me=getMe(); let myName=me?me.name:'';
+  document.getElementById('k-workers').innerText=DB.workers.length;
+  document.getElementById('k-ind').innerText=DB.induction.length;
+  document.getElementById('k-train').innerText=DB.train.length;
+  document.getElementById('k-weekly').innerText=DB.weeklyLect.length;
+  document.getElementById('k-obs').innerText=DB.observations.length;
+  document.getElementById('k-viol').innerText=DB.violations.length;
+  document.getElementById('k-empviol').innerText=(DB.empViolations||[]).length;
+  document.getElementById('k-permits').innerText=DB.permits.length;
+  let score = DB.induction.length*5 + DB.train.length*5 + DB.weeklyLect.length*10 + DB.observations.length*3 + DB.violations.length*2;
+  document.getElementById('myScore').innerText=score;
+
+  let acts=[];
+  (DB.induction||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📘 محاضرة أولية - '+(x.name||' ')}));
+  (DB.train||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🎓 تدريب - '+(x.title||x.topic||'')}));
+  (DB.weeklyLect||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📅 أسبوعية - '+(x.title||x.company||'')}));
+  (DB.observations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📋 ملاحظة - '+((x.desc||'').slice(0,40))}));
+  (DB.violations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'⚠️ مخالفة - '+(x.company||'')}));
+  (DB.accidents||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🚑 حادث - '+(x.company||'')}));
+  (DB.permits||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📋 تصريح - '+(x.company||'')}));
+  acts.sort((a,b)=>String(b.d||'').localeCompare(String(a.d||'')));
+  document.getElementById('myActivity').innerHTML = acts.length ? '<table><tr><th>التاريخ</th><th>النشاط</th></tr>'+acts.slice(0,10).map(a=>'<tr><td>'+(a.d||'')+'</td><td style="text-align:right;">'+a.t+'</td></tr>').join('')+'</table>' : '<p style="text-align:center;color:#999;">لسه مفيش نشاط - ابدأ سجل من الشريط على اليمين</p>';
+
+  let scores={};
+  function addScore(n,p){ if(!n) return; if(!scores[n]) scores[n]=0; scores[n]+=p; }
+  (DB.induction||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,5));
+  (DB.train||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,5));
+  (DB.weeklyLect||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,10));
+  (DB.observations||[]).forEach(x=>addScore(x.reporter||x.reporterName,3));
+  (DB.violations||[]).forEach(x=>addScore(x.reporter||x.by||x.reporterName,2));
+  (DB.accidents||[]).forEach(x=>addScore(x.reporter||x.reporterName,2));
+  let top=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById('topTable').innerHTML = top.length ? '<table><tr><th>#</th><th>الاسم</th><th>النقاط</th></tr>'+top.map((e,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+e[0]+'</b></td><td><b>'+e[1]+'</b></td></tr>').join('')+'</table>' : '<p style="text-align:center;color:#999;">لسه مفيش تقييم</p>';
+}
+loadAll();
 </script>
 </body>
 </html>
