@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -66,7 +65,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -108,7 +106,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> الحوادث الوشيكة</h1><small>Near Miss Reports</small></div>
+<div><h1>RMED <span>•</span> الحوادث الوشيكة</h1><small>Near Miss - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -125,7 +123,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>📧 إيميل المدير</label><input id="mgrEmail" placeholder="manager@rmed.com" oninput="localStorage.setItem('mgrEmail',this.value)"></div>
 <div><label>📧 إيميل المشرف</label><input id="supEmail" placeholder="supervisor@rmed.com" oninput="localStorage.setItem('supEmail',this.value)"></div>
 </div>
-<small style="color:#E65100;">ملحوظة: الموقع هيفتح برنامج الميل عندك جاهز بالتفاصيل، دوس Send وهيتبعت. لو عايز يتبعت أوتوماتيك من غير ما تفتح الميل، هنحتاج نربطه بـ Google Apps Script بعدين.</small>
+<small style="color:#E65100;">ملحوظة: الموقع هيفتح برنامج الميل عندك جاهز بالتفاصيل، دوس Send وهيتبعت.</small>
 </div>
 
 <div class="kpi-grid">
@@ -180,14 +178,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -200,9 +200,24 @@ function getReporter(){
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
-if(!DB.nearMiss) DB.nearMiss=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+// ✅ FIREBASE - بدل localStorage
+let nearMiss = [];
+
+async function loadNM(){
+  try{
+    if(window.db){
+      let snap = await db.collection('nearMiss').orderBy('createdAt','desc').get();
+      nearMiss = [];
+      snap.forEach(d=> nearMiss.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!nearMiss.length && old.nearMiss) nearMiss=old.nearMiss;
+  }catch(e){}
+  renderNM();
+}
+
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 let tempIncidentImgs=[], tempActionImgs=[];
@@ -223,7 +238,7 @@ function previewImgs(input, prevId){
     r.readAsDataURL(f);
   });
 }
-function addNM(){
+async function addNM(){
   if(!val('nm-date')) return alert('اختار التاريخ');
   if(!val('nm-time')) return alert('اختار الوقت');
   if(!val('nm-company')) return alert('اكتب الشركة');
@@ -235,10 +250,16 @@ function addNM(){
   if(!val('nm-root')) return alert('اكتب السبب الجذري');
   if(!val('nm-corrective')) return alert('اكتب الإجراء التصحيحي');
   if(!val('nm-preventive')) return alert('اكتب الإجراء الوقائي');
+  if(!window.db) return alert('فايربيز مش متصل');
   let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),reporter:rep,reporterName:rep,place:val('nm-place'),desc:val('nm-desc'),direct:val('nm-direct'),root:val('nm-root'),corrective:val('nm-corrective'),preventive:val('nm-preventive'),status:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
-  DB.nearMiss.push(rec); save(); renderNM();
+  try{
+    let ref = await db.collection('nearMiss').add(rec);
+    rec.id = ref.id;
+    nearMiss.unshift(rec);
+  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  renderNM();
   sendEmailNotify(rec);
-  alert('✅ تم حفظ تقرير الحادث الوشيك\nوهيفتح الميل دلوقتي عشان يبعت إشعار للمدير والمشرف');
+  alert('✅ تم حفظ تقرير الحادث الوشيك في فايربيز\nوهيفتح الميل دلوقتي عشان يبعت إشعار للمدير والمشرف');
   ['nm-company','nm-place','nm-desc','nm-direct','nm-root','nm-corrective','nm-preventive'].forEach(id=>setVal(id,''));
   setVal('nm-status','مفتوح');
   document.getElementById('nm-img-incident').value=''; document.getElementById('nm-img-action').value='';
@@ -264,13 +285,13 @@ function renderNM(){
   let q=(document.getElementById('searchNM').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
   let fc=document.getElementById('filterCompany').value;
-  let all=DB.nearMiss||[];
+  let all=nearMiss||[];
   let comps=[...new Set(all.map(x=>x.company))];
-  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
   let places=[...new Set(all.map(x=>x.place))];
-  document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${p}">`).join('');
+  document.getElementById('placesList').innerHTML=places.map(p=>'<option value="'+p+'">').join('');
   let total=all.length;
   let open=all.filter(x=>x.status==='مفتوح').length;
   let closed=all.filter(x=>x.status==='مغلق').length;
@@ -301,25 +322,44 @@ function renderNM(){
     return okQ&&okS&&okC;
   });
   if(!list.length){ document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#999;">مفيش تقارير حوادث وشيكة لسه</p>'; return; }
-  document.getElementById('nmTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>المبلغ</th><th>المكان</th><th>الوصف</th><th>السبب المباشر</th><th>الحالة</th><th>الصور</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
-    let idx=DB.nearMiss.indexOf(x);
+  document.getElementById('nmTable').innerHTML='<table><tr><th>التاريخ</th><th>الشركة</th><th>المبلغ</th><th>المكان</th><th>الوصف</th><th>السبب المباشر</th><th>الحالة</th><th>الصور</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+    let idx=nearMiss.indexOf(x);
     let imgs='';
     if(x.incidentImgs && x.incidentImgs.length) imgs+='<br>📸 حادث: '+x.incidentImgs.length;
     if(x.actionImgs && x.actionImgs.length) imgs+='<br>📸 إجراءات: '+x.actionImgs.length;
-    return `<tr><td>${x.date}<br>${x.time}</td><td><b>${x.company}</b></td><td>${x.reporter}</td><td>${x.place}</td><td style="text-align:right;max-width:220px;">${x.desc}<br><small style="color:#78909C;">جذري: ${x.root}</small><br><small style="color:#2E7D32;">تصحيحي: ${x.corrective}</small><br><small style="color:#FF9800;">وقائي: ${x.preventive}</small></td><td style="max-width:150px;">${x.direct}</td><td><span class="badge ${x.status==='مفتوح'?'open':'closed'}">${x.status}</span></td><td style="font-size:11px;">${imgs||'-'}<br>${x.incidentImgs && x.incidentImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'incident')">👁️ صور الحادث</button>`:''} ${x.actionImgs && x.actionImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'action')">👁️ صور الإجراءات</button>`:''}</td><td><button class="btn2" onclick="toggleStatus(${idx})">${x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNM(${idx})">🗑️</button></td></tr>`;
+    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.company+'</b></td><td>'+x.reporter+'</td><td>'+x.place+'</td><td style="text-align:right;max-width:220px;">'+x.desc+'<br><small style="color:#78909C;">جذري: '+x.root+'</small><br><small style="color:#2E7D32;">تصحيحي: '+x.corrective+'</small><br><small style="color:#FF9800;">وقائي: '+x.preventive+'</small></td><td style="max-width:150px;">'+x.direct+'</td><td><span class="badge '+(x.status==='مفتوح'?'open':'closed')+'">'+x.status+'</span></td><td style="font-size:11px;">'+(imgs||'-')+'<br>'+(x.incidentImgs && x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ صور الحادث</button>':'')+' '+(x.actionImgs && x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ صور الإجراءات</button>':'')+'</td><td><button class="btn2" onclick="toggleStatus('+idx+')">'+(x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNM('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 function viewImgs(idx,type){
-  let x=DB.nearMiss[idx];
+  let x=nearMiss[idx];
   let arr=type==='incident'?x.incidentImgs:x.actionImgs;
-  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;direction:rtl;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 صور الحادث':'📸 صور الإجراءات')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>`<img src="${src}" style="width:300px;border-radius:12px;">`).join('')+'</div>');
+  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;direction:rtl;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 صور الحادث':'📸 صور الإجراءات')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>'<img src="'+src+'" style="width:300px;border-radius:12px;">').join('')+'</div>');
 }
-function toggleStatus(i){ DB.nearMiss[i].status = DB.nearMiss[i].status==='مفتوح'?'مغلق':'مفتوح'; save(); renderNM(); }
-function delNM(i){ if(!confirm('تحذف التقرير ده؟')) return; DB.nearMiss.splice(i,1); save(); renderNM(); }
-function clearNM(){ if(!confirm('تمسح كل تقارير الحوادث الوشيكة؟')) return; DB.nearMiss=[]; save(); renderNM(); }
+async function toggleStatus(i){
+  let rec=nearMiss[i];
+  let newStatus = rec.status==='مفتوح'?'مغلق':'مفتوح';
+  try{ if(rec && rec.id && window.db) await db.collection('nearMiss').doc(rec.id).update({status:newStatus}); }catch(e){}
+  rec.status=newStatus; renderNM();
+}
+async function delNM(i){
+  if(!confirm('تحذف التقرير ده؟')) return;
+  let rec=nearMiss[i];
+  try{ if(rec && rec.id && window.db) await db.collection('nearMiss').doc(rec.id).delete(); }catch(e){}
+  nearMiss.splice(i,1); renderNM();
+}
+async function clearNM(){
+  if(!confirm('تمسح كل تقارير الحوادث الوشيكة من فايربيز؟')) return;
+  try{
+    if(window.db){
+      let snap = await db.collection('nearMiss').get();
+      for(let d of snap.docs){ await db.collection('nearMiss').doc(d.id).delete(); }
+    }
+  }catch(e){}
+  nearMiss=[]; renderNM();
+}
 function exportNM(){
-  if(!DB.nearMiss.length) return alert('مفيش بيانات');
-  let csv='التاريخ,الوقت,الشركة,اسم المبلغ,المكان,وصف الحادث الوشيك,السبب المباشر,السبب الجذري,الاجراء التصحيحي,الاجراء الوقائي,الحالة,عدد صور الحادث,عدد صور الاجراءات\n'+DB.nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+(x.corrective||'').replace(/"/g,'""')+'"','"'+(x.preventive||'').replace(/"/g,'""')+'"',x.status,(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
+  if(!nearMiss.length) return alert('مفيش بيانات');
+  let csv='التاريخ,الوقت,الشركة,اسم المبلغ,المكان,وصف الحادث الوشيك,السبب المباشر,السبب الجذري,الاجراء التصحيحي,الاجراء الوقائي,الحالة,عدد صور الحادث,عدد صور الاجراءات\n'+nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+(x.corrective||'').replace(/"/g,'""')+'"','"'+(x.preventive||'').replace(/"/g,'""')+'"',x.status,(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='near-miss-reports.csv'; a.click();
 }
 let savedUser=getReporter();
@@ -329,7 +369,7 @@ document.getElementById('mgrEmail').value=localStorage.getItem('mgrEmail')||'';
 document.getElementById('supEmail').value=localStorage.getItem('supEmail')||'';
 document.getElementById('nm-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('nm-time').value=new Date().toTimeString().slice(0,5);
-renderNM();
+loadNM();
 </script>
 </body>
 </html>
