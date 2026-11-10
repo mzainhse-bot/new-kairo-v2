@@ -80,7 +80,6 @@ img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px
 </div>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -94,21 +93,20 @@ async function doRegister(){
   let wantedRole=document.getElementById('r-role').value;
   if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='اكمل كل البيانات';
   if(pass.length<6) return document.getElementById('msg').innerText='الباسورد لازم 6 حروف على الأقل';
+  if(!window.db) return document.getElementById('msg').innerText='فايربيز مش متصل، حدث الصفحة';
 
   document.getElementById('msg').innerText='جارى التسجيل...';
   try{
-    // ✅ التأكد إن الإيميل مش متسجل قبل كده في Firestore
     let check = await db.collection('users').where('email','==',email).get();
     if(!check.empty) return document.getElementById('msg').innerText='الإيميل ده مسجل قبل كده، ادخل من صفحة الدخول';
 
     let isManager=email==='mzain.hse@gmail.com';
-    let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':'pending',requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
+    // FIX: role = الدور الحقيقي، status = حالة الموافقة
+    let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':wantedRole,requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
 
-    // ✅ الحفظ في Firestore - مجموعة users
     await db.collection('users').add(user);
 
     if(!isManager){
-      // ✅ حفظ اشعار للمدير في Firestore - مجموعة notifications
       await db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('ar-EG'),createdAt:new Date().toISOString()});
 
       let msgText='في حساب جديد مستني موافقتك - RMED\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nالدور المطلوب: '+wantedRole+'\nادخل على صفحة المستخدمين عشان توافق عليه.';
@@ -128,7 +126,7 @@ async function doRegister(){
     }
   }catch(err){
     console.error(err);
-    document.getElementById('msg').innerText='حصل خطأ، اتأكد إن النت شغال وإن Rules معمولة Publish - '+err.message;
+    document.getElementById('msg').innerText='حصل خطأ - '+err.message;
   }
 }
 function sendWhats(){
