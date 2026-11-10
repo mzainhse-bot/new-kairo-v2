@@ -6,7 +6,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-/* ✅ الشريط الجانبي - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -80,45 +79,60 @@ img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px
 <div id="notifyBox" style="display:none;background:#FFF3E0;border:1px solid #FF9800;border-radius:12px;padding:12px;font-size:13px;margin-top:10px;"></div>
 </div>
 </div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script>
 function toggleSidebar(){let s=document.getElementById('sidebar');if(window.innerWidth<=900){s.classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}else{s.classList.toggle('closed');document.querySelector('.main').classList.toggle('full');}}
 let photoData='';
 function readPhoto(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{photoData=r.result;let im=document.getElementById('preview');im.src=photoData;im.style.display='block';};r.readAsDataURL(f);}
-function doRegister(){
+
+async function doRegister(){
   let name=document.getElementById('r-name').value.trim(), job=document.getElementById('r-job').value.trim(), email=document.getElementById('r-email').value.trim().toLowerCase(), pass=document.getElementById('r-pass').value;
   let wantedRole=document.getElementById('r-role').value;
   if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='اكمل كل البيانات';
   if(pass.length<6) return document.getElementById('msg').innerText='الباسورد لازم 6 حروف على الأقل';
-  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}'); if(!DB.users) DB.users=[];
-  if(DB.users.find(u=>u.email===email)) return document.getElementById('msg').innerText='الإيميل ده مسجل قبل كده، ادخل من صفحة الدخول';
-  let isManager=email==='mzain.hse@gmail.com';
-  let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':'pending',requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
-  DB.users.push(user); localStorage.setItem('safetyDB',JSON.stringify(DB));
-  // ✅ حفظ اشعار معلق للمدير
-  let notifs=JSON.parse(localStorage.getItem('pendingNotifs')||'[]');
-  notifs.push({name,job,email,role:wantedRole,time:new Date().toLocaleString('ar-EG')});
-  localStorage.setItem('pendingNotifs',JSON.stringify(notifs));
-  if(!isManager){
-    let msgText='في حساب جديد مستني موافقتك - RMED\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nالدور المطلوب: '+wantedRole+'\nادخل على صفحة المستخدمين عشان توافق عليه.';
-    let subject=encodeURIComponent('طلب تسجيل جديد - RMED - '+name);
-    let body=encodeURIComponent(msgText);
-    // افتح الايميل جاهز
-    window.open('mailto:mzain.hse@gmail.com?subject='+subject+'&body='+body,'_blank');
-    // ✅ ورّيه رسالة يبعتها واتساب للمدير عشان الايميل ممكن ميتبعتش
-    let nb=document.getElementById('notifyBox');
-    nb.style.display='block';
-    nb.innerHTML='✅ <b>تم التسجيل! حسابك في انتظار موافقة المدير.</b><br><br>مهم: دوس على الزرار ده عشان تبعت للمدير على واتساب ويوافق عليك بسرعة:<br><br><button onclick="sendWhats()" style="background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;width:100%">📲 ابعت للمدير على واتساب</button><br><br><a href="login.html">روح لصفحة الدخول</a>';
-    window._lastMsg=msgText;
-    document.getElementById('msg').innerText='';
-    return;
-  } else {
-    alert('✅ أهلاً بيك يا مدير! حسابك اتفعل كمدير أوتوماتيك.');
-    location.href='login.html';
+
+  document.getElementById('msg').innerText='جارى التسجيل...';
+  try{
+    // ✅ التأكد إن الإيميل مش متسجل قبل كده في Firestore
+    let check = await db.collection('users').where('email','==',email).get();
+    if(!check.empty) return document.getElementById('msg').innerText='الإيميل ده مسجل قبل كده، ادخل من صفحة الدخول';
+
+    let isManager=email==='mzain.hse@gmail.com';
+    let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':'pending',requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
+
+    // ✅ الحفظ في Firestore - مجموعة users
+    await db.collection('users').add(user);
+
+    if(!isManager){
+      // ✅ حفظ اشعار للمدير في Firestore - مجموعة notifications
+      await db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('ar-EG'),createdAt:new Date().toISOString()});
+
+      let msgText='في حساب جديد مستني موافقتك - RMED\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nالدور المطلوب: '+wantedRole+'\nادخل على صفحة المستخدمين عشان توافق عليه.';
+      let subject=encodeURIComponent('طلب تسجيل جديد - RMED - '+name);
+      let body=encodeURIComponent(msgText);
+      window.open('mailto:mzain.hse@gmail.com?subject='+subject+'&body='+body,'_blank');
+
+      let nb=document.getElementById('notifyBox');
+      nb.style.display='block';
+      nb.innerHTML='✅ <b>تم التسجيل! حسابك في انتظار موافقة المدير.</b><br><br>مهم: دوس على الزرار ده عشان تبعت للمدير على واتساب ويوافق عليك بسرعة:<br><br><button onclick="sendWhats()" style="background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;width:100%">📲 ابعت للمدير على واتساب</button><br><br><a href="login.html">روح لصفحة الدخول</a>';
+      window._lastMsg=msgText;
+      document.getElementById('msg').innerText='';
+      return;
+    } else {
+      alert('✅ أهلاً بيك يا مدير! حسابك اتفعل كمدير أوتوماتيك.');
+      location.href='login.html';
+    }
+  }catch(err){
+    console.error(err);
+    document.getElementById('msg').innerText='حصل خطأ، اتأكد إن النت شغال وإن Rules معمولة Publish - '+err.message;
   }
 }
 function sendWhats(){
   let txt=encodeURIComponent(window._lastMsg||'في حساب جديد مستني موافقتك - RMED');
-  // حط رقمك هنا
   window.open('https://wa.me/201221932884?text='+txt,'_blank');
 }
 </script>
