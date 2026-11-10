@@ -95,7 +95,7 @@ table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-b
 <div class="kpi"><b id="k-companies">0</b><small>عدد الشركات</small></div>
 <div class="kpi"><b id="k-evals">0</b><small>عدد التقييمات</small></div>
 <div class="kpi red"><b id="k-avgScore">0</b><small>متوسط التقييم</small></div>
-<div class="kpi red"><b id="k-totalDeduct">0 ج</b><small>إجمالي المخصوم</small></div>
+<div class="kpi red"><b id="k-totalDeduct">0 نقطة</b><small>إجمالي الخصم الأوتوماتيك</small></div>
 </div>
 
 <div class="card">
@@ -117,7 +117,8 @@ table th{background:#0A1F44;color:#fff;padding:9px}table td{padding:9px;border-b
 </div>
 <div class="card" style="background:#FFF3E0;border-top-color:#EF6C00;margin-top:14px;">
 <b>🧮 النتيجة النهائية:</b><br>
-درجة يدوية: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; خصم أوتوماتيك من الجداول: <b id="calc-deduct" style="color:#D32F2F;">0</b> &nbsp;|&nbsp; <b>النتيجة: <span id="calc-final" style="color:#0A1F44;">0</span></b><br>
+درجة يدوية: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; خصم أوتوماتيك: <b id="calc-deduct" style="color:#D32F2F;">0</b> نقطة &nbsp;|&nbsp; <b>النتيجة: <span id="calc-final" style="color:#0A1F44;">0</span></b><br>
+<small style="color:#78909C;">المعادلة: يدوي - (مخالفة×3 + NCR مفتوح×2 + حادث×10 + وشيكة مفتوحة×1 + ملاحظة مفتوحة×0.5) - أقصى خصم 60</small><br>
 <button class="btn red" onclick="saveEval()">💾 حفظ التقييم في فايربيز</button>
 </div>
 </div>
@@ -161,10 +162,31 @@ async function loadAll(){
     if(e.code==='permission-denied') dbg.innerHTML+='<br>👉 الحل: Firestore > Rules > allow read, write: if true';
     return;
   }
-  dbg.innerHTML+='<br>✅ اتصل بفايربيز | مخالفات: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | حوادث: <b>'+DB.accidents.length+'</b> | عمال: <b>'+DB.workers.length+'</b> | تقييمات: <b>'+DB.evals.length+'</b>';
+  dbg.innerHTML+='<br>✅ اتصل بفايربيز | مخالفات: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | حوادث: <b>'+DB.accidents.length+'</b> | وشيكة: <b>'+DB.nearMiss.length+'</b> | ملاحظات: <b>'+DB.observations.length+'</b> | عمال: <b>'+DB.workers.length+'</b> | تقييمات: <b>'+DB.evals.length+'</b>';
   buildCompanyList(); renderTable(); calcFinal();
 }
 function getCompanyName(r){ return r.company||r.contractor||r.companyName||r.contractorName||'غير محدد'; }
+function isOpen(r){
+  let s=String(r.status||r.state||r.caseStatus||'open').toLowerCase();
+  if(s.includes('closed')||s.includes('resolved')||s.includes('done')||s.includes('مغلق')||s.includes('تم الحل')||s.includes('مقفول')||s.includes('closed')) return false;
+  return true;
+}
+function calcDeduction(company){
+  let v=DB.violations.filter(x=>getCompanyName(x)===company);
+  let n=DB.ncr.filter(x=>getCompanyName(x)===company && isOpen(x));
+  let a=DB.accidents.filter(x=>getCompanyName(x)===company);
+  let nm=DB.nearMiss.filter(x=>getCompanyName(x)===company && isOpen(x));
+  let o=DB.observations.filter(x=>getCompanyName(x)===company && isOpen(x));
+  let w=DB.workers.filter(x=>getCompanyName(x)===company);
+  let dV=v.length*3;
+  let dN=n.length*2;
+  let dA=a.length*10;
+  let dNM=nm.length*1;
+  let dO=o.length*0.5;
+  let total=dV+dN+dA+dNM+dO;
+  let capped=Math.min(60,total);
+  return {v:v.length,n:n.length,a:a.length,nm:nm.length,o:o.length,w:w.length,dV,dN,dA,dNM,dO,total,capped};
+}
 function buildCompanyList(){
   let set=new Set();
   [...DB.violations,...DB.ncr,...DB.accidents,...DB.nearMiss,...DB.observations,...DB.workers,...DB.evals].forEach(r=>{ if(getCompanyName(r)!=='غير محدد') set.add(getCompanyName(r)); });
@@ -173,32 +195,24 @@ function buildCompanyList(){
   document.getElementById('k-companies').textContent=companies.length;
   document.getElementById('k-evals').textContent=DB.evals.length;
   document.getElementById('k-avgScore').textContent=DB.evals.length?Math.round(DB.evals.reduce((s,e)=>s+Number(e.finalScore||e.score||0),0)/DB.evals.length):0;
-  let td=DB.violations.reduce((s,v)=>s+Number(v.deduction||v.amount||0),0)+DB.ncr.reduce((s,v)=>s+Number(v.deduction||v.amount||0),0);
-  document.getElementById('k-totalDeduct').textContent=td+' ج';
+  let totalPoints=DB.violations.length*3 + DB.ncr.filter(isOpen).length*2 + DB.accidents.length*10 + DB.nearMiss.filter(isOpen).length*1 + DB.observations.filter(isOpen).length*0.5;
+  document.getElementById('k-totalDeduct').textContent=Math.min(60,totalPoints)+' نقطة';
 }
 function onCompanyChange(){
   let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();
   if(!company) return;
-  let v=DB.violations.filter(x=>getCompanyName(x)===company);
-  let n=DB.ncr.filter(x=>getCompanyName(x)===company);
-  let a=DB.accidents.filter(x=>getCompanyName(x)===company);
-  let nm=DB.nearMiss.filter(x=>getCompanyName(x)===company);
-  let o=DB.observations.filter(x=>getCompanyName(x)===company);
-  let w=DB.workers.filter(x=>getCompanyName(x)===company);
-  let deduct=v.reduce((s,x)=>s+Number(x.deduction||x.amount||0),0)+n.reduce((s,x)=>s+Number(x.deduction||x.amount||0),0);
+  let d=calcDeduction(company);
   document.getElementById('autoBox').style.display='block';
-  document.getElementById('autoText').innerHTML=`مخالفات: <b>${v.length}</b> | NCR: <b>${n.length}</b> | حوادث: <b>${a.length}</b> | وشيكة: <b>${nm.length}</b> | ملاحظات: <b>${o.length}</b> | عمال: <b>${w.length}</b> | خصم: <b style="color:#D32F2F">${deduct} ج</b>`;
-  document.getElementById('calc-deduct').textContent=deduct;
+  document.getElementById('autoText').innerHTML=`مخالفات: <b>${d.v}</b> × 3 = <b style="color:#D32F2F">-${d.dV}</b> | NCR مفتوح: <b>${d.n}</b> × 2 = <b style="color:#D32F2F">-${d.dN}</b> | حوادث: <b>${d.a}</b> × 10 = <b style="color:#D32F2F">-${d.dA}</b><br>وشيكة مفتوحة: <b>${d.nm}</b> × 1 = <b style="color:#D32F2F">-${d.dNM}</b> | ملاحظات مفتوحة: <b>${d.o}</b> × 0.5 = <b style="color:#D32F2F">-${d.dO}</b> | عمال: <b>${d.w}</b><br><b>إجمالي الخصم: ${d.total} - أقصى خصم 60 = ${d.capped} نقطة</b>`;
+  document.getElementById('calc-deduct').textContent=d.capped;
   calcFinal();
 }
 function calcFinal(){
   let manual=0; document.querySelectorAll('.crit-range').forEach(r=>manual+=Number(r.value));
-  // 6 معايير × 10 = 60، بنحولها لـ 100
   let manual100=Math.round(manual/60*100);
   document.getElementById('calc-manual').textContent=manual100;
   let deduct=Number(document.getElementById('calc-deduct').textContent||0);
-  let deductPoints=Math.min(30,Math.floor(deduct/1000)*5);
-  let final=Math.max(0,manual100-deductPoints);
+  let final=Math.max(0,manual100-deduct);
   document.getElementById('calc-final').textContent=final;
   return final;
 }
@@ -213,7 +227,8 @@ async function saveEval(){
   let manual=Number(document.getElementById('calc-manual').textContent||0);
   let deduct=Number(document.getElementById('calc-deduct').textContent||0);
   let final=calcFinal();
-  try{ await window.db.collection('contractorEval').add({company,period:document.getElementById('e-period').value,month:document.getElementById('e-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,createdAt:new Date().toISOString()}); alert('✅ اتحفظ في فايربيز'); loadAll(); }
+  let d=calcDeduction(company);
+  try{ await window.db.collection('contractorEval').add({company,period:document.getElementById('e-period').value,month:document.getElementById('e-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},createdAt:new Date().toISOString()}); alert('✅ اتحفظ في فايربيز'); loadAll(); }
   catch(e){ alert('خطأ في الحفظ: '+e.message); }
 }
 function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); document.getElementById('overlay').classList.toggle('show'); }
