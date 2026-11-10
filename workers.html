@@ -101,7 +101,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> الموظفين</h1><small>قاعدة بيانات كل الموظفين</small></div>
+<div><h1>RMED <span>•</span> الموظفين</h1><small>قاعدة بيانات كل الموظفين - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -196,10 +196,26 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-let me = requireLogin();
+function toggleSidebar(){
+  let s=document.getElementById('sidebar');
+  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
+}
+function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function getMe(){
+  try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
+  return null;
+}
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
+let me = null;
+try{ me = (typeof requireLogin==='function') ? requireLogin() : getMe(); }catch(e){ me=getMe(); }
 let DB = {workers:[]};
-let workersList = []; // من فايربيز + local
-
+let workersList = [];
 async function loadWorkers(){
   workersList = [];
   try{
@@ -217,8 +233,6 @@ async function loadWorkers(){
   DB.workers = workersList;
   renderWorkers();
 }
-
-function saveLocal(){ try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); old.workers=DB.workers; localStorage.setItem('safetyDB', JSON.stringify(old)); }catch(e){} }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v; }
 let curFilter='all';
@@ -245,21 +259,27 @@ function renderWorkers(){
   document.getElementById('k-resign').innerText=DB.workers.filter(x=>x.status==='استقال').length;
   document.getElementById('k-excluded').innerText=DB.workers.filter(x=>x.status==='استبعاد').length;
   if(!list.length){ document.getElementById('workersTable').innerHTML='<p style="text-align:center;color:#999;">مفيش موظفين بالفلتر ده - سجل من المحاضرة الأولية الأول</p>'; return; }
-  document.getElementById('workersTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>الحالة</th><th>تحكم</th></tr>'+list.slice().reverse().map(x=>`<tr><td>${x.code}</td><td>${x.name} ${x.isRehab?'<br><span class="badge red">إعادة تأهيل</span>':''}</td><td>${x.nationalId||'-'}</td><td>${x.job||'-'}</td><td>${x.company||'-'}</td><td><select onchange="changeStatus(${x._idx},this.value)" style="width:auto;padding:6px;"><option ${x.status==='نشط'?'selected':''}>نشط</option><option ${x.status==='استقال'?'selected':''}>استقال</option><option ${x.status==='استبعاد'?'selected':''}>استبعاد</option></select></td><td><button class="btn2" onclick="openCard(${x._idx})">🪪 كارنيه</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker(${x._idx})">🗑️</button></td></tr>`).join('')+'</table>';
+  document.getElementById('workersTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>الحالة</th><th>تحكم</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+' '+(x.isRehab?'<br><span class="badge red">إعادة تأهيل</span>':'')+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><select onchange="changeStatus('+x._idx+',this.value)" style="width:auto;padding:6px;"><option '+(x.status==='نشط'?'selected':'')+'>نشط</option><option '+(x.status==='استقال'?'selected':'')+'>استقال</option><option '+(x.status==='استبعاد'?'selected':'')+'>استبعاد</option></select></td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 كارنيه</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker('+x._idx+')">🗑️</button></td></tr>').join('')+'</table>';
 }
-async function changeStatus(idx,v){ 
+async function changeStatus(idx,v){
   let w=DB.workers[idx]; if(!w) return; w.status=v;
   try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await db.collection('workers').doc(w.id).update({status:v}); }catch(e){}
-  saveLocal(); renderWorkers(); 
+  renderWorkers();
 }
-async function delWorker(idx){ if(!confirm('تحذف '+DB.workers[idx].name+' ؟')) return; let w=DB.workers[idx]; try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await db.collection('workers').doc(w.id).delete(); }catch(e){} DB.workers.splice(idx,1); saveLocal(); renderWorkers(); }
+async function delWorker(idx){
+  if(!confirm('تحذف '+DB.workers[idx].name+' ؟')) return;
+  let w=DB.workers[idx];
+  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await db.collection('workers').doc(w.id).delete(); }catch(e){}
+  DB.workers.splice(idx,1); renderWorkers();
+}
 async function addWorkerManual(){
   if(!val('w-name')) return alert('اكتب الاسم');
+  if(!window.db) return alert('فايربيز مش متصل');
   let nums=DB.workers.map(w=>parseInt(w.code)||0);
   let code=val('w-code')||String((nums.length?Math.max(...nums):1000)+1);
   let w={name:val('w-name'),code:code,nationalId:val('w-national'),job:val('w-job'),company:val('w-company')||'RMED',phone:val('w-phone'),status:val('w-status'),health:val('w-health'),date:new Date().toISOString().slice(0,10),isRehab:false,img:'',emergency:'',kin:'',reporter: me?me.name:'', createdAt:new Date().toISOString()};
-  try{ if(window.db){ let ref=await db.collection('workers').add(w); w.id=ref.id; } }catch(e){ alert('مشكلة في الحفظ: '+e.message); return; }
-  DB.workers.push(w); saveLocal(); renderWorkers(); alert('✅ تم إضافة '+w.name);
+  try{ let ref=await db.collection('workers').add(w); w.id=ref.id; }catch(e){ alert('مشكلة في الحفظ في فايربيز: '+e.message); return; }
+  DB.workers.push(w); renderWorkers(); alert('✅ تم إضافة '+w.name+' في فايربيز');
   ['w-name','w-code','w-national','w-job','w-phone','w-health'].forEach(id=>setVal(id,''));
 }
 let curCard=null, issueImgData='';
@@ -275,7 +295,7 @@ function fillCardData(x){
   document.getElementById('cardModal').style.display='block';
 }
 function openCard(idx){ fillCardData(DB.workers[idx]); }
-function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- اختر موظف --</option>'+DB.workers.map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join(''); document.getElementById('issueModal').style.display='block'; }
+function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- اختر موظف --</option>'+DB.workers.map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join(''); document.getElementById('issueModal').style.display='block'; }
 function fillIssueFromWorker(){ let idx=document.getElementById('issue-select').value; if(idx==='') return; let x=DB.workers[idx]; setVal('issue-name',x.name); setVal('issue-code',x.code); setVal('issue-national',x.nationalId||''); setVal('issue-job',x.job||''); setVal('issue-company',x.company||'RMED'); setVal('issue-health',x.health||''); setVal('issue-phone',x.phone||''); setVal('issue-emergency',x.emergency||''); issueImgData=x.img||x.photo||''; }
 function showCardFromIssue(){ if(!val('issue-name')) return alert('اكتب الاسم أو اختر موظف'); document.getElementById('issueModal').style.display='none'; fillCardData({name:val('issue-name'),code:val('issue-code'),nationalId:val('issue-national'),job:val('issue-job'),company:val('issue-company'),health:val('issue-health'),phone:val('issue-phone'),emergency:val('issue-emergency'),status:'نشط',img:issueImgData}); }
 async function downloadCard(which){ let name=curCard?.name||'card'; if(which==='front'){ let c=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=c.toDataURL('image/png'); a.click(); return; } let c1=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let c2=await html2canvas(document.getElementById('cardBack'),{scale:2,useCORS:true}); let f=document.createElement('canvas'); f.width=Math.max(c1.width,c2.width); f.height=c1.height+c2.height+20; let ctx=f.getContext('2d'); ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,f.width,f.height); ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20); let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=f.toDataURL('image/png'); a.click(); }
