@@ -7,7 +7,6 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -68,7 +67,6 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -110,7 +108,7 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> حالات عدم المطابقة</h1><small>NCR - Non Conformity Report</small></div>
+<div><h1>RMED <span>•</span> حالات عدم المطابقة</h1><small>NCR - من فايربيز</small></div>
 <button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
 </div>
 <div class="container">
@@ -196,14 +194,16 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
@@ -216,9 +216,25 @@ function getReporter(){
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ document.getElementById('sideRole').innerText=u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
 
-let DB = JSON.parse(localStorage.getItem('safetyDB')||'{}');
-if(!DB.ncr) DB.ncr=[];
-function save(){ localStorage.setItem('safetyDB', JSON.stringify(DB)); }
+// ✅ FIREBASE - بدل localStorage
+let ncrList = [];
+
+async function loadNcr(){
+  try{
+    if(window.db){
+      let snap = await db.collection('ncr').orderBy('createdAt','desc').get();
+      ncrList = [];
+      snap.forEach(d=> ncrList.push({id:d.id, ...d.data()}));
+    }
+  }catch(e){ console.log(e); }
+  // fallback قديم
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!ncrList.length && old.ncr) ncrList=old.ncr;
+  }catch(e){}
+  renderNcr();
+}
+
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 function toggleCloseDate(){
@@ -226,7 +242,7 @@ function toggleCloseDate(){
   if(st==='تم الغلق'){ inp.disabled=false; inp.style.background='#fff'; if(!inp.value) inp.value=new Date().toISOString().slice(0,10); }
   else { inp.disabled=true; inp.style.background='#ECEFF1'; inp.value=''; }
 }
-function addNcr(){
+async function addNcr(){
   if(!val('ncr-company')) return alert('اكتب اسم الشركة');
   if(!val('ncr-date')) return alert('اختار التاريخ');
   if(!val('ncr-class')) return alert('اختار تصنيف الحالة');
@@ -234,9 +250,15 @@ function addNcr(){
   let rep=val('ncr-reporter')||getReporter();
   if(!rep) return alert('اكتب اسم معد التقرير');
   if(val('ncr-status')==='تم الغلق' && !val('ncr-close')) return alert('اختار تاريخ الغلق');
+  if(!window.db) return alert('فايربيز مش متصل');
   let rec={company:val('ncr-company'),date:val('ncr-date'),class:val('ncr-class'),desc:val('ncr-desc'),reporter:rep,reporterName:rep,status:val('ncr-status'),closeDate:val('ncr-close'),createdAt:new Date().toISOString()};
-  DB.ncr.push(rec); save(); renderNcr();
-  alert('✅ تم حفظ حالة عدم المطابقة - '+rec.company+' - '+rec.class+' - '+rec.status);
+  try{
+    let ref = await db.collection('ncr').add(rec);
+    rec.id = ref.id;
+    ncrList.unshift(rec);
+  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  renderNcr();
+  alert('✅ تم حفظ حالة عدم المطابقة في فايربيز - '+rec.company+' - '+rec.class+' - '+rec.status);
   setVal('ncr-company',''); setVal('ncr-class',''); setVal('ncr-desc',''); setVal('ncr-status','مفتوح'); toggleCloseDate();
 }
 function drawChart(closed, open){
@@ -251,11 +273,11 @@ function drawChart(closed, open){
   ctx.font='12px Arial'; ctx.fillStyle='#78909C'; ctx.fillText('نسبة الغلق',80,96);
 }
 function renderNcr(){
-  let all=DB.ncr||[];
+  let all=ncrList||[];
   let comps=[...new Set(all.map(x=>x.company))];
-  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${c}">`).join('');
+  document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('');
+  sel.innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
   let total=all.length;
   let closed=all.filter(x=>x.status==='تم الغلق').length;
   let open=total-closed;
@@ -292,7 +314,7 @@ function renderNcr(){
     document.getElementById('top-close-detail').innerText=topClose.closeP+'% غلق - إجمالي '+topClose.total+' تقرير - '+topClose.closed+' مغلق - '+topClose.open+' مفتوح';
     document.getElementById('top-open-name').innerText=topOpen.name;
     document.getElementById('top-open-detail').innerText=topOpen.openP+'% مفتوح - إجمالي '+topOpen.total+' تقرير - '+topOpen.open+' مفتوح - '+topOpen.closed+' مغلق';
-    document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي التقارير</th><th>🟢 مغلق</th><th>🟠 مفتوح</th><th>🔴 حرج</th><th>نسبة الغلق</th><th>نسبة المفتوح</th></tr>'+arr.map(v=>`<tr><td><b>${v.name}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:bold;">${v.closed}</td><td style="color:#E65100;font-weight:bold;">${v.open}</td><td>${v.crit}</td><td>${v.closeP}%</td><td>${v.openP}%</td></tr>`).join('')+'</table>';
+    document.getElementById('compTable').innerHTML='<table><tr><th>الشركة</th><th>إجمالي التقارير</th><th>🟢 مغلق</th><th>🟠 مفتوح</th><th>🔴 حرج</th><th>نسبة الغلق</th><th>نسبة المفتوح</th></tr>'+arr.map(v=>'<tr><td><b>'+v.name+'</b></td><td>'+v.total+'</td><td style="color:#2E7D32;font-weight:bold;">'+v.closed+'</td><td style="color:#E65100;font-weight:bold;">'+v.open+'</td><td>'+v.crit+'</td><td>'+v.closeP+'%</td><td>'+v.openP+'%</td></tr>').join('')+'</table>';
   }
   let q=(document.getElementById('searchNcr').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
@@ -300,28 +322,45 @@ function renderNcr(){
   let fcomp=document.getElementById('filterCompany').value;
   let list=all.filter(x=> (x.company+x.desc+x.reporter).toLowerCase().includes(q) && (!fs||x.status===fs) && (!fc||x.class===fc) && (!fcomp||x.company===fcomp));
   if(!list.length){ document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#999;">مفيش حالات عدم مطابقة لسه</p>'; return; }
-  document.getElementById('ncrTable').innerHTML='<table><tr><th>الشركة</th><th>التاريخ</th><th>التصنيف</th><th>وصف الحالة</th><th>معد التقرير</th><th>الحالة</th><th>تاريخ الغلق</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.slice().reverse().map(x=>{
-    let idx=DB.ncr.indexOf(x);
-    return `<tr><td><b>${x.company}</b></td><td>${x.date}</td><td><span class="badge ${x.class==='حرج'?'critical':'simple'}">${x.class}</span></td><td style="text-align:right;max-width:220px;">${x.desc}</td><td>${x.reporter}</td><td><span class="badge ${x.status==='مفتوح'?'open':'closed'}">${x.status}</span></td><td>${x.closeDate||'-'}</td><td><button class="btn2" onclick="toggleNcr(${idx})">${x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها'}</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNcr(${idx})">🗑️</button></td></tr>`;
+  document.getElementById('ncrTable').innerHTML='<table><tr><th>الشركة</th><th>التاريخ</th><th>التصنيف</th><th>وصف الحالة</th><th>معد التقرير</th><th>الحالة</th><th>تاريخ الغلق</th><th>تغيير الحالة</th><th>حذف</th></tr>'+list.map(x=>{
+    let idx=ncrList.indexOf(x);
+    return '<tr><td><b>'+x.company+'</b></td><td>'+x.date+'</td><td><span class="badge '+(x.class==='حرج'?'critical':'simple')+'">'+x.class+'</span></td><td style="text-align:right;max-width:220px;">'+x.desc+'</td><td>'+x.reporter+'</td><td><span class="badge '+(x.status==='مفتوح'?'open':'closed')+'">'+x.status+'</span></td><td>'+(x.closeDate||'-')+'</td><td><button class="btn2" onclick="toggleNcr('+idx+')">'+(x.status==='مفتوح'?'✅ اقفلها':'🔓 افتحها')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNcr('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
-function toggleNcr(i){
-  if(DB.ncr[i].status==='مفتوح'){ DB.ncr[i].status='تم الغلق'; DB.ncr[i].closeDate=new Date().toISOString().slice(0,10); }
-  else { DB.ncr[i].status='مفتوح'; DB.ncr[i].closeDate=''; }
-  save(); renderNcr();
+async function toggleNcr(i){
+  let rec=ncrList[i];
+  let newStatus = rec.status==='مفتوح' ? 'تم الغلق' : 'مفتوح';
+  let newClose = newStatus==='تم الغلق' ? new Date().toISOString().slice(0,10) : '';
+  try{ if(rec && rec.id && window.db) await db.collection('ncr').doc(rec.id).update({status:newStatus, closeDate:newClose}); }catch(e){}
+  rec.status=newStatus; rec.closeDate=newClose;
+  renderNcr();
 }
-function delNcr(i){ if(!confirm('تحذف الحالة دي؟')) return; DB.ncr.splice(i,1); save(); renderNcr(); }
-function clearNcr(){ if(!confirm('تمسح كل سجل عدم المطابقة؟')) return; DB.ncr=[]; save(); renderNcr(); }
+async function delNcr(i){
+  if(!confirm('تحذف الحالة دي؟')) return;
+  let rec=ncrList[i];
+  try{ if(rec && rec.id && window.db) await db.collection('ncr').doc(rec.id).delete(); }catch(e){}
+  ncrList.splice(i,1); renderNcr();
+}
+async function clearNcr(){
+  if(!confirm('تمسح كل سجل عدم المطابقة من فايربيز؟')) return;
+  try{
+    if(window.db){
+      let snap = await db.collection('ncr').get();
+      for(let d of snap.docs){ await db.collection('ncr').doc(d.id).delete(); }
+    }
+  }catch(e){}
+  ncrList=[]; renderNcr();
+}
 function exportNcr(){
-  if(!DB.ncr.length) return alert('مفيش بيانات');
-  let csv='اسم الشركة,التاريخ,تصنيف الحالة,وصف الحالة,اسم معد التقرير,الحالة,تاريخ الغلق\n'+DB.ncr.map(x=>[x.company,x.date,x.class,'"'+x.desc.replace(/"/g,'""')+'"',x.reporter,x.status,x.closeDate||''].join(',')).join('\n');
+  if(!ncrList.length) return alert('مفيش بيانات');
+  let csv='اسم الشركة,التاريخ,تصنيف الحالة,وصف الحالة,اسم معد التقرير,الحالة,تاريخ الغلق\n'+ncrList.map(x=>[x.company,x.date,x.class,'"'+(x.desc||'').replace(/"/g,'""')+'"',x.reporter,x.status,x.closeDate||''].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ncr.csv'; a.click();
 }
 let savedUser=getReporter();
 document.getElementById('currentUser').value=savedUser;
 document.getElementById('ncr-reporter').value=savedUser;
 document.getElementById('ncr-date').value=new Date().toISOString().slice(0,10);
-renderNcr();
+loadNcr();
 </script>
 </body>
 </html>
