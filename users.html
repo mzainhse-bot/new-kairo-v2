@@ -51,8 +51,6 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -61,33 +59,41 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); if(firebase.auth) firebase.auth().signOut(); }catch(e){} location.href='login.html'; }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 
 let me = null;
 let users = [];
 let editingId = null;
 
-function normRole(r){ if(!r) return 'Employee'; r=String(r).trim().toLowerCase(); if(r==='manager'||r==='مدير'||r==='admin') return 'Manager'; if(r==='supervisor'||r==='مشرف') return 'Supervisor'; if(r==='employee'||r==='موظف') return 'Employee'; if(r==='visitor'||r==='زائر') return 'Visitor'; return r; }
-function roleLabel(r){ r=normRole(r); return r; }
+// Translate old AR -> EN, new saves EN only
+const ROLE_MAP={'مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor','manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','pending':'Pending'};
+const STATUS_MAP={'معلق':'pending','مقبول':'approved','موافق عليه':'approved','مرفوض':'rejected','محظور':'blocked','pending':'pending','approved':'approved','rejected':'rejected','blocked':'blocked'};
+function normRole(r){ if(!r) return 'Employee'; return ROLE_MAP[String(r).trim()]||ROLE_MAP[String(r).trim().toLowerCase()]||'Employee'; }
+function normStatus(s){ if(!s) return 'approved'; return STATUS_MAP[String(s).trim()]||STATUS_MAP[String(s).trim().toLowerCase()]||'approved'; }
+function roleLabel(r){ return normRole(r); }
 function isManager(){ return me && normRole(me.role)==='Manager'; }
 function getPhoto(u){ return u.photoURL || u.photo || u.img || 'https://via.placeholder.com/42?text=👤'; }
 
-firebase.auth().onAuthStateChanged(async (user)=>{
-  if(!user){ location.href='login.html'; return; }
+(function init(){
   try{
-    let doc = await db.collection('users').doc(user.uid).get();
-    if(doc.exists){ me = { id: doc.id, uid: user.uid, email: user.email, ...doc.data() }; }
-    else { me = { uid: user.uid, email: user.email, role: 'Employee', name: user.email }; }
-    localStorage.setItem('currentUser', JSON.stringify({uid: me.uid, email: me.email}));
-    startLiveListener();
-  }catch(e){ document.getElementById('main').innerHTML = '<p style="color:red;text-align:center;">Database connection error: '+e.message+'</p>'; }
-});
+    me = JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'null');
+    if(!me || !me.email){ location.href='login.html'; return; }
+    // Sync role from DB by email - so if manager changed role, it updates here
+    if(window.db){
+      window.db.collection('users').where('email','==',String(me.email).toLowerCase()).get().then(snap=>{
+        if(!snap.empty){ let d=snap.docs[0]; me={id:d.id, ...d.data(), email:me.email}; localStorage.setItem('currentUser', JSON.stringify(me)); localStorage.setItem('safetyUser', JSON.stringify(me)); }
+        startLiveListener();
+      }).catch(()=>startLiveListener());
+    } else startLiveListener();
+  }catch(e){ location.href='login.html'; }
+})();
 
 function startLiveListener(){
   if(!window.db) return;
-  db.collection('users').orderBy('createdAt','desc').onSnapshot(snap=>{
+  window.db.collection('users').onSnapshot(snap=>{
     users = [];
     snap.forEach(d=> users.push({id:d.id, ...d.data()}));
+    users.sort((a,b)=> String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
     render();
   }, err=>{
     document.getElementById('main').innerHTML = '<p style="color:red;text-align:center;">Error reading database: '+err.message+'<br>Please check Firestore Rules</p>';
@@ -95,26 +101,26 @@ function startLiveListener(){
 }
 
 function render(){
-  let pending=users.filter(u=>u.status==='pending').length, approved=users.filter(u=>u.status==='approved').length, mgr=users.filter(u=>normRole(u.role)==='Manager').length, sup=users.filter(u=>normRole(u.role)==='Supervisor').length;
+  let pending=users.filter(u=>normStatus(u.status)==='pending').length, approved=users.filter(u=>normStatus(u.status)==='approved').length, mgr=users.filter(u=>normRole(u.role)==='Manager').length, sup=users.filter(u=>normRole(u.role)==='Supervisor').length;
   if(me && me.name){ document.getElementById('sideName').innerText=me.name; document.getElementById('sideRole').innerText=roleLabel(me.role)+' - '+(me.email||''); document.getElementById('sideImg').src=getPhoto(me); }
 
   let pendingRows = users.map((u,i)=>{
-    if(u.status!=='pending' || !isManager()) return '';
+    if(normStatus(u.status)!=='pending' || !isManager()) return '';
     return '<tr><td><img class="avatar" src="'+getPhoto(u)+'"></td><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td>'+ roleLabel(u.requestedRole||u.role) +'</td><td><select id="role-'+i+'"><option value="Visitor">Visitor</option><option value="Employee" selected>Employee</option><option value="Supervisor">Supervisor</option><option value="Manager">Manager</option></select></td><td><button class="btn2" style="background:#2E7D32;color:#fff;" onclick="approve(\''+u.id+'\','+i+')">✅ Approve</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="reject(\''+u.id+'\','+i+')">❌ Reject</button></td></tr>';
   }).join('');
 
   let allRows = users.map((u,i)=>{
-    let badgeClass = (normRole(u.role)==='Manager') ? 'manager' : 'approved';
+    let badgeClass = (normRole(u.role)==='Manager') ? 'manager' : (normStatus(u.status)==='pending' ? 'pending' : 'approved');
     let sel = function(v){ return normRole(u.role)===v ? 'selected' : ''; };
-    let canEdit = isManager() || (me && me.uid===u.id);
+    let canEdit = isManager() || (me && me.id===u.id) || (me && me.email===u.email);
     let editBtn = canEdit ? '<button class="btn2" onclick="openProfile(\''+u.id+'\')">✏️ Edit</button>' : '';
     let roleCell = isManager() ? '<select onchange="changeRole(\''+u.id+'\','+i+',this.value)"><option value="Visitor" '+sel('Visitor')+'>Visitor</option><option value="Employee" '+sel('Employee')+'>Employee</option><option value="Supervisor" '+sel('Supervisor')+'>Supervisor</option><option value="Manager" '+sel('Manager')+'>Manager</option></select>' : roleLabel(u.role);
     let delBtn = isManager() ? '<button class="btn2" style="color:#D32F2F;" onclick="delUser(\''+u.id+'\','+i+')">🗑️ Delete</button>' : '-';
-    return '<tr><td><img class="avatar" src="'+getPhoto(u)+'"></td><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td><span class="badge '+badgeClass+'">'+ roleLabel(u.role) +'</span></td><td>'+ (u.status==='approved'?'✅ Approved':'⏳ Pending') +'</td><td>'+roleCell+'</td><td>'+editBtn+'</td><td>'+delBtn+'</td></tr>';
+    return '<tr><td><img class="avatar" src="'+getPhoto(u)+'"></td><td><b>'+ (u.name||'') +'</b></td><td>'+ (u.job||'') +'</td><td>'+ (u.email||'') +'</td><td><span class="badge '+badgeClass+'">'+ roleLabel(u.role) +'</span></td><td>'+ (normStatus(u.status)==='approved'?'✅ Approved': normStatus(u.status)==='pending'?'⏳ Pending': normStatus(u.status)) +'</td><td>'+roleCell+'</td><td>'+editBtn+'</td><td>'+delBtn+'</td></tr>';
   }).join('');
 
-  let pendingSection = isManager() ? (users.filter(u=>u.status==='pending').length ? '<div style="overflow-x:auto;"><table><tr><th>Photo</th><th>Name</th><th>Job</th><th>Email</th><th>Requested Role</th><th>Select Role</th><th>Approve</th><th>Reject</th></tr>'+pendingRows+'</table></div>' : '<p style="color:#2E7D32;">✅ No new requests</p>') : '<p>Pending requests are visible to Manager only.</p>';
-  let addSection = isManager() ? '<div class="card"><h3>➕ Add User Manually</h3><div class="grid2"><input id="m-name" placeholder="Full Name"><input id="m-job" placeholder="Job"><input id="m-email" placeholder="Email"><input id="m-pass" placeholder="Password - e.g. 123456"></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><select id="m-role"><option value="Employee">Employee</option><option value="Supervisor">Supervisor</option><option value="Visitor">Visitor</option><option value="Manager">Manager</option></select><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="addManual()">➕ Add & Approve Now</button></div><small style="color:#666;">Note: After that, create an account for him in Authentication with the same email.</small></div>' : '';
+  let pendingSection = isManager() ? (users.filter(u=>normStatus(u.status)==='pending').length ? '<div style="overflow-x:auto;"><table><tr><th>Photo</th><th>Name</th><th>Job</th><th>Email</th><th>Requested Role</th><th>Select Role</th><th>Approve</th><th>Reject</th></tr>'+pendingRows+'</table></div>' : '<p style="color:#2E7D32;">✅ No new requests</p>') : '<p>Pending requests are visible to Manager only.</p>';
+  let addSection = isManager() ? '<div class="card"><h3>➕ Add User Manually</h3><div class="grid2"><input id="m-name" placeholder="Full Name"><input id="m-job" placeholder="Job"><input id="m-email" placeholder="Email"><input id="m-pass" placeholder="Password - e.g. 123456"></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"><select id="m-role"><option value="Employee">Employee</option><option value="Supervisor">Supervisor</option><option value="Visitor">Visitor</option><option value="Manager">Manager</option></select><button class="btn2" style="background:#0A1F44;color:#fff;flex:1;" onclick="addManual()">➕ Add & Approve Now</button></div><small style="color:#666;">Note: User can login directly with this email + password from Login page.</small></div>' : '';
 
   document.getElementById('main').innerHTML=`
   <div class="debug">🔒 <b>Connected to Database Only - Firestore</b><br>
@@ -130,7 +136,7 @@ function render(){
 function openProfile(id){
   let u = users.find(x=>x.id===id);
   if(!u) return;
-  if(!isManager() && me.uid!==id){ alert('You can edit your profile only'); return; }
+  if(!isManager() && me.id!==id && me.email!==u.email){ alert('You can edit your profile only'); return; }
   editingId = id;
   document.getElementById('editName').value = u.name||'';
   document.getElementById('editJob').value = u.job||'';
@@ -148,15 +154,14 @@ async function saveProfile(){
   let file=document.getElementById('editPhoto').files[0];
   if(!newName) return alert('Enter name');
   document.getElementById('saveMsg').innerText='⏳ Saving to database...';
-  let updateData={ name:newName, job:newJob, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+  let updateData={ name:newName, job:newJob, updatedAt: new Date().toISOString() };
   try{
     if(file){
-      let ref=firebase.storage().ref('profile_pics/'+editingId+'.jpg');
-      await ref.put(file);
-      let url=await ref.getDownloadURL();
-      updateData.photoURL=url; updateData.photo=url; updateData.img=url;
+      let r=new FileReader();
+      let dataUrl=await new Promise(res=>{ r.onload=e=>res(e.target.result); r.readAsDataURL(file); });
+      updateData.photoURL=dataUrl; updateData.photo=dataUrl; updateData.img=dataUrl;
     }
-    await db.collection('users').doc(editingId).update(updateData);
+    await window.db.collection('users').doc(editingId).update(updateData);
     document.getElementById('saveMsg').innerText='✅ Saved to database';
     setTimeout(()=>{ closeProfile(); },800);
   }catch(e){ alert('Save error: '+e.message); document.getElementById('saveMsg').innerText=''; }
@@ -168,14 +173,14 @@ async function addManual(){
   if(!name||!email) return alert('Enter name and email');
   if(users.find(u=>u.email===email)) return alert('This email already exists');
   try{
-    await db.collection('users').add({name,job,email,pass,photo:'',img:'',photoURL:'',role,requestedRole:role,status:'approved',createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
+    await window.db.collection('users').add({name,job,email,pass,photo:'',img:'',photoURL:'',role,requestedRole:role,status:'approved',createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()});
     alert('✅ Added '+name+' to database');
   }catch(e){ alert('Save error: '+e.message); }
 }
-async function approve(id,i){ if(!isManager()) return alert('Manager only'); let role=document.getElementById('role-'+i).value; await db.collection('users').doc(id).update({role,status:'approved', updatedAt: firebase.firestore.FieldValue.serverTimestamp()}); alert('✅ Approved '+users[i].name); }
-async function reject(id,i){ if(!isManager()) return; if(!confirm('Reject '+users[i].name+'?')) return; await db.collection('users').doc(id).delete(); }
-async function changeRole(id,i,role){ if(!isManager()) return alert('Manager only can change role'); await db.collection('users').doc(id).update({role,status:'approved', updatedAt: firebase.firestore.FieldValue.serverTimestamp()}); }
-async function delUser(id,i){ if(!isManager()) return; if(!confirm('Delete '+users[i].name+'? This will delete from database permanently')) return; await db.collection('users').doc(id).delete(); }
-function exportUsers(){ let csv='Name,Job,Email,Role,Status\n'+users.map(u=>[u.name,u.job,u.email,u.role,u.status].join(',')).join('\n'); let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='users-backup-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); }
+async function approve(id,i){ if(!isManager()) return alert('Manager only'); let role=document.getElementById('role-'+i).value; await window.db.collection('users').doc(id).update({role,status:'approved', updatedAt: new Date().toISOString()}); alert('✅ Approved '+users[i].name); }
+async function reject(id,i){ if(!isManager()) return; if(!confirm('Reject '+users[i].name+'?')) return; await window.db.collection('users').doc(id).update({status:'rejected'}); }
+async function changeRole(id,i,role){ if(!isManager()) return alert('Manager only can change role'); await window.db.collection('users').doc(id).update({role,status:'approved', updatedAt: new Date().toISOString()}); }
+async function delUser(id,i){ if(!isManager()) return; if(!confirm('Delete '+users[i].name+'? This will delete from database permanently')) return; await window.db.collection('users').doc(id).delete(); }
+function exportUsers(){ let csv='Name,Job,Email,Role,Status\n'+users.map(u=>[u.name,u.job,u.email,normRole(u.role),normStatus(u.status)].join(',')).join('\n'); let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='users-backup-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); }
 function refreshUsers(){ if(me) startLiveListener(); }
 </script></body></html>
