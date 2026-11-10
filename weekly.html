@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المحاضرة الأسبوعية - RMED</title>
+<title>Weekly Meeting - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -22,14 +22,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -37,24 +37,24 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:1fr;}}
-.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
 .calc-box{background:#FFF3E0;border:2px dashed #FF9800;border-radius:12px;padding:14px;text-align:center;margin-top:14px;font-weight:bold;}
 .calc-box b{color:#D32F2F;font-size:20px;}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
-.upload-box{border:2px dashed #0A1F44;border-radius:12px;padding:16px;text-align:center;background:#F4F6F9;margin-top:6px;cursor:pointer;}
+.upload-box{border:2px dashed #0F2A4D;border-radius:12px;padding:16px;text-align:center;background:#F4F6F9;margin-top:6px;cursor:pointer;}
 .upload-box b{font-size:15px;} .upload-box small{color:#78909C;display:block;margin-top:4px;}
 .photos-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .photo-item{position:relative;width:90px;height:90px;border-radius:10px;overflow:hidden;border:2px solid #CFD8DC;}
@@ -70,92 +70,91 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly" class="active"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> المحاضرة الأسبوعية</h1><small>محاضرة السلامة الأسبوعية - نص ساعة - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> Weekly Meeting</h1><small>Weekly Safety Meeting - Half Hour - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-lect">0</b><small>عدد المحاضرات الأسبوعية</small></div>
-<div class="kpi"><b id="k-att">0</b><small>إجمالي الحضور</small></div>
-<div class="kpi red"><b id="k-hours">0</b><small>إجمالي ساعات المحاضرات</small></div>
+<div class="kpi"><b id="k-lect">0</b><small>Weekly Meetings Count</small></div>
+<div class="kpi"><b id="k-att">0</b><small>Total Attendance</small></div>
+<div class="kpi red"><b id="k-hours">0</b><small>Total Meeting Hours</small></div>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 5px;">📅 تسجيل محاضرة أسبوعية جديدة</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">عدد الساعات بيتحسب لوحده: عدد الحضور × 0.5 ساعة - وتقدر ترفع أكتر من صورة</p>
+<h2 style="margin:0 0 5px;">📅 Register New Weekly Meeting</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">Hours are calculated automatically: Attendance Count x 0.5 Hours - And you can upload more than one photo</p>
 <div class="grid">
-<div><label>📅 التاريخ *</label><input type="date" id="w-date"></div>
-<div><label>⏰ الوقت *</label><input type="time" id="w-time"></div>
-<div><label>📚 عنوان المحاضرة *</label><input id="w-title" placeholder="مثال: مخاطر الكهرباء - السقالات - الحريق"></div>
-<div><label>👥 عدد الحضور *</label><input type="number" id="w-count" min="1" placeholder="مثال: 20" oninput="calcHours()" inputmode="numeric"></div>
-<div><label>📍 مكان المحاضرة *</label><input id="w-place" placeholder="مثال: الموقع - قاعة الاجتماعات"></div>
-<div><label>🏢 اسم الشركة *</label><input id="w-company" value="RMED" placeholder="RMED"></div>
+<div><label>📅 Date *</label><input type="date" id="w-date"></div>
+<div><label>⏰ Time *</label><input type="time" id="w-time"></div>
+<div><label>📚 Meeting Title *</label><input id="w-title" placeholder="Example: Electrical Hazards - Scaffolds - Fire"></div>
+<div><label>👥 Attendance Count *</label><input type="number" id="w-count" min="1" placeholder="Example: 20" oninput="calcHours()" inputmode="numeric"></div>
+<div><label>📍 Meeting Place *</label><input id="w-place" placeholder="Example: Site - Meeting Hall"></div>
+<div><label>🏢 Company Name *</label><input id="w-company" value="RMED" placeholder="RMED"></div>
 </div>
 
-<div><label>📷 صور المحاضرة - تقدر تختار أكتر من صورة</label>
+<div><label>📷 Meeting Photos - You can select more than one photo</label>
 <div class="upload-box" onclick="document.getElementById('w-photos').click()">
-<b>📷 اضغط هنا لاختيار صور المحاضرة</b>
-<small>تقدر تختار صورة أو أكتر من مرة واحدة - من الموبايل أو الكمبيوتر</small>
+<b>📷 Click here to select meeting photos</b>
+<small>You can select one or more photos at once - From mobile or computer</small>
 </div>
 <input type="file" id="w-photos" accept="image/*" multiple style="display:none;" onchange="handlePhotos(event)">
 <div class="photos-preview" id="photosPreview"></div>
 </div>
 
 <div class="calc-box" id="calcBox">
-  🧮 الحسبة: <span id="calcText">اكتب عدد الحضور</span> = <b id="calcResult">0 ساعة</b>
+  🧮 Calculation: <span id="calcText">Write attendance count</span> = <b id="calcResult">0 Hours</b>
 </div>
 
-<button class="btn red" onclick="addWeekly()">💾 حفظ المحاضرة الأسبوعية</button>
+<button class="btn red" onclick="addWeekly()">💾 Save Weekly Meeting</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 سجل المحاضرات الأسبوعية</h2>
-<input id="searchW" placeholder="ابحث بالعنوان أو المكان أو الشركة..." oninput="renderWeekly()">
+<h2 style="margin:0 0 10px;">📋 Weekly Meetings Record</h2>
+<input id="searchW" placeholder="Search by title, place or company..." oninput="renderWeekly()">
 <div id="weeklyTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
-<button class="btn2" onclick="exportWeekly()" style="flex:1;padding:12px;">📥 تصدير Excel / CSV</button>
-<button class="btn2" onclick="clearWeekly()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ مسح الكل</button>
+<button class="btn2" onclick="exportWeekly()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
+<button class="btn2" onclick="clearWeekly()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -163,8 +162,8 @@ table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="modal" id="photoModal" onclick="if(event.target===this) closeModal()">
 <div style="display:flex;justify-content:space-between;align-items:center;width:100%;max-width:900px;">
-<b id="modalTitle" style="color:#fff;">صور المحاضرة</b>
-<button onclick="closeModal()" style="background:#D32F2F;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">✕ إغلاق</button>
+<b id="modalTitle" style="color:#fff;">Meeting Photos</b>
+<button onclick="closeModal()" style="background:#D32F2F;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">✕ Close</button>
 </div>
 <img id="modalMainImg" src="">
 <div class="modal-imgs" id="modalImgs"></div>
@@ -180,7 +179,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getMe(){
   try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
   return null;
@@ -189,16 +188,17 @@ function getMe(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
-  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
 
 let weeklyLect = [];
 async function loadWeekly(){
   try{
     if(window.db){
-      let snap = await db.collection('weekly').orderBy('createdAt','desc').get();
+      let snap = await window.db.collection('weekly').get();
       weeklyLect = [];
       snap.forEach(d=> weeklyLect.push({id:d.id, ...d.data()}));
+      weeklyLect.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log('loadWeekly error', e); }
   renderWeekly();
@@ -209,8 +209,8 @@ let tempPhotos = [];
 function calcHours(){
   let count = parseInt(val('w-count')) || 0;
   let hours = count * 0.5;
-  document.getElementById('calcText').innerText = count + ' × 0.5 ساعة';
-  document.getElementById('calcResult').innerText = hours + ' ساعة';
+  document.getElementById('calcText').innerText = count + ' x 0.5 Hours';
+  document.getElementById('calcResult').innerText = hours + ' Hours';
   return hours;
 }
 function compressImage(file){
@@ -245,33 +245,33 @@ async function handlePhotos(e){
 function renderTempPhotos(){
   let box=document.getElementById('photosPreview');
   if(!tempPhotos.length){ box.innerHTML=''; return; }
-  box.innerHTML='<b style="width:100%;">الصور المختارة: '+tempPhotos.length+' صورة - دوس على ❌ عشان تمسح صورة</b>'+tempPhotos.map((p,i)=>{
+  box.innerHTML='<b style="width:100%;">Selected Photos: '+tempPhotos.length+' Photos - Press ❌ to delete a photo</b>'+tempPhotos.map((p,i)=>{
     return '<div class="photo-item"><img src="'+p+'"><button onclick="removeTempPhoto('+i+')">✕</button></div>';
   }).join('');
 }
 function removeTempPhoto(i){ tempPhotos.splice(i,1); renderTempPhotos(); }
 async function addWeekly(){
-  if(!val('w-date')) return alert('اختار التاريخ');
-  if(!val('w-time')) return alert('اختار الوقت');
-  if(!val('w-title')) return alert('اكتب عنوان المحاضرة');
-  if(!val('w-count') || parseInt(val('w-count'))<=0) return alert('اكتب عدد الحضور صح');
-  if(!val('w-place')) return alert('اكتب مكان المحاضرة');
-  if(!val('w-company')) return alert('اكتب اسم الشركة');
-  if(!window.db) return alert('فايربيز مش متصل، حدث الصفحة');
+  if(!val('w-date')) return alert('Select date');
+  if(!val('w-time')) return alert('Select time');
+  if(!val('w-title')) return alert('Write meeting title');
+  if(!val('w-count') || parseInt(val('w-count'))<=0) return alert('Write correct attendance count');
+  if(!val('w-place')) return alert('Write meeting place');
+  if(!val('w-company')) return alert('Write company name');
+  if(!window.db) return alert('Firebase not connected, refresh page');
   let count = parseInt(val('w-count'));
   let hours = count * 0.5;
   let _m=getMe();
   let rec={date:val('w-date'),time:val('w-time'),title:val('w-title'),count:count,attendance:count,attendees:count,place:val('w-place'),company:val('w-company'),hours:hours,photos:[...tempPhotos],reporter:_m?_m.name:'',reporterName:_m?_m.name:'',trainer:_m?_m.name:'',createdAt:new Date().toISOString()};
   try{
-    let ref = await db.collection('weekly').add(rec);
+    let ref = await window.db.collection('weekly').add(rec);
     rec.id = ref.id;
     weeklyLect.unshift(rec);
-  }catch(e){ return alert('مشكلة في الحفظ في فايربيز: '+e.message); }
+  }catch(e){ return alert('Save problem in Firebase: '+e.message); }
   renderWeekly();
-  alert('✅ تم حفظ المحاضرة في فايربيز - '+rec.title+' - '+rec.count+' فرد - '+rec.hours+' ساعة - '+rec.photos.length+' صورة');
+  alert('✅ Saved meeting in Firebase - '+rec.title+' - '+rec.count+' Persons - '+rec.hours+' Hours - '+rec.photos.length+' Photos');
   ['w-title','w-place'].forEach(id=>setVal(id,'')); setVal('w-count',''); setVal('w-company','RMED');
   tempPhotos=[]; renderTempPhotos();
-  document.getElementById('calcText').innerText='اكتب عدد الحضور'; document.getElementById('calcResult').innerText='0 ساعة';
+  document.getElementById('calcText').innerText='Write attendance count'; document.getElementById('calcResult').innerText='0 Hours';
 }
 function renderWeekly(){
   let q=(document.getElementById('searchW').value||'').toLowerCase();
@@ -281,40 +281,40 @@ function renderWeekly(){
   let totalHours=weeklyLect.reduce((s,x)=>s+(parseFloat(x.hours)||0),0);
   document.getElementById('k-lect').innerText=totalLect;
   document.getElementById('k-att').innerText=totalAtt;
-  document.getElementById('k-hours').innerText=totalHours+' ساعة';
-  if(!list.length){ document.getElementById('weeklyTable').innerHTML='<p style="text-align:center;color:#999;">مفيش محاضرات أسبوعية لسه - سجل أول محاضرة فوق</p>'; return; }
-  document.getElementById('weeklyTable').innerHTML='<table><tr><th>التاريخ</th><th>الوقت</th><th>عنوان المحاضرة</th><th>الحضور</th><th>المكان</th><th>الشركة</th><th>الساعات</th><th>الصور</th><th>حذف</th></tr>'+list.map((x)=>{
+  document.getElementById('k-hours').innerText=totalHours+' Hours';
+  if(!list.length){ document.getElementById('weeklyTable').innerHTML='<p style="text-align:center;color:#999;">No weekly meetings yet - Register first meeting above</p>'; return; }
+  document.getElementById('weeklyTable').innerHTML='<table><tr><th>Date</th><th>Time</th><th>Meeting Title</th><th>Attendance</th><th>Place</th><th>Company</th><th>Hours</th><th>Photos</th><th>Delete</th></tr>'+list.map((x)=>{
     let idx=weeklyLect.indexOf(x);
     let photoCount=(x.photos||[]).length;
     let thumb=photoCount?'<img src="'+x.photos[0]+'" style="width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;" onclick="openModal('+idx+')">':'-';
-    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.count+'</td><td>'+x.place+'</td><td>'+x.company+'</td><td><span class="badge">'+x.hours+' ساعة</span></td><td>'+thumb+'<br><button class="btn2" onclick="openModal('+idx+')">📷 '+photoCount+' صورة</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delWeekly('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.count+'</td><td>'+x.place+'</td><td>'+x.company+'</td><td><span class="badge">'+x.hours+' Hours</span></td><td>'+thumb+'<br><button class="btn2" onclick="openModal('+idx+')">📷 '+photoCount+' Photos</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delWeekly('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 async function delWeekly(i){
-  if(!confirm('تحذف المحاضرة دي؟')) return;
+  if(!confirm('Delete this meeting?')) return;
   let rec = weeklyLect[i];
-  try{ if(rec && rec.id && window.db) await db.collection('weekly').doc(rec.id).delete(); }catch(e){}
+  try{ if(rec && rec.id && window.db) await window.db.collection('weekly').doc(rec.id).delete(); }catch(e){}
   weeklyLect.splice(i,1); renderWeekly();
 }
 async function clearWeekly(){
-  if(!confirm('تمسح كل المحاضرات الأسبوعية من فايربيز؟')) return;
+  if(!confirm('Delete all weekly meetings from Firebase?')) return;
   try{
     if(window.db){
-      let snap = await db.collection('weekly').get();
-      for(let d of snap.docs){ await db.collection('weekly').doc(d.id).delete(); }
+      let snap = await window.db.collection('weekly').get();
+      for(let d of snap.docs){ await window.db.collection('weekly').doc(d.id).delete(); }
     }
   }catch(e){}
   weeklyLect=[]; renderWeekly();
 }
 function exportWeekly(){
-  if(!weeklyLect.length) return alert('مفيش بيانات');
-  let csv='التاريخ,الوقت,عنوان المحاضرة,عدد الحضور,مكان المحاضرة,اسم الشركة,عدد الساعات,عدد الصور\n'+weeklyLect.map(x=>[x.date,x.time,x.title,x.count,x.place,x.company,x.hours,(x.photos||[]).length].join(',')).join('\n');
+  if(!weeklyLect.length) return alert('No data');
+  let csv='Date,Time,Meeting Title,Attendance Count,Meeting Place,Company Name,Hours Count,Photos Count\n'+weeklyLect.map(x=>[x.date,x.time,x.title,x.count,x.place,x.company,x.hours,(x.photos||[]).length].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='weekly-lectures.csv'; a.click();
 }
 function openModal(idx){
   let rec=weeklyLect[idx];
-  if(!rec.photos||!rec.photos.length) return alert('مفيش صور للمحاضرة دي');
-  document.getElementById('modalTitle').innerText=rec.title+' - '+rec.date+' - '+rec.photos.length+' صورة';
+  if(!rec.photos||!rec.photos.length) return alert('No photos for this meeting');
+  document.getElementById('modalTitle').innerText=rec.title+' - '+rec.date+' - '+rec.photos.length+' Photos';
   document.getElementById('modalMainImg').src=rec.photos[0];
   document.getElementById('modalImgs').innerHTML=rec.photos.map((p,i)=>{
     return '<img src="'+p+'" class="'+(i===0?'active':'')+'" onclick="document.getElementById(\'modalMainImg\').src=\''+p+'\';document.querySelectorAll(\'#modalImgs img\').forEach(im=>im.classList.remove(\'active\'));this.classList.add(\'active\');">';
