@@ -10,4 +10,4 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 window.db = firebase.firestore();
-console.log("Firebase شغال - RMED");
+console.log("Firebase connected - RMED");
