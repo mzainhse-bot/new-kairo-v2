@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>تسجيل حساب جديد - RMED</title>
+<title>Register New Account - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -21,60 +21,65 @@ body{margin:0;background:#F4F6F9;color:#0A1F44}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.main.full{margin-left:0}
 .topbar{display:none}
-@media(max-width:900px){.sidebar{right:-270px}.sidebar.open{right:0}.main{margin-right:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:fixed;top:0;right:0;left:0;z-index:90}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}.main{padding-top:70px}}
-.box{background:#fff;width:100%;max-width:480px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0A1F44}
+@media(max-width:900px){.sidebar{left:-270px}.sidebar.open{left:0}.main{margin-left:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}.main{padding-top:70px}}
+.box{background:#fff;width:100%;max-width:480px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0F2A4D}
 label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}
 input,select{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;outline:none}
-input:focus{border-color:#0A1F44}
-button.reg{width:100%;background:#0A1F44;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
+input:focus{border-color:#0F2A4D}
+button.reg{width:100%;background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
 .btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}
-img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px solid #0A1F44;display:none;margin:auto}
+img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px solid #0F2A4D;display:none;margin:auto}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span></span></div>
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
-  <div class="user-box"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>ضيف جديد</b><small>مش مسجل دخول</small></div></div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="induction.html"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="safety-observations.html"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" class="active"><span class="icon">📝</span> حساب جديد</a>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
+  <div class="user-box"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>New Guest</b><small>Not logged in</small></div></div>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html"><span class="icon">📘</span> Induction</a>
+  <a href="train.html"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" class="active"><span class="icon">📝</span> Register</a>
 </aside>
 <div class="main">
 <div class="box">
-<h2 style="text-align:center;margin:0;">🏗️ RMED • تسجيل حساب جديد</h2><p style="text-align:center;color:#78909C;font-size:13px;">سجل بياناتك، والمدير هيوافق عليك قبل ما تدخل</p>
+<h2 style="text-align:center;margin:0;">🏗️ RMED • Register New Account</h2><p style="text-align:center;color:#78909C;font-size:13px;">Register your data, manager will approve you before you login</p>
 <img id="preview" class="prev">
-<label>🖼️ صورتك الشخصية</label><input type="file" accept="image/*" onchange="readPhoto(event)">
-<label>👤 الاسم بالكامل *</label><input id="r-name" placeholder="مثال: محمد زين">
-<label>👷 المهنة *</label><input id="r-job" placeholder="مثال: مشرف سلامة - مهندس - فني">
-<label>🎭 الدور المطلوب *</label><select id="r-role"><option value="employee">👷 موظف</option><option value="supervisor">🦺 مشرف</option><option value="manager">👑 مدير</option></select>
-<label>📧 الإيميل *</label><input id="r-email" type="email" placeholder="example@gmail.com">
-<label>🔒 الباسورد *</label><input id="r-pass" type="password" placeholder="اختار باسورد قوي">
-<button class="reg" onclick="doRegister()">📝 تسجيل الحساب</button>
-<button class="btn2" onclick="location.href='index.html'">🏠 الرئيسية</button>
-<p style="text-align:center;font-size:13px;">عندك حساب؟ <a href="login.html">ادخل من هنا</a></p>
+<label>🖼️ Your Personal Photo</label><input type="file" accept="image/*" onchange="readPhoto(event)">
+<label>👤 Full Name *</label><input id="r-name" placeholder="Example: Ahmed Ali">
+<label>👷 Job *</label><input id="r-job" placeholder="Example: Safety Supervisor - Engineer - Technician">
+<label>🎭 Requested Role *</label><select id="r-role"><option value="employee">👷 Employee</option><option value="supervisor">🦺 Supervisor</option><option value="manager">👑 Manager</option></select>
+<label>📧 Email *</label><input id="r-email" type="email" placeholder="example@gmail.com">
+<label>🔒 Password *</label><input id="r-pass" type="password" placeholder="Choose strong password">
+<button class="reg" onclick="doRegister()">📝 Register Account</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 Home</button>
+<p style="text-align:center;font-size:13px;">Have account? <a href="login.html">Login from here</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;"></p>
 <div id="notifyBox" style="display:none;background:#FFF3E0;border:1px solid #FF9800;border-radius:12px;padding:12px;font-size:13px;margin-top:10px;"></div>
 </div>
@@ -91,47 +96,33 @@ function readPhoto(e){let f=e.target.files[0];if(!f)return;let r=new FileReader(
 async function doRegister(){
   let name=document.getElementById('r-name').value.trim(), job=document.getElementById('r-job').value.trim(), email=document.getElementById('r-email').value.trim().toLowerCase(), pass=document.getElementById('r-pass').value;
   let wantedRole=document.getElementById('r-role').value;
-  if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='اكمل كل البيانات';
-  if(pass.length<6) return document.getElementById('msg').innerText='الباسورد لازم 6 حروف على الأقل';
-  if(!window.db) return document.getElementById('msg').innerText='فايربيز مش متصل، حدث الصفحة';
+  if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='Complete all data';
+  if(pass.length<6) return document.getElementById('msg').innerText='Password must be at least 6 characters';
+  if(!window.db) return document.getElementById('msg').innerText='Firebase not connected, refresh page';
 
-  document.getElementById('msg').innerText='جارى التسجيل...';
+  document.getElementById('msg').innerText='Registering...';
   try{
-    let check = await db.collection('users').where('email','==',email).get();
-    if(!check.empty) return document.getElementById('msg').innerText='الإيميل ده مسجل قبل كده، ادخل من صفحة الدخول';
+    let check = await window.db.collection('users').where('email','==',email).get();
+    if(!check.empty) return document.getElementById('msg').innerText='This email is already registered, login from Login page';
 
-    let isManager=email==='mzain.hse@gmail.com';
-    // FIX: role = الدور الحقيقي، status = حالة الموافقة
-    let user={name,job,email,pass,photo:photoData,img:photoData,role:isManager?'manager':wantedRole,requestedRole:wantedRole,status:isManager?'approved':'pending',createdAt:new Date().toISOString()};
+    // New accounts are always pending - manager approves from Users page. No auto-manager by email.
+    let user={name,job,email,pass,photo:photoData,img:photoData,role:wantedRole,requestedRole:wantedRole,status:'pending',createdAt:new Date().toISOString()};
 
-    await db.collection('users').add(user);
+    await window.db.collection('users').add(user);
 
-    if(!isManager){
-      await db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('ar-EG'),createdAt:new Date().toISOString()});
+    await window.db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('en-US'),createdAt:new Date().toISOString()});
 
-      let msgText='في حساب جديد مستني موافقتك - RMED\nالاسم: '+name+'\nالمهنة: '+job+'\nالإيميل: '+email+'\nالدور المطلوب: '+wantedRole+'\nادخل على صفحة المستخدمين عشان توافق عليه.';
-      let subject=encodeURIComponent('طلب تسجيل جديد - RMED - '+name);
-      let body=encodeURIComponent(msgText);
-      window.open('mailto:mzain.hse@gmail.com?subject='+subject+'&body='+body,'_blank');
-
-      let nb=document.getElementById('notifyBox');
-      nb.style.display='block';
-      nb.innerHTML='✅ <b>تم التسجيل! حسابك في انتظار موافقة المدير.</b><br><br>مهم: دوس على الزرار ده عشان تبعت للمدير على واتساب ويوافق عليك بسرعة:<br><br><button onclick="sendWhats()" style="background:#25D366;color:#fff;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;width:100%">📲 ابعت للمدير على واتساب</button><br><br><a href="login.html">روح لصفحة الدخول</a>';
-      window._lastMsg=msgText;
-      document.getElementById('msg').innerText='';
-      return;
-    } else {
-      alert('✅ أهلاً بيك يا مدير! حسابك اتفعل كمدير أوتوماتيك.');
-      location.href='login.html';
-    }
+    let msgText='New account waiting for your approval - RMED\nName: '+name+'\nJob: '+job+'\nEmail: '+email+'\nRequested Role: '+wantedRole+'\nLogin to Users page to approve it.';
+    let nb=document.getElementById('notifyBox');
+    nb.style.display='block';
+    nb.innerHTML='✅ <b>Registered! Your account is waiting for manager approval.</b><br><br>Manager will see your request in Users page and approve you.<br><br><a href="login.html">Go to Login page</a>';
+    window._lastMsg=msgText;
+    document.getElementById('msg').innerText='';
+    return;
   }catch(err){
     console.error(err);
-    document.getElementById('msg').innerText='حصل خطأ - '+err.message;
+    document.getElementById('msg').innerText='Error - '+err.message;
   }
-}
-function sendWhats(){
-  let txt=encodeURIComponent(window._lastMsg||'في حساب جديد مستني موافقتك - RMED');
-  window.open('https://wa.me/201221932884?text='+txt,'_blank');
 }
 </script>
 </body>
