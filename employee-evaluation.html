@@ -3,7 +3,6 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تقييم الموظفين - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-/* ✅ الشريط الجانبي الاحترافي - RMED - على اليمين */
 .sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
 .sidebar.closed{right:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
@@ -68,7 +67,6 @@
 </style>
 </head>
 <body>
-<!-- ✅ الشريط الجانبي -->
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
@@ -119,6 +117,7 @@
 <span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
 <span style="flex:1;"></span><span id="totalEmp" style="font-weight:bold;"></span>
 </div>
+<p id="loadStatus" style="text-align:center;color:#1565C0;font-size:13px;">⏳ جاري تحميل التقييم من فايربيز...</p>
 
 <div id="top1Box"></div>
 <div id="top23Box" class="top23"></div>
@@ -129,14 +128,16 @@
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// ✅ الشريط الجانبي
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
@@ -148,6 +149,34 @@ let nowD=new Date();
 let selYear=nowD.getFullYear();
 let selMonth=nowD.getMonth();
 let months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+// ✅ FIREBASE - كل البيانات من فايربيز
+let FB = {users:[], observations:[], nearMiss:[], accidents:[]};
+
+async function fetchCol(name){
+  if(!window.db) return [];
+  try{ let s=await db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
+}
+async function loadAll(){
+  document.getElementById('loadStatus').innerText='⏳ جاري تحميل التقييم من فايربيز...';
+  FB.users = await fetchCol('users');
+  FB.observations = await fetchCol('observations');
+  if(!FB.observations.length) FB.observations = await fetchCol('safety-observations');
+  FB.nearMiss = await fetchCol('nearMiss');
+  if(!FB.nearMiss.length) FB.nearMiss = await fetchCol('near-miss');
+  FB.accidents = await fetchCol('accidents');
+  // fallback من localStorage القديم لو فايربيز فاضي
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!FB.users.length && old.users) FB.users=old.users;
+    if(!FB.observations.length && (old.observations||old.safetyObservations)) FB.observations=old.observations||old.safetyObservations||[];
+    if(!FB.nearMiss.length && old.nearMiss) FB.nearMiss=old.nearMiss;
+    if(!FB.accidents.length && old.accidents) FB.accidents=old.accidents;
+  }catch(e){}
+  document.getElementById('loadStatus').innerText='✅ تم تحميل '+FB.users.length+' موظف - '+FB.observations.length+' ملاحظة - '+FB.nearMiss.length+' وشيكة - '+FB.accidents.length+' حادث من فايربيز';
+  render();
+}
+
 function fillSelects(){
   let y=document.getElementById('selYear'); y.innerHTML=''; for(let yy=2026;yy<=2030;yy++){ let o=document.createElement('option'); o.value=yy; o.text=yy; if(yy==selYear) o.selected=true; y.appendChild(o); }
   let m=document.getElementById('selMonth'); m.innerHTML=''; months.forEach((mm,i)=>{ let o=document.createElement('option'); o.value=i; o.text=mm; if(i==selMonth) o.selected=true; m.appendChild(o); });
@@ -160,7 +189,7 @@ function exportPDF(){
 }
 function isClosed(x){
   let s=(x.status||x.state||'').toString().trim().toLowerCase();
-  return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || x.isClosed===true || x.closed===true;
+  return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || s.includes('غلق') || x.isClosed===true || x.closed===true;
 }
 function getReporter(x){
   return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim();
@@ -172,18 +201,17 @@ function inMonth(d){
   return dt.getFullYear()===selYear && dt.getMonth()===selMonth;
 }
 function render(){
-  let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
   document.getElementById('periodLabel').innerText='من 1 '+months[selMonth]+' '+selYear+' إلى '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
-  let allUsers = DB.users || DB.employees || DB.workers || [];
+  let allUsers = FB.users || [];
   let employees = allUsers.filter(u=>{
     let role=(u.role||u.permission||u.type||u.accountType||'').toString().trim().toLowerCase();
     if(['مدير','مشرف','manager','supervisor','admin','أدمن','ادمن'].includes(role)) return false;
     if(['مدير','مشرف'].includes((u.role||'').toString().trim())) return false;
     return true;
   });
-  let obs=(DB.observations||DB.safetyObservations||DB.obs||[]).filter(x=>inMonth(getDate(x)));
-  let near=(DB.nearMiss||DB.near||[]).filter(x=>inMonth(getDate(x)));
-  let acc=(DB.accidents||DB.acc||[]).filter(x=>inMonth(getDate(x)));
+  let obs=(FB.observations||[]).filter(x=>inMonth(getDate(x)));
+  let near=(FB.nearMiss||[]).filter(x=>inMonth(getDate(x)));
+  let acc=(FB.accidents||[]).filter(x=>inMonth(getDate(x)));
   let allReports=[...obs.map(x=>({...x,_type:'ملاحظة'})), ...near.map(x=>({...x,_type:'وشيكة'})), ...acc.map(x=>({...x,_type:'حادث'}))];
   let map={};
   employees.forEach(u=>{
@@ -219,42 +247,40 @@ function render(){
   document.getElementById('totalEmp').innerText='إجمالي الموظفين: '+ranked.length+' | إجمالي التقارير في الشهر: '+allReports.length;
   function imgHTML(u, size){
     let src=u.img||u.photo||u.image||u.avatar||'';
-    if(src) return `<img src="${src}" alt="${u.name||''}">`;
-    return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#ECEFF1;display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid #CFD8DC;">👷</div>`;
+    if(src) return '<img src="'+src+'" alt="'+(u.name||'')+'">';
+    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:#ECEFF1;display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid #CFD8DC;">👷</div>';
   }
   function statsHTML(r){
     let rate=r.total? Math.round(r.closed/r.total*100):0;
-    return `<div style="margin-top:10px;"><span class="badge badge-blue">📝 رفع: ${r.total} تقرير</span><span class="badge badge-green">✅ قفل: ${r.closed}</span><span class="badge badge-red">🔓 مفتوح: ${r.total-r.closed}</span><br>
-    <span class="badge">👀 ملاحظات: ${r.obs}</span><span class="badge">⚡ وشيكة: ${r.near}</span><span class="badge">🚨 حوادث: ${r.acc}</span><br>
-    <span class="badge badge-green">نسبة الغلق: ${rate}%</span></div>`;
+    return '<div style="margin-top:10px;"><span class="badge badge-blue">📝 رفع: '+r.total+' تقرير</span><span class="badge badge-green">✅ قفل: '+r.closed+'</span><span class="badge badge-red">🔓 مفتوح: '+(r.total-r.closed)+'</span><br><span class="badge">👀 ملاحظات: '+r.obs+'</span><span class="badge">⚡ وشيكة: '+r.near+'</span><span class="badge">🚨 حوادث: '+r.acc+'</span><br><span class="badge badge-green">نسبة الغلق: '+rate+'%</span></div>';
   }
   let top1=document.getElementById('top1Box');
   if(ranked.length && ranked[0].total>0){
     let r=ranked[0];
-    top1.innerHTML=`<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 الموظف المثالي - ${months[selMonth]} ${selYear}</h2><p style="color:#78909C;margin:4px 0;">المركز الأول</p>${imgHTML(r.user,150)}<h2 style="margin:10px 0 0;">${r.user.name||'بدون اسم'}</h2><p style="margin:4px 0;color:#78909C;">${r.user.job||r.user.dept||''} ${r.user.code?' - كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+    top1.innerHTML='<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 الموظف المثالي - '+months[selMonth]+' '+selYear+'</h2><p style="color:#78909C;margin:4px 0;">المركز الأول</p>'+imgHTML(r.user,150)+'<h2 style="margin:10px 0 0;">'+(r.user.name||'بدون اسم')+'</h2><p style="margin:4px 0;color:#78909C;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   } else {
-    top1.innerHTML=`<div class="card"><h3>لسه مفيش تقارير في ${months[selMonth]} ${selYear}</h3><p style="color:#78909C;">أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>`;
+    top1.innerHTML='<div class="card"><h3>لسه مفيش تقارير في '+months[selMonth]+' '+selYear+'</h3><p style="color:#78909C;">أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>';
   }
   let top23=document.getElementById('top23Box');
   let html23='';
   if(ranked[1] && ranked[1].total>0){
     let r=ranked[1];
-    html23+=`<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">المركز الثاني</h3>${imgHTML(r.user,120)}<h3 style="margin:8px 0 0;">${r.user.name}</h3><p style="margin:4px 0;color:#78909C;">${r.user.code?'كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+    html23+='<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">المركز الثاني</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   if(ranked[2] && ranked[2].total>0){
     let r=ranked[2];
-    html23+=`<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">المركز الثالث</h3>${imgHTML(r.user,120)}<h3 style="margin:8px 0 0;">${r.user.name}</h3><p style="margin:4px 0;color:#78909C;">${r.user.code?'كود: '+r.user.code:''}</p>${statsHTML(r)}</div>`;
+    html23+='<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">المركز الثالث</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'كود: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   top23.innerHTML=html23;
   let rest=document.getElementById('restBox');
   let restList=ranked.slice(3);
   if(restList.length){
-    rest.innerHTML=`<h3 style="margin:10px 0;">📋 باقي الترتيب</h3>`+restList.map((r,i)=>{
+    rest.innerHTML='<h3 style="margin:10px 0;">📋 باقي الترتيب</h3>'+restList.map((r,i)=>{
       let rank=i+4;
-      return `<div class="list-row"><div class="rank-num">${rank}</div>${imgHTML(r.user,64)}<div style="flex:1;"><b style="font-size:16px;">${r.user.name||'بدون اسم'}</b><div style="color:#78909C;font-size:13px;">${r.user.job||''} ${r.user.code?' - كود: '+r.user.code:''}</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">رفع: ${r.total}</span><span class="badge badge-green">قفل: ${r.closed}</span><span class="badge">👀 ${r.obs} | ⚡ ${r.near} | 🚨 ${r.acc}</span><span class="badge badge-green">غلق: ${r.total?Math.round(r.closed/r.total*100):0}%</span></div></div></div>`;
+      return '<div class="list-row"><div class="rank-num">'+rank+'</div>'+imgHTML(r.user,64)+'<div style="flex:1;"><b style="font-size:16px;">'+(r.user.name||'بدون اسم')+'</b><div style="color:#78909C;font-size:13px;">'+(r.user.job||'')+' '+(r.user.code?' - كود: '+r.user.code:'')+'</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">رفع: '+r.total+'</span><span class="badge badge-green">قفل: '+r.closed+'</span><span class="badge">👀 '+r.obs+' | ⚡ '+r.near+' | 🚨 '+r.acc+'</span><span class="badge badge-green">غلق: '+(r.total?Math.round(r.closed/r.total*100):0)+'%</span></div></div></div>';
     }).join('');
   } else rest.innerHTML='';
 }
 fillSelects();
-render();
+loadAll();
 </script></body></html>
