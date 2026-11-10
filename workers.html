@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الموظفين - RMED</title>
+<title>Workers - RMED</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;right:0;width:260px;height:100vh;background:#0A1F44;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{right:-270px}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+.sidebar.closed{left:-270px}
 .sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
 .sidebar .logo small{color:#90A4AE}
@@ -23,14 +23,14 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .sidebar a.active{background:#FFD54F;color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-right:260px;transition:0.3s}
-.main.full{margin-right:0}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
-  .sidebar{right:-270px}
-  .sidebar.open{right:0}
-  .main{margin-right:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A1F44;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
   .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
@@ -38,156 +38,155 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
 .page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
 .page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
 .card.red{border-top-color:#D32F2F;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
 input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0A1F44;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0A1F44;}
+.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
 .kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:24px;display:block;} .kpi small{color:#78909C;font-size:12px;}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A1F44;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
 .badge.red{background:#FFEBEE;color:#D32F2F;} .badge.green{background:#E8F5E9;color:#2E7D32;}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
 .filters button{padding:8px 14px;border-radius:20px;border:1px solid #CFD8DC;background:#fff;cursor:pointer;font-weight:bold;}
-.filters button.active{background:#0A1F44;color:#fff;}
+.filters button.active{background:#0F2A4D;color:#fff;}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ القائمة</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>نظام إدارة السلامة</small></div>
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">اسم الموظف</b><small id="sideRole">الدور</small></div>
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
   </div>
-  <div class="menu-title">📊 الرئيسية</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> الرئيسية</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> إنجازاتي</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> إحصائيات الموقع</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> تقييم الموظفين</a>
-  <a href="companies.html" data-page="companies"><span class="icon">🏢</span> تقرير الشركات</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> تقييم المقاولين</a>
-  <div class="menu-title">👷 العمال والتدريب</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> الموظفين</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> الإعداد اليومي</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> الموظفين - بديل</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> المحاضرة الأولية</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> التدريبات</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> المحاضرة الأسبوعية</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> ملفات الموظفين</a>
-  <div class="menu-title">🛡️ السلامة والتقارير</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> التصاريح</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> مخالفات المقاولين</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> مخالفات الموظفين</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> ملاحظات السلامة</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> الحوادث الوشيكة</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> الحوادث</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> حالات عدم المطابقة</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> فحص السقالات</a>
-  <div class="menu-title">⚙️ الحساب</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> تسجيل دخول</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> حساب جديد</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> تسجيل خروج</a>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers" class="active"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> الموظفين</h1><small>قاعدة بيانات كل الموظفين - من فايربيز</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ إخفاء القائمة</button>
+<div><h1>RMED <span>•</span> Workers</h1><small>All Workers Database - From Firebase</small></div>
+<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-<div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>إصدار الكارنيهات - RMED</b></div>
-<button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 إصدار كارنيه - ثابت</button>
+<div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>ID Card Issuance - RMED</b></div>
+<button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 Issue ID Card - Fixed</button>
 </div>
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-all">0</b><small>إجمالي الموظفين</small></div>
-<div class="kpi"><b id="k-active">0</b><small>نشط</small></div>
-<div class="kpi red"><b id="k-resign">0</b><small>استقال</small></div>
-<div class="kpi red"><b id="k-excluded">0</b><small>استبعاد</small></div>
+<div class="kpi"><b id="k-all">0</b><small>Total Workers</small></div>
+<div class="kpi"><b id="k-active">0</b><small>Active</small></div>
+<div class="kpi red"><b id="k-resign">0</b><small>Resigned</small></div>
+<div class="kpi red"><b id="k-excluded">0</b><small>Excluded</small></div>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">👷 بحث وفلترة</h2>
-<input id="searchW" placeholder="ابحث بالاسم أو الكود أو الرقم القومي أو الشركة أو المهنة..." oninput="renderWorkers()">
+<h2 style="margin:0 0 10px;">👷 Search & Filter</h2>
+<input id="searchW" placeholder="Search by name, code, national ID, company or job..." oninput="renderWorkers()">
 <div class="filters" style="margin-top:10px;">
-<button id="f-all" class="active" onclick="setFilter('all')">الكل</button>
-<button id="f-active" onclick="setFilter('نشط')">✅ نشط</button>
-<button id="f-resign" onclick="setFilter('استقال')">⚠️ استقال</button>
-<button id="f-excluded" onclick="setFilter('استبعاد')">⛔ استبعاد</button>
-<button id="f-rehab" onclick="setFilter('rehab')">🔁 إعادة تأهيل</button>
+<button id="f-all" class="active" onclick="setFilter('all')">All</button>
+<button id="f-active" onclick="setFilter('Active')">✅ Active</button>
+<button id="f-resign" onclick="setFilter('Resigned')">⚠️ Resigned</button>
+<button id="f-excluded" onclick="setFilter('Excluded')">⛔ Excluded</button>
+<button id="f-rehab" onclick="setFilter('rehab')">🔁 Rehabilitation</button>
 </div>
-<div id="workersTable"><p style="text-align:center;">⏳ جاري تحميل الموظفين من فايربيز...</p></div>
+<div id="workersTable"><p style="text-align:center;">⏳ Loading workers from Firebase...</p></div>
 </div>
 
 <div class="card red">
-<h2 style="margin:0 0 10px;">➕ إضافة موظف يدوي - بدون محاضرة</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">لو موظف قديم وعايز تضيفه بسرعة هنا من غير ما تدخل المحاضرة الأولية</p>
+<h2 style="margin:0 0 10px;">➕ Add Worker Manually - Without Induction</h2>
+<p style="color:#78909C;font-size:13px;margin:0;">If old worker and you want to add him quickly here without entering induction</p>
 <div class="grid">
-<div><label>الاسم *</label><input id="w-name" placeholder="الاسم"></div>
-<div><label>الكود</label><input id="w-code" placeholder="أوتوماتيك"></div>
-<div><label>الرقم القومي</label><input id="w-national" placeholder="14 رقم" maxlength="14"></div>
-<div><label>المهنة</label><input id="w-job" placeholder="المهنة"></div>
-<div><label>الشركة</label><input id="w-company" placeholder="RMED" value="RMED"></div>
-<div><label>الهاتف</label><input id="w-phone" placeholder="الهاتف"></div>
-<div><label>الحالة</label><select id="w-status"><option value="نشط">نشط</option><option value="استقال">استقال</option><option value="استبعاد">استبعاد</option></select></div>
-<div><label>الحالة الصحية</label><input id="w-health" placeholder="سليم"></div>
+<div><label>Name *</label><input id="w-name" placeholder="Name"></div>
+<div><label>Code</label><input id="w-code" placeholder="Automatic"></div>
+<div><label>National ID</label><input id="w-national" placeholder="14 Digits" maxlength="14"></div>
+<div><label>Job</label><input id="w-job" placeholder="Job"></div>
+<div><label>Company</label><input id="w-company" placeholder="RMED" value="RMED"></div>
+<div><label>Phone</label><input id="w-phone" placeholder="Phone"></div>
+<div><label>Status</label><select id="w-status"><option value="Active">Active</option><option value="Resigned">Resigned</option><option value="Excluded">Excluded</option></select></div>
+<div><label>Health Status</label><input id="w-health" placeholder="Fit"></div>
 </div>
-<button class="btn" onclick="addWorkerManual()">💾 إضافة موظف</button>
+<button class="btn" onclick="addWorkerManual()">💾 Add Worker</button>
 </div>
 </div>
 </div>
 
 <div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
 <div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
-<label>اختر موظف</label><select id="issue-select" onchange="fillIssueFromWorker()"></select>
-<p style="text-align:center;color:#999;font-size:13px;">— أو اكتب يدوي —</p>
-<div class="grid"><div><label>الاسم</label><input id="issue-name"></div><div><label>الكود</label><input id="issue-code"></div><div><label>الرقم القومي</label><input id="issue-national"></div><div><label>المهنة</label><input id="issue-job"></div><div><label>الشركة</label><input id="issue-company" value="RMED"></div><div><label>الحالة الصحية</label><input id="issue-health"></div><div><label>الهاتف</label><input id="issue-phone"></div><div><label>طوارئ</label><input id="issue-emergency"></div></div>
-<label>صورة</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
-<button class="btn red" onclick="showCardFromIssue()">👁️ عرض الكارنيه</button>
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 Issue ID Card</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
+<label>Select Worker</label><select id="issue-select" onchange="fillIssueFromWorker()"></select>
+<p style="text-align:center;color:#999;font-size:13px;">— Or write manually —</p>
+<div class="grid"><div><label>Name</label><input id="issue-name"></div><div><label>Code</label><input id="issue-code"></div><div><label>National ID</label><input id="issue-national"></div><div><label>Job</label><input id="issue-job"></div><div><label>Company</label><input id="issue-company" value="RMED"></div><div><label>Health Status</label><input id="issue-health"></div><div><label>Phone</label><input id="issue-phone"></div><div><label>Emergency</label><input id="issue-emergency"></div></div>
+<label>Photo</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
+<button class="btn red" onclick="showCardFromIssue()">👁️ Show ID Card</button>
 </div>
 </div>
 
 <div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
 <div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 Worker ID Card</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div>
 <div id="cardFront" style="background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;">
 <div style="background:#0A1F44;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
 <div style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;" onerror="this.style.display='none'"><b>RMED - JOINT VENTURE</b></div>
-<span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">كارنيه موظف</span>
+<span style="background:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;">Worker ID Card</span>
 </div>
 <div style="display:flex;gap:14px;padding:14px;">
 <img id="c-photo" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #0A1F44;">
 <div style="flex:1;font-size:14px;line-height:1.9;"><div style="font-size:18px;font-weight:bold;" id="c-name"></div>
-<div><b>الكود:</b> <span id="c-code"></span> | <b>المهنة:</b> <span id="c-job"></span></div>
-<div><b>الشركة:</b> <span id="c-company"></span></div>
-<div><b>الرقم القومي:</b> <span id="c-national"></span></div>
-<div><b>الحالة الصحية:</b> <span id="c-health"></span></div>
-<div><b>الهاتف:</b> <span id="c-phone"></span> | <b>طوارئ:</b> <span id="c-emergency"></span> (<span id="c-kin"></span>)</div>
-<div><b>الحالة:</b> <span id="c-status" style="background:#E8F5E9;color:#2E7D32;padding:2px 10px;border-radius:20px;font-weight:bold;"></span></div>
+<div><b>Code:</b> <span id="c-code"></span> | <b>Job:</b> <span id="c-job"></span></div>
+<div><b>Company:</b> <span id="c-company"></span></div>
+<div><b>National ID:</b> <span id="c-national"></span></div>
+<div><b>Health Status:</b> <span id="c-health"></span></div>
+<div><b>Phone:</b> <span id="c-phone"></span> | <b>Emergency:</b> <span id="c-emergency"></span> (<span id="c-kin"></span>)</div>
+<div><b>Status:</b> <span id="c-status" style="background:#E8F5E9;color:#2E7D32;padding:2px 10px;border-radius:20px;font-weight:bold;"></span></div>
 </div></div>
-<div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">الكود: <span id="c-code2"></span> - RMED</div>
+<div style="background:#F4F6F9;padding:8px 14px;font-size:12px;color:#78909C;text-align:center;">Code: <span id="c-code2"></span> - RMED</div>
 </div>
 <div id="cardBack" style="background:#0A1F44;color:#fff;border-radius:14px;padding:16px;margin-top:12px;">
 <div style="text-align:center;margin-bottom:8px;"><img src="logo.png" style="width:130px;height:44px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;" onerror="this.style.display='none'"></div>
-<h4 style="margin:0 0 10px;text-align:center;">⚠️ تعليمات السلامة - يجب الالتزام بها</h4>
-<div style="font-size:13px;line-height:2;">1. ارتداء مهمات الوقاية الشخصية PPE طول وقت العمل<br>2. ممنوع العمل بدون تصريح عمل<br>3. ممنوع العمل على ارتفاع بدون حزام أمان<br>4. الإبلاغ فورا عن أي حادث أو حادث وشيك<br>5. ممنوع التدخين إلا في الأماكن المخصصة<br>6. الحفاظ على ممرات الطوارئ خالية<br>7. في حالة الطوارئ التوجه لنقطة التجمع فورا<br>8. الكارنيه شخصي وممنوع إعطاؤه لشخص آخر</div>
-<div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">في حالة فقدان الكارنيه إبلاغ السلامة فورا - RMED</div>
+<h4 style="margin:0 0 10px;text-align:center;">⚠️ Safety Instructions - Must Be Followed</h4>
+<div style="font-size:13px;line-height:2;">1. Wear PPE all working time<br>2. No work without work permit<br>3. No work at height without safety harness<br>4. Report immediately any accident or near miss<br>5. No smoking except in designated areas<br>6. Keep emergency exits clear<br>7. In case of emergency go to assembly point immediately<br>8. ID Card is personal and must not be given to another person</div>
+<div style="text-align:center;margin-top:12px;background:#D32F2F;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;">In case of losing ID Card report to Safety immediately - RMED</div>
 </div>
-<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
-<button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
+<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 Download ID Card Front & Back As Image</button>
+<button class="btn" onclick="downloadCard('front')">📥 Download Front Only</button>
 </div>
 </div>
 
@@ -201,7 +200,7 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
 function getMe(){
   try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
   return null;
@@ -210,17 +209,22 @@ function getMe(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
-  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
 let me = null;
 try{ me = (typeof requireLogin==='function') ? requireLogin() : getMe(); }catch(e){ me=getMe(); }
 let DB = {workers:[]};
 let workersList = [];
+
+// Translate old AR -> EN display, new saves EN only
+const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded','Active':'Active','Resigned':'Resigned','Excluded':'Excluded'};
+function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Active'; }
+
 async function loadWorkers(){
   workersList = [];
   try{
     if(window.db){
-      let snap = await db.collection('workers').get();
+      let snap = await window.db.collection('workers').get();
       snap.forEach(d=> workersList.push({id:d.id, ...d.data()}));
     }
   }catch(e){ console.log(e); }
@@ -240,9 +244,9 @@ function setFilter(f){
   curFilter=f;
   document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
   if(f==='all') document.getElementById('f-all').classList.add('active');
-  if(f==='نشط') document.getElementById('f-active').classList.add('active');
-  if(f==='استقال') document.getElementById('f-resign').classList.add('active');
-  if(f==='استبعاد') document.getElementById('f-excluded').classList.add('active');
+  if(f==='Active') document.getElementById('f-active').classList.add('active');
+  if(f==='Resigned') document.getElementById('f-resign').classList.add('active');
+  if(f==='Excluded') document.getElementById('f-excluded').classList.add('active');
   if(f==='rehab') document.getElementById('f-rehab').classList.add('active');
   renderWorkers();
 }
@@ -250,36 +254,36 @@ function renderWorkers(){
   let q=(document.getElementById('searchW').value||'').toLowerCase();
   let list=DB.workers.map((x,i)=>({...x,_idx:i})).filter(x=>{
     let ok=((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')+(x.job||'')).toLowerCase().includes(q);
-    if(curFilter==='rehab') return ok && (x.isRehab || (x.notes||'').includes('إعادة تأهيل'));
-    if(curFilter!=='all') return ok && x.status===curFilter;
+    if(curFilter==='rehab') return ok && (x.isRehab || (x.notes||'').includes('إعادة تأهيل') || (x.notes||'').toLowerCase().includes('rehabilitation'));
+    if(curFilter!=='all') return ok && TStatus(x.status)===curFilter;
     return ok;
   });
   document.getElementById('k-all').innerText=DB.workers.length;
-  document.getElementById('k-active').innerText=DB.workers.filter(x=>x.status==='نشط').length;
-  document.getElementById('k-resign').innerText=DB.workers.filter(x=>x.status==='استقال').length;
-  document.getElementById('k-excluded').innerText=DB.workers.filter(x=>x.status==='استبعاد').length;
-  if(!list.length){ document.getElementById('workersTable').innerHTML='<p style="text-align:center;color:#999;">مفيش موظفين بالفلتر ده - سجل من المحاضرة الأولية الأول</p>'; return; }
-  document.getElementById('workersTable').innerHTML='<table><tr><th>الكود</th><th>الاسم</th><th>الرقم القومي</th><th>المهنة</th><th>الشركة</th><th>الحالة</th><th>تحكم</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+' '+(x.isRehab?'<br><span class="badge red">إعادة تأهيل</span>':'')+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><select onchange="changeStatus('+x._idx+',this.value)" style="width:auto;padding:6px;"><option '+(x.status==='نشط'?'selected':'')+'>نشط</option><option '+(x.status==='استقال'?'selected':'')+'>استقال</option><option '+(x.status==='استبعاد'?'selected':'')+'>استبعاد</option></select></td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 كارنيه</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker('+x._idx+')">🗑️</button></td></tr>').join('')+'</table>';
+  document.getElementById('k-active').innerText=DB.workers.filter(x=>TStatus(x.status)==='Active').length;
+  document.getElementById('k-resign').innerText=DB.workers.filter(x=>TStatus(x.status)==='Resigned').length;
+  document.getElementById('k-excluded').innerText=DB.workers.filter(x=>TStatus(x.status)==='Excluded').length;
+  if(!list.length){ document.getElementById('workersTable').innerHTML='<p style="text-align:center;color:#999;">No workers with this filter - Register from induction first</p>'; return; }
+  document.getElementById('workersTable').innerHTML='<table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Status</th><th>Control</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+' '+(x.isRehab?'<br><span class="badge red">Rehabilitation</span>':'')+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><select onchange="changeStatus('+x._idx+',this.value)" style="width:auto;padding:6px;"><option '+(TStatus(x.status)==='Active'?'selected':'')+'>Active</option><option '+(TStatus(x.status)==='Resigned'?'selected':'')+'>Resigned</option><option '+(TStatus(x.status)==='Excluded'?'selected':'')+'>Excluded</option></select></td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 ID Card</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker('+x._idx+')">🗑️</button></td></tr>').join('')+'</table>';
 }
 async function changeStatus(idx,v){
   let w=DB.workers[idx]; if(!w) return; w.status=v;
-  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await db.collection('workers').doc(w.id).update({status:v}); }catch(e){}
+  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await window.db.collection('workers').doc(w.id).update({status:v}); }catch(e){}
   renderWorkers();
 }
 async function delWorker(idx){
-  if(!confirm('تحذف '+DB.workers[idx].name+' ؟')) return;
+  if(!confirm('Delete '+DB.workers[idx].name+' ?')) return;
   let w=DB.workers[idx];
-  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await db.collection('workers').doc(w.id).delete(); }catch(e){}
+  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await window.db.collection('workers').doc(w.id).delete(); }catch(e){}
   DB.workers.splice(idx,1); renderWorkers();
 }
 async function addWorkerManual(){
-  if(!val('w-name')) return alert('اكتب الاسم');
-  if(!window.db) return alert('فايربيز مش متصل');
+  if(!val('w-name')) return alert('Write name');
+  if(!window.db) return alert('Firebase not connected');
   let nums=DB.workers.map(w=>parseInt(w.code)||0);
   let code=val('w-code')||String((nums.length?Math.max(...nums):1000)+1);
   let w={name:val('w-name'),code:code,nationalId:val('w-national'),job:val('w-job'),company:val('w-company')||'RMED',phone:val('w-phone'),status:val('w-status'),health:val('w-health'),date:new Date().toISOString().slice(0,10),isRehab:false,img:'',emergency:'',kin:'',reporter: me?me.name:'', createdAt:new Date().toISOString()};
-  try{ let ref=await db.collection('workers').add(w); w.id=ref.id; }catch(e){ alert('مشكلة في الحفظ في فايربيز: '+e.message); return; }
-  DB.workers.push(w); renderWorkers(); alert('✅ تم إضافة '+w.name+' في فايربيز');
+  try{ let ref=await window.db.collection('workers').add(w); w.id=ref.id; }catch(e){ alert('Save problem in Firebase: '+e.message); return; }
+  DB.workers.push(w); renderWorkers(); alert('✅ Added '+w.name+' in Firebase');
   ['w-name','w-code','w-national','w-job','w-phone','w-health'].forEach(id=>setVal(id,''));
 }
 let curCard=null, issueImgData='';
@@ -291,13 +295,13 @@ function fillCardData(x){
   document.getElementById('c-job').innerText=x.job||'-'; document.getElementById('c-company').innerText=x.company||'RMED';
   document.getElementById('c-national').innerText=x.nationalId||'-'; document.getElementById('c-health').innerText=x.health||'-';
   document.getElementById('c-phone').innerText=x.phone||'-'; document.getElementById('c-emergency').innerText=x.emergency||'-'; document.getElementById('c-kin').innerText=x.kin||'-';
-  document.getElementById('c-status').innerText=x.status||'نشط';
+  document.getElementById('c-status').innerText=TStatus(x.status);
   document.getElementById('cardModal').style.display='block';
 }
 function openCard(idx){ fillCardData(DB.workers[idx]); }
-function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- اختر موظف --</option>'+DB.workers.map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join(''); document.getElementById('issueModal').style.display='block'; }
+function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- Select Worker --</option>'+DB.workers.map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join(''); document.getElementById('issueModal').style.display='block'; }
 function fillIssueFromWorker(){ let idx=document.getElementById('issue-select').value; if(idx==='') return; let x=DB.workers[idx]; setVal('issue-name',x.name); setVal('issue-code',x.code); setVal('issue-national',x.nationalId||''); setVal('issue-job',x.job||''); setVal('issue-company',x.company||'RMED'); setVal('issue-health',x.health||''); setVal('issue-phone',x.phone||''); setVal('issue-emergency',x.emergency||''); issueImgData=x.img||x.photo||''; }
-function showCardFromIssue(){ if(!val('issue-name')) return alert('اكتب الاسم أو اختر موظف'); document.getElementById('issueModal').style.display='none'; fillCardData({name:val('issue-name'),code:val('issue-code'),nationalId:val('issue-national'),job:val('issue-job'),company:val('issue-company'),health:val('issue-health'),phone:val('issue-phone'),emergency:val('issue-emergency'),status:'نشط',img:issueImgData}); }
+function showCardFromIssue(){ if(!val('issue-name')) return alert('Write name or select worker'); document.getElementById('issueModal').style.display='none'; fillCardData({name:val('issue-name'),code:val('issue-code'),nationalId:val('issue-national'),job:val('issue-job'),company:val('issue-company'),health:val('issue-health'),phone:val('issue-phone'),emergency:val('issue-emergency'),status:'Active',img:issueImgData}); }
 async function downloadCard(which){ let name=curCard?.name||'card'; if(which==='front'){ let c=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=c.toDataURL('image/png'); a.click(); return; } let c1=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let c2=await html2canvas(document.getElementById('cardBack'),{scale:2,useCORS:true}); let f=document.createElement('canvas'); f.width=Math.max(c1.width,c2.width); f.height=c1.height+c2.height+20; let ctx=f.getContext('2d'); ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,f.width,f.height); ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20); let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=f.toDataURL('image/png'); a.click(); }
 loadWorkers();
 </script>
