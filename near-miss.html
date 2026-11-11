@@ -6,20 +6,20 @@
 <title>Near Miss - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -29,45 +29,102 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FF9800;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#FF9800;} .page-head small{color:#78909C;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.orange{border-top-color:#FF9800;}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
+.card.orange{border:1px solid rgba(201,162,39,.55)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
+input::placeholder,textarea::placeholder{color:#8A9AB0}
+select option{background:#0A162E}
 textarea{min-height:60px;resize:vertical;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.btn{width:100%;background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.orange{background:linear-gradient(180deg,#FF8A00,#E65100);border-color:#FFCC80;color:#fff} .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+/* HERO - LIGHTNING 3D - LIKE NCR */
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px 18px 0;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.hero-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#FFE082;font-weight:700}
+.hero-visual{position:relative;height:170px;display:flex;align-items:center;justify-content:center;margin:8px 0 0}
+.hero-main{width:150px;height:150px;position:relative;z-index:2;filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-main img{width:100%;height:100%;object-fit:contain}
+.hero-main span{font-size:90px;display:none}
+.hero-small{position:absolute;right:22%;top:8px;width:90px;height:90px;z-index:3;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transform:rotate(12deg);animation:float3d 3.4s ease-in-out infinite}
+.hero-small img{width:100%;height:100%;object-fit:contain}
+.hero-small span{font-size:60px;display:none}
+.hero-title{position:absolute;left:18px;bottom:14px;z-index:4}
+.hero-title b{font-size:22px;display:block;color:#fff}
+.hero-title small{color:#FFE082;font-size:12px}
+.hero-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hero-pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.35);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#FFE082}
+@keyframes float3d{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1deg)}}
+/* KPI - WHITE CARDS LIKE NCR IMAGE */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
-.kpi b{font-size:19px;display:block;line-height:1.3;} .kpi small{color:#78909C;font-size:12px;}
+.kpi{background:#fff;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44;position:relative;overflow:hidden}
+.kpi b{font-size:22px;display:block;line-height:1.2} .kpi small{color:#555;font-size:11px;display:block;line-height:1.3}
+.kpi small b{font-size:12px;color:#0A1F44}
+.icon3d{width:60px;height:60px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.35));overflow:hidden}
+.icon3d img{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.3));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
+.icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
+/* DONUT + BEST - LIKE NCR */
+.manager-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:12px;margin-bottom:14px}
+@media(max-width:700px){.manager-grid{grid-template-columns:1fr}}
+.donut-card{background:#fff;border-radius:16px;padding:16px;text-align:center;color:#0A1F44;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.donut-wrap{position:relative;width:150px;height:150px;margin:10px auto}
+.donut-wrap canvas{width:100%;height:100%}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-center b{font-size:28px;color:#2E7D32}
+.best-card{background:#fff;border-radius:16px;padding:16px;color:#0A1F44;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.best-head{display:flex;gap:10px;align-items:center}
+.best-head .trophy3d{width:54px;height:54px;border-radius:14px;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 12px rgba(0,0,0,.3);flex-shrink:0}
+.best-head .trophy3d img{width:40px;height:40px}
+.best-head .trophy3d span{font-size:28px;display:none}
+.best-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EEE}
+.best-row:last-child{border-bottom:none}
+.medal{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0;box-shadow:0 4px 8px rgba(0,0,0,.25)}
+.medal.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);color:#0A1F44}
+.medal.silver{background:radial-gradient(circle at 30% 25%,#fff,#C0C0C0 45%,#808080 75%);color:#0A1F44}
+.medal.bronze{background:radial-gradient(circle at 30% 25%,#FFE0B2,#CD7F32 45%,#7A3E00 75%);color:#fff}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
-.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
-.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rgba(201,162,39,.4)} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;vertical-align:middle;color:#fff}
+.auto{background:#1A2F52!important;border-color:#FFD54F!important;color:#FFE082!important}
+.user-bar{background:#101F3D;border:1.5px solid #FFD54F;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .user-bar input{width:auto;flex:1;min-width:180px;}
 .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #ECEFF1;cursor:pointer;}
+.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid rgba(255,213,79,.4);cursor:pointer;}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
 .badge.open{background:#FFEBEE;color:#D32F2F;}
 .badge.closed{background:#E8F5E9;color:#2E7D32;}
-.mail-box{background:#FFF3E0;border:1.5px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;}
+.mail-box{background:#101F3D;border:1.5px solid #FFD54F;border-radius:12px;padding:12px;margin-bottom:14px;}
+.bar{height:18px;background:#EEE;border-radius:20px;overflow:hidden;margin:6px 0;}
+.bar-fill{height:100%;background:#2E7D32;transition:width .3s;}
+.bar-fill.open{background:#FF9800;}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -102,47 +159,53 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Near Miss</h1><small>Near Miss - From Firebase</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Near Miss <span>• حادث وشيك</span></h1><small>Near Miss Dashboard • لوحة الحوادث الوشيكة</small></div></div>
+<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">👤</div></div>
 </div>
 <div class="container">
-
 <div class="user-bar">
-<span style="font-weight:bold;">🦺 Safety Officer Reporting:</span>
+<span style="font-weight:bold;color:#FFE082;">🦺 Safety Officer Reporting:</span>
 <input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('nm-reporter').value=this.value; renderNM();">
-<span style="font-size:12px;color:#2E7D32;">Will appear automatically in every report</span>
+<span style="font-size:12px;color:#81C784;">Will appear automatically in every report</span>
 </div>
-
 <div class="mail-box">
 <b>📧 Notification Emails - Once you save it will send automatically:</b>
 <div class="grid">
 <div><label>📧 Manager Email</label><input id="mgrEmail" placeholder="manager@rmed.com" oninput="localStorage.setItem('mgrEmail',this.value)"></div>
 <div><label>📧 Supervisor Email</label><input id="supEmail" placeholder="supervisor@rmed.com" oninput="localStorage.setItem('supEmail',this.value)"></div>
 </div>
-<small style="color:#E65100;">Note: Site will open your mail program ready with details, press Send and it will be sent.</small>
+<small style="color:#FFCC80;">Note: Site will open your mail program ready with details, press Send and it will be sent.</small>
 </div>
-
+<!-- HERO -->
+<div class="hero">
+<div class="hero-top"><span>حادث وشيك • Near Miss Report</span><span>RMED • 🔔 👤</span></div>
+<div class="hero-visual">
+<div class="hero-main"><img src="https://img.icons8.com/3d-fluency/94/lightning-bolt.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>⚡</span></div>
+<div class="hero-small"><img src="https://img.icons8.com/3d-fluency/94/warning.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>⚠️</span></div>
+<div class="hero-title"><b>Near Miss Dashboard</b><small>Safety Monitoring & Closure • مراقبة السلامة والإغلاق</small><div class="hero-pills"><span id="hero-total">Total: 0</span><span id="hero-close">Closing: 0%</span><span id="hero-open">Open: 0</span></div></div>
+</div>
+</div>
+<!-- KPI LIKE NCR -->
 <div class="kpi-grid">
-<div class="kpi"><b id="k-total">0</b><small>Total Reports Count</small></div>
-<div class="kpi red"><b id="k-open">0</b><small>Open Count</small></div>
-<div class="kpi green"><b id="k-closed">0</b><small>Closed Count</small></div>
-<div class="kpi green"><b id="k-close-p">0%</b><small>Closing Percentage</small></div>
-<div class="kpi red"><b id="k-open-p">0%</b><small>Open Percentage</small></div>
-<div class="kpi orange"><b id="k-top-place">-</b><small>Place With Highest Reports</small></div>
-<div class="kpi"><b id="k-low-place">-</b><small>Place With Lowest Reports</small></div>
-<div class="kpi green"><b id="k-top-close-comp">-</b><small>Company With Highest Closing %</small></div>
-<div class="kpi red"><b id="k-top-open-comp">-</b><small>Company With Highest Open Reports %</small></div>
-<div class="kpi"><b id="k-top-person">-</b><small>Person With Highest Reports Count</small></div>
-<div class="kpi"><b id="k-low-person">-</b><small>Person With Lowest Reports Count</small></div>
-<div class="kpi orange"><b id="k-top-comp">-</b><small>Company With Highest Reports Count</small></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📋</span></div><small>Total Reports<br><b>إجمالي التقارير</b></small><b id="k-total">0</b></div>
+<div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/warning.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🔴</span></div><small>Open Count<br><b>المفتوحة</b></small><b id="k-open" style="color:#D32F2F;">0</b></div>
+<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/checked.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">✅</span></div><small>Closed Count<br><b>المغلقة</b></small><b id="k-closed" style="color:#2E7D32;">0</b></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/pie-chart.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📊</span></div><small>Closing %<br><b>نسبة الإغلاق</b></small><b id="k-close-p" style="color:#2E7D32;">0%</b></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/down.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📉</span></div><small>Open %<br><b>نسبة المفتوح</b></small><b id="k-open-p" style="color:#E65100;">0%</b></div>
+<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/location-pin.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📍</span></div><small>Top Place<br><b>أكثر مكان</b></small><b id="k-top-place" style="font-size:14px;">-</b></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👤</span></div><small>Top Reporter<br><b>أكثر مبلغ</b></small><b id="k-top-person" style="font-size:14px;">-</b></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Top Company<br><b>أكثر شركة</b></small><b id="k-top-comp" style="font-size:14px;">-</b></div>
 </div>
-
+<!-- DONUT + BEST LIKE NCR -->
+<div class="manager-grid">
+<div class="donut-card"><b style="font-size:14px;">نسبة الإغلاق • Closing Percentage</b><div class="donut-wrap"><canvas id="nmChart" width="150" height="150"></canvas><div class="donut-center"><b id="donut-p">0%</b><small style="color:#999;font-size:11px;">Closing</small></div></div><div style="font-size:12px;color:#2E7D32;font-weight:700;">↑ +5% This Month • هذا الشهر +5%</div><div style="display:flex;justify-content:space-between;font-size:12px;margin-top:10px;"><span>🟢 Closed: <b id="leg-closed">0</b></span><span id="leg-closed-p">0%</span></div><div class="bar"><div class="bar-fill" id="bar-closed" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;"><span>🔴 Open: <b id="leg-open">0</b></span><span id="leg-open-p">0%</span></div><div class="bar"><div class="bar-fill open" id="bar-open" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;"><span>📍 Top Place: <b id="leg-top-place">-</b></span><span>📍 Low: <b id="leg-low-place">-</b></span></div></div>
+<div class="best-card"><div class="best-head"><div class="trophy3d"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🏆</span></div><div><b style="font-size:14px;">تصنيف الشركات • Company Ranking</b><br><small style="color:#E65100;font-weight:700;">أفضل شركة إغلاق • Best Closing Company</small></div></div><div id="bestList"></div><div style="margin-top:10px;background:#FFF3E0;border-radius:10px;padding:10px;text-align:center;"><small style="color:#999;">🏢 Company With Highest Closing %</small><br><b id="k-top-close-comp" style="font-size:15px;">-</b><br><span id="k-top-open-comp" style="font-size:12px;color:#D32F2F;">-</span></div></div>
+</div>
 <div class="card orange">
-<h2 style="margin:0 0 5px;">⚡ Register New Near Miss</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">Fill data, upload photos, default status is Open</p>
+<h2 style="margin:0 0 5px;">⚡ Register New Near Miss • <span style="color:#FFD54F;">تسجيل حادث وشيك جديد</span></h2>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Fill data, upload photos, default status is Open</p>
 <div class="grid">
 <div><label>📅 Date *</label><input type="date" id="nm-date"></div>
 <div><label>⏰ Time *</label><input type="time" id="nm-time"></div>
@@ -158,11 +221,10 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>📸 Incident Photos - You can select more than one photo</label><input type="file" id="nm-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident')"><div class="thumbs" id="prev-incident"></div></div>
 <div><label>📸 Corrective & Preventive Actions Photos - You can select more than one photo</label><input type="file" id="nm-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action')"><div class="thumbs" id="prev-action"></div></div>
 </div>
-<button class="btn orange" onclick="addNM()">💾 Save Report + Send Notification To Manager & Supervisor</button>
+<button class="btn orange" onclick="addNM()">💾 Save Report + Send Notification To Manager & Supervisor • حفظ + إرسال للمدير والمشرف</button>
 </div>
-
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 Near Miss Record</h2>
+<h2 style="margin:0 0 10px;">📋 Near Miss Record • <span style="color:#FFD54F;">سجل الحوادث الوشيكة</span></h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
 <input id="searchNM" placeholder="Search by company, place, description or reporter..." oninput="renderNM()" style="flex:2;">
 <select id="filterStatus" onchange="renderNM()" style="flex:1;"><option value="">All Statuses</option><option>Open</option><option>Closed</option></select>
@@ -171,12 +233,11 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <div id="nmTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
 <button class="btn2" onclick="exportNM()" style="flex:1;padding:12px;">📥 Export All Record Excel / CSV</button>
-<button class="btn2" onclick="clearNM()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
+<button class="btn2" onclick="clearNM()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -199,14 +260,9 @@ function getReporter(){
   let nm=getReporter();
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
-
-// ✅ FIREBASE - Data from Firebase
 let nearMiss = [];
-
-// Translate old AR -> EN display, new saves EN only
 const STATUS_MAP={'مفتوح':'Open','مغلق':'Closed','Open':'Open','Closed':'Closed'};
 function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Open'; }
-
 async function loadNM(){
   try{
     if(window.db){
@@ -222,7 +278,6 @@ async function loadNM(){
   }catch(e){}
   renderNM();
 }
-
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 let tempIncidentImgs=[], tempActionImgs=[];
@@ -286,6 +341,16 @@ function topOf(arr,key){
   keys.sort((a,b)=>m[b]-m[a]);
   return {name:keys[0],count:m[keys[0]],all:m,low:{name:keys[keys.length-1],count:m[keys[keys.length-1]]}};
 }
+function drawDonut(closed, open){
+  let c=document.getElementById('nmChart'); if(!c) return; let ctx=c.getContext('2d');
+  ctx.clearRect(0,0,150,150);
+  let total=closed+open; if(!total){ ctx.fillStyle='#EEE'; ctx.beginPath(); ctx.arc(75,75,68,0,Math.PI*2); ctx.fill(); return; }
+  let aClosed=(closed/total)*Math.PI*2;
+  ctx.strokeStyle='#FFD54F'; ctx.lineWidth=10; ctx.beginPath(); ctx.arc(75,75,68,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle='#2E7D32'; ctx.beginPath(); ctx.moveTo(75,75); ctx.arc(75,75,62,-Math.PI/2,-Math.PI/2+aClosed); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#FF9800'; ctx.beginPath(); ctx.moveTo(75,75); ctx.arc(75,75,62,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(75,75,40,0,Math.PI*2); ctx.fill();
+}
 function renderNM(){
   let q=(document.getElementById('searchNM').value||'').toLowerCase();
   let fs=document.getElementById('filterStatus').value;
@@ -300,39 +365,56 @@ function renderNM(){
   let total=all.length;
   let open=all.filter(x=>TStatus(x.status)==='Open').length;
   let closed=all.filter(x=>TStatus(x.status)==='Closed').length;
+  let closeP=total?Math.round(closed/total*100):0;
+  let openP=total?Math.round(open/total*100):0;
   document.getElementById('k-total').innerText=total;
   document.getElementById('k-open').innerText=open;
   document.getElementById('k-closed').innerText=closed;
-  document.getElementById('k-close-p').innerText=total?Math.round(closed/total*100)+'%':'0%';
-  document.getElementById('k-open-p').innerText=total?Math.round(open/total*100)+'%':'0%';
+  document.getElementById('k-close-p').innerText=closeP+'%';
+  document.getElementById('k-open-p').innerText=openP+'%';
+  document.getElementById('donut-p').innerText=closeP+'%';
+  document.getElementById('hero-total').innerText='Total: '+total;
+  document.getElementById('hero-close').innerText='Closing: '+closeP+'%';
+  document.getElementById('hero-open').innerText='Open: '+open;
+  document.getElementById('leg-closed').innerText=closed; document.getElementById('leg-closed-p').innerText=closeP+'%';
+  document.getElementById('leg-open').innerText=open; document.getElementById('leg-open-p').innerText=openP+'%';
+  document.getElementById('bar-closed').style.width=closeP+'%';
+  document.getElementById('bar-open').style.width=openP+'%';
+  drawDonut(closed, open);
   let tPlace=topOf(all,'place');
   document.getElementById('k-top-place').innerText=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
-  document.getElementById('k-low-place').innerText=tPlace?tPlace.low.name+' ('+tPlace.low.count+')':'-';
+  document.getElementById('leg-top-place').innerText=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
+  document.getElementById('leg-low-place').innerText=tPlace?tPlace.low.name+' ('+tPlace.low.count+')':'-';
   let tPerson=topOf(all,'reporter');
   document.getElementById('k-top-person').innerText=tPerson?tPerson.name+' ('+tPerson.count+')':'-';
-  document.getElementById('k-low-person').innerText=tPerson?tPerson.low.name+' ('+tPerson.low.count+')':'-';
   let tComp=topOf(all,'company');
   document.getElementById('k-top-comp').innerText=tComp?tComp.name+' ('+tComp.count+')':'-';
   let byComp={};
   all.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]={total:0,closed:0,open:0}; byComp[x.company].total++; if(TStatus(x.status)==='Closed') byComp[x.company].closed++; else byComp[x.company].open++; });
-  let compArr=Object.entries(byComp).map(([name,v])=>({name,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0,total:v.total}));
+  let compArr=Object.entries(byComp).map(([name,v])=>({name,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0,total:v.total,closed:v.closed,open:v.open}));
+  let bestSorted=[...compArr].sort((a,b)=>b.closeP-a.closeP || b.total-a.total).slice(0,3);
+  document.getElementById('bestList').innerHTML=bestSorted.length?bestSorted.map((v,i)=>{
+    let medalCls=i===0?'gold':i===1?'silver':'bronze';
+    let medalTxt=i===0?'🥇':i===1?'🥈':'🥉';
+    return '<div class="best-row"><span class="medal '+medalCls+'">'+medalTxt+'</span><div style="flex:1;"><b style="font-size:13px;">'+v.name+'</b><br><small style="color:#999;">'+v.total+' reports • '+v.closed+' closed</small></div><b style="color:#2E7D32;">'+v.closeP+'%</b><small style="color:#999;"> Closed</small></div>';
+  }).join(''):'<p style="text-align:center;color:#999;">No companies yet</p>';
   compArr.sort((a,b)=>b.closeP-a.closeP);
   document.getElementById('k-top-close-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].closeP+'% closed)':'-';
   compArr.sort((a,b)=>b.openP-a.openP);
-  document.getElementById('k-top-open-comp').innerText=compArr.length?compArr[0].name+' ('+compArr[0].openP+'% open)':'-';
+  document.getElementById('k-top-open-comp').innerText=compArr.length?'Highest Open: '+compArr[0].name+' ('+compArr[0].openP+'% open)':'-';
   let list=all.filter(x=>{
     let okQ=(x.company+x.place+x.desc+x.reporter).toLowerCase().includes(q);
     let okS=!fs||TStatus(x.status)===fs;
     let okC=!fc||x.company===fc;
     return okQ&&okS&&okC;
   });
-  if(!list.length){ document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#999;">No Near Miss reports yet</p>'; return; }
+  if(!list.length){ document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No Near Miss reports yet</p>'; return; }
   document.getElementById('nmTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Reporter</th><th>Place</th><th>Description</th><th>Direct Cause</th><th>Status</th><th>Photos</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=nearMiss.indexOf(x);
     let imgs='';
     if(x.incidentImgs && x.incidentImgs.length) imgs+='<br>📸 Incident: '+x.incidentImgs.length;
     if(x.actionImgs && x.actionImgs.length) imgs+='<br>📸 Actions: '+x.actionImgs.length;
-    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.company+'</b></td><td>'+x.reporter+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:220px;">'+x.desc+'<br><small style="color:#78909C;">Root: '+x.root+'</small><br><small style="color:#2E7D32;">Corrective: '+x.corrective+'</small><br><small style="color:#FF9800;">Preventive: '+x.preventive+'</small></td><td style="max-width:150px;">'+x.direct+'</td><td><span class="badge '+(TStatus(x.status)==='Open'?'open':'closed')+'">'+TStatus(x.status)+'</span></td><td style="font-size:11px;">'+(imgs||'-')+'<br>'+(x.incidentImgs && x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ Incident Photos</button>':'')+' '+(x.actionImgs && x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ Actions Photos</button>':'')+'</td><td><button class="btn2" onclick="toggleStatus('+idx+')">'+(TStatus(x.status)==='Open'?'✅ Close It':'🔓 Open It')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delNM('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.company+'</b></td><td>'+x.reporter+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:220px;">'+x.desc+'<br><small style="color:#B8C6D6;">Root: '+x.root+'</small><br><small style="color:#81C784;">Corrective: '+x.corrective+'</small><br><small style="color:#FFCC80;">Preventive: '+x.preventive+'</small></td><td style="max-width:150px;">'+x.direct+'</td><td><span class="badge '+(TStatus(x.status)==='Open'?'open':'closed')+'">'+TStatus(x.status)+'</span></td><td style="font-size:11px;">'+(imgs||'-')+'<br>'+(x.incidentImgs && x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ Incident Photos</button>':'')+' '+(x.actionImgs && x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ Actions Photos</button>':'')+'</td><td><button class="btn2" onclick="toggleStatus('+idx+')">'+(TStatus(x.status)==='Open'?'✅ Close It':'🔓 Open It')+'</button></td><td><button class="btn2" style="color:#FF8A80;" onclick="delNM('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 function viewImgs(idx,type){
