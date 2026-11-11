@@ -2,20 +2,20 @@
 <html lang="en" dir="ltr">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Site Statistics - RMED</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -25,40 +25,73 @@
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#0F2A4D;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
-.page-head h2{margin:0;font-size:20px}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h2{margin:0;font-size:28px;color:#fff} .page-head h2 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px}
-.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-.filter button{border:1px solid #CFD8DC;background:#ECEFF1;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold}
-.filter button.active{background:#0F2A4D;color:#fff}
-.selector{background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+/* HERO - LIKE NCR */
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px 18px 0;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.hero-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#FFE082;font-weight:700}
+.hero-visual{position:relative;height:170px;display:flex;align-items:center;justify-content:center;margin:8px 0 0}
+.hero-main{width:150px;height:150px;position:relative;z-index:2;filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-main img{width:100%;height:100%;object-fit:contain}
+.hero-main span{font-size:90px;display:none}
+.hero-small{position:absolute;right:22%;top:8px;width:110px;height:110px;z-index:3;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transform:rotate(18deg);animation:float3d 3.4s ease-in-out infinite}
+.hero-small img{width:100%;height:100%;object-fit:contain}
+.hero-small span{font-size:70px;display:none}
+.hero-title{position:absolute;left:18px;bottom:14px;z-index:4}
+.hero-title b{font-size:22px;display:block;color:#fff}
+.hero-title small{color:#FFE082;font-size:12px}
+.hero-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hero-pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.35);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#FFE082}
+@keyframes float3d{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1deg)}}
+.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44}
+.filter button{border:1px solid #EEE;background:#F5F5F5;padding:10px 14px;border-radius:20px;cursor:pointer;font-weight:bold;color:#0A1F44}
+.filter button.active{background:#0A162E;color:#FFD54F;border-color:#FFD54F}
+.selector{background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:#0A1F44}
 .selector label{font-weight:bold}
-.selector select{padding:10px 12px;border-radius:10px;border:1px solid #FFB74D;font-weight:bold;background:#fff;min-width:140px}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.selector select{padding:10px 12px;border-radius:10px;border:1px solid #FFB74D;font-weight:bold;background:#fff;min-width:140px;color:#0A1F44}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:#fff;border-radius:14px;padding:16px;text-align:center;border-bottom:4px solid #0F2A4D;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-.kpi b{font-size:24px;display:block}.kpi small{color:#78909C}
-.kpi.green{border-color:#2E7D32}.kpi.orange{border-color:#EF6C00}.kpi.red{border-color:#D32F2F}.kpi.blue{border-color:#1565C0}
+.kpi{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44;position:relative;overflow:hidden}
+.kpi b{font-size:22px;display:block;line-height:1.2}.kpi small{color:#555;font-size:11px;line-height:1.3;display:block}
+.icon3d{width:60px;height:60px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.35));overflow:hidden}
+.icon3d img{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.3));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
+.icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d.purple{background:radial-gradient(circle at 30% 25%,#CE93D8,#7B1FA2 45%,#4A0072 75%);border:1px solid #CE93D8}
+.icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:900px){.three{grid-template-columns:1fr}}
-.ramadan{padding:10px 16px;border-radius:20px;border:none;font-weight:bold;cursor:pointer;background:#FFD54F}
+.ramadan{padding:10px 16px;border-radius:20px;border:none;font-weight:bold;cursor:pointer;background:#FFD54F;color:#0A1F44}
 .ramadan.on{background:#2E7D32;color:#fff}
-table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
-.btn{background:#0F2A4D;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0A162E;color:#FFD54F;padding:9px}table td{padding:9px;border-bottom:1px solid #EEE;text-align:center;color:#0A1F44}
+.btn{background:#0A162E;color:#FFD54F;border:1px solid #FFD54F;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 .btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px}
 canvas{max-width:260px;margin:auto;display:block}
 .print-head{display:none}
-.debug{background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8}
+.debug{background:#FFF3E0;border:2px solid #FF9800;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8;color:#0A1F44}
 @media print{
   body{background:#fff}
   .sidebar,.topbar,.overlay,.page-head{display:none !important}
   .main{margin:0}
   .filter, .no-print, .debug{display:none !important}
-  .print-head{display:block;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:12px}
+  .print-head{display:block;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:12px;color:#0A1F44}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
   .container{max-width:100%;padding:0}
   .card,.kpi,.selector{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
@@ -103,10 +136,19 @@ canvas{max-width:260px;margin:auto;display:block}
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
 <div class="main">
-<div class="page-head"><h2>📊 Site Statistics - All - RMED</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 My Achievements</button> <button class="btn" onclick="toggleSidebar()">◀️ Hide Menu</button></div></div>
+<div class="page-head"><div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h2>Site Statistics <span>• إحصائيات الموقع</span></h2><small>All • الكل • Safety Dashboard</small></div></div><div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">👤</div></div></div>
 <div class="container">
 <div class="print-head"><h1>📊 Safety Statistics Report - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 <div class="debug no-print" id="debugBox">⏳ Loading from Firebase...</div>
+<!-- HERO -->
+<div class="hero">
+<div class="hero-top"><span>إحصائيات الموقع • Site Statistics</span><span>RMED • 🔔 👤</span></div>
+<div class="hero-visual">
+<div class="hero-main"><img src="https://img.icons8.com/3d-fluency/94/pie-chart.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>📊</span></div>
+<div class="hero-small"><img src="https://img.icons8.com/3d-fluency/94/search.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔍</span></div>
+<div class="hero-title"><b>Site Statistics Dashboard</b><small>Safety Monitoring & Closure • مراقبة السلامة والإغلاق</small><div class="hero-pills"><span id="hero-safe">Safe Hours: 0</span><span id="hero-workers">Workers: 0</span><span id="hero-ncr">NCR Closing: 0%</span></div></div>
+</div>
+</div>
 <div class="filter"><b>📅 Period Type:</b>
 <button data-period="month" onclick="setPeriod('month',this)">Monthly</button><button data-period="quarter" onclick="setPeriod('quarter',this)">Quarterly</button><button data-period="half" onclick="setPeriod('half',this)">Half Yearly</button><button data-period="year" onclick="setPeriod('year',this)">Yearly</button><button data-period="all" onclick="setPeriod('all',this)" class="active">From Project Start</button>
 <span style="flex:1;"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 Ramadan: Off</button>
@@ -116,33 +158,34 @@ canvas{max-width:260px;margin:auto;display:block}
 <span id="selectorControls"></span>
 <span id="periodLabel" style="font-weight:bold;color:#0A1F44;"></span>
 </div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" class="no-print"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print</button> <button class="btn" onclick="location.href='dashboard.html'">🏠 My Achievements</button> <button class="btn" onclick="toggleSidebar()">◀️ Hide Menu</button></div>
 <div class="grid">
-<div class="kpi blue"><b id="s-avgWorkers">0</b><small>Average Workers Count</small></div>
-<div class="kpi blue"><b id="s-workDays">0</b><small>Total Work Days</small></div>
-<div class="kpi green"><b id="s-safeHours">0</b><small>Total Safe Hours</small></div>
-<div class="kpi"><b id="s-inductionCount">0</b><small>Induction Lectures - Count</small></div>
-<div class="kpi"><b id="s-inductionHours">0</b><small>Induction Hours</small></div>
-<div class="kpi"><b id="s-weeklyCount">0</b><small>Weekly Lectures - Count</small></div>
-<div class="kpi"><b id="s-weeklyAttend">0</b><small>Total Weekly Attendance</small></div>
-<div class="kpi"><b id="s-weeklyHours">0</b><small>Weekly Hours</small></div>
-<div class="kpi orange"><b id="s-trainCount">0</b><small>Trainings Count</small></div>
-<div class="kpi orange"><b id="s-trainPeople">0</b><small>Trainees Count</small></div>
-<div class="kpi orange"><b id="s-trainHours">0</b><small>Total Trainings Hours</small></div>
-<div class="kpi red"><b id="s-accidents">0</b><small>Recorded Accidents Count</small></div>
-<div class="kpi red"><b id="s-injuries">0</b><small>Recorded Injuries Count</small></div>
-<div class="kpi"><b id="s-contractViol">0</b><small>Contractor Violations - Count</small></div>
-<div class="kpi"><b id="s-contractMoney">0 EGP</b><small>Total Contractor Violations Amounts</small></div>
-<div class="kpi"><b id="s-empViol">0</b><small>Employee Violations - Count</small></div>
-<div class="kpi red"><b id="s-ncrCount">0</b><small>NCR - Count</small></div>
-<div class="kpi red"><b id="s-ncrRate">0%</b><small>NCR Closing Percentage</small></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👷</span></div><b id="s-avgWorkers">0</b><small>Average Workers Count<br>متوسط عدد العمال</small></div>
+<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📅</span></div><b id="s-workDays">0</b><small>Total Work Days<br>إجمالي أيام العمل</small></div>
+<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><b id="s-safeHours">0</b><small>Total Safe Hours<br>إجمالي الساعات الآمنة</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/graduation-cap.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🎓</span></div><b id="s-inductionCount">0</b><small>Induction Lectures - Count<br>محاضرات التعريف</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><b id="s-inductionHours">0</b><small>Induction Hours<br>ساعات التعريف</small></div>
+<div class="kpi"><div class="icon3d purple"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><b id="s-weeklyCount">0</b><small>Weekly Lectures - Count<br>المحاضرات الأسبوعية</small></div>
+<div class="kpi"><div class="icon3d purple"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><b id="s-weeklyAttend">0</b><small>Total Weekly Attendance<br>إجمالي الحضور الأسبوعي</small></div>
+<div class="kpi"><div class="icon3d purple"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><b id="s-weeklyHours">0</b><small>Weekly Hours<br>الساعات الأسبوعية</small></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/training.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🎓</span></div><b id="s-trainCount">0</b><small>Trainings Count<br>عدد التدريبات</small></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><b id="s-trainPeople">0</b><small>Trainees Count<br>عدد المتدربين</small></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><b id="s-trainHours">0</b><small>Total Trainings Hours<br>إجمالي ساعات التدريب</small></div>
+<div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/ambulance.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🚑</span></div><b id="s-accidents">0</b><small>Recorded Accidents Count<br>عدد الحوادث المسجلة</small></div>
+<div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/bandage.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🩹</span></div><b id="s-injuries">0</b><small>Recorded Injuries Count<br>عدد الإصابات المسجلة</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/warning.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⚠️</span></div><b id="s-contractViol">0</b><small>Contractor Violations - Count<br>مخالفات المقاولين</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/money.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">💰</span></div><b id="s-contractMoney">0 EGP</b><small>Total Contractor Violations Amounts<br>إجمالي غرامات المقاولين</small></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👤</span></div><b id="s-empViol">0</b><small>Employee Violations - Count<br>مخالفات الموظفين</small></div>
+<div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📋</span></div><b id="s-ncrCount">0</b><small>NCR - Count<br>عدد NCR</small></div>
+<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/pie-chart.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📊</span></div><b id="s-ncrRate">0%</b><small>NCR Closing Percentage<br>نسبة إغلاق NCR</small></div>
 </div>
 <div class="three">
-<div class="card"><h3 style="margin:0;">⚠️ Near Miss</h3><p>Count: <b id="nm-count">0</b> | Closing %: <b id="nm-rate">0%</b><br>Closed: <b id="nm-closed">0</b> | Open: <b id="nm-open">0</b></p><canvas id="nmChart" width="260" height="260"></canvas></div>
-<div class="card"><h3 style="margin:0;">👀 Safety Observations</h3><p>Count: <b id="obs-count">0</b> | Closing %: <b id="obs-rate">0%</b><br>Closed: <b id="obs-closed">0</b> | Open: <b id="obs-open">0</b></p><canvas id="obsChart" width="260" height="260"></canvas></div>
-<div class="card"><h3 style="margin:0;">📋 NCR - Non Conformance</h3><p>Count: <b id="ncr-count2">0</b> | Closing %: <b id="ncr-rate2">0%</b><br>Closed: <b id="ncr-closed">0</b> | Open: <b id="ncr-open">0</b></p><canvas id="ncrChart" width="260" height="260"></canvas></div>
+<div class="card"><h3 style="margin:0;">⚡ Near Miss • حادث وشيك</h3><p>Count: <b id="nm-count">0</b> | Closing %: <b id="nm-rate">0%</b><br>Closed: <b id="nm-closed">0</b> | Open: <b id="nm-open">0</b></p><canvas id="nmChart" width="260" height="260"></canvas></div>
+<div class="card"><h3 style="margin:0;">👀 Safety Observations • ملاحظات السلامة</h3><p>Count: <b id="obs-count">0</b> | Closing %: <b id="obs-rate">0%</b><br>Closed: <b id="obs-closed">0</b> | Open: <b id="obs-open">0</b></p><canvas id="obsChart" width="260" height="260"></canvas></div>
+<div class="card"><h3 style="margin:0;">📋 NCR - Non Conformance • عدم مطابقة</h3><p>Count: <b id="ncr-count2">0</b> | Closing %: <b id="ncr-rate2">0%</b><br>Closed: <b id="ncr-closed">0</b> | Open: <b id="ncr-open">0</b></p><canvas id="ncrChart" width="260" height="260"></canvas></div>
 </div>
-<div class="card"><h3 style="margin:0 0 10px;">📋 Period Summary - <span id="summaryPeriod"></span></h3><div id="summary"></div></div>
-<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print Report</button></div>
+<div class="card"><h3 style="margin:0 0 10px;">📋 Period Summary - <span id="summaryPeriod"></span> • ملخص الفترة</h3><div id="summary"></div></div>
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print Report • تصدير PDF / طباعة</button></div>
 </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -226,7 +269,7 @@ function inRange(d, r){ let dt=parseDate(d); if(!dt) return false; return dt>=r.
 function getItemDate(x){ return x.date||x.createdAt||x.day||''; }
 function sum(arr, key){ return (arr||[]).reduce((a,x)=>a+(parseFloat(x[key])||0),0); }
 function isClosed(x){ let s=(x.status||x.state||x.closed||'').toString().trim().toLowerCase(); return ['closed','done','مغلق','تم','تم الغلق','مغلقة','مغلق','تم الغلق'].includes(s) || x.isClosed===true || x.closed===true; }
-function drawPie(canvasId, closed, open){ let c=document.getElementById(canvasId); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,260,260); let total=closed+open; if(total===0){ ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.fillText('No Data',130,130); return; } let a1=(closed/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2, -Math.PI/2+a1); ctx.closePath(); ctx.fillStyle='#2E7D32'; ctx.fill(); ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2+a1, -Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fillStyle='#D32F2F'; ctx.fill(); ctx.beginPath(); ctx.arc(130,130,55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',130,135); ctx.font='12px Arial'; ctx.fillStyle='#2E7D32'; ctx.fillText('■ Closed '+closed,130,200); ctx.fillStyle='#D32F2F'; ctx.fillText('■ Open '+open,130,220); }
+function drawPie(canvasId, closed, open){ let c=document.getElementById(canvasId); if(!c) return; let ctx=c.getContext('2d'); ctx.clearRect(0,0,260,260); let total=closed+open; if(total===0){ ctx.font='bold 16px Arial'; ctx.textAlign='center'; ctx.fillText('No Data',130,130); return; } let a1=(closed/total)*Math.PI*2; ctx.strokeStyle='#FFD54F'; ctx.lineWidth=10; ctx.beginPath(); ctx.arc(130,130,122,0,Math.PI*2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2, -Math.PI/2+a1); ctx.closePath(); ctx.fillStyle='#2E7D32'; ctx.fill(); ctx.beginPath(); ctx.moveTo(130,130); ctx.arc(130,130,110, -Math.PI/2+a1, -Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fillStyle='#D32F2F'; ctx.fill(); ctx.beginPath(); ctx.arc(130,130,55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.fillStyle='#0A1F44'; ctx.font='bold 20px Arial'; ctx.textAlign='center'; ctx.fillText(Math.round(closed/total*100)+'%',130,135); ctx.font='12px Arial'; ctx.fillStyle='#2E7D32'; ctx.fillText('■ Closed '+closed,130,200); ctx.fillStyle='#D32F2F'; ctx.fillText('■ Open '+open,130,220); }
 function render(){
   if(!loaded) return;
   let r=getRange();
@@ -264,6 +307,9 @@ function render(){
   document.getElementById('s-avgWorkers').innerText=Math.round(avgWorkers*10)/10;
   document.getElementById('s-workDays').innerText=workDays;
   document.getElementById('s-safeHours').innerText=Math.round(safeHours).toLocaleString('en-US');
+  document.getElementById('hero-safe').innerText='Safe Hours: '+Math.round(safeHours).toLocaleString('en-US');
+  document.getElementById('hero-workers').innerText='Workers: '+(Math.round(avgWorkers*10)/10);
+  document.getElementById('hero-ncr').innerText='NCR Closing: '+ncrRate+'%';
   document.getElementById('s-inductionCount').innerText=induction.length;
   document.getElementById('s-inductionHours').innerText=(induction.length*0.25).toFixed(2)+' Hours';
   document.getElementById('s-weeklyCount').innerText=weekly.length;
