@@ -9,26 +9,45 @@
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#0A1B33;color:#fff}
-.app{max-width:1280px;margin:14px auto;background:linear-gradient(180deg,#0B1338,#070D26);border-radius:22px;overflow:hidden;border:1px solid rgba(255,213,79,.35);box-shadow:0 20px 60px rgba(0,0,0,.6);padding:18px}
-@media(max-width:700px){.app{margin:0;border-radius:0;border:none}}
-/* ===== HEADER - SAME VIOLATIONS IMAGE ===== */
-.header{display:flex;gap:14px;align-items:center;padding:4px 8px 18px;border-bottom:2px solid #C9A227;position:relative}
-.header-shield{width:72px;height:78px;position:relative;flex-shrink:0}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
+.sidebar.closed{left:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
 .header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
-.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:14px;padding-bottom:6px}
-.logo-box{text-align:center;flex-shrink:0}
-.logo-badge{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#0A1F44;box-shadow:0 10px 22px rgba(255,179,0,.5),inset 0 2px 0 #fff,0 0 0 5px #0B1338,0 0 0 7px rgba(255,213,79,.6);border:2px solid #FFE082}
-.logo-box small{display:block;margin-top:6px;font-size:10px;letter-spacing:1px;color:#FFD54F;font-weight:800}
-.header h1{margin:0;font-size:32px;line-height:1.1}.header h1 span{color:#FFD54F;display:block;font-size:22px}
-.header p{margin:6px 0 0;color:#B8C6D6}
-.header-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
 .header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
-.topnav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.topnav a{color:#CFD8DC;text-decoration:none;font-size:12px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:8px 10px;border-radius:999px}
-.topnav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
-/* ===== KPI - SAME 3D ICONS ===== */
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
-@media(max-width:700px){.kpi-row{grid-template-columns:repeat(2,1fr)}.header h1{font-size:26px}.header h1 span{font-size:18px}}
+@media(max-width:700px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
 .kpi{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
 .kpi:before{content:"";position:absolute;top:-28px;left:50%;transform:translateX(-50%);width:140px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
 .kpi b{font-size:26px;display:block;margin-top:6px}.kpi small{color:#B8C6D6;font-size:12px;display:block;line-height:1.4}
@@ -64,39 +83,66 @@ table th{background:#0A162E;color:#FFD54F;padding:11px;white-space:nowrap;border
 .range-row input[type=range]{flex:1;accent-color:#FFD54F}
 .range-row b{min-width:42px;text-align:center;background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44;padding:6px 10px;border-radius:9px}
 .final-box{background:linear-gradient(135deg,#FFF8E1,#FFE082);color:#0A1F44;border-radius:14px;padding:14px;margin-top:14px;line-height:1.9}
-.bottom-nav{margin-top:14px;background:#0B1338;border:1px solid rgba(255,255,255,.08);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
-.bottom-nav a{text-align:center;color:#9AA9BC;text-decoration:none;font-size:12px;font-weight:800;padding:10px;border-radius:12px}
-.bottom-nav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
 @media(max-width:700px){table,thead,tbody,tr,th,td{display:block}table th{display:none}table td{border-radius:12px;margin-bottom:6px;text-align:left}}
 </style>
 </head>
 <body>
-<div class="app">
-<div class="header">
-<div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div>
-<div><small style="color:#FFD54F;font-weight:800;letter-spacing:1px;">RMED Safety • السلامة</small><h1>Contractor Evaluation <span>تقييم المقاولين</span></h1><p>100% Automatic Evaluation • تقييم أوتوماتيك 100%</p></div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
+  </div>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval" class="active"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="first-aid.html" data-page="first-aid"><span class="icon">🩹</span> First Aid Cases</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
+</aside>
+<div class="main">
+<div class="page-head">
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Contractor Evaluation <span>• تقييم المقاولين</span></h1><small>100% Automatic Evaluation • تقييم أوتوماتيك 100%</small></div></div>
 <div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">⚙️</div></div>
 </div>
-<div class="topnav">
-<a href="index.html">🏠 Home • الرئيسية</a><a href="dashboard.html">📊 Achievements</a><a href="stats.html">📈 Statistics</a><a href="users.html">👥 Employees</a><a href="permits.html">📋 Permits</a><a href="violations.html">⚠️ Violations</a><a href="accidents.html">🚑 Accidents</a><a href="contractor-eval.html" class="active">🏆 Contractor Evaluation • تقييم المقاولين</a>
-</div>
-
+<div class="container">
 <div id="debugBox" class="debug">⏳ Loading data... • جاري تحميل البيانات...</div>
-
 <div class="kpi-row">
 <div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><b id="k-companies">0</b><small>Companies Count •<br>عدد الشركات</small></div>
 <div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📋</span></div><b id="k-evals">0</b><small>Evaluations Count •<br>عدد التقييمات</small></div>
 <div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/star.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⭐</span></div><b id="k-avgScore">0</b><small>Average Automatic Score •<br>متوسط الدرجة الأوتوماتيك</small></div>
 <div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/down.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📉</span></div><b id="k-totalDeduct">0 points</b><small>Total Automatic Deduction •<br>إجمالي الخصم الأوتوماتيك</small></div>
 </div>
-
 <div class="panel">
 <h2>🤖 Automatic Evaluation • <span>التقييم الأوتوماتيك لكل الشركات</span></h2>
 <p>Calculated automatically when page opens: Score = 100 - Automatic Deduction (Violation x3 + Open NCR x2 + Accident x10 + Open Near Miss x1 + Open Observation x0.5 - Max deduction 60)</p>
 <div style="overflow-x:auto"><table><thead><tr><th>Company • الشركة</th><th>Violations x3 • مخالفات</th><th>Open NCR x2</th><th>Accidents x10 • حوادث</th><th>Near Miss x1</th><th>Observations x0.5</th><th>Deduction • الخصم</th><th>Score • الدرجة</th><th>Status • الحالة</th></tr></thead><tbody id="autoEvalBody"><tr><td colspan="9">Calculating automatically...</td></tr></tbody></table></div>
 <button class="btn red" onclick="saveAllAuto()">💾 Save All Automatic Evaluations In One Click (Optional)</button>
 </div>
-
 <div class="panel">
 <h2>✏️ Manual Edit For One Company • <span>تعديل يدوي لشركة واحدة (اختياري)</span></h2>
 <p>If you want to manually edit one company score only, select it here. If not, leave it, the automatic table above is the main one.</p>
@@ -122,21 +168,27 @@ Manual Score: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; Automatic Deduction:
 <button class="btn red" onclick="saveEval()">💾 Save This Manual Evaluation</button>
 </div>
 </div>
-
 <div class="panel">
 <h2>📋 Saved Evaluations • <span>التقييمات المحفوظة</span></h2>
 <div style="overflow-x:auto"><table><thead><tr><th>Company • الشركة</th><th>Period • الفترة</th><th>Manual • يدوي</th><th>Deduction • خصم</th><th>Final • نهائي</th><th>Recommendation • توصية</th></tr></thead><tbody id="evalTableBody"><tr><td colspan="6">Loading...</td></tr></tbody></table></div>
 </div>
-
-<div class="bottom-nav"><a href="index.html" class="active">🏠<br>Home • الرئيسية</a><a href="stats.html">📊<br>Reports • التقارير</a><a href="train.html">🎓<br>Training • التدريب</a><a href="users.html">👤<br>Profile • الملف الشخصي</a></div>
 </div>
-
+</div>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="firebase-config.js?v=20261111"></script>
 <script src="auth.js?v=20261111"></script>
 <script>
+function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
 const T_MAP={'مقبول':'Acceptable','Acceptable':'Acceptable','مقبول بشروط':'Conditionally Accepted','Conditionally Accepted':'Conditionally Accepted','غير مقبول':'Not Accepted','Not Accepted':'Not Accepted','إيقاف':'Suspended','Suspended':'Suspended','شهري':'Monthly','Monthly':'Monthly','ربع سنوي':'Quarterly','Quarterly':'Quarterly','نصف سنوي':'Semi-Annual','Semi-Annual':'Semi-Annual','سنوي':'Annual','Annual':'Annual','أوتوماتيك':'Automatic','Automatic':'Automatic','غير محدد':'Not Specified','Not Specified':'Not Specified','مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'};
 function T(v){if(v==null)return v;return T_MAP[String(v).trim()]||v}
 let DB={violations:[],ncr:[],accidents:[],nearMiss:[],observations:[],permits:[],workers:[],evals:[]};
