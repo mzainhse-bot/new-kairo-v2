@@ -183,42 +183,49 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-// ===== SIDEBAR - لا يمس تسجيل الدخول =====
+// ===== FIX: تعريف واحد بس على window عشان ميضربش مع auth.js =====
+if (typeof window.ROLE_MAP === 'undefined') {
+  window.ROLE_MAP = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+}
+const ROLE_MAP = window.ROLE_MAP;
+
+// ===== SIDEBAR =====
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
 }
-// ===== LOGOUT - بس لما تدوس عليه انت =====
 function logout(){
   if(window.signOutUser) return signOutUser();
   localStorage.removeItem('currentUser');
   localStorage.removeItem('safetyUser');
   location.href='login.html';
 }
-// ===== FIX الغلطة القديمة: getMe بيفهم كل أشكال التخزين =====
-// القديم كان: JSON.parse(localStorage.getItem('safetyUser')) و safetyUser كان اسم بس -> Error -> null -> يفتكرك مش مسجل
-// الجديد: بيجرب JSON الأول، ولو فشل بيرجع الاسم زي ما هو
-function getMe(){
-  let keys=['currentUser','safetyUser'];
-  for(let k of keys){
-    let raw=localStorage.getItem(k);
-    if(!raw) continue;
-    try{
-      let u=JSON.parse(raw);
-      if(u && typeof u==='object' && u.name) return u;
-    }catch(e){
-      if(raw.trim()) return {name: raw.trim(), role: localStorage.getItem('currentRole')||localStorage.getItem('userRole')||''};
+// ===== getMe - بيستخدم اللي في auth.js لو موجود =====
+if (typeof window.getMe === 'undefined') {
+  window.getMe = function(){
+    let keys=['currentUser','safetyUser'];
+    for(let k of keys){
+      let raw=localStorage.getItem(k);
+      if(!raw) continue;
+      try{
+        let u=JSON.parse(raw);
+        if(u && typeof u==='object' && u.name) return u;
+      }catch(e){
+        if(raw.trim()) return {name: raw.trim(), role: localStorage.getItem('currentRole')||localStorage.getItem('userRole')||''};
+      }
     }
-  }
-  return null;
+    return null;
+  };
 }
+function getMe(){ return window.getMe(); }
+
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
   if(nm){
     document.getElementById('sideName').innerText=nm.name;
-    let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+    let rm=window.ROLE_MAP;
     document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||'';
     if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo;
     let t=document.getElementById('topUser'); if(t) t.innerText=nm.name;
@@ -233,13 +240,14 @@ async function loadViolations(){
       violations=[];
       snap.forEach(d=>violations.push({id:d.id,...d.data()}));
       violations.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+    } else {
+      console.log('window.db not found - check firebase-config.js');
     }
   }catch(e){ console.log(e); }
   renderViolations();
 }
 function val(id){ return document.getElementById(id).value.trim(); }
 let _me=getMe();
-let ROLE_MAP={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
 let currentRole=ROLE_MAP[String(_me?(_me.role||''):'' ).trim().toLowerCase()]||ROLE_MAP[String(_me?(_me.role||''):'' ).trim()]||localStorage.getItem('currentRole')||'Visitor';
 function canEdit(){ return currentRole==='Supervisor'||currentRole==='Manager'; }
 function applyRole(){
@@ -300,11 +308,9 @@ function getFiltered(){
 function renderViolations(){
   let q=(document.getElementById('searchV').value||'').toLowerCase();
   let list=violations.filter(x=>((x.company||'')+(x.desc||'')).toLowerCase().includes(q));
-  // KPI 1+2: العدد + الإجمالي
   let total=violations.reduce((s,x)=>s+(x.deduct||x.amount||0),0);
   document.getElementById('k-count').innerText=violations.length;
   document.getElementById('k-total').innerText=total.toLocaleString()+' EGP';
-  // KPI 3+4: أعلى / أقل شركة
   let byComp={};
   violations.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]=0; byComp[x.company]+=(x.deduct||x.amount||0); });
   let comps=Object.keys(byComp);
@@ -316,7 +322,6 @@ function renderViolations(){
   } else {
     document.getElementById('k-max-comp').innerText='-'; document.getElementById('k-min-comp').innerText='-';
   }
-  // KPI 5+6: أعلى / أقل شهر - الشهر = YYYY-MM من التاريخ
   let byMonth={};
   violations.forEach(x=>{
     let m=String(x.date||'').slice(0,7);
