@@ -195,31 +195,38 @@ body{margin:0;background:#050505;color:#fff;background-image:radial-gradient(ell
 <script>
 function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
 function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
-// ===== FIX: normalize user - name + photo from ANY field name =====
+
+// ===== تنظيف الاسم والصورة من اي حقل =====
+function cleanName(s){ return String(s||'').replace(/\s+/g,' ').trim(); }
+function cleanPhoto(v){
+  if(!v) return '';
+  if(typeof v==='object') v = v.url || v.src || v.downloadURL || v.photo || v.img || '';
+  v = String(v||'').trim();
+  if(v.length < 10) return '';
+  if(v==='null' || v==='undefined') return '';
+  return v;
+}
 function normUser(raw){
   if(!raw || typeof raw!=='object') return null;
-  let name = raw.name || raw.fullName || raw.displayName || raw.username || raw.userName || raw.employeeName || '';
-  name = String(name||'').trim();
+  let name = cleanName(raw.name || raw.fullName || raw.displayName || raw.username || raw.userName || raw.employeeName || raw.empName || '');
   if(!name) return null;
-  let photo = raw.photo || raw.img || raw.image || raw.avatar || raw.photoURL || raw.profilePic || raw.profileImage || raw.picture || raw.profilePhoto || raw.photoUrl || '';
-  if(photo && typeof photo==='object') photo = photo.url || photo.src || photo.downloadURL || '';
-  photo = String(photo||'').trim();
-  // لو الصورة base64 قصيرة او فاضية تجاهلها
-  if(photo && photo.length < 10) photo='';
+  let photo = cleanPhoto(raw.photo || raw.img || raw.image || raw.avatar || raw.photoURL || raw.photoUrl || raw.profilePic || raw.profileImage || raw.picture || raw.profilePhoto || raw.userPhoto || raw.userImg || raw.profileImg || '');
+  let code = String(raw.code || raw.employeeCode || raw.empCode || raw.userCode || raw.id || '').trim();
+  // الكود لو شكله ايميل او طويل جدا زي id بتاع Firestore متعرضوش ككود
+  if(code && code.includes('@')) code='';
+  if(code && code.length>25) code='';
   return {
     ...raw,
-    name: name,
-    photo: photo,
-    img: photo,
-    image: photo,
-    avatar: photo,
-    code: raw.code || raw.employeeCode || raw.empCode || raw.id || raw.userCode || '',
-    email: raw.email || raw.mail || '',
+    name:name,
+    photo:photo, img:photo, image:photo, avatar:photo,
+    code:code,
+    email:String(raw.email || raw.mail || '').trim().toLowerCase(),
     job: raw.job || raw.position || raw.title || raw.dept || raw.department || '',
-    role: raw.role || raw.permission || raw.type || raw.accountType || ''
+    role: raw.role || raw.permission || raw.type || raw.accountType || '',
+    createdAt: raw.createdAt || raw.created_at || raw.joinDate || raw.date || null
   };
 }
-function getPhoto(u){ return (u && (u.photo || u.img || u.image || u.avatar || u.photoURL || u.profilePic || u.profileImage)) || ''; }
+function getPhoto(u){ return (u && cleanPhoto(u.photo || u.img || u.image || u.avatar || u.photoURL || u.profilePic || u.profileImage)) || ''; }
 function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return normUser(u); }catch(e){} return null; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
@@ -238,7 +245,7 @@ async function fetchCol(name){
   if(!window.db) return [];
   try{ let s=await window.db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
 }
-// ===== FIX: جيب المستخدمين من كل الجداول المحتملة وادمجهم =====
+// ===== جيب كل المستخدمين من كل مكان - من غير فلتر تاريخ اشتراك =====
 async function fetchAllUsers(){
   let all=[];
   let cols=['users','employees','safetyUsers','registeredUsers','accounts','staff','team'];
@@ -247,29 +254,36 @@ async function fetchAllUsers(){
     if(arr.length) console.log('Users from',c,arr.length);
     all.push(...arr);
   }
-  // من localStorage كمان
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
     let localUsers = old.users || old.employees || old.safetyUsers || [];
     if(Array.isArray(localUsers)) all.push(...localUsers);
-    // users اللي متسجلين في المتصفح
-    let keys=['rmed_users','users','employees'];
-    keys.forEach(k=>{
+    ['rmed_users','users','employees','safetyUsers'].forEach(k=>{
       try{ let v=JSON.parse(localStorage.getItem(k)||'[]'); if(Array.isArray(v)) all.push(...v); }catch(e){}
     });
+    // currentUser كمان لو مش موجود
+    let me=getMe(); if(me) all.push(me);
   }catch(e){}
-  // دمج ومنع التكرار بالاسم + الايميل
-  let seen={}; let out=[];
+  // دمج ومنع التكرار - الاسم هو الاساس + لو فيه صورة في اي نسخة خدها
+  let byName={}; let out=[];
   all.forEach(raw=>{
     let u=normUser(raw);
     if(!u) return;
-    let key=(u.email||'').toLowerCase().trim()+'|'+u.name.toLowerCase().trim();
-    if(seen[key]) {
-      // لو القديم معندوش صورة والجديد عنده، خد الصورة
-      if(!getPhoto(seen[key]) && getPhoto(u)) seen[key].photo=getPhoto(u), seen[key].img=getPhoto(u);
-      return;
+    // مفيش فلتر بتاريخ الاشتراك هنا خالص - حتى لو اشترك اخر يوم في الشهر هيظهر
+    let key=u.name.toLowerCase();
+    // لو نفس الاسم بس ايميل مختلف، اعتبرهم واحد لو الايميل فاضي
+    if(!byName[key]){
+      byName[key]=u; out.push(u);
+    } else {
+      let ex=byName[key];
+      // خد الصورة من اي نسخة فيها صورة
+      if(!getPhoto(ex) && getPhoto(u)){ ex.photo=getPhoto(u); ex.img=getPhoto(u); ex.image=getPhoto(u); }
+      if(!ex.code && u.code) ex.code=u.code;
+      if(!ex.email && u.email) ex.email=u.email;
+      if(!ex.job && u.job) ex.job=u.job;
+      // لو النسخة الجديدة Role بتاعها اوضح خدها
+      if(!ex.role && u.role) ex.role=u.role;
     }
-    seen[key]=u; out.push(u);
   });
   return out;
 }
@@ -317,38 +331,46 @@ function isClosed(x){
   let s=(x.status||x.state||'').toString().trim().toLowerCase();
   return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || s.includes('غلق') || x.isClosed===true || x.closed===true;
 }
-function getReporter(x){ return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||x.fullName||x.displayName||'').toString().trim(); }
-function getReporterCode(x){ return (x.reporterCode||x.reporterId||x.createdByCode||x.code||'').toString().trim(); }
+function getReporter(x){ return cleanName(x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||x.fullName||x.displayName||x.reporterEmail||''); }
+function getReporterCode(x){ return String(x.reporterCode||x.reporterId||x.createdByCode||x.code||'').trim(); }
+function getReporterPhoto(x){ return cleanPhoto(x.reporterPhoto||x.reporterImg||x.reporterImage||x.authorPhoto||x.userPhoto||x.photo||''); }
 function getDate(x){ return x.date||x.createdAt||x.created_at||''; }
 function inMonth(d){ if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false; return dt.getFullYear()===selYear && dt.getMonth()===selMonth; }
+// ===== استثناء المدير بس - لا غير =====
+function isManager(u){
+  let role=cleanName(u.role||'').toLowerCase();
+  let job=cleanName(u.job||'').toLowerCase();
+  // استثني لو Role = manager / admin فقط
+  if(['manager','admin','مدير','أدمن','ادمن','general manager','project manager'].includes(role)) return true;
+  if(role.includes('manager') || role.includes('admin') || role.includes('مدير')) return true;
+  // ملحوظة: Supervisor مش مدير - بيدخل التقييم عادي
+  return false;
+}
 function render(){
   document.getElementById('periodLabel').innerText='From 1 '+months[selMonth]+' '+selYear+' to '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
   let allUsers = (FB.users||[]).map(normUser).filter(Boolean);
-  // ===== FIX: متستبعدش حد غير المدير والمشرف الحقيقيين بس، ولو role فاضي اعتبره موظف =====
-  let employees = allUsers.filter(u=>{
-    let role=(u.role||'').toString().trim().toLowerCase();
-    if(['manager','admin','supervisor','مدير','مشرف','أدمن','ادمن'].includes(role)) return false;
-    if(['مدير','مشرف'].includes((u.role||'').toString().trim())) return false;
-    return true;
-  });
+  // استثني المدير بس
+  let employees = allUsers.filter(u=> !isManager(u));
   let obs=(FB.observations||[]).filter(x=>inMonth(getDate(x)));
   let near=(FB.nearMiss||[]).filter(x=>inMonth(getDate(x)));
   let acc=(FB.accidents||[]).filter(x=>inMonth(getDate(x)));
   let allReports=[...obs.map(x=>({...x,_type:'Observation'})), ...near.map(x=>({...x,_type:'Near Miss'})), ...acc.map(x=>({...x,_type:'Accident'}))];
   let map={};
+  // 1 - حط كل الموظفين الاول - حتى اللي بـ 0 تقرير وحتى اللي اشترك اخر الشهر
   employees.forEach(u=>{
-    let key=(u.email||u.name).toLowerCase().trim();
-    map[key]={user:u, total:0, closed:0, obs:0, near:0, acc:0};
+    let key=u.name.toLowerCase();
+    if(!map[key]) map[key]={user:u, total:0, closed:0, obs:0, near:0, acc:0};
+    else if(!getPhoto(map[key].user) && getPhoto(u)) map[key].user.photo=getPhoto(u), map[key].user.img=getPhoto(u);
   });
   function findKey(reporter, code){
     if(!reporter) return null;
-    let low=reporter.toLowerCase().trim();
-    // 1- بالاسم بالظبط
-    let found=Object.keys(map).find(k=> map[k].user.name.toLowerCase().trim()===low);
+    let low=cleanName(reporter).toLowerCase();
+    let found=Object.keys(map).find(k=> k===low);
     if(found) return found;
-    // 2- بالكود
-    if(code){ found=Object.keys(map).find(k=> String(map[k].user.code||'').trim()===String(code).trim()); if(found) return found; }
-    // 3- لو مش موجود، اعمله حساب جديد بس بصورته لو موجودة في التقرير نفسه
+    if(code){ found=Object.keys(map).find(k=> String(map[k].user.code||'').trim()===String(code).trim() && code); if(found) return found; }
+    // لو واحد رفع تقرير بس مش موجود في جدول المستخدمين - اعمله حساب ومتضيعش تقريره
+    // بس لو هو مدير متضيفوش
+    if(low.includes('manager') || low.includes('admin')) return null;
     let nk='extra-'+low;
     if(!map[nk]) map[nk]={user:normUser({name:reporter, code:code||'', photo:'', img:''}), total:0, closed:0, obs:0, near:0, acc:0};
     return nk;
@@ -362,11 +384,12 @@ function render(){
     if(r._type==='Observation') map[k].obs++;
     if(r._type==='Near Miss') map[k].near++;
     if(r._type==='Accident') map[k].acc++;
-    // لو التقرير فيه صورة للمستخدم والمستخدم معندوش صورة، خدها
-    let rp = getPhoto(r);
-    if(rp && !getPhoto(map[k].user)){ map[k].user.photo=rp; map[k].user.img=rp; }
+    // لو التقرير فيه صورة والمستخدم معندوش صورة - خدها من التقرير
+    let rp = getReporterPhoto(r);
+    if(rp && !getPhoto(map[k].user)){ map[k].user.photo=rp; map[k].user.img=rp; map[k].user.image=rp; }
   });
-  let ranked=Object.values(map).sort((a,b)=>{ if(b.total!==a.total) return b.total-a.total; return b.closed-a.closed; });
+  // الترتيب: الاكتر رفع، وبعدين الاكتر قفل، وبعدين الاسم
+  let ranked=Object.values(map).sort((a,b)=>{ if(b.total!==a.total) return b.total-a.total; if(b.closed!==a.closed) return b.closed-a.closed; return (a.user.name||'').localeCompare(b.user.name||''); });
   document.getElementById('totalEmp').innerText='Total Employees: '+ranked.length+' | Total Reports In Month: '+allReports.length;
   let totalClosed=ranked.reduce((s,r)=>s+r.closed,0);
   let totalOpen=allReports.length-totalClosed;
@@ -375,42 +398,47 @@ function render(){
   document.getElementById('kRep').innerText=allReports.length;
   document.getElementById('kClosed').innerText=totalClosed;
   document.getElementById('kOpen').innerText=totalOpen;
-  document.getElementById('kTop').innerText=(ranked[0]&&ranked[0].total>0)?(ranked[0].user.name||'-'):'-';
+  document.getElementById('kTop').innerText=(ranked[0]&&ranked[0].total>0)?(ranked[0].user.name||'-'):(ranked[0]?ranked[0].user.name:'-');
   document.getElementById('kRate').innerText=rate+'%';
-  function imgHTML(u, size, cls){
+  function initials(u){ let n=(u.name||'').trim().split(' '); return ((n[0]||'')[0]||'👷')+((n[1]||'')[0]||''); }
+  function imgHTML(u, size, cls, borderColor){
     let src=getPhoto(u);
-    if(src) return '<img class="'+(cls||'')+'" src="'+src+'" onerror="this.onerror=null;this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'" alt="'+(u.name||'')+'" style="width:'+size+'px;height:'+size+'px;object-fit:cover;border-radius:50%;">';
-    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid rgba(255,255,255,.15);">👷</div>';
+    let border = borderColor ? 'border-color:'+borderColor+';' : '';
+    if(src) return '<img class="'+(cls||'')+'" src="'+src+'" onerror="this.onerror=null;this.parentNode.innerHTML=\'<div style=\\\'width:'+size+'px;height:'+size+'px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#B8860B);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:#000;'+border+'\\\'>'+initials(u)+'</div>\'" alt="'+(u.name||'')+'" style="width:'+size+'px;height:'+size+'px;object-fit:cover;border-radius:50%;'+border+'">';
+    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:linear-gradient(135deg,#2A2A2A,#111);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#FFD700;margin:auto;border:3px solid '+(borderColor||'#FFD700')+';"> '+initials(u)+' </div>';
   }
   function imgHTMLChampion(u){
     let src=getPhoto(u);
-    let imgTag = src ? '<img class="champion-img" src="'+src+'" onerror="this.onerror=null;this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'">' : '<div class="champion-img" style="display:flex;align-items:center;justify-content:center;font-size:60px;background:#101F3D;">👷</div>';
+    let imgTag = src ? '<img class="champion-img" src="'+src+'" onerror="this.onerror=null;this.outerHTML=\'<div class=\\\'champion-img\\\' style=\\\'display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:900;color:#FFD700;background:#111;\\\'>'+initials(u)+'</div>\'">' : '<div class="champion-img" style="display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:900;color:#FFD700;background:#111;">'+initials(u)+'</div>';
     return '<div class="champion-wrap"><div class="champion-laurel"><svg viewBox="0 0 200 200"><g fill="none" stroke="#FFD54F" stroke-width="3"><path d="M28 100 C28 50 60 28 100 22"/><path d="M172 100 C172 50 140 28 100 22"/><path d="M28 100 C28 150 60 172 100 178"/><path d="M172 100 C172 150 140 172 100 178"/></g><g fill="#FFD54F"><circle cx="32" cy="70" r="5"/><circle cx="38" cy="50" r="5"/><circle cx="58" cy="32" r="5"/><circle cx="82" cy="24" r="5"/><circle cx="168" cy="70" r="5"/><circle cx="162" cy="50" r="5"/><circle cx="142" cy="32" r="5"/><circle cx="118" cy="24" r="5"/><circle cx="32" cy="130" r="5"/><circle cx="38" cy="150" r="5"/><circle cx="58" cy="168" r="5"/><circle cx="82" cy="176" r="5"/><circle cx="168" cy="130" r="5"/><circle cx="162" cy="150" r="5"/><circle cx="142" cy="168" r="5"/><circle cx="118" cy="176" r="5"/></g></svg></div><div class="champion-crown"><img src="https://img.icons8.com/3d-fluency/94/crown.png" onerror="this.style.display=\'none\'"></div>'+imgTag+'</div>';
   }
   function statsHTML(r){
     let rate2=r.total? Math.round(r.closed/r.total*100):0;
     return '<div style="margin-top:10px;"><span class="badge badge-blue">📝 Uploaded: '+r.total+' reports</span><span class="badge badge-green">✅ Closed: '+r.closed+'</span><span class="badge badge-red">🔓 Open: '+(r.total-r.closed)+'</span><br><span class="badge">👀 Observations: '+r.obs+'</span><span class="badge">⚡ Near Miss: '+r.near+'</span><span class="badge">🚨 Accidents: '+r.acc+'</span><br><span class="badge badge-green">Close Rate: '+rate2+'%</span></div>';
   }
+  // ===== المركز الاول - دهبي - يظهر دايما حتى لو بـ 0 =====
   let top1=document.getElementById('top1Box');
-  if(ranked.length && ranked[0].total>0){
+  if(ranked.length){
     let r=ranked[0];
     let secondName = ranked[1]?ranked[1].user.name:'-';
     let thirdName = ranked[2]?ranked[2].user.name:'-';
     top1.innerHTML='<div class="card top1"><div class="champion-ribbon">👑 CHAMPION • البطل • موظف الشهر 👑</div><h2 style="margin:6px 0 0;color:#FFD54F;">🏆 Employee Of The Month - '+months[selMonth]+' '+selYear+'</h2><p style="color:#FFE082;margin:4px 0;">1st Place • المركز الأول • 🔥 Top Performer</p>'+imgHTMLChampion(r.user)+'<div class="trophy-row"><div class="t3d"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🏆</span></div><div class="t3d"><img src="https://img.icons8.com/3d-fluency/94/medal.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🥇</span></div><div class="t3d"><img src="https://img.icons8.com/3d-fluency/94/star.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>⭐</span></div></div><h2 style="margin:8px 0 0;font-size:28px;">'+(r.user.name||'No Name')+'</h2><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'<div class="podium"><div class="p2">2<br><small>'+secondName+'</small></div><div class="p1">1<br><small>'+(r.user.name||'')+'</small></div><div class="p3">3<br><small>'+thirdName+'</small></div></div></div>';
   } else {
-    top1.innerHTML='<div class="card"><h3>No reports yet in '+months[selMonth]+' '+selYear+'</h3><p style="color:#B8C6D6;">Once employees upload reports, ranking will appear here automatically • أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>';
+    top1.innerHTML='<div class="card"><h3>No employees yet</h3><p style="color:#B8C6D6;">No employees found - Add employees from Users page • مفيش موظفين - ضيف من صفحة Users</p></div>';
   }
+  // ===== المركز التاني فضي + التالت برونزي - يظهروا دايما بصورهم =====
   let top23=document.getElementById('top23Box');
   let html23='';
-  if(ranked[1] && ranked[1].total>0){
+  if(ranked[1]){
     let r=ranked[1];
-    html23+='<div class="card rank2"><div class="medal3d silver"><img src="https://img.icons8.com/3d-fluency/94/medal.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🥈</span></div><h3 style="margin:4px 0;">2nd Place • المركز الثاني</h3>'+imgHTML(r.user,120,'main-img')+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank2"><div class="medal3d silver"><img src="https://img.icons8.com/3d-fluency/94/medal.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🥈</span></div><h3 style="margin:4px 0;">🥈 2nd Place • المركز الثاني • فضي</h3>'+imgHTML(r.user,120,'main-img','#C0C0C0')+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.job||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
-  if(ranked[2] && ranked[2].total>0){
+  if(ranked[2]){
     let r=ranked[2];
-    html23+='<div class="card rank3"><div class="medal3d bronze"><img src="https://img.icons8.com/3d-fluency/94/medal.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🥉</span></div><h3 style="margin:4px 0;">3rd Place • المركز الثالث</h3>'+imgHTML(r.user,120,'main-img')+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank3"><div class="medal3d bronze"><img src="https://img.icons8.com/3d-fluency/94/medal.png" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'"><span>🥉</span></div><h3 style="margin:4px 0;">🥉 3rd Place • المركز الثالث • برونزي</h3>'+imgHTML(r.user,120,'main-img','#CD7F32')+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.job||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   top23.innerHTML=html23;
+  // ===== الباقي في ليست تحت بعض - من الرابع وانت نازل - كلهم بصورهم حتى لو بـ 0 =====
   let rest=document.getElementById('restBox');
   let restList=ranked.slice(3);
   if(restList.length){
