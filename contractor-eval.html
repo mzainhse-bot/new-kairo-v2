@@ -2,6 +2,10 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- حماية 1: منع المتصفح يحفظ نسخة قديمة وتسبب المشكلة تاني -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Contractor Evaluation - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
@@ -57,7 +61,7 @@ table th{background:linear-gradient(180deg,#1A3A6A,#0F2A4D);color:#FFD54F;paddin
 <a href="index.html">🏠 Home • الرئيسية</a><a href="dashboard.html">📊 Achievements</a><a href="stats.html">📈 Statistics</a><a href="users.html">👥 Employees</a><a href="permits.html">📋 Permits</a><a href="violations.html">⚠️ Violations</a><a href="accidents.html">🚑 Accidents</a><a href="contractor-eval.html" class="active">🏆 Contractor Evaluation • تقييم المقاولين</a>
 </div>
 
-<div id="debugBox" class="debug">⏳ Running diagnostics...</div>
+<div id="debugBox" class="debug">⏳ Loading data... • جاري تحميل البيانات...</div>
 
 <div class="kpi-row">
 <div class="kpi"><div class="ic">🏢</div><b id="k-companies">0</b><small>Companies Count •<br>عدد الشركات</small></div>
@@ -107,26 +111,59 @@ Manual Score: <b id="calc-manual">0</b> / 100 &nbsp;|&nbsp; Automatic Deduction:
 <div class="bottom-nav"><a href="index.html" class="active">🏠<br>Home • الرئيسية</a><a href="stats.html">📊<br>Reports • التقارير</a><a href="train.html">🎓<br>Training • التدريب</a><a href="users.html">👤<br>Profile • الملف الشخصي</a></div>
 </div>
 
-<!-- الربط بقاعدة البيانات موجود هنا زي ما هو - مش ملغي -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="auth.js"></script>
+<script src="firebase-config.js?v=20261111"></script>
+<script src="auth.js?v=20261111"></script>
 <script>
 const T_MAP={'مقبول':'Acceptable','Acceptable':'Acceptable','مقبول بشروط':'Conditionally Accepted','Conditionally Accepted':'Conditionally Accepted','غير مقبول':'Not Accepted','Not Accepted':'Not Accepted','إيقاف':'Suspended','Suspended':'Suspended','شهري':'Monthly','Monthly':'Monthly','ربع سنوي':'Quarterly','Quarterly':'Quarterly','نصف سنوي':'Semi-Annual','Semi-Annual':'Semi-Annual','سنوي':'Annual','Annual':'Annual','أوتوماتيك':'Automatic','Automatic':'Automatic','غير محدد':'Not Specified','Not Specified':'Not Specified','مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'};
 function T(v){if(v==null)return v;return T_MAP[String(v).trim()]||v}
 let DB={violations:[],ncr:[],accidents:[],nearMiss:[],observations:[],permits:[],workers:[],evals:[]};
+
+// حماية 3: حفظ آخر داتا صح في المتصفح، عشان لو الربط وقع الصفحة متبقاش 0
+function saveCache(){ try{ localStorage.setItem('rmed_contractor_cache', JSON.stringify({time:Date.now(), DB:DB})); }catch(e){} }
+function loadCache(){
+  try{
+    let c = JSON.parse(localStorage.getItem('rmed_contractor_cache')||'null');
+    if(c && c.DB){ DB = c.DB; return true; }
+  }catch(e){}
+  return false;
+}
+
 async function fetchCol(names){for(let n of names){try{let s=await window.db.collection(n).get();if(!s.empty)return s.docs.map(d=>({id:d.id,...d.data()}))}catch(e){console.log('skip',n,e.code)}}return[]}
-async function loadAll(){
-let dbg=document.getElementById('debugBox');
-dbg.innerHTML='🔍 Diagnostics:<br>1. Database connected? <b>'+(!!window.db)+'</b><br>2. Project: <b>'+(typeof firebaseConfig!=='undefined'?firebaseConfig.projectId:'Not found - config file not loaded')+'</b>';
-if(!window.db){dbg.innerHTML+='<br><br>❌ <b>Reason: config file not loaded</b> - Upload it in same folder';return}
-try{
-DB.violations=await fetchCol(['violations']);DB.ncr=await fetchCol(['ncr']);DB.accidents=await fetchCol(['accidents']);DB.nearMiss=await fetchCol(['nearMiss','near-miss']);DB.observations=await fetchCol(['observations','safety-observations']);DB.permits=await fetchCol(['permits']);DB.workers=await fetchCol(['workers']);DB.evals=await fetchCol(['contractorEval','contractor-eval','contractorEvaluations']);
-}catch(e){dbg.innerHTML+='<br><br>❌ Error: '+e.message+' | Code: '+e.code;if(e.code==='permission-denied')dbg.innerHTML+='<br>👉 Fix: Rules > allow read, write: if true';return}
-dbg.innerHTML+='<br>✅ Connected | Violations: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | Accidents: <b>'+DB.accidents.length+'</b> | Near Miss: <b>'+DB.nearMiss.length+'</b> | Observations: <b>'+DB.observations.length+'</b> | Workers: <b>'+DB.workers.length+'</b> | Evaluations: <b>'+DB.evals.length+'</b>';
-buildCompanyList();renderTable();renderAutoEvals();calcFinal();
+
+// حماية 2: محاولة الربط 3 مرات، مش مرة واحدة وتفشل
+async function loadAll(attempt=1){
+  let dbg=document.getElementById('debugBox');
+  if(!window.db){
+    if(attempt < 3){
+      if(dbg) dbg.innerHTML='⏳ Trying to connect... attempt '+attempt+' / 3 • جاري المحاولة...';
+      setTimeout(()=>loadAll(attempt+1), 1200);
+      return;
+    }
+    // لو فشل 3 مرات، اعرض آخر داتا محفوظة بدل 0
+    if(loadCache()){
+      if(dbg) dbg.innerHTML='⚠️ Showing last saved data - Check connection and refresh • عرض آخر بيانات محفوظة';
+      buildCompanyList();renderTable();renderAutoEvals();calcFinal();
+    } else {
+      if(dbg) dbg.innerHTML='❌ Cannot connect right now - Please refresh (Ctrl + F5) • مش قادر يتصل دلوقتي - اعمل ريفريش';
+    }
+    return;
+  }
+  try{
+    DB.violations=await fetchCol(['violations']);DB.ncr=await fetchCol(['ncr']);DB.accidents=await fetchCol(['accidents']);DB.nearMiss=await fetchCol(['nearMiss','near-miss']);DB.observations=await fetchCol(['observations','safety-observations']);DB.permits=await fetchCol(['permits']);DB.workers=await fetchCol(['workers']);DB.evals=await fetchCol(['contractorEval','contractor-eval','contractorEvaluations']);
+  }catch(e){
+    if(loadCache()){
+      if(dbg) dbg.innerHTML='⚠️ Showing last saved data • عرض آخر بيانات محفوظة';
+      buildCompanyList();renderTable();renderAutoEvals();calcFinal(); return;
+    }
+    if(dbg) dbg.innerHTML='❌ Error: '+e.message;
+    return;
+  }
+  saveCache();
+  if(dbg) dbg.innerHTML='✅ Connected | Violations: <b>'+DB.violations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | Accidents: <b>'+DB.accidents.length+'</b> | Near Miss: <b>'+DB.nearMiss.length+'</b> | Observations: <b>'+DB.observations.length+'</b> | Workers: <b>'+DB.workers.length+'</b> | Evaluations: <b>'+DB.evals.length+'</b>';
+  buildCompanyList();renderTable();renderAutoEvals();calcFinal();
 }
 function getCompanyName(r){return r.company||r.contractor||r.companyName||r.contractorName||'Not Specified'}
 function isOpen(r){let s=String(r.status||r.state||r.caseStatus||'open').toLowerCase();if(s.includes('closed')||s.includes('resolved')||s.includes('done')||s.includes('مغلق')||s.includes('تم الحل')||s.includes('مقفول')||s.includes('closed'))return false;return true}
