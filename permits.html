@@ -5,73 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Permit Registration - RMED</title>
 <style>
-body{font-family:Arial;background:#f3f4f6;margin:0;padding:15px}
-.header{background:#fff;padding:15px;border-radius:12px;text-align:center;box-shadow:0 2px 8px #0001}
-.badge{background:#7c3aed;color:#fff;padding:6px 12px;border-radius:20px;font-weight:bold;display:inline-block}
-.stats{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
-.card-stat{flex:1;background:#fff;padding:12px;border-radius:12px;text-align:center;min-width:120px}
-.card{background:#fff;padding:15px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px #0001}
-.btn-delivered{background:#7c3aed;color:#fff;border:0;width:100%;padding:14px;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
-.btn-delivered.done{background:#16a34a}
-.small{color:#666;font-size:13px}
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',Arial;background:#eef2f7;margin:0;padding:0}
+.topbar{background:#0f2a44;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar h1{margin:0;font-size:20px}
+.topbar span{font-size:13px;opacity:.8}
+.container{max-width:900px;margin:auto;padding:16px}
+.userbox{background:#fff;border-right:4px solid #7c3aed;padding:12px 16px;border-radius:10px;box-shadow:0 2px 10px #0001;margin-bottom:14px}
+.userbox b{color:#0f2a44}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:#fff;padding:14px;border-radius:12px;text-align:center;box-shadow:0 2px 10px #0001}
+.stat b{font-size:20px;display:block;color:#0f2a44}
+.stat small{color:#666}
+.permit{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px #0001;border:1px solid #e5e7eb}
+.permit .row{display:flex;justify-content:space-between;align-items:center}
+.permit h3{margin:0;color:#0f2a44}
+.status{font-size:12px;padding:5px 10px;border-radius:20px;background:#fef3c7;color:#92400e}
+.status.done{background:#dcfce7;color:#166534}
+.btn{width:100%;margin-top:12px;padding:13px;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#7c3aed,#4f46e5);color:#fff}
+.btn.done{background:#16a34a}
+.meta{color:#6b7280;font-size:13px;margin-top:6px}
 </style>
 </head>
 <body>
-
-<div class="header">
-<div class="badge">V3 - NEW - 11 Nov 2026</div>
-<h2>تسجيل التصاريح - RMED</h2>
-<p><b>You are: Manager (manager) - You can close permits</b></p>
-<p class="small">لو شايف V3 يبقى الكود الجديد وصل ✅ لو مش شايفه يبقى لسه الكاش القديم</p>
-</div>
-
+<div class="topbar"><h1>RMED • تسجيل التصاريح</h1><span>V3 - NEW</span></div>
+<div class="container">
+<div class="userbox">You are: <b>Manager (manager)</b> - You can close permits</div>
 <div class="stats">
-<div class="card-stat"><b id="total">0</b><br>إجمالي التصاريح</div>
-<div class="card-stat"><b id="deliveredCount">0</b><br>تم التسليم</div>
-<div class="card-stat"><b id="topCompany">-</b><br>أعلى شركة</div>
-<div class="card-stat"><b id="lowCompany">-</b><br>أقل شركة</div>
+<div class="stat"><b id="total">0</b><small>إجمالي التصاريح</small></div>
+<div class="stat"><b id="deliveredCount">0</b><small>تم التسليم</small></div>
+<div class="stat"><b id="topCompany">-</b><small>أعلى شركة</small></div>
+<div class="stat"><b id="lowCompany">-</b><small>أقل شركة</small></div>
 </div>
-
 <div id="list"></div>
-
+</div>
 <script>
-let permits = JSON.parse(localStorage.getItem('permits_v3') || '[]');
-if(permits.length===0){
-  permits = [
-    {id:1, company:'شركة النيل', site:'القاهرة', status:'pending'},
-    {id:2, company:'شركة النيل', site:'الجيزة', status:'pending'},
-    {id:3, company:'شركة الدلتا', site:'القاهرة', status:'pending'}
-  ];
+let permits = JSON.parse(localStorage.getItem('permits_v3')||'[]');
+if(!permits.length){
+ permits=[
+  {id:1,company:'شركة النيل',site:'القاهرة - الموقع 1',status:'pending'},
+  {id:2,company:'شركة النيل',site:'الجيزة - الموقع 2',status:'pending'},
+  {id:3,company:'شركة الدلتا',site:'القاهرة - الموقع 3',status:'pending'}
+ ];
 }
 function render(){
-  let list = document.getElementById('list');
-  list.innerHTML = '';
-  let delivered = permits.filter(p=>p.status==='delivered').length;
-  document.getElementById('total').innerText = permits.length;
-  document.getElementById('deliveredCount').innerText = delivered;
-
-  // احصائيات الشركات
-  let counts = {};
-  permits.forEach(p=>{ if(p.status==='delivered'){ counts[p.company]=(counts[p.company]||0)+1 } });
-  let keys = Object.keys(counts);
-  if(keys.length){
-    keys.sort((a,b)=>counts[b]-counts[a]);
-    document.getElementById('topCompany').innerText = keys[0] + ' ('+counts[keys[0]]+')';
-    document.getElementById('lowCompany').innerText = keys[keys.length-1] + ' ('+counts[keys[keys.length-1]]+')';
-  }
-
-  permits.forEach(p=>{
-    let div = document.createElement('div');
-    div.className='card';
-    div.innerHTML = '<b>'+p.company+'</b> - '+p.site+'<br><span class="small">الحالة: '+(p.status==='delivered'?'تم التسليم ✅':'قيد الانتظار')+'</span><button class="btn-delivered '+(p.status==='delivered'?'done':'')+'" onclick="deliver('+p.id+',this)">'+(p.status==='delivered'?'تم التسليم ✅':'Delivered • تم التسليم')+'</button>';
-    list.appendChild(div);
-  });
-  localStorage.setItem('permits_v3', JSON.stringify(permits));
+ let list=document.getElementById('list'); list.innerHTML='';
+ let delivered=permits.filter(p=>p.status==='delivered').length;
+ document.getElementById('total').innerText=permits.length;
+ document.getElementById('deliveredCount').innerText=delivered;
+ let counts={}; permits.forEach(p=>{if(p.status==='delivered') counts[p.company]=(counts[p.company]||0)+1});
+ let keys=Object.keys(counts);
+ if(keys.length){keys.sort((a,b)=>counts[b]-counts[a]); document.getElementById('topCompany').innerText=keys[0]+' ('+counts[keys[0]]+')'; document.getElementById('lowCompany').innerText=keys[keys.length-1]+' ('+counts[keys[keys.length-1]]+')';}
+ permits.forEach(p=>{
+  let d=document.createElement('div'); d.className='permit';
+  d.innerHTML='<div class="row"><h3>'+p.company+'</h3><span class="status '+(p.status==='delivered'?'done':'')+'">'+(p.status==='delivered'?'تم التسليم ✅':'قيد الانتظار')+'</span></div><div class="meta">'+p.site+'</div><button class="btn '+(p.status==='delivered'?'done':'')+'" onclick="deliver('+p.id+')">'+(p.status==='delivered'?'تم التسليم ✅':'Delivered • تم التسليم')+'</button>';
+  list.appendChild(d);
+ });
+ localStorage.setItem('permits_v3',JSON.stringify(permits));
 }
-function deliver(id, btn){
-  permits = permits.map(p=> p.id===id ? {...p, status:'delivered'} : p);
-  render();
-}
+function deliver(id){ permits=permits.map(p=>p.id===id?{...p,status:'delivered'}:p); render(); }
 render();
 </script>
 </body>
