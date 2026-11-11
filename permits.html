@@ -46,9 +46,10 @@ input:focus,select:focus{border-color:#FFD54F}
 .btn{width:100%;background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn img{width:24px;height:24px;object-fit:contain}
 .btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);border-color:#FF8A80}
+.btn.purple{background:linear-gradient(135deg,#7B1FA2,#4A148C);border-color:#CE93D8}
 .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;display:inline-flex;align-items:center;gap:6px}
 .btn2 img{width:18px;height:18px;object-fit:contain}
-.btn-delivered{background:linear-gradient(135deg,#7B1FA2,#4A148C) !important;color:#fff !important;border:1px solid #CE93D8 !important;padding:10px 16px !important;font-size:13px !important;border-radius:10px !important}
+.btn-delivered{background:linear-gradient(135deg,#7B1FA2,#4A148C) !important;color:#fff !important;border:1px solid #CE93D8 !important;padding:11px 18px !important;font-size:14px !important;border-radius:10px !important;font-weight:900 !important}
 .icon3d{width:62px;height:62px;flex-shrink:0;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.55));overflow:hidden;animation:float3d 3s ease-in-out infinite}
 .icon3d img{width:48px;height:48px;object-fit:contain;position:relative;z-index:2}
 .icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
@@ -82,7 +83,6 @@ input:focus,select:focus{border-color:#FFD54F}
 .type-chip{flex-shrink:0;background:#fff;border:1px solid #EEE;border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);color:#0A1F44;min-width:130px}
 .type-chip b{font-size:16px;display:block}
 .type-chip small{font-size:11px;color:#555;display:block}
-.reg-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .permit-num{background:#FFF3E0;border:2px dashed #FF9800;border-radius:10px;padding:10px;text-align:center;font-weight:bold;font-size:18px;color:#D32F2F;letter-spacing:1px;}
 .permit-card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #EEE;color:#0A1F44;position:relative;overflow:hidden}
 .permit-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px}
@@ -162,7 +162,7 @@ input:focus,select:focus{border-color:#FFD54F}
 </div>
 
 <div class="card" style="border:2px solid #7B1FA2;">
-<h3 style="margin:0 0 10px;display:flex;align-items:center;gap:8px;"><span class="icon3d small gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png"></span> Delivery Ranking | ترتيب التسليم حسب الشركة - أعلى وأقل شركة في التسليم</h3>
+<h3 style="margin:0 0 10px;display:flex;align-items:center;gap:8px;"><span class="icon3d small gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png"></span> Delivery Ranking | ترتيب التسليم حسب الشركة</h3>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
 <div style="background:#F3E5F5;border:1px solid #CE93D8;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;"><span class="icon3d small purple"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"></span><div><small style="color:#7B1FA2;font-weight:800;">أعلى شركة في التسليم • Top Delivered</small><b id="k-top-delivered" style="font-size:18px;display:block;margin-top:4px;">-</b><small id="k-top-delivered-n" style="color:#555;">0 Delivered</small></div></div>
 <div style="background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;"><span class="icon3d small orange"><img src="https://img.icons8.com/3d-fluency/94/company.png"></span><div><small style="color:#E65100;font-weight:800;">أقل شركة في التسليم • Lowest Delivered</small><b id="k-low-delivered" style="font-size:18px;display:block;margin-top:4px;">-</b><small id="k-low-delivered-n" style="color:#555;">0 Delivered</small></div></div>
@@ -176,7 +176,7 @@ input:focus,select:focus{border-color:#FFD54F}
 </div>
 
 <div class="card">
-<div class="reg-head"><h2 style="margin:0;display:flex;align-items:center;gap:8px;"><span class="icon3d small blue"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png"></span> Register New Permit | تسجيل تصريح جديد</h2><span style="background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;">Auto | تلقائي</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><h2 style="margin:0;display:flex;align-items:center;gap:8px;"><span class="icon3d small blue"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png"></span> Register New Permit | تسجيل تصريح جديد</h2><span style="background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;">Auto | تلقائي</span></div>
 <p style="color:#78909C;font-size:13px;margin:6px 0 0;">Permit number is automatic, default status: Open</p>
 <div class="grid" style="margin-top:10px;">
 <div><label>Permit Number | رقم التصريح</label><div class="permit-num" id="p-num">PRM-2026-0001</div></div>
@@ -197,7 +197,10 @@ input:focus,select:focus{border-color:#FFD54F}
 <label style="margin:0;">Delivered To • تم التسليم إلى:</label><input id="p-deliveredTo" placeholder="Name who received">
 <label style="margin:0;">Delivery Date • تاريخ التسليم:</label><input type="date" id="p-deliveredDate">
 </div>
-<button class="btn red" onclick="addPermit()"><img src="https://img.icons8.com/3d-fluency/94/save.png"> Save Permit • حفظ التصريح</button>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<button class="btn red" onclick="addPermit('Open')" style="flex:2;"><img src="https://img.icons8.com/3d-fluency/94/save.png"> Save Permit • حفظ التصريح</button>
+<button class="btn purple" onclick="addPermit('Delivered')" style="flex:1;"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"> Save as Delivered • حفظ وتم التسليم</button>
+</div>
 <p id="saveMsg" style="text-align:center;font-size:12px;color:#2E7D32;font-weight:700;margin:8px 0 0;"></p>
 </div>
 
@@ -224,166 +227,192 @@ input:focus,select:focus{border-color:#FFD54F}
 <script>
 function toggleSidebar(){let s=document.getElementById('sidebar');if(window.innerWidth<=900){s.classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}else{s.classList.toggle('closed');document.querySelector('.main').classList.toggle('full');}}
 function logout(){if(window.signOutUser) return signOutUser();localStorage.removeItem('currentUser');location.href='login.html';}
+
+// ===== ROLES - ENGLISH ONLY - زي قاعدة البيانات بالظبط =====
+const ROLES = {
+  manager: 'Manager',
+  supervisor: 'Supervisor',
+  employee: 'Employee',
+  visitor: 'Visitor',
+  admin: 'Manager' // admin بيتعامل زي manager
+};
+function normalizeRole(raw){
+  let r = String(raw || '').trim().toLowerCase();
+  // لو جاي من قاعدة البيانات: manager / supervisor / employee
+  if(r === 'manager' || r === 'admin') return 'manager';
+  if(r === 'supervisor') return 'supervisor';
+  if(r === 'employee') return 'employee';
+  if(r === 'visitor') return 'visitor';
+  return r || 'employee';
+}
 function getCurrentUser(){
-  try{let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');if(typeof u==='object'&&u.name) return u;}catch(e){}
-  return {name:'',role:''};
+  try{
+    let u = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}');
+    if(typeof u === 'object' && u.name){
+      u.role = normalizeRole(u.role || u.permission || u.type || u.accountType || 'employee');
+      return u;
+    }
+  }catch(e){}
+  return {name:'', role:'employee'};
 }
-function getReporter(){let u=getCurrentUser();return u.name||'';}
-function getMyRole(){let u=getCurrentUser();return String(u.role||u.permission||u.type||'').trim().toLowerCase();}
-// ===== اللي يقدر يعدل حالة التصريح لـ مغلق: المدير والمشرف بس - من غير كود =====
+function getReporter(){ return getCurrentUser().name || ''; }
+function getMyRole(){ return normalizeRole(getCurrentUser().role); }
+
+// ===== اللي يقفل التصريح: manager و supervisor بس - من غير كود =====
 function canClosePermit(){
-  let r=getMyRole();
-  // مدير - مشرف - ادمن - بالعربي كمان
-  if(['manager','admin','supervisor','مدير','مشرف','أدمن','ادمن'].includes(r)) return true;
-  if(r.includes('manager')||r.includes('admin')||r.includes('supervisor')||r.includes('مدير')||r.includes('مشرف')) return true;
-  return false;
+  let r = getMyRole();
+  return r === 'manager' || r === 'supervisor';
 }
-function canDeliverPermit(){ return true; } // الكل يقدر يسلم
+function canDeliverPermit(){ return true; }
+
 (function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{if(a.dataset.page===page) a.classList.add('active');});
-  let u=getCurrentUser();
-  if(u.name){document.getElementById('sideName').innerText=u.name;let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||'';if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo;let t=document.getElementById('topUser');if(t) t.innerText=u.name;}
-  let w=document.getElementById('whoCan');
-  if(w) w.innerText=' • You are: '+(u.role||'Employee')+' - '+(canClosePermit()?'You can close permits ✅':'Only Manager/Supervisor can close ❌');
+  let page = location.pathname.split('/').pop().replace('.html','') || 'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let u = getCurrentUser();
+  if(u.name){
+    document.getElementById('sideName').innerText = u.name;
+    // عرض الدور بالانجليزي فقط
+    document.getElementById('sideRole').innerText = ROLES[u.role] || u.role;
+    if(u.img || u.photo || u.photoURL) document.getElementById('sideImg').src = u.img || u.photo || u.photoURL;
+    let t = document.getElementById('topUser'); if(t) t.innerText = u.name;
+  }
+  let w = document.getElementById('whoCan');
+  if(w) w.innerText = ' • You are: ' + (ROLES[getMyRole()] || getMyRole()) + ' (' + getMyRole() + ') - ' + (canClosePermit() ? 'You can close permits' : 'Only manager / supervisor can close');
 })();
-let permits=[];
-const STATUS_MAP={'مفتوح':'Open','تم الغلق':'Closed','تم الالغاء':'Cancelled','تم الإلغاء':'Cancelled','تم التسليم':'Delivered','تم تسليم':'Delivered','Delivered':'Delivered','Open':'Open','Closed':'Closed','Cancelled':'Cancelled'};
-const TYPE_MAP={'بارد':'Cold','ساخن':'Hot','عمل علي ارتفاع':'Work at Height','عمل على ارتفاع':'Work at Height','اعمال رفع':'Lifting Works','أعمال رفع':'Lifting Works','اماكن مغلقة':'Confined Spaces','أماكن مغلقة':'Confined Spaces','صب خرسانه':'Concrete Pouring','صب خرسانة':'Concrete Pouring','كارت تحليل المخاطر':'Hazard Analysis Card','حفر':'Excavation','وردية ليليه':'Night Shift','وردية ليلية':'Night Shift','اختبار ضغط':'Pressure Test'};
-function TStatus(v){return STATUS_MAP[String(v||'').trim()]||v||'Open';}
-function TType(v){return TYPE_MAP[String(v||'').trim()]||v||'';}
-function saveLocal(){try{let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');old.permits=permits;localStorage.setItem('safetyDB',JSON.stringify(old));}catch(e){}}
+
+let permits = [];
+const STATUS_MAP = {'Open':'Open','Closed':'Closed','Cancelled':'Cancelled','Delivered':'Delivered'};
+const TYPE_MAP = {};
+function TStatus(v){ return STATUS_MAP[String(v||'').trim()] || v || 'Open'; }
+function TType(v){ return String(v||'').trim(); }
+function saveLocal(){ try{ let old = JSON.parse(localStorage.getItem('safetyDB')||'{}'); old.permits = permits; localStorage.setItem('safetyDB', JSON.stringify(old)); }catch(e){} }
 async function loadPermits(){
-  renderPermits(); // ارسم فورا حتى لو Firebase لسه بيحمل
+  renderPermits();
   try{
     if(window.db){
-      let snap=await window.db.collection('permits').get();
-      let arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+      let snap = await window.db.collection('permits').get();
+      let arr = []; snap.forEach(d=>arr.push({id:d.id, ...d.data()}));
       arr.sort((a,b)=>String(b.createdAt||b.startDate||'').localeCompare(String(a.createdAt||a.startDate||'')));
-      if(arr.length) permits=arr;
+      if(arr.length) permits = arr;
     }
-  }catch(e){console.log(e);}
-  try{let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');if(!permits.length&&old.permits) permits=old.permits;}catch(e){}
-  renderPermits();genPermitNum();
+  }catch(e){ console.log(e); }
+  try{ let old = JSON.parse(localStorage.getItem('safetyDB')||'{}'); if(!permits.length && old.permits) permits = old.permits; }catch(e){}
+  renderPermits(); genPermitNum();
 }
-function val(id){return document.getElementById(id).value.trim();}
-function setVal(id,v){document.getElementById(id).value=v||'';}
+function val(id){ return document.getElementById(id).value.trim(); }
+function setVal(id,v){ document.getElementById(id).value = v || ''; }
 function genPermitNum(){
-  let year=new Date().getFullYear();let max=0;
-  permits.forEach(p=>{let m=String(p.num||'').match(/(\d+)$/);if(m){let n=parseInt(m[1]);if(n>max)max=n;}});
-  if(!max) max=permits.length;
-  let num='PRM-'+year+'-'+String(max+1).padStart(4,'0');
-  document.getElementById('p-num').innerText=num;return num;
+  let year = new Date().getFullYear(); let max = 0;
+  permits.forEach(p=>{ let m = String(p.num||'').match(/(\d+)$/); if(m){ let n = parseInt(m[1]); if(n>max) max=n; }});
+  if(!max) max = permits.length;
+  let num = 'PRM-' + year + '-' + String(max+1).padStart(4,'0');
+  document.getElementById('p-num').innerText = num; return num;
 }
-async function changeStatus(i,newStatus){
-  let rec=permits[i];if(!rec) return;
-  // لو بيقفل التصريح - لازم يكون مدير او مشرف - من غير كود
-  if(newStatus==='Closed' && !canClosePermit()){
-    alert('❌ Only Manager / Supervisor can close permits\nاللي يقدر يقفل التصريح هو المدير والمشرف بس\nYour role: '+(getCurrentUser().role||'Employee'));
-    renderPermits();return;
+async function changeStatus(i, newStatus){
+  let rec = permits[i]; if(!rec) return;
+  if(newStatus === 'Closed' && !canClosePermit()){
+    alert('Only manager / supervisor can close permits\nYour role: ' + getMyRole() + ' (' + (ROLES[getMyRole()]||'') + ')');
+    renderPermits(); return;
   }
-  rec.status=newStatus;
-  if(newStatus==='Delivered'&&!rec.deliveredDate) rec.deliveredDate=new Date().toISOString().slice(0,10);
-  try{if(rec.id&&window.db) await window.db.collection('permits').doc(rec.id).update({status:newStatus,deliveredDate:rec.deliveredDate||null});}catch(e){}
-  saveLocal();renderPermits();
+  rec.status = newStatus;
+  if(newStatus === 'Delivered' && !rec.deliveredDate) rec.deliveredDate = new Date().toISOString().slice(0,10);
+  try{ if(rec.id && window.db) await window.db.collection('permits').doc(rec.id).update({status:newStatus, deliveredDate:rec.deliveredDate||null}); }catch(e){}
+  saveLocal(); renderPermits();
 }
-// ===== زرار تم التسليم - ظاهر دايما =====
+// ===== زرار تم التسليم - ظاهر دايما في كل كارت =====
 async function markDelivered(i){
-  let rec=permits[i];if(!rec) return;
-  let to=prompt('تم التسليم إلى من؟ • Delivered to:',rec.deliveredTo||getReporter()||'');
-  if(to===null) return;
-  rec.status='Delivered';rec.deliveredTo=to||'';rec.deliveredDate=new Date().toISOString().slice(0,10);
-  try{if(rec.id&&window.db) await window.db.collection('permits').doc(rec.id).update({status:'Delivered',deliveredTo:rec.deliveredTo,deliveredDate:rec.deliveredDate});}catch(e){}
-  saveLocal();renderPermits();
-  alert('✅ تم التسليم - '+rec.num+' إلى '+rec.deliveredTo);
+  let rec = permits[i]; if(!rec) return;
+  let to = prompt('Delivered to:', rec.deliveredTo || getReporter() || '');
+  if(to === null) return;
+  rec.status = 'Delivered'; rec.deliveredTo = to || ''; rec.deliveredDate = new Date().toISOString().slice(0,10);
+  try{ if(rec.id && window.db) await window.db.collection('permits').doc(rec.id).update({status:'Delivered', deliveredTo:rec.deliveredTo, deliveredDate:rec.deliveredDate}); }catch(e){}
+  saveLocal(); renderPermits();
+  alert('Delivered - ' + rec.num + ' to ' + rec.deliveredTo);
 }
-async function addPermit(){
+async function addPermit(forceStatus){
   if(!val('p-company')) return alert('Write company name');
   if(!val('p-start-date')) return alert('Select start date');
   if(!val('p-type')) return alert('Select permit type');
   if(!val('p-supervisor')) return alert('Write responsible supervisor');
   if(!val('p-engineer')) return alert('Write responsible engineer');
-  let safety=val('p-safety')||getReporter();
+  let safety = val('p-safety') || getReporter();
   if(!safety) return alert('Write safety officer');
-  let num=document.getElementById('p-num').innerText;
-  let status=val('p-status')||'Open';
-  if(status==='Closed'&&!canClosePermit()){alert('❌ Only Manager / Supervisor can create a Closed permit');return;}
-  let rec={num:num,company:val('p-company'),startDate:val('p-start-date'),startTime:val('p-start-time')||'08:00',type:val('p-type'),endDate:val('p-end-date')||val('p-start-date'),endTime:val('p-end-time')||'17:00',supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:safety,reporter:safety,reporterName:safety,status:status,location:val('p-location')||'Zone A',notes:val('p-notes'),deliveredTo:val('p-deliveredTo')||'',deliveredDate:val('p-deliveredDate')||'',createdAt:new Date().toISOString()};
-  if(status==='Delivered'&&!rec.deliveredDate) rec.deliveredDate=new Date().toISOString().slice(0,10);
-  permits.unshift(rec);renderPermits();genPermitNum();
-  document.getElementById('saveMsg').innerText='✅ Saved - '+num+' - '+rec.type+' - '+rec.status;
-  try{if(window.db){let ref=await window.db.collection('permits').add(rec);rec.id=ref.id;saveLocal();}else saveLocal();}catch(e){saveLocal();document.getElementById('saveMsg').innerText='✅ Saved locally (Firebase offline) - '+num;}
+  let num = document.getElementById('p-num').innerText;
+  let status = forceStatus || val('p-status') || 'Open';
+  if(status === 'Closed' && !canClosePermit()){ alert('Only manager / supervisor can create a Closed permit - Your role: ' + getMyRole()); return; }
+  let rec = {num:num, company:val('p-company'), startDate:val('p-start-date'), startTime:val('p-start-time')||'08:00', type:val('p-type'), endDate:val('p-end-date')||val('p-start-date'), endTime:val('p-end-time')||'17:00', supervisor:val('p-supervisor'), engineer:val('p-engineer'), safety:safety, reporter:safety, reporterName:safety, status:status, location:val('p-location')||'Zone A', notes:val('p-notes'), deliveredTo:val('p-deliveredTo')||'', deliveredDate:val('p-deliveredDate')||'', createdAt:new Date().toISOString()};
+  if(status === 'Delivered' && !rec.deliveredDate) rec.deliveredDate = new Date().toISOString().slice(0,10);
+  permits.unshift(rec); renderPermits(); genPermitNum();
+  document.getElementById('saveMsg').innerText = 'Saved - ' + num + ' - ' + rec.type + ' - ' + rec.status + ' - by ' + getMyRole();
+  try{ if(window.db){ let ref = await window.db.collection('permits').add(rec); rec.id = ref.id; saveLocal(); } else saveLocal(); }catch(e){ saveLocal(); document.getElementById('saveMsg').innerText = 'Saved locally (Firebase offline) - ' + num; }
   ['p-supervisor','p-engineer','p-safety','p-notes','p-deliveredTo','p-deliveredDate'].forEach(id=>setVal(id,''));
-  setVal('p-type','');setVal('p-status','Open');setVal('p-company','RMED');
+  setVal('p-type',''); setVal('p-status','Open'); setVal('p-company','RMED');
 }
 function renderPermits(){
-  // لو العناصر لسه مش موجودة متكسرش الصفحة
   try{
-    let q=(document.getElementById('searchP')?.value||'').toLowerCase();
-    let fs=document.getElementById('filterStatus')?.value||'';
-    let ft=document.getElementById('filterType')?.value||'';
-    let list=permits.filter(x=>{
-      let okQ=((x.num||'')+' '+(TType(x.type)||'')+' '+(x.company||'')+' '+(x.supervisor||'')+' '+(x.engineer||'')+' '+(x.safety||'')).toLowerCase().includes(q);
-      let okS=!fs||TStatus(x.status)===fs;
-      let okT=!ft||TType(x.type)===ft;
+    let q = (document.getElementById('searchP')?.value||'').toLowerCase();
+    let fs = document.getElementById('filterStatus')?.value||'';
+    let ft = document.getElementById('filterType')?.value||'';
+    let list = permits.filter(x=>{
+      let okQ = ((x.num||'')+' '+(TType(x.type)||'')+' '+(x.company||'')+' '+(x.supervisor||'')+' '+(x.engineer||'')+' '+(x.safety||'')).toLowerCase().includes(q);
+      let okS = !fs || TStatus(x.status)===fs;
+      let okT = !ft || TType(x.type)===ft;
       return okQ&&okS&&okT;
     });
-    // ===== الاحصائيات - تظهر دايما حتى لو 0 =====
-    let el=(id)=>document.getElementById(id);
-    if(el('k-total')) el('k-total').innerText=permits.length;
-    if(el('k-open')) el('k-open').innerText=permits.filter(x=>TStatus(x.status)==='Open').length;
-    if(el('k-delivered')) el('k-delivered').innerText=permits.filter(x=>TStatus(x.status)==='Delivered').length;
-    if(el('k-closed')) el('k-closed').innerText=permits.filter(x=>TStatus(x.status)==='Closed').length;
-    if(el('k-cancel')) el('k-cancel').innerText=permits.filter(x=>TStatus(x.status)==='Cancelled').length;
-    let byComp={};
+    let el = (id)=>document.getElementById(id);
+    if(el('k-total')) el('k-total').innerText = permits.length;
+    if(el('k-open')) el('k-open').innerText = permits.filter(x=>TStatus(x.status)==='Open').length;
+    if(el('k-delivered')) el('k-delivered').innerText = permits.filter(x=>TStatus(x.status)==='Delivered').length;
+    if(el('k-closed')) el('k-closed').innerText = permits.filter(x=>TStatus(x.status)==='Closed').length;
+    if(el('k-cancel')) el('k-cancel').innerText = permits.filter(x=>TStatus(x.status)==='Cancelled').length;
+    let byComp = {};
     permits.forEach(x=>{
-      let c=x.company||'RMED';
-      if(!byComp[c]) byComp[c]={total:0,delivered:0,open:0,closed:0};
+      let c = x.company || 'RMED';
+      if(!byComp[c]) byComp[c] = {total:0, delivered:0, open:0, closed:0};
       byComp[c].total++;
       if(TStatus(x.status)==='Delivered') byComp[c].delivered++;
       if(TStatus(x.status)==='Open') byComp[c].open++;
       if(TStatus(x.status)==='Closed') byComp[c].closed++;
     });
-    let compArr=Object.entries(byComp).map(([name,v])=>({name,...v})).sort((a,b)=>b.delivered-a.delivered);
-    if(el('k-companies')) el('k-companies').innerText=compArr.length;
-    if(el('k-companies-sub')) el('k-companies-sub').innerText=compArr.length?compArr[0].name+' Top':'-';
-    if(el('k-top-delivered')) el('k-top-delivered').innerText=compArr.length?compArr[0].name:'-';
-    if(el('k-top-delivered-n')) el('k-top-delivered-n').innerText=compArr.length?compArr[0].delivered+' Delivered / '+compArr[0].total+' Total':'0 Delivered';
-    if(el('k-low-delivered')) el('k-low-delivered').innerText=compArr.length?compArr[compArr.length-1].name:'-';
-    if(el('k-low-delivered-n')) el('k-low-delivered-n').innerText=compArr.length?compArr[compArr.length-1].delivered+' Delivered / '+compArr[compArr.length-1].total+' Total':'0 Delivered';
+    let compArr = Object.entries(byComp).map(([name,v])=>({name,...v})).sort((a,b)=>b.delivered-a.delivered);
+    if(el('k-companies')) el('k-companies').innerText = compArr.length;
+    if(el('k-companies-sub')) el('k-companies-sub').innerText = compArr.length ? compArr[0].name + ' Top' : '-';
+    if(el('k-top-delivered')) el('k-top-delivered').innerText = compArr.length ? compArr[0].name : '-';
+    if(el('k-top-delivered-n')) el('k-top-delivered-n').innerText = compArr.length ? compArr[0].delivered + ' Delivered / ' + compArr[0].total + ' Total' : '0 Delivered';
+    if(el('k-low-delivered')) el('k-low-delivered').innerText = compArr.length ? compArr[compArr.length-1].name : '-';
+    if(el('k-low-delivered-n')) el('k-low-delivered-n').innerText = compArr.length ? compArr[compArr.length-1].delivered + ' Delivered / ' + compArr[compArr.length-1].total + ' Total' : '0 Delivered';
     if(el('deliveredByCompany')){
-      if(compArr.length) el('deliveredByCompany').innerHTML='<div style="display:flex;gap:8px;overflow-x:auto;">'+compArr.map(c=>'<div style="min-width:160px;background:#fff;border:1px solid #EEE;border-radius:10px;padding:10px;text-align:center;"><span class="icon3d mini purple" style="margin:auto;"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"></span><b style="display:block;margin-top:6px;">'+c.name+'</b><div style="font-size:12px;color:#7B1FA2;font-weight:800;">📦 '+c.delivered+' Delivered</div><div style="font-size:11px;color:#777;">Total: '+c.total+' • Open: '+c.open+' • Closed: '+c.closed+' • '+(c.total?Math.round(c.delivered/c.total*100):0)+'% Delivered</div></div>').join('')+'</div>';
-      else el('deliveredByCompany').innerHTML='<p style="text-align:center;color:#999;">No companies yet - Register first permit above</p>';
+      if(compArr.length) el('deliveredByCompany').innerHTML = '<div style="display:flex;gap:8px;overflow-x:auto;">' + compArr.map(c=>'<div style="min-width:160px;background:#fff;border:1px solid #EEE;border-radius:10px;padding:10px;text-align:center;"><span class="icon3d mini purple" style="margin:auto;"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"></span><b style="display:block;margin-top:6px;">'+c.name+'</b><div style="font-size:12px;color:#7B1FA2;font-weight:800;">'+c.delivered+' Delivered</div><div style="font-size:11px;color:#777;">Total: '+c.total+' • Open: '+c.open+' • Closed: '+c.closed+' • '+(c.total?Math.round(c.delivered/c.total*100):0)+'% Delivered</div></div>').join('') + '</div>';
+      else el('deliveredByCompany').innerHTML = '<p style="text-align:center;color:#999;">No companies yet - Register first permit above</p>';
     }
-    let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Hazard Analysis Card','Excavation','Night Shift','Pressure Test'];
-    let typeIcons={'Cold':['https://img.icons8.com/3d-fluency/94/snow.png','blue'],'Hot':['https://img.icons8.com/3d-fluency/94/fire.png','red'],'Work at Height':['https://img.icons8.com/3d-fluency/94/ladder.png','orange'],'Lifting Works':['https://img.icons8.com/3d-fluency/94/crane.png','gold'],'Confined Spaces':['https://img.icons8.com/3d-fluency/94/door.png','grey'],'Concrete Pouring':['https://img.icons8.com/3d-fluency/94/brick.png','orange'],'Hazard Analysis Card':['https://img.icons8.com/3d-fluency/94/warning.png','red'],'Excavation':['https://img.icons8.com/3d-fluency/94/shovel.png','orange'],'Night Shift':['https://img.icons8.com/3d-fluency/94/moon.png','blue'],'Pressure Test':['https://img.icons8.com/3d-fluency/94/gauge.png','teal']};
-    let arMap={'Cold':'بارد','Hot':'ساخن','Work at Height':'العمل على ارتفاع','Lifting Works':'أعمال الرفع','Confined Spaces':'مساحة مغلقة','Concrete Pouring':'خرسانة','Hazard Analysis Card':'تحليل المخاطر','Excavation':'حفر','Night Shift':'وردية ليلية','Pressure Test':'اختبار ضغط'};
-    if(el('typeStats')) el('typeStats').innerHTML=types.map(t=>{let c=permits.filter(x=>TType(x.type)===t).length;let ic=typeIcons[t]||['https://img.icons8.com/3d-fluency/94/clipboard.png','blue'];return '<div class="type-chip"><span class="icon3d mini '+ic[1]+'"><img src="'+ic[0]+'"></span><div><small>'+t+' • '+arMap[t]+'</small><b>'+c+'</b></div></div>';}).join('');
+    let types = ['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Hazard Analysis Card','Excavation','Night Shift','Pressure Test'];
+    let typeIcons = {'Cold':['https://img.icons8.com/3d-fluency/94/snow.png','blue'],'Hot':['https://img.icons8.com/3d-fluency/94/fire.png','red'],'Work at Height':['https://img.icons8.com/3d-fluency/94/ladder.png','orange'],'Lifting Works':['https://img.icons8.com/3d-fluency/94/crane.png','gold'],'Confined Spaces':['https://img.icons8.com/3d-fluency/94/door.png','grey'],'Concrete Pouring':['https://img.icons8.com/3d-fluency/94/brick.png','orange'],'Hazard Analysis Card':['https://img.icons8.com/3d-fluency/94/warning.png','red'],'Excavation':['https://img.icons8.com/3d-fluency/94/shovel.png','orange'],'Night Shift':['https://img.icons8.com/3d-fluency/94/moon.png','blue'],'Pressure Test':['https://img.icons8.com/3d-fluency/94/gauge.png','teal']};
+    let arMap = {'Cold':'بارد','Hot':'ساخن','Work at Height':'العمل على ارتفاع','Lifting Works':'أعمال الرفع','Confined Spaces':'مساحة مغلقة','Concrete Pouring':'خرسانة','Hazard Analysis Card':'تحليل المخاطر','Excavation':'حفر','Night Shift':'وردية ليلية','Pressure Test':'اختبار ضغط'};
+    if(el('typeStats')) el('typeStats').innerHTML = types.map(t=>{ let c = permits.filter(x=>TType(x.type)===t).length; let ic = typeIcons[t]||['https://img.icons8.com/3d-fluency/94/clipboard.png','blue']; return '<div class="type-chip"><span class="icon3d mini '+ic[1]+'"><img src="'+ic[0]+'"></span><div><small>'+t+' • '+arMap[t]+'</small><b>'+c+'</b></div></div>'; }).join('');
     if(!el('permitsTable')) return;
-    if(!list.length){el('permitsTable').innerHTML='<p style="text-align:center;color:#999;">No permits yet - Register first permit above</p>';return;}
-    el('permitsTable').innerHTML=list.map(x=>{
-      let idx=permits.indexOf(x);
-      let st=TStatus(x.status);
-      let cls=st==='Open'?'open':st==='Closed'?'closed':st==='Delivered'?'delivered':'cancel';
-      let badgeTxt=st==='Open'?'Open | مفتوح':st==='Closed'?'Closed | مغلق':st==='Delivered'?'Delivered | تم التسليم':'Cancelled | ملغي';
-      let badgeIcon=st==='Delivered'?'https://img.icons8.com/3d-fluency/94/delivered.png':st==='Open'?'https://img.icons8.com/3d-fluency/94/checked.png':'https://img.icons8.com/3d-fluency/94/warning.png';
-      let typeAr=arMap[TType(x.type)]||'';
-      let delInfo=st==='Delivered'?'<br><small style="color:#7B1FA2;font-weight:700;">📦 Delivered to: '+(x.deliveredTo||'-')+' • '+(x.deliveredDate||'')+'</small>':'';
-      let typeIc=typeIcons[TType(x.type)]||['https://img.icons8.com/3d-fluency/94/clipboard.png','blue'];
-      // زرار تم التسليم ظاهر دايما - لو التصريح اصلا تم تسليمه يبقى زراره اخضر
+    if(!list.length){ el('permitsTable').innerHTML = '<p style="text-align:center;color:#999;">No permits yet - Register first permit above</p>'; return; }
+    el('permitsTable').innerHTML = list.map(x=>{
+      let idx = permits.indexOf(x);
+      let st = TStatus(x.status);
+      let cls = st==='Open'?'open':st==='Closed'?'closed':st==='Delivered'?'delivered':'cancel';
+      let badgeTxt = st==='Open'?'Open | مفتوح':st==='Closed'?'Closed | مغلق':st==='Delivered'?'Delivered | تم التسليم':'Cancelled | ملغي';
+      let badgeIcon = st==='Delivered'?'https://img.icons8.com/3d-fluency/94/delivered.png':st==='Open'?'https://img.icons8.com/3d-fluency/94/checked.png':'https://img.icons8.com/3d-fluency/94/warning.png';
+      let typeAr = arMap[TType(x.type)]||'';
+      let delInfo = st==='Delivered' ? '<br><small style="color:#7B1FA2;font-weight:700;">Delivered to: '+(x.deliveredTo||'-')+' • '+(x.deliveredDate||'')+'</small>' : '';
+      let typeIc = typeIcons[TType(x.type)]||['https://img.icons8.com/3d-fluency/94/clipboard.png','blue'];
       let deliveredBtn = st==='Delivered'
-        ? '<button class="btn2" style="background:#2E7D32;color:#fff;" onclick="markDelivered('+idx+')">✅ تم التسليم - تعديل</button>'
-        : '<button class="btn2 btn-delivered" onclick="markDelivered('+idx+')"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"> 📦 تم التسليم</button>';
-      return '<div class="permit-card '+cls+'"><span class="icon3d small '+typeIc[1]+'"><img src="'+typeIc[0]+'"></span><div class="pc-info"><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"><b>'+x.num+' • '+TType(x.type)+' | '+typeAr+'</b><span class="badge '+cls+'"><img src="'+badgeIcon+'">'+badgeTxt+'</span></div><small>'+(x.location||'Zone A')+' • '+x.startDate+' • '+x.startTime+'-'+x.endTime+' • '+x.supervisor+'</small><br><small>Supervisor: '+x.supervisor+' | Engineer: '+x.engineer+' | Safety: '+x.safety+'</small>'+delInfo+'<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><select onchange="changeStatus('+idx+',this.value)" style="width:auto;padding:8px;font-size:12px;"><option '+(st==='Open'?'selected':'')+'>Open</option><option '+(st==='Delivered'?'selected':'')+'>Delivered</option><option '+(st==='Closed'?'selected':'')+'>Closed</option><option '+(st==='Cancelled'?'selected':'')+'>Cancelled</option></select>'+deliveredBtn+'<button class="btn2" style="color:#D32F2F;background:#fff;border:1px solid #EEE;" onclick="delPermit('+idx+')"><img src="https://img.icons8.com/3d-fluency/94/trash.png"> Delete</button></div><small style="color:#999;">تغيير لـ Closed: المدير والمشرف بس • من غير كود</small></div><div class="qr"><img src="https://img.icons8.com/3d-fluency/94/qr-code.png">QR Verify<br>تحقق QR</div></div>';
+        ? '<button class="btn2" style="background:#2E7D32;color:#fff;" onclick="markDelivered('+idx+')">Delivered - Edit</button>'
+        : '<button class="btn2 btn-delivered" onclick="markDelivered('+idx+')"><img src="https://img.icons8.com/3d-fluency/94/delivered.png"> Delivered • تم التسليم</button>';
+      return '<div class="permit-card '+cls+'"><span class="icon3d small '+typeIc[1]+'"><img src="'+typeIc[0]+'"></span><div class="pc-info"><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"><b>'+x.num+' • '+TType(x.type)+' | '+typeAr+'</b><span class="badge '+cls+'"><img src="'+badgeIcon+'">'+badgeTxt+'</span></div><small>'+(x.location||'Zone A')+' • '+x.startDate+' • '+x.startTime+'-'+x.endTime+' • '+x.supervisor+'</small><br><small>Supervisor: '+x.supervisor+' | Engineer: '+x.engineer+' | Safety: '+x.safety+'</small>'+delInfo+'<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><select onchange="changeStatus('+idx+',this.value)" style="width:auto;padding:8px;font-size:12px;"><option '+(st==='Open'?'selected':'')+'>Open</option><option '+(st==='Delivered'?'selected':'')+'>Delivered</option><option '+(st==='Closed'?'selected':'')+'>Closed</option><option '+(st==='Cancelled'?'selected':'')+'>Cancelled</option></select>'+deliveredBtn+'<button class="btn2" style="color:#D32F2F;background:#fff;border:1px solid #EEE;" onclick="delPermit('+idx+')"><img src="https://img.icons8.com/3d-fluency/94/trash.png"> Delete</button></div><small style="color:#999;">Close: manager / supervisor only - No code</small></div><div class="qr"><img src="https://img.icons8.com/3d-fluency/94/qr-code.png">QR Verify<br>تحقق QR</div></div>';
     }).join('');
-  }catch(e){console.log('render error',e);}
+  }catch(e){ console.log('render error', e); }
 }
-async function delPermit(i){if(!confirm('Delete this permit?')) return;let rec=permits[i];try{if(rec&&rec.id&&window.db) await window.db.collection('permits').doc(rec.id).delete();}catch(e){}permits.splice(i,1);saveLocal();renderPermits();genPermitNum();}
-async function clearPermits(){if(!confirm('Delete all permits?')) return;try{if(window.db){let snap=await window.db.collection('permits').get();for(let d of snap.docs) await window.db.collection('permits').doc(d.id).delete();}}catch(e){}permits=[];saveLocal();renderPermits();genPermitNum();}
-function exportPermits(){if(!permits.length) return alert('No data');let csv='Permit Number,Company,Start Date,Start Time,Permit Type,End Date,End Time,Supervisor,Engineer,Safety,Status,Delivered To,Delivered Date,Notes\n'+permits.map(x=>[x.num,x.company,x.startDate,x.startTime,TType(x.type),x.endDate,x.endTime,x.supervisor,x.engineer,x.safety,TStatus(x.status),x.deliveredTo||'',x.deliveredDate||'',(x.notes||'').replace(/,/g,' ')].join(',')).join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='permits.csv';a.click();}
-document.getElementById('p-start-date').value=new Date().toISOString().slice(0,10);
-document.getElementById('p-end-date').value=new Date().toISOString().slice(0,10);
-let _rep=getReporter();if(_rep) document.getElementById('p-safety').value=_rep;
+async function delPermit(i){ if(!confirm('Delete this permit?')) return; let rec = permits[i]; try{ if(rec && rec.id && window.db) await window.db.collection('permits').doc(rec.id).delete(); }catch(e){} permits.splice(i,1); saveLocal(); renderPermits(); genPermitNum(); }
+async function clearPermits(){ if(!confirm('Delete all permits?')) return; try{ if(window.db){ let snap = await window.db.collection('permits').get(); for(let d of snap.docs) await window.db.collection('permits').doc(d.id).delete(); } }catch(e){} permits = []; saveLocal(); renderPermits(); genPermitNum(); }
+function exportPermits(){ if(!permits.length) return alert('No data'); let csv = 'Permit Number,Company,Start Date,Start Time,Permit Type,End Date,End Time,Supervisor,Engineer,Safety,Status,Delivered To,Delivered Date,Notes\n' + permits.map(x=>[x.num,x.company,x.startDate,x.startTime,TType(x.type),x.endDate,x.endTime,x.supervisor,x.engineer,x.safety,TStatus(x.status),x.deliveredTo||'',x.deliveredDate||'',(x.notes||'').replace(/,/g,' ')].join(',')).join('\n'); let blob = new Blob(['\ufeff'+csv],{type:'text/csv'}); let a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'permits.csv'; a.click(); }
+document.getElementById('p-start-date').value = new Date().toISOString().slice(0,10);
+document.getElementById('p-end-date').value = new Date().toISOString().slice(0,10);
+let _rep = getReporter(); if(_rep) document.getElementById('p-safety').value = _rep;
 loadPermits();
 </script>
 </body>
