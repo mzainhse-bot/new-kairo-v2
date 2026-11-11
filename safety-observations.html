@@ -34,7 +34,6 @@ body{margin:0;background:#0A1B33;color:#fff}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-/* ===== HEADER - EXACT IMAGE ===== */
 .page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:20px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
 .page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
 .page-head h1{margin:0;font-size:32px;line-height:1.1;color:#fff;position:relative} .page-head small{color:#FFD54F;font-size:14px;font-weight:700;display:block}
@@ -50,28 +49,65 @@ body{margin:0;background:#0A1B33;color:#fff}
 h1.title{text-align:center;color:#fff;margin:14px 0 2px;font-size:26px}
 h1.title span{color:#FFD54F}
 .sub{text-align:center;color:#B8C6D6;margin-bottom:14px;font-size:14px}
-/* ===== KPI 5 - EXACT IMAGE WITH REAL 3D ICONS ===== */
+/* HERO - LIKE NCR */
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px 18px 0;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.hero-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#FFE082;font-weight:700}
+.hero-visual{position:relative;height:170px;display:flex;align-items:center;justify-content:center;margin:8px 0 0}
+.hero-clip{width:150px;height:150px;position:relative;z-index:2;filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-clip img{width:100%;height:100%;object-fit:contain}
+.hero-clip span{font-size:90px;display:none}
+.hero-lens{position:absolute;right:22%;top:8px;width:110px;height:110px;z-index:3;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transform:rotate(18deg);animation:float3d 3.4s ease-in-out infinite}
+.hero-lens img{width:100%;height:100%;object-fit:contain}
+.hero-lens span{font-size:70px;display:none}
+.hero-title{position:absolute;left:18px;bottom:14px;z-index:4}
+.hero-title b{font-size:22px;display:block;color:#fff}
+.hero-title small{color:#FFE082;font-size:12px}
+.hero-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hero-pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.35);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#FFE082}
+@keyframes float3d{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1deg)}}
+/* KPI WHITE LIKE NCR */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px}
 @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
-.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);color:#fff;position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;top:-28px;left:50%;transform:translateX(-50%);width:140px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
-.card b{font-size:26px;color:#fff;display:block;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.card span{font-size:12px;color:#B8C6D6;line-height:1.4;display:block}
-.card small{display:block;font-size:11px;color:#8A9AB0;margin-top:4px}
-.icon3d{width:84px;height:84px;margin:0 auto 8px;border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(400px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));overflow:hidden}
-.icon3d img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.45));position:relative;z-index:2}
-.icon3d:after{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.card{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44;position:relative;overflow:hidden}
+.card b{font-size:26px;color:#0A1F44;display:block}
+.card span{font-size:12px;color:#555;line-height:1.4;display:block}
+.card small{display:block;font-size:11px;color:#999;margin-top:4px}
+.icon3d{width:68px;height:68px;margin:0 auto 8px;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(400px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.35));overflow:hidden}
+.icon3d img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.3));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
 .icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
 .icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
 .icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
 .icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
 .icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
-.icon3d .fallback{font-size:42px;position:relative;z-index:2;display:none}
+.icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d .fallback{font-size:34px;position:relative;z-index:2;display:none}
+/* DONUT + BEST LIKE NCR */
+.manager-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:12px;margin-bottom:14px}
+@media(max-width:900px){.manager-grid{grid-template-columns:1fr}}
+.donut-card{background:#fff;border-radius:16px;padding:16px;text-align:center;color:#0A1F44;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.donut-wrap{position:relative;width:150px;height:150px;margin:10px auto}
+.donut-wrap canvas{width:100%;height:100%}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-center b{font-size:28px;color:#2E7D32}
+.best-card{background:#fff;border-radius:16px;padding:16px;color:#0A1F44;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.best-head{display:flex;gap:10px;align-items:center}
+.best-head .trophy3d{width:54px;height:54px;border-radius:14px;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 12px rgba(0,0,0,.3);flex-shrink:0}
+.best-head .trophy3d img{width:40px;height:40px}
+.best-head .trophy3d span{font-size:28px;display:none}
+.best-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EEE}
+.best-row:last-child{border-bottom:none}
+.medal{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0;box-shadow:0 4px 8px rgba(0,0,0,.25)}
+.medal.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);color:#0A1F44}
+.medal.silver{background:radial-gradient(circle at 30% 25%,#fff,#C0C0C0 45%,#808080 75%);color:#0A1F44}
+.medal.bronze{background:radial-gradient(circle at 30% 25%,#FFE0B2,#CD7F32 45%,#7A3E00 75%);color:#fff}
+.bar{height:18px;background:#EEE;border-radius:20px;overflow:hidden;margin:6px 0}
+.bar-fill{height:100%;background:#2E7D32;transition:width .3s}
+.bar-fill.open{background:#FF9800}
 .stats2{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
 @media(max-width:900px){.stats2{grid-template-columns:repeat(2,1fr)}}
 .stats2 .card{padding:12px 10px}
 .stats2 .card b{font-size:16px}
-/* ===== TWO COLUMNS LIKE IMAGE ===== */
 .two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-bottom:14px;align-items:start}
 @media(max-width:900px){.two-col{grid-template-columns:1fr}}
 .form{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
@@ -104,7 +140,6 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -139,7 +174,6 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
 <div class="header-logo">
@@ -149,10 +183,17 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">⚙️</div><div class="admin"><img id="topImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span id="topUser">Admin ▾</span></div></div>
 </div>
 <div class="container">
-
 <h1 class="title">📋 Safety <span>Observations</span></h1>
 <p class="sub">Safety Observations - Record all observations and follow closing them • سجل كل الملاحظات وتابع إغلاقها</p>
-
+<!-- HERO -->
+<div class="hero">
+<div class="hero-top"><span>ملاحظات السلامة • Safety Observations</span><span>RMED • 🔔 👤</span></div>
+<div class="hero-visual">
+<div class="hero-clip"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>📋</span></div>
+<div class="hero-lens"><img src="https://img.icons8.com/3d-fluency/94/search.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔍</span></div>
+<div class="hero-title"><b>Observations Dashboard</b><small>Safety Monitoring & Closure • مراقبة السلامة والإغلاق</small><div class="hero-pills"><span id="hero-total">Total: 0</span><span id="hero-close">Closing: 0%</span><span id="hero-open">Open: 0</span></div></div>
+</div>
+</div>
 <div class="stats">
 <div class="card"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📋</span></div><b id="total">0</b><span>Total Observations<br>إجمالي الملاحظات</span></div>
 <div class="card"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/folder.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📂</span></div><b id="cOpen">0</b><span>Open<br>مفتوحة</span></div>
@@ -160,14 +201,17 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <div class="card"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/location-pin.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📍</span></div><b id="topLoc">-</b><span>Top Place With Observations<br>أكثر مكان</span></div>
 <div class="card"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👤</span></div><b id="topPerson">-</b><span>Top Person Reports<br>أكثر مبلغ</span></div>
 </div>
-
+<!-- DONUT + BEST -->
+<div class="manager-grid">
+<div class="donut-card"><b style="font-size:14px;">نسبة الإغلاق • Closing Percentage</b><div class="donut-wrap"><canvas id="obsChart" width="150" height="150"></canvas><div class="donut-center"><b id="donut-p">0%</b><small style="color:#999;font-size:11px;">Closing</small></div></div><div style="font-size:12px;color:#2E7D32;font-weight:700;">↑ +5% This Month • هذا الشهر +5%</div><div style="display:flex;justify-content:space-between;font-size:12px;margin-top:10px;"><span>🟢 Closed: <b id="leg-closed">0</b></span><span id="leg-closed-p">0%</span></div><div class="bar"><div class="bar-fill" id="bar-closed" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;"><span>🟠 Open: <b id="leg-open">0</b></span><span id="leg-open-p">0%</span></div><div class="bar"><div class="bar-fill open" id="bar-open" style="width:0%"></div></div><div style="display:flex;justify-content:space-between;font-size:12px;"><span>⚠️ Unsafe Condition: <b id="leg-cond">0</b></span><span>🚶 Unsafe Act: <b id="leg-act">0</b></span></div></div>
+<div class="best-card"><div class="best-head"><div class="trophy3d"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🏆</span></div><div><b style="font-size:14px;">Top Reporters • أفضل المبلغين</b><br><small style="color:#E65100;font-weight:700;">Best Closing Reporter • أفضل مبلغ إغلاق</small></div></div><div id="bestList"></div><div style="margin-top:10px;background:#FFF3E0;border-radius:10px;padding:10px;text-align:center;"><small style="color:#999;">📍 Top Place</small><br><b id="best-place" style="font-size:15px;">-</b></div></div>
+</div>
 <div class="stats2">
 <div class="card"><b id="cCond">0</b><span>Unsafe Condition • ظرف غير آمن</span></div>
 <div class="card"><b id="cAct">0</b><span>Unsafe Act • سلوك غير آمن</span></div>
 <div class="card"><b id="lowLoc">-</b><span>Lowest Place • أقل مكان</span></div>
 <div class="card"><b id="lowPerson">-</b><span>Lowest Person • أقل مبلغ</span></div>
 </div>
-
 <div class="two-col">
 <div class="form">
 <h3>➕ Add New Observation • إضافة ملاحظة جديدة</h3>
@@ -187,7 +231,6 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <textarea id="action" placeholder="Write proposed corrective action..."></textarea>
 <button class="save" onclick="addObs()">💾 Save Observation • حفظ الملاحظة</button>
 </div>
-
 <div class="record-card">
 <h3>📋 Observations Record • سجل الملاحظات</h3>
 <div class="top">
@@ -204,10 +247,8 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </div>
 </div>
 </div>
-
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -230,16 +271,11 @@ function getReporter(){
   let nm=getReporter();
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo){ document.getElementById('sideImg').src=u.img||u.photo; document.getElementById('topImg').src=u.img||u.photo; } } let t=document.getElementById('topUser'); if(t) t.innerText=nm+' ▾'; }
 })();
-
-// ✅ FIREBASE - Data from Firebase
 let data = [];
-
-// Translate old AR -> EN display, new saves EN only
 const TYPE_MAP={'ظرف غير آمن':'Unsafe Condition','سلوك غير آمن':'Unsafe Act','Unsafe Condition':'Unsafe Condition','Unsafe Act':'Unsafe Act'};
 const STATUS_MAP={'مفتوح':'Open','مغلق':'Closed','Open':'Open','Closed':'Closed'};
 function TType(v){ return TYPE_MAP[String(v||'').trim()]||v||'Unsafe Condition'; }
 function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Open'; }
-
 async function loadObs(){
   try{
     if(window.db){
@@ -262,7 +298,6 @@ async function loadObs(){
   }catch(e){}
   render();
 }
-
 document.getElementById('date').value = new Date().toISOString().slice(0,10);
 document.getElementById('time').value = new Date().toTimeString().slice(0,5);
 let _rep=getReporter(); if(_rep) document.getElementById('reporter').value=_rep;
@@ -292,16 +327,42 @@ let _r=getReporter(); if(_r) document.getElementById('reporter').value=_r;
 render(); alert('Observation saved in Firebase ✅');
 });});
 }
+function drawDonut(closed, open){
+  let c=document.getElementById('obsChart'); if(!c) return; let ctx=c.getContext('2d');
+  ctx.clearRect(0,0,150,150);
+  let total=closed+open; if(!total){ ctx.fillStyle='#EEE'; ctx.beginPath(); ctx.arc(75,75,68,0,Math.PI*2); ctx.fill(); return; }
+  let aClosed=(closed/total)*Math.PI*2;
+  ctx.strokeStyle='#FFD54F'; ctx.lineWidth=10; ctx.beginPath(); ctx.arc(75,75,68,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle='#2E7D32'; ctx.beginPath(); ctx.moveTo(75,75); ctx.arc(75,75,62,-Math.PI/2,-Math.PI/2+aClosed); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#FF9800'; ctx.beginPath(); ctx.moveTo(75,75); ctx.arc(75,75,62,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(75,75,40,0,Math.PI*2); ctx.fill();
+}
 function render(){
 let q=document.getElementById('search').value.toLowerCase();
 let ft=document.getElementById('filterType').value;
 let fs=document.getElementById('filterStatus').value;
 let filtered=data.filter(d=> (!ft||TType(d.type)==ft)&&(!fs||TStatus(d.status)==fs)&&((d.reporter+d.place+d.desc).toLowerCase().includes(q)) );
 document.getElementById('total').textContent=data.length;
-document.getElementById('cCond').textContent=data.filter(d=>TType(d.type)=='Unsafe Condition').length;
-document.getElementById('cAct').textContent=data.filter(d=>TType(d.type)=='Unsafe Act').length;
-document.getElementById('cOpen').textContent=data.filter(d=>TStatus(d.status)=='Open').length;
-document.getElementById('cClosed').textContent=data.filter(d=>TStatus(d.status)=='Closed').length;
+let cCond=data.filter(d=>TType(d.type)=='Unsafe Condition').length;
+let cAct=data.filter(d=>TType(d.type)=='Unsafe Act').length;
+let cOpen=data.filter(d=>TStatus(d.status)=='Open').length;
+let cClosed=data.filter(d=>TStatus(d.status)=='Closed').length;
+document.getElementById('cCond').textContent=cCond;
+document.getElementById('cAct').textContent=cAct;
+document.getElementById('cOpen').textContent=cOpen;
+document.getElementById('cClosed').textContent=cClosed;
+let closeP=data.length?Math.round(cClosed/data.length*100):0;
+let openP=data.length?Math.round(cOpen/data.length*100):0;
+document.getElementById('hero-total').innerText='Total: '+data.length;
+document.getElementById('hero-close').innerText='Closing: '+closeP+'%';
+document.getElementById('hero-open').innerText='Open: '+cOpen;
+document.getElementById('donut-p').innerText=closeP+'%';
+document.getElementById('leg-closed').innerText=cClosed; document.getElementById('leg-closed-p').innerText=closeP+'%';
+document.getElementById('leg-open').innerText=cOpen; document.getElementById('leg-open-p').innerText=openP+'%';
+document.getElementById('leg-cond').innerText=cCond; document.getElementById('leg-act').innerText=cAct;
+document.getElementById('bar-closed').style.width=closeP+'%';
+document.getElementById('bar-open').style.width=openP+'%';
+drawDonut(cClosed, cOpen);
 function topLow(arr,key){
 if(!arr.length) return ['-','-'];
 let c={}; arr.forEach(d=>{c[d[key]]=(c[d[key]]||0)+1});
@@ -314,6 +375,16 @@ document.getElementById('topLoc').textContent=tLoc;
 document.getElementById('lowLoc').textContent=lLoc;
 document.getElementById('topPerson').textContent=tPer;
 document.getElementById('lowPerson').textContent=lPer;
+document.getElementById('best-place').innerText=tLoc;
+// Best reporters by closing %
+let byRep={};
+data.forEach(d=>{ if(!byRep[d.reporter]) byRep[d.reporter]={total:0,closed:0}; byRep[d.reporter].total++; if(TStatus(d.status)==='Closed') byRep[d.reporter].closed++; });
+let bestArr=Object.entries(byRep).map(([name,v])=>({name,total:v.total,closed:v.closed,closeP:v.total?Math.round(v.closed/v.total*100):0})).sort((a,b)=>b.closeP-a.closeP || b.total-a.total).slice(0,3);
+document.getElementById('bestList').innerHTML=bestArr.length?bestArr.map((v,i)=>{
+  let medalCls=i===0?'gold':i===1?'silver':'bronze';
+  let medalTxt=i===0?'🥇':i===1?'🥈':'🥉';
+  return '<div class="best-row"><span class="medal '+medalCls+'">'+medalTxt+'</span><div style="flex:1;"><b style="font-size:13px;">'+v.name+'</b><br><small style="color:#999;">'+v.total+' reports • '+v.closed+' closed</small></div><b style="color:#2E7D32;">'+v.closeP+'%</b><small style="color:#999;"> Closed</small></div>';
+}).join(''):'<p style="text-align:center;color:#999;">No reporters yet</p>';
 document.getElementById('tbody').innerHTML=filtered.map((d,i)=>`
 <tr>
 <td>${d.date}</td><td>${d.time}</td><td>${d.reporter}</td><td>${TType(d.type)}</td><td>${d.place}</td>
