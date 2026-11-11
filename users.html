@@ -6,20 +6,20 @@
 <title>Employees - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -29,35 +29,68 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-input:disabled,select:disabled{background:#ECEFF1;color:#78909C;cursor:not-allowed;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
+input,select{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
+input::placeholder{color:#8A9AB0}
+select option{background:#0A162E}
+input:disabled,select:disabled{background:#1A2F52;color:#8A9AB0;cursor:not-allowed;}
+.btn{width:100%;background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;border:1px solid #7A5A00;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);color:#fff;border-color:#FF8A80} .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+/* HERO - LIKE NCR */
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px 18px 0;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.hero-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#FFE082;font-weight:700}
+.hero-visual{position:relative;height:170px;display:flex;align-items:center;justify-content:center;margin:8px 0 0}
+.hero-main{width:150px;height:150px;position:relative;z-index:2;filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-main img{width:100%;height:100%;object-fit:contain}
+.hero-main span{font-size:90px;display:none}
+.hero-small{position:absolute;right:22%;top:8px;width:110px;height:110px;z-index:3;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transform:rotate(18deg);animation:float3d 3.4s ease-in-out infinite}
+.hero-small img{width:100%;height:100%;object-fit:contain}
+.hero-small span{font-size:70px;display:none}
+.hero-title{position:absolute;left:18px;bottom:14px;z-index:4}
+.hero-title b{font-size:22px;display:block;color:#fff}
+.hero-title small{color:#FFE082;font-size:12px}
+.hero-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hero-pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.35);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#FFE082}
+@keyframes float3d{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1deg)}}
+/* KPI WHITE LIKE NCR */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:24px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+.kpi{background:#fff;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44;position:relative;overflow:hidden}
+.kpi b{font-size:28px;display:block;line-height:1} .kpi small{color:#555;font-size:11px;line-height:1.3;display:block}
+.icon3d{width:62px;height:62px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.35));overflow:hidden}
+.icon3d img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.3));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rgba(201,162,39,.4)} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;vertical-align:middle;color:#fff}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#1A2F52;color:#FFE082;border:1px solid rgba(201,162,39,.45)}
 .badge.red{background:#FFEBEE;color:#D32F2F;} .badge.green{background:#E8F5E9;color:#2E7D32;}
 .avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;}
 .modal.open{display:block;}
-.modal-box{max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;}
+.modal-box{max-width:520px;margin:auto;background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;color:#fff;box-shadow:0 20px 40px rgba(0,0,0,.5)}
 .photo-edit{text-align:center;}
 .photo-edit img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #FFD54F;}
 .alert{background:#FFEBEE;border:1px solid #EF9A9A;color:#B71C1C;border-radius:10px;padding:12px;font-size:13px;font-weight:bold;}
@@ -67,7 +100,6 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -102,42 +134,47 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> User Management</h1><small>Employees Accounts - From Firebase</small></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
-<button class="btn2" style="background:#0F2A4D;color:#fff;padding:10px 16px;" onclick="openMyProfile()">👤 My Profile</button>
-<button class="btn2" style="padding:10px 16px;" onclick="exportBackup()">📥 Export Backup</button>
-<button class="btn2" style="padding:10px 16px;" onclick="loadUsers(true)">🔄 Reload</button>
-</div>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Employees <span>• الموظفين</span></h1><small>User Management • إدارة المستخدمين</small></div></div>
+<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">👤</div></div>
 </div>
 <div class="container">
-
 <div id="loadMsg" style="display:none;margin-bottom:14px;"></div>
-
-<div class="kpi-grid">
-<div class="kpi"><b id="k-all">0</b><small>Total Users</small></div>
-<div class="kpi"><b id="k-manager">0</b><small>Managers</small></div>
-<div class="kpi"><b id="k-sup">0</b><small>Supervisors</small></div>
-<div class="kpi"><b id="k-emp">0</b><small>Employees / Visitors</small></div>
+<!-- HERO -->
+<div class="hero">
+<div class="hero-top"><span>إدارة الموظفين • User Management</span><span>RMED • 🔔 👤</span></div>
+<div class="hero-visual">
+<div class="hero-main"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>👥</span></div>
+<div class="hero-small"><img src="https://img.icons8.com/3d-fluency/94/search.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔍</span></div>
+<div class="hero-title"><b>Employees Dashboard</b><small>Team Management & Roles • إدارة الفريق والأدوار</small><div class="hero-pills"><span id="hero-total">Total: 0</span><span id="hero-manager">Managers: 0</span><span id="hero-sup">Supervisors: 0</span></div></div>
 </div>
-
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+<button class="btn2" style="padding:12px 18px;background:#FFD54F;color:#0A1F44;border-color:#FFD54F;" onclick="openMyProfile()">👤 My Profile • بروفايلي</button>
+<button class="btn2" style="padding:12px 18px;" onclick="exportBackup()">📥 Export Backup • تصدير نسخة</button>
+<button class="btn2" style="padding:12px 18px;" onclick="loadUsers(true)">🔄 Reload • إعادة تحميل</button>
+</div>
+<div class="kpi-grid">
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><small>Total Users<br>إجمالي المستخدمين</small><b id="k-all">0</b></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/crown.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👑</span></div><small>Managers<br>المديرين</small><b id="k-manager">0</b></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/hard-hat.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🦺</span></div><small>Supervisors<br>المشرفين</small><b id="k-sup">0</b></div>
+<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👷</span></div><small>Employees / Visitors<br>الموظفين / الزوار</small><b id="k-emp">0</b></div>
+</div>
 <div class="card">
-<h2 style="margin:0 0 10px;">👥 Search Users</h2>
-<input id="searchU" placeholder="Search by name, email, job, company..." oninput="renderUsers()">
+<h2 style="margin:0 0 10px;">👥 Search Users • البحث في المستخدمين</h2>
+<input id="searchU" placeholder="Search by name, email, job, company... • ابحث بالاسم أو الإيميل أو الوظيفة..." oninput="renderUsers()">
 <div id="usersTable"><p style="text-align:center;">⏳ Loading users from database...</p></div>
 </div>
 </div>
 </div>
-
 <div class="modal" id="editModal">
 <div class="modal-box">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">✏️ Edit Profile</h3><button class="btn2" onclick="closeEdit()">✕ Close</button></div>
-<p id="editHint" style="font-size:12px;color:#78909C;"></p>
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">✏️ Edit Profile • تعديل البروفايل</h3><button class="btn2" onclick="closeEdit()">✕ Close</button></div>
+<p id="editHint" style="font-size:12px;color:#B8C6D6;"></p>
 <div class="photo-edit">
 <img id="e-photoPreview" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-<div style="margin-top:8px;"><label for="e-photo" class="btn2" style="display:inline-block;padding:10px 16px;background:#0F2A4D;color:#fff;">📷 Change Photo</label><input type="file" id="e-photo" accept="image/*" style="display:none;" onchange="previewEditPhoto(event)"></div>
+<div style="margin-top:8px;"><label for="e-photo" class="btn2" style="display:inline-block;padding:10px 16px;background:#FFD54F;color:#0A1F44;">📷 Change Photo • تغيير الصورة</label><input type="file" id="e-photo" accept="image/*" style="display:none;" onchange="previewEditPhoto(event)"></div>
 </div>
 <div class="grid">
 <div><label>Full Name *</label><input id="e-name"></div>
@@ -145,41 +182,34 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>Job</label><input id="e-job" placeholder="Safety Engineer"></div>
 <div><label>Company</label><input id="e-company" placeholder="RMED"></div>
 <div><label>Phone</label><input id="e-phone" placeholder="0100..."></div>
-<div><label>Role - Manager Only 🔒</label><select id="e-role"><option value="Visitor">Visitor</option><option value="Employee">Employee</option><option value="Supervisor">Supervisor</option><option value="Manager">Manager</option></select><small id="roleLockMsg" style="color:#D32F2F;font-weight:bold;">🔒 Only Manager can change role</small></div>
+<div><label>Role - Manager Only 🔒</label><select id="e-role"><option value="Visitor">Visitor</option><option value="Employee">Employee</option><option value="Supervisor">Supervisor</option><option value="Manager">Manager</option></select><small id="roleLockMsg" style="color:#FF8A80;font-weight:bold;">🔒 Only Manager can change role</small></div>
 </div>
-<button class="btn" onclick="saveProfile()">💾 Save Changes</button>
+<button class="btn" onclick="saveProfile()">💾 Save Changes • حفظ التغييرات</button>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-// FIX: renamed to USERS_ROLE_MAP so it does NOT clash with ROLE_MAP in auth.js
 const USERS_ROLE_MAP={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
 function normRole(r){ return USERS_ROLE_MAP[String(r||'').trim().toLowerCase()]||USERS_ROLE_MAP[String(r||'').trim()]||'Visitor'; }
 function isManager(){ let m=getMe(); return normRole(m?m.role:'')==='Manager'; }
 function val(id){ return document.getElementById(id).value.trim(); }
 function showMsg(html,ok){ let d=document.getElementById('loadMsg'); d.style.display='block'; d.innerHTML=html; d.className=ok?'alert green':'alert'; if(ok) setTimeout(()=>{d.style.display='none';},4000); }
-
-// Use shared helpers from auth.js if they exist, otherwise define them locally
 if(typeof toggleSidebar!=='function'){ function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } } }
 if(typeof logout!=='function'){ function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; } }
 if(typeof getMe!=='function'){ function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; } }
-
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
   if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=normRole(nm.role)||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
-
 let usersList=[];
 let editIdx=-1;
 let editPhotoData='';
 let lastError='';
-
 async function loadUsers(force){
   document.getElementById('usersTable').innerHTML='<p style="text-align:center;">⏳ Loading users from database...</p>';
   document.getElementById('loadMsg').style.display='none';
@@ -193,7 +223,6 @@ async function loadUsers(force){
         snap.forEach(d=>{
           let data=d.data();
           let email=String(data.email||'').toLowerCase().trim();
-          // Dedupe by email - same user in 2 collections = show once
           if(email && seenEmails.has(email)) return;
           if(email) seenEmails.add(email);
           usersList.push({id:d.id,_col:col,_key:email+'|'+d.id,name:data.name||data.fullName||'',email:data.email||'',job:data.job||data.title||'',company:data.company||'RMED',phone:data.phone||'',role:normRole(data.role),img:data.img||data.photo||data.photoURL||'',createdAt:data.createdAt||''});
@@ -220,7 +249,6 @@ async function loadUsers(force){
   }
   renderUsers();
 }
-
 function renderUsers(){
   let q=(document.getElementById('searchU').value||'').toLowerCase();
   let list=usersList.filter(x=>((x.name||'')+(x.email||'')+(x.job||'')+(x.company||'')).toLowerCase().includes(q));
@@ -228,16 +256,18 @@ function renderUsers(){
   document.getElementById('k-manager').innerText=usersList.filter(x=>x.role==='Manager').length;
   document.getElementById('k-sup').innerText=usersList.filter(x=>x.role==='Supervisor').length;
   document.getElementById('k-emp').innerText=usersList.filter(x=>x.role==='Employee'||x.role==='Visitor').length;
-  if(!list.length){ document.getElementById('usersTable').innerHTML='<p style="text-align:center;color:#999;">No users found</p>'; return; }
+  document.getElementById('hero-total').innerText='Total: '+usersList.length;
+  document.getElementById('hero-manager').innerText='Managers: '+usersList.filter(x=>x.role==='Manager').length;
+  document.getElementById('hero-sup').innerText='Supervisors: '+usersList.filter(x=>x.role==='Supervisor').length;
+  if(!list.length){ document.getElementById('usersTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No users found</p>'; return; }
   let me=getMe(); let meEmail=me?me.email:'';
   document.getElementById('usersTable').innerHTML='<table><tr><th>Photo</th><th>Name</th><th>Email</th><th>Job</th><th>Company</th><th>Role</th><th>Actions</th></tr>'+list.map(x=>{
     let idx=usersList.indexOf(x);
     let isMe=x.email===meEmail;
     let canEdit=isManager()||isMe;
-    return '<tr><td><img class="avatar" src="'+(x.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png')+'" onerror="this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'"></td><td><b>'+(x.name||'-')+'</b>'+(isMe?' <span class="badge green">You</span>':'')+'</td><td>'+(x.email||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><span class="badge">'+x.role+'</span></td><td>'+(canEdit?'<button class="btn2" onclick="openEdit('+idx+')">✏️ Edit</button>':'<span style="color:#999;font-size:12px;">🔒 Manager Only</span>')+(isManager()&&!isMe?' <button class="btn2" style="color:#D32F2F;" onclick="delUser('+idx+')">🗑️</button>':'')+'</td></tr>';
+    return '<tr><td><img class="avatar" src="'+(x.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png')+'" onerror="this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'"></td><td><b>'+(x.name||'-')+'</b>'+(isMe?' <span class="badge green">You</span>':'')+'</td><td>'+(x.email||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><span class="badge">'+x.role+'</span></td><td>'+(canEdit?'<button class="btn2" onclick="openEdit('+idx+')">✏️ Edit</button>':'<span style="color:#999;font-size:12px;">🔒 Manager Only</span>')+(isManager()&&!isMe?' <button class="btn2" style="color:#FF8A80;" onclick="delUser('+idx+')">🗑️</button>':'')+'</td></tr>';
   }).join('')+'</table>';
 }
-
 function openMyProfile(){
   let me=getMe(); if(!me||!me.email) return alert('Login first');
   let idx=usersList.findIndex(u=>u.email===me.email);
