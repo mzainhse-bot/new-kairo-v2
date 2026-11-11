@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Workers Count - RMED</title>
+<title>Weekly Meeting - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
 body{margin:0;background:#0A1B33;color:#fff}
@@ -51,32 +51,38 @@ body{margin:0;background:#0A1B33;color:#fff}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
 input,select{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
 input::placeholder{color:#8A9AB0}
+input[readonly]{background:#1A2F52;color:#FFD54F;font-weight:900}
 select option{background:#0A162E}
 .btn{width:100%;background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;border:1px solid #7A5A00;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-/* HERO - EXACT IMAGE: WORKERS PHOTO */
 .hero{position:relative;border-radius:18px;overflow:hidden;margin-bottom:14px;border:1px solid rgba(201,162,39,.55);box-shadow:0 10px 26px rgba(0,0,0,.35);min-height:170px;background:#0A162E}
 .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,27,51,.92) 0%,rgba(10,27,51,.55) 45%,rgba(10,27,51,.15) 100%)}
 .hero-content{position:relative;z-index:2;padding:22px 18px}
 .hero-content h2{margin:0;font-size:26px;line-height:1.2}
 .hero-content h2 span{color:#FFD54F}
-.hero-content p{color:#D6DEE8;font-size:13px;margin:8px 0 0;max-width:520px}
+.hero-content p{color:#D6DEE8;font-size:13px;margin:8px 0 0;max-width:560px}
 .hero-content small{color:#FFE082;font-size:11px}
-/* KPI - EXACT IMAGE: 4 DARK CARDS */
+/* KPI - 3D ICONS */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
 .kpi{background:linear-gradient(180deg,#101F3D,#0A162E);border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#fff;position:relative;overflow:hidden}
 .kpi b{font-size:26px;display:block;line-height:1} .kpi small{color:#B8C6D6;font-size:11px;line-height:1.3;display:block}
 .kpi .trend{font-size:11px;color:#81C784;font-weight:700;margin-top:4px}
-.icon3d{width:62px;height:62px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));overflow:hidden}
+.kpi .trend.down{color:#FF8A80}
+.icon3d{width:62px;height:62px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));overflow:hidden;animation:float3d 3s ease-in-out infinite}
 .icon3d img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.4));position:relative;z-index:2}
 .icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
 .icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
 .icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
 .icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
+.icon3d.purple{background:radial-gradient(circle at 30% 25%,#CE93D8,#7B1FA2 45%,#4A148C 75%);border:1px solid #CE93D8}
+.icon3d.pink{background:radial-gradient(circle at 30% 25%,#F48FB1,#E91E63 45%,#880E4F 75%);border:1px solid #F48FB1}
 .icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
-/* TWO COL */
+@keyframes float3d{0%,100%{transform:perspective(300px) rotateX(6deg) rotateY(-6deg) translateY(0)}50%{transform:perspective(300px) rotateX(6deg) rotateY(-6deg) translateY(-4px)}}
 .two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-bottom:14px;align-items:start}
 @media(max-width:900px){.two-col{grid-template-columns:1fr}}
 .total-box{background:linear-gradient(180deg,#FFF3E0,#FFE0B2);border:2px dashed #FF9800;border-radius:12px;padding:12px;text-align:center;color:#0A1F44;margin-top:12px}
@@ -87,6 +93,8 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 .pill.green{background:#2E7D32;color:#fff} .pill.yellow{background:#FFC107;color:#0A1F44} .pill.red{background:#D32F2F;color:#fff} .pill.blue{background:#1565C0;color:#fff}
 .bar{height:10px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-top:4px}
 .bar-fill{height:100%;border-radius:999px}
+.compare-box{background:linear-gradient(135deg,#101F3D,#0A162E);border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px;margin-bottom:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.compare-box b{font-size:22px;color:#FFD54F}
 </style>
 </head>
 <body>
@@ -106,11 +114,11 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
   <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
   <div class="menu-title">👷 WORKERS & TRAINING</div>
   <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
-  <a href="daily-count.html" data-page="daily-count" class="active"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
   <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
   <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
   <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="weekly.html" data-page="weekly" class="active"><span class="icon">📅</span> Weekly Meeting</a>
   <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
   <div class="menu-title">🛡️ SAFETY & REPORTS</div>
   <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
@@ -128,52 +136,78 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 </aside>
 <div class="main">
 <div class="page-head">
-<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Daily Count <span>• العدد اليومي</span></h1><small>Daily Workers Count • العدد اليومي للعمال</small></div></div>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Weekly Meeting <span>• المحاضرة الأسبوعية</span></h1><small>Weekly Safety Meeting • محاضرة السلامة الأسبوعية</small></div></div>
 <div class="header-actions"><div class="h-ic active">Dashboard | لوحة التحكم</div><div class="h-ic">أعمال</div><div class="h-ic">تقارير</div><div class="h-ic">SA</div><div class="h-ic">🔔</div><div class="h-ic">EN</div></div>
 </div>
 <div class="container">
-<!-- HERO - EXACT IMAGE -->
 <div class="hero">
 <img class="bg" src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80" onerror="this.src='https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80'">
 <div class="hero-content">
-<h2>Daily Workers Count | <span>العدد اليومي للعمال</span></h2>
-<p>متابعة دقيقة لعدد العمال اليومي across all companies on site in real time<br>Real-time monitoring of daily worker count across all companies on site</p>
-<small id="hero-date">Today • اليوم • 2025-10-15 • 10:32</small>
+<h2>Weekly Meeting | <span>المحاضرة الأسبوعية</span></h2>
+<p>متابعة محاضرات السلامة الأسبوعية لكل الشركات - عدد المحاضرات والحضور وعدد الساعات<br>Weekly safety lectures tracking - lectures, attendance & training hours</p>
+<small id="hero-date">Today • اليوم</small>
 </div>
 </div>
-<!-- KPI - EXACT IMAGE -->
+
+<!-- KPI ROW 1 -->
 <div class="kpi-grid">
-<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><small>Total Workers Today<br>إجمالي عمال اليوم</small><b id="k-total">0</b><div class="trend" id="k-total-trend">+42 Today • +42 اليوم</div></div>
-<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Companies Count<br>عدد الشركات</small><b id="k-companies">0</b><div class="trend">+2 This Month • +2 هذا الشهر</div></div>
-<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⭐</span></div><small>Largest Company<br>أكبر شركة</small><b id="k-largest" style="font-size:15px;">-</b><small id="k-largest-n" style="color:#FFE082;font-weight:800;">0 Worker</small></div>
-<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Lowest Company<br>أصغر شركة</small><b id="k-lowest" style="font-size:15px;">-</b><small id="k-lowest-n" style="color:#90CAF9;font-weight:800;">0 Workers</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📅</span></div><small>Total Lectures<br>عدد المحاضرات</small><b id="k-lectures">0</b><div class="trend" id="k-lectures-trend">This Month • هذا الشهر</div></div>
+<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><small>Total Attendance<br>إجمالي الحضور</small><b id="k-attendance">0</b><div class="trend" id="k-attendance-trend">Person • شخص</div></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><small>Total Hours<br>إجمالي عدد الساعات</small><b id="k-hours">0</b><div class="trend">Attendance × 0.5 • الحضور × نصف ساعة</div></div>
+<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/training.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🎓</span></div><small>Companies<br>عدد الشركات</small><b id="k-companies">0</b><div class="trend">Participating • مشاركة</div></div>
 </div>
+
+<!-- KPI ROW 2 - TOP / LOWEST -->
+<div class="kpi-grid">
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏆</span></div><small>Top Company - Lectures<br>أعلى شركة في المحاضرات</small><b id="k-top-lect" style="font-size:15px;">-</b><small id="k-top-lect-n" style="color:#FFE082;font-weight:800;">0 Lecture</small></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Lowest Company - Lectures<br>أقل شركة في المحاضرات</small><b id="k-low-lect" style="font-size:15px;">-</b><small id="k-low-lect-n" style="color:#90CAF9;font-weight:800;">0 Lecture</small></div>
+<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏱️</span></div><small>Top Company - Hours<br>أعلى شركة في الساعات</small><b id="k-top-hours" style="font-size:15px;">-</b><small id="k-top-hours-n" style="color:#FFCC80;font-weight:800;">0 Hour</small></div>
+<div class="kpi"><div class="icon3d purple"><img src="https://img.icons8.com/3d-fluency/94/hourglass.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⌛</span></div><small>Lowest Company - Hours<br>أقل شركة في الساعات</small><b id="k-low-hours" style="font-size:15px;">-</b><small id="k-low-hours-n" style="color:#CE93D8;font-weight:800;">0 Hour</small></div>
+</div>
+
+<!-- MONTH COMPARISON -->
+<div class="compare-box">
+<div style="display:flex;gap:12px;align-items:center;">
+<div class="icon3d pink" style="margin:0;width:52px;height:52px;"><img src="https://img.icons8.com/3d-fluency/94/line-chart.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📈</span></div>
+<div><b style="font-size:16px;">📊 Monthly Hours Comparison • مقارنة ساعات المحاضرات خلال الشهر</b><div style="color:#B8C6D6;font-size:12px;">This month vs Last month • الشهر ده مقابل الشهر اللي فات</div></div>
+</div>
+<div style="text-align:right;">
+<b id="compare-pct">0%</b>
+<div id="compare-text" style="font-size:12px;color:#81C784;font-weight:700;">No change • لا يوجد تغيير</div>
+<div style="font-size:11px;color:#B8C6D6;"><span id="compare-this">This: 0h</span> • <span id="compare-last">Last: 0h</span></div>
+</div>
+<div style="width:100%;"><div class="bar" style="height:12px;"><div id="compare-bar" class="bar-fill" style="width:50%;background:linear-gradient(90deg,#FFD54F,#FF9800);"></div></div></div>
+</div>
+
 <div class="two-col">
 <!-- REGISTER -->
 <div class="card">
-<h2 style="margin:0 0 5px;">📝 Register New Daily Count • تسجيل عدد يومي جديد</h2>
-<p style="color:#B8C6D6;font-size:13px;margin:0;">Daily workers count registration across all companies on site • تسجيل العدد اليومي للعمال</p>
+<h2 style="margin:0 0 5px;">📝 Register Weekly Meeting • تسجيل محاضرة أسبوعية</h2>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Register new weekly safety lecture • تسجيل محاضرة سلامة أسبوعية جديدة</p>
 <div class="grid">
-<div><label>📅 Date *</label><input type="date" id="d-date"></div>
-<div><label>🏢 Company *</label><input id="d-company" placeholder="Example: Al Salam Construction" list="compList"><datalist id="compList"></datalist></div>
-<div><label>👷 Workers Count *</label><input type="number" id="d-count" placeholder="Example: 120" min="0" oninput="updateTotalPreview()"></div>
-<div><label>📝 Notes - Optional</label><input id="d-notes" placeholder="Any notes..."></div>
+<div><label>📅 Date * التاريخ</label><input type="date" id="d-date"></div>
+<div><label>🏢 Company * اسم الشركة</label><input id="d-company" placeholder="Example: Al Salam Construction" list="compList"><datalist id="compList"></datalist></div>
+<div style="grid-column:1/-1;"><label>📖 Lecture Title * عنوان المحاضرة</label><input id="d-title" placeholder="Example: Work at Height Safety - السلامة في العمل على ارتفاع"></div>
+<div><label>👥 Attendance Count * عدد الحضور</label><input type="number" id="d-attendance" placeholder="Example: 40" min="0" oninput="calcHours()"></div>
+<div><label>⏰ Hours • عدد الساعات (أوتوماتيك)</label><input id="d-hours" readonly placeholder="0.0 - Attendance × 0.5"></div>
+<div><label>👨‍🏫 Lecturer Name * اسم المحاضر</label><input id="d-lecturer" placeholder="Example: Eng. Ahmed Ali"></div>
+<div><label>📍 Lecture Place * مكان المحاضرة</label><input id="d-place" placeholder="Example: Site Office - مكتب الموقع"></div>
 </div>
-<div class="total-box"><small>Total Workers Today • إجمالي عمال اليوم</small><b id="total-preview">0</b><small id="total-preview-sub">After saving this company</small></div>
-<div style="display:flex;gap:8px;"><button class="btn" onclick="addCount()" style="flex:2;">💾 Save Count • حفظ العدد</button><button class="btn2" onclick="clearForm()" style="flex:1;padding:13px;margin-top:14px;">Clear</button></div>
+<div class="total-box"><small>Hours For This Lecture • ساعات هذه المحاضرة</small><b id="total-preview">0.0 Hour</b><small id="total-preview-sub">Attendance × 0.5 Hour • الحضور × نصف ساعة</small></div>
+<div style="display:flex;gap:8px;"><button class="btn" onclick="addMeeting()" style="flex:2;">💾 Save Meeting • حفظ المحاضرة</button><button class="btn2" onclick="clearForm()" style="flex:1;padding:13px;margin-top:14px;">Clear</button></div>
 </div>
 <!-- RECORDS -->
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 Daily Count Records • سجلات العدد اليومي</h2>
+<h2 style="margin:0 0 10px;">📋 Weekly Meetings Records • سجلات المحاضرات</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchD" placeholder="Search by company..." oninput="renderCounts()" style="flex:2;">
-<input type="date" id="filterDate" onchange="renderCounts()" style="flex:1;">
-<select id="filterCompany" onchange="renderCounts()" style="flex:1;"><option value="">All Companies</option></select>
+<input id="searchD" placeholder="Search by company / title / lecturer..." oninput="renderMeetings()" style="flex:2;">
+<input type="month" id="filterMonth" onchange="renderMeetings()" style="flex:1;">
+<select id="filterCompany" onchange="renderMeetings()" style="flex:1;"><option value="">All Companies</option></select>
 </div>
 <div id="countTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
-<button class="btn2" onclick="exportCounts()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
-<button class="btn2" onclick="clearCounts()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
+<button class="btn2" onclick="exportMeetings()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
+<button class="btn2" onclick="clearMeetings()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -197,120 +231,167 @@ function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||loc
   let nm=getMe();
   if(nm){ document.getElementById('sideName').innerText=nm.name; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
-let counts=[];
-async function loadCounts(){
+let meetings=[];
+async function loadMeetings(){
   try{
     if(window.db){
-      let snap=await window.db.collection('dailyWorkers').get();
-      counts=[];
-      snap.forEach(d=> counts.push({id:d.id, ...d.data()}));
-      // Fallback: try dailyCount collection if empty
-      if(!counts.length){
-        let snap2=await window.db.collection('dailyCount').get();
-        snap2.forEach(d=> counts.push({id:d.id, ...d.data()}));
+      let snap=await window.db.collection('weeklyMeetings').get();
+      meetings=[];
+      snap.forEach(d=> meetings.push({id:d.id, ...d.data()}));
+      if(!meetings.length){
+        let snap2=await window.db.collection('weekly').get();
+        snap2.forEach(d=> meetings.push({id:d.id, ...d.data()}));
       }
-      counts.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+      if(!meetings.length){
+        let snap3=await window.db.collection('weeklyMeeting').get();
+        snap3.forEach(d=> meetings.push({id:d.id, ...d.data()}));
+      }
+      meetings.sort((a,b)=> String(b.date||'').localeCompare(String(a.date||'')));
     }
   }catch(e){ console.log(e); }
   try{
     let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    if(!counts.length && old.dailyWorkers) counts=old.dailyWorkers;
-    if(!counts.length && old.dailyCount) counts=old.dailyCount;
+    if(!meetings.length && old.weeklyMeetings) meetings=old.weeklyMeetings;
+    if(!meetings.length && old.weekly) meetings=old.weekly;
   }catch(e){}
-  renderCounts();
+  renderMeetings();
 }
 function val(id){ return document.getElementById(id).value.trim(); }
 function getTodayStr(){ return new Date().toISOString().slice(0,10); }
-function updateTotalPreview(){
-  let today=getTodayStr();
-  let dateVal=val('d-date')||today;
-  let todayTotal=counts.filter(x=> String(x.date||'').slice(0,10)===dateVal).reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
-  let add=parseInt(val('d-count'))||0;
-  document.getElementById('total-preview').innerText=(todayTotal+add).toLocaleString();
+// عدد الساعات = عدد الحضور × 0.5
+function calcHours(){
+  let att=parseInt(val('d-attendance'))||0;
+  let hours=att*0.5;
+  document.getElementById('d-hours').value=hours.toFixed(1);
+  document.getElementById('total-preview').innerText=hours.toFixed(1)+' Hour';
 }
-async function addCount(){
+async function addMeeting(){
   if(!val('d-date')) return alert('Select date');
   if(!val('d-company')) return alert('Write company name');
-  if(!val('d-count')) return alert('Write workers count');
+  if(!val('d-title')) return alert('Write lecture title');
+  if(!val('d-attendance')) return alert('Write attendance count');
+  if(!val('d-lecturer')) return alert('Write lecturer name');
+  if(!val('d-place')) return alert('Write lecture place');
   if(!window.db) return alert('Firebase not connected');
   let _m=getMe();
-  let rec={date:val('d-date'),company:val('d-company'),workers:parseInt(val('d-count')),count:parseInt(val('d-count')),total:parseInt(val('d-count')),notes:val('d-notes'),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
+  let att=parseInt(val('d-attendance'));
+  let hours=att*0.5;
+  let rec={date:val('d-date'),company:val('d-company'),title:val('d-title'),lectureTitle:val('d-title'),attendance:att,attendees:att,hours:hours,lecturer:val('d-lecturer'),lecturerName:val('d-lecturer'),place:val('d-place'),location:val('d-place'),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
   try{
-    let ref=await window.db.collection('dailyWorkers').add(rec);
+    let ref=await window.db.collection('weeklyMeetings').add(rec);
     rec.id=ref.id;
-    counts.unshift(rec);
+    meetings.unshift(rec);
   }catch(e){ return alert('Save problem in Firebase: '+e.message); }
-  renderCounts();
-  alert('✅ Saved - '+rec.company+' - '+rec.workers+' workers');
-  document.getElementById('d-company').value=''; document.getElementById('d-count').value=''; document.getElementById('d-notes').value='';
-  updateTotalPreview();
+  renderMeetings();
+  alert('✅ Saved - '+rec.company+' - '+rec.title+' - '+rec.attendance+' attendees - '+rec.hours.toFixed(1)+'h');
+  document.getElementById('d-company').value=''; document.getElementById('d-title').value=''; document.getElementById('d-attendance').value=''; document.getElementById('d-hours').value=''; document.getElementById('d-lecturer').value=''; document.getElementById('d-place').value='';
+  calcHours();
 }
-function clearForm(){ document.getElementById('d-company').value=''; document.getElementById('d-count').value=''; document.getElementById('d-notes').value=''; updateTotalPreview(); }
-function renderCounts(){
+function clearForm(){ document.getElementById('d-company').value=''; document.getElementById('d-title').value=''; document.getElementById('d-attendance').value=''; document.getElementById('d-hours').value=''; document.getElementById('d-lecturer').value=''; document.getElementById('d-place').value=''; calcHours(); }
+function renderMeetings(){
   let q=(document.getElementById('searchD').value||'').toLowerCase();
-  let fDate=document.getElementById('filterDate').value;
+  let fMonth=document.getElementById('filterMonth').value; // YYYY-MM
   let fComp=document.getElementById('filterCompany').value;
-  let today=getTodayStr();
-  // KPI for today (or selected date if filter set)
-  let kpiDate=fDate||today;
-  let todayList=counts.filter(x=> String(x.date||'').slice(0,10)===kpiDate);
-  let totalToday=todayList.reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
+  // لو مختار شهر في الفلتر اعتبره هو الشهر الحالي للاحصائيات، غير كده الشهر الحالي
+  let now=new Date();
+  let curMonth = fMonth || (now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'));
+  let curYear=parseInt(curMonth.split('-')[0]), curM=parseInt(curMonth.split('-')[1])-1;
+  // الشهر اللي فات
+  let prevDate=new Date(curYear, curM-1, 1);
+  let prevMonth=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0');
+
+  let monthList=meetings.filter(x=> String(x.date||'').slice(0,7)===curMonth);
+  let prevList=meetings.filter(x=> String(x.date||'').slice(0,7)===prevMonth);
+
+  let totalLectures=monthList.length;
+  let totalAttendance=monthList.reduce((s,x)=>s+(parseInt(x.attendance||x.attendees||0)||0),0);
+  let totalHours=monthList.reduce((s,x)=>s+(parseFloat(x.hours||0)||0),0);
+  // لو hours مش متسجل احسبها من الحضور
+  if(!totalHours && totalAttendance) totalHours=totalAttendance*0.5;
+
+  let prevHours=prevList.reduce((s,x)=>s+(parseFloat(x.hours||0)||0),0);
+  if(!prevHours && prevList.length) prevHours=prevList.reduce((s,x)=>s+(parseInt(x.attendance||0)||0),0)*0.5;
+
+  // by company
   let byComp={};
-  todayList.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]=0; byComp[x.company]+=(parseInt(x.workers||x.count||x.total||0)||0); });
-  let compArr=Object.entries(byComp).map(([name,total])=>({name,total})).sort((a,b)=>b.total-a.total);
-  document.getElementById('k-total').innerText=totalToday.toLocaleString();
+  monthList.forEach(x=>{
+    if(!byComp[x.company]) byComp[x.company]={lectures:0, attendance:0, hours:0};
+    byComp[x.company].lectures++;
+    byComp[x.company].attendance+=(parseInt(x.attendance||0)||0);
+    byComp[x.company].hours+=(parseFloat(x.hours||0)|| (parseInt(x.attendance||0)*0.5));
+  });
+  let compArr=Object.entries(byComp).map(([name,v])=>({name,...v}));
+  let byLectures=[...compArr].sort((a,b)=>b.lectures-a.lectures);
+  let byHours=[...compArr].sort((a,b)=>b.hours-a.hours);
+
+  document.getElementById('k-lectures').innerText=totalLectures.toLocaleString();
+  document.getElementById('k-attendance').innerText=totalAttendance.toLocaleString();
+  document.getElementById('k-hours').innerText=totalHours.toFixed(1);
   document.getElementById('k-companies').innerText=compArr.length;
-  document.getElementById('k-largest').innerText=compArr.length?compArr[0].name:'-';
-  document.getElementById('k-largest-n').innerText=compArr.length?compArr[0].total.toLocaleString()+' Worker':'0 Worker';
-  document.getElementById('k-lowest').innerText=compArr.length?compArr[compArr.length-1].name:'-';
-  document.getElementById('k-lowest-n').innerText=compArr.length?compArr[compArr.length-1].total.toLocaleString()+' Workers':'0 Workers';
-  // Yesterday diff for trend
-  let y=new Date(); y.setDate(y.getDate()-1); let yStr=y.toISOString().slice(0,10);
-  let yTotal=counts.filter(x=> String(x.date||'').slice(0,10)===yStr).reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
-  let diff=totalToday-yTotal;
-  document.getElementById('k-total-trend').innerText=(diff>=0?'+': '')+diff.toLocaleString()+' Today • '+(diff>=0?'+': '')+diff.toLocaleString()+' اليوم';
+  document.getElementById('k-top-lect').innerText=byLectures.length?byLectures[0].name:'-';
+  document.getElementById('k-top-lect-n').innerText=byLectures.length?byLectures[0].lectures+' Lecture':'0 Lecture';
+  document.getElementById('k-low-lect').innerText=byLectures.length?byLectures[byLectures.length-1].name:'-';
+  document.getElementById('k-low-lect-n').innerText=byLectures.length?byLectures[byLectures.length-1].lectures+' Lecture':'0 Lecture';
+  document.getElementById('k-top-hours').innerText=byHours.length?byHours[0].name:'-';
+  document.getElementById('k-top-hours-n').innerText=byHours.length?byHours[0].hours.toFixed(1)+' Hour':'0 Hour';
+  document.getElementById('k-low-hours').innerText=byHours.length?byHours[byHours.length-1].name:'-';
+  document.getElementById('k-low-hours-n').innerText=byHours.length?byHours[byHours.length-1].hours.toFixed(1)+' Hour':'0 Hour';
+
+  // مقارنة معدل التغيير في الساعات خلال الشهر
+  let diff=totalHours-prevHours;
+  let pct= prevHours>0 ? Math.round(diff/prevHours*100) : (totalHours>0?100:0);
+  let pctEl=document.getElementById('compare-pct');
+  pctEl.innerText=(pct>=0?'+':'')+pct+'%';
+  pctEl.style.color= pct>=0 ? '#81C784' : '#FF8A80';
+  let txt=document.getElementById('compare-text');
+  txt.innerText= pct>0 ? '▲ Increased by '+Math.abs(diff).toFixed(1)+'h vs last month • زادت '+Math.abs(diff).toFixed(1)+' ساعة عن الشهر اللي فات' : pct<0 ? '▼ Decreased by '+Math.abs(diff).toFixed(1)+'h vs last month • قلت '+Math.abs(diff).toFixed(1)+' ساعة عن الشهر اللي فات' : 'No change • لا يوجد تغيير';
+  txt.style.color= pct>=0 ? '#81C784' : '#FF8A80';
+  document.getElementById('compare-this').innerText='This: '+totalHours.toFixed(1)+'h';
+  document.getElementById('compare-last').innerText='Last: '+prevHours.toFixed(1)+'h';
+  let maxH=Math.max(totalHours, prevHours, 1);
+  document.getElementById('compare-bar').style.width=Math.round(totalHours/maxH*100)+'%';
+
   // Datalist + filter
-  let allComps=[...new Set(counts.map(x=>x.company))];
+  let allComps=[...new Set(meetings.map(x=>x.company))];
   document.getElementById('compList').innerHTML=allComps.map(c=>'<option value="'+c+'">').join('');
   let sel=document.getElementById('filterCompany'); let cur=sel.value;
   sel.innerHTML='<option value="">All Companies</option>'+allComps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
-  let list=counts.filter(x=>{
-    let okQ=(x.company||'').toLowerCase().includes(q);
-    let okD=!fDate||String(x.date||'').slice(0,10)===fDate;
+  let list=meetings.filter(x=>{
+    let okQ=((x.company||'')+' '+(x.title||x.lectureTitle||'')+' '+(x.lecturer||'')).toLowerCase().includes(q);
+    let okD=!fMonth||String(x.date||'').slice(0,7)===fMonth;
     let okC=!fComp||x.company===fComp;
     return okQ&&okD&&okC;
   });
-  if(!list.length){ document.getElementById('countTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No records yet - Register first count above</p>'; return; }
-  let maxTotal=Math.max(...list.map(x=>parseInt(x.workers||x.count||x.total||0)||0),1);
-  document.getElementById('countTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Workers</th><th>% of Total</th><th>Notes</th><th>Delete</th></tr>'+list.slice(0,50).map(x=>{
-    let idx=counts.indexOf(x);
-    let w=parseInt(x.workers||x.count||x.total||0)||0;
-    let pct=totalToday?Math.round(w/totalToday*1000)/10:0;
-    let pillCls=pct>=20?'green':pct>=10?'yellow':pct>=5?'blue':'red';
-    let barColor=pct>=20?'#2E7D32':pct>=10?'#FFC107':pct>=5?'#1565C0':'#D32F2F';
-    return '<tr><td>'+x.date+'</td><td><b>'+x.company+'</b></td><td><b>'+w.toLocaleString()+'</b><div class="bar"><div class="bar-fill" style="width:'+Math.min(100,Math.round(w/maxTotal*100))+'%;background:'+barColor+'"></div></div></td><td><span class="pill '+pillCls+'">'+pct+'%</span></td><td>'+(x.notes||'-')+'</td><td><button class="btn2" style="color:#FF8A80;" onclick="delCount('+idx+')">🗑️</button></td></tr>';
+  if(!list.length){ document.getElementById('countTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No meetings yet - Register first meeting above</p>'; return; }
+  let maxAtt=Math.max(...list.map(x=>parseInt(x.attendance||0)||0),1);
+  document.getElementById('countTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Title</th><th>Attendance</th><th>Hours</th><th>Lecturer / Place</th><th>Delete</th></tr>'+list.slice(0,50).map(x=>{
+    let idx=meetings.indexOf(x);
+    let att=parseInt(x.attendance||x.attendees||0)||0;
+    let hrs=parseFloat(x.hours||0)|| att*0.5;
+    let pct2=Math.round(att/maxAtt*100);
+    let barColor= pct2>=70?'#2E7D32':pct2>=40?'#FFC107':pct2>=20?'#1565C0':'#D32F2F';
+    return '<tr><td>'+(x.date||'')+'</td><td><b>'+(x.company||'')+'</b></td><td style="text-align:left;"><b>'+(x.title||x.lectureTitle||'')+'</b></td><td><b>'+att.toLocaleString()+'</b><div class="bar"><div class="bar-fill" style="width:'+pct2+'%;background:'+barColor+'"></div></div></td><td><span class="pill blue">'+hrs.toFixed(1)+'h</span></td><td style="text-align:left;">👨‍🏫 '+(x.lecturer||x.lecturerName||'-')+'<br>📍 '+(x.place||x.location||'-')+'</td><td><button class="btn2" style="color:#FF8A80;" onclick="delMeeting('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
-async function delCount(i){
-  if(!confirm('Delete this record?')) return;
-  let rec=counts[i];
-  try{ if(rec && rec.id && window.db) await window.db.collection('dailyWorkers').doc(rec.id).delete(); }catch(e){}
-  counts.splice(i,1); renderCounts(); updateTotalPreview();
+async function delMeeting(i){
+  if(!confirm('Delete this meeting?')) return;
+  let rec=meetings[i];
+  try{ if(rec && rec.id && window.db) await window.db.collection('weeklyMeetings').doc(rec.id).delete(); }catch(e){}
+  meetings.splice(i,1); renderMeetings();
 }
-async function clearCounts(){
-  if(!confirm('Delete all daily counts from Firebase?')) return;
-  try{ if(window.db){ let snap=await window.db.collection('dailyWorkers').get(); for(let d of snap.docs) await window.db.collection('dailyWorkers').doc(d.id).delete(); } }catch(e){}
-  counts=[]; renderCounts(); updateTotalPreview();
+async function clearMeetings(){
+  if(!confirm('Delete all weekly meetings from Firebase?')) return;
+  try{ if(window.db){ let snap=await window.db.collection('weeklyMeetings').get(); for(let d of snap.docs) await window.db.collection('weeklyMeetings').doc(d.id).delete(); } }catch(e){}
+  meetings=[]; renderMeetings();
 }
-function exportCounts(){
-  if(!counts.length) return alert('No data');
-  let csv='Date,Company,Workers Count,Notes\n'+counts.map(x=>[x.date,x.company,(x.workers||x.count||x.total||0),'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
-  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-workers-count.csv'; a.click();
+function exportMeetings(){
+  if(!meetings.length) return alert('No data');
+  let csv='Date,Company,Lecture Title,Attendance,Hours,Lecturer,Place\n'+meetings.map(x=>[x.date,x.company,'"'+(x.title||x.lectureTitle||'').replace(/"/g,'""')+'"',(x.attendance||0),(parseFloat(x.hours||0)||0).toFixed(1),'"'+(x.lecturer||'').replace(/"/g,'""')+'"', '"'+(x.place||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='weekly-meetings.csv'; a.click();
 }
 document.getElementById('d-date').value=getTodayStr();
-document.getElementById('filterDate').value='';
 document.getElementById('hero-date').innerText='Today • اليوم • '+getTodayStr()+' • '+new Date().toTimeString().slice(0,5);
-loadCounts(); updateTotalPreview();
+loadMeetings(); calcHours();
 </script>
 </body>
 </html>
