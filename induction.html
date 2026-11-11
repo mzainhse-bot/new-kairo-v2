@@ -10,47 +10,77 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#EEF1F6;color:#0A1F44}
-.app{max-width:480px;margin:0 auto;background:#F8F9FC;min-height:100vh;padding-bottom:90px;position:relative;overflow:hidden}
-@media(min-width:520px){.app{max-width:1000px;background:#EEF1F6;padding:0 16px 90px}}
-.top-header{background:linear-gradient(180deg,#0B1338,#0F2A4D);color:#fff;border-radius:0 0 28px 28px;padding:20px 18px 28px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
-.logo-box{display:flex;gap:12px;align-items:center}
-.logo-badge{width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#0A1F44;border:2px solid #FFE082;box-shadow:0 0 0 4px rgba(255,213,79,.25);text-align:center;line-height:1}
-.logo-badge small{font-size:8px;letter-spacing:1px;color:#5A4300}
-.top-header h1{margin:0;font-size:28px;line-height:1}.top-header p{margin:4px 0 0;color:#D6DEE8;font-size:13px}
-.lang-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.6);color:#fff;padding:8px 12px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 14px 0}
-.kpi{background:#fff;border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(10,31,68,.07)}
-.kpi .ic{font-size:38px;line-height:1}.kpi b{font-size:26px;display:block;margin-top:6px;color:#0A1F44}.kpi small{color:#0A1F44;font-size:13px;font-weight:600;display:block}.kpi span{font-size:12px;color:#2E7D32;font-weight:700}
-.card{background:#fff;border-radius:18px;padding:18px;margin:14px;box-shadow:0 4px 20px rgba(10,31,68,.07)}
-.card h2{margin:0;font-size:21px;text-align:center}.card p.sub{margin:4px 0 14px;color:#78909C;font-size:13px;text-align:center}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
+.sidebar.closed{left:-270px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box b{display:block;font-size:14px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
+.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
+.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
+.sidebar a .icon{font-size:18px;width:26px;text-align:center}
+.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
+.main{margin-left:260px;transition:0.3s}
+.main.full{margin-left:0}
+.topbar{display:none}
+@media(max-width:900px){
+  .sidebar{left:-270px}
+  .sidebar.open{left:0}
+  .main{margin-left:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+  .overlay.show{display:block}
+}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.kpi .ic{font-size:38px;line-height:1}.kpi b{font-size:26px;display:block;margin-top:6px;color:#fff}.kpi small{color:#FFE082;font-size:13px;font-weight:600;display:block}.kpi span{font-size:12px;color:#81C784;font-weight:700}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.3);color:#fff}
+.card h2{margin:0;font-size:21px;text-align:center}.card p.sub{margin:4px 0 14px;color:#B8C6D6;font-size:13px;text-align:center}
 .steps{display:flex;align-items:center;justify-content:space-between;margin:14px 0 16px}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;line-height:1.2}
-.step .dot{width:32px;height:32px;border-radius:50%;background:#0F2A4D;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
-.step small{color:#78909C;font-weight:600;display:block;font-size:11px}
-.steps-line{flex:1;height:2px;background:#E0E0E0;margin:0 6px}
+.step .dot{width:32px;height:32px;border-radius:50%;background:#FFD54F;color:#0A1F44;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.step small{color:#B8C6D6;font-weight:600;display:block;font-size:11px}
+.steps-line{flex:1;height:2px;background:rgba(255,255,255,.15);margin:0 6px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px;color:#0A1F44}
-input,select,textarea{width:100%;padding:11px;background:#F1F3F6;border:1px solid #E5E8EE;border-radius:10px;font-size:14px;color:#0A1F44;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#FFD54F;background:#fff}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px;color:#FFE082}
+input,select,textarea{width:100%;padding:11px;background:#0A162E;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;color:#fff;outline:none}
+input::placeholder,textarea::placeholder{color:#8A9AB0}
+select option{background:#0A162E}
+input:focus,select:focus,textarea:focus{border-color:#FFD54F}
 textarea{min-height:60px}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.btn{background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;line-height:1.3}
+.btn{background:#0F2A4D;color:#fff;border:1.5px solid rgba(201,162,39,.45);padding:14px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;line-height:1.3}
 .btn small{font-weight:600;font-size:12px;color:#B0BEC5;display:block}
-.btn.red{background:#D32F2F}
-.btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:10px 14px;border-radius:9px;cursor:pointer;font-weight:700}
-.note-box{background:#FFF3E0;border:1px solid #FFB300;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:8px;display:none}
+.btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);border-color:#FF8A80}
+.btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:10px 14px;border-radius:9px;cursor:pointer;font-weight:700}
+.note-box{background:#FFF3E0;border:1px solid #FFB300;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:8px;display:none;color:#0A1F44}
 .note-box b{color:#D32F2F}
-.photo-preview{width:90px;height:110px;object-fit:cover;border-radius:10px;border:2px solid #0F2A4D;display:none;margin-top:8px}
+.photo-preview{width:90px;height:110px;object-fit:cover;border-radius:10px;border:2px solid #FFD54F;display:none;margin-top:8px}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
-.badge{background:#E3F2FD;color:#0F2A4D;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+table th{background:#0A162E;color:#FFD54F;padding:9px}table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;color:#fff}
+.badge{background:#1A2F52;color:#FFE082;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(201,162,39,.45)}
 .badge.red{background:#FFEBEE;color:#D32F2F}.badge.green{background:#E8F5E9;color:#2E7D32}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1000px;background:#fff;border-top:1px solid #E5E8EE;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
-.bottom-nav a{text-align:center;color:#78909C;text-decoration:none;font-size:12px;font-weight:700;line-height:1.3}
-.bottom-nav a.active{color:#0F2A4D}.bottom-nav b{font-size:22px;display:block}
-.status-box{background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:10px;font-size:12px;margin:0 14px;text-align:center;color:#5D4037}
-/* ===== ID CARD HORIZONTAL - FINAL NO BARCODE ===== */
+.status-box{background:#101F3D;border:1.5px solid #FFD54F;border-radius:10px;padding:10px;font-size:12px;text-align:center;color:#FFE082;margin-bottom:14px}
+/* ===== ID CARD HORIZONTAL - FINAL NO BARCODE - UNTOUCHED ===== */
 .id-card{width:850px;max-width:100%;height:540px;min-height:540px;background:#0A1B33;border-radius:8px;overflow:hidden;position:relative;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.35);flex-shrink:0}
 .id-border1{position:absolute;inset:10px;border:1.5px solid #C9A227;border-radius:6px;pointer-events:none}
 .id-border2{position:absolute;inset:15px;border:1px solid rgba(201,162,39,.55);border-radius:4px;pointer-events:none}
@@ -92,19 +122,57 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
 </style>
 </head>
 <body>
-<div class="app">
-<div class="top-header">
-<div class="logo-box"><div class="logo-badge">RMED<small>Safety</small></div><div><h1>Induction V2</h1><p>Register new employee • تسجيل موظف جديد</p></div></div>
-<button class="lang-btn">🌐 EN | AR</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
+  <div class="user-box">
+    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
+  </div>
+  <div class="menu-title">📊 MAIN</div>
+  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
+  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
+  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
+  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
+  <div class="menu-title">👷 WORKERS & TRAINING</div>
+  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
+  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="induction.html" data-page="induction" class="active"><span class="icon">📘</span> Induction</a>
+  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
+  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
+  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
+  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
+  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
+  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
+  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
+  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
+  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
+  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
+  <a href="first-aid.html" data-page="first-aid"><span class="icon">🩹</span> First Aid Cases</a>
+  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
+  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
+  <div class="menu-title">⚙️ ACCOUNT</div>
+  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
+  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
+  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
+</aside>
+<div class="main">
+<div class="page-head">
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Induction V2 <span>• تسجيل موظف جديد</span></h1><small>Register New Employee • تسجيل موظف جديد</small></div></div>
+<div class="header-actions"><div class="h-ic">🌐</div><div class="h-ic">🔔</div></div>
 </div>
-<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:12px 14px;margin:12px 14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+<div class="container">
+<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:14px;padding:12px 14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.3);">
 <div><b style="font-size:15px;">🪪 ID Card Issue - V2 NEW</b></div>
 <button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 18px;font-size:14px;" onclick="openIssueCard()">🪪 Issue ID Card</button>
 </div>
 <div class="kpi-grid">
 <div class="kpi"><div class="ic">📅</div><small>Total Attendance</small><b id="k-total">0</b><span id="k-total-sub">+0 this week</span></div>
 <div class="kpi"><div class="ic">🕐</div><small>Total Hours</small><b><span id="k-hours">0.00</span>h</b><span id="k-hours-sub">+0h this month</span></div>
-<div class="kpi"><div class="ic">🛡️</div><small>Rehabilitation</small><b id="k-rehab">0</b><span style="color:#78909C;">active cases</span></div>
+<div class="kpi"><div class="ic">🛡️</div><small>Rehabilitation</small><b id="k-rehab">0</b><span style="color:#B8C6D6;">active cases</span></div>
 <div class="kpi"><div class="ic">👤</div><small>Today Attendance</small><b id="k-today">0</b><span>92% —</span></div>
 </div>
 <div id="loadStatus" class="status-box">⏳ Loading... • جاري التحميل...</div>
@@ -145,11 +213,6 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
 <input id="searchInd" placeholder="Search by name, code, national ID or company..." oninput="renderInd()" style="margin:10px 0 8px;">
 <div id="indTable"><p style="text-align:center;">⏳ Loading...</p></div>
 </div>
-<div class="bottom-nav">
-<a href="index.html" class="active"><b>🏠</b>Home<br>الرئيسية</a>
-<a href="stats.html"><b>📊</b>Reports<br>التقارير</a>
-<a href="train.html"><b>🎓</b>Training<br>التدريب</a>
-<a href="users.html"><b>👤</b>Profile<br>الملف الشخصي</a>
 </div>
 </div>
 <datalist id="companyList"><option value="RMED"><option value="ROWAD"></datalist>
@@ -157,11 +220,11 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
 <datalist id="kinList"><option value="Father"><option value="Mother"><option value="Brother"><option value="Sister"><option value="Wife"><option value="Husband"></datalist>
 <datalist id="healthList"><option value="Healthy"><option value="Diabetes"><option value="Blood Pressure"><option value="Heart"><option value="Allergy"><option value="Asthma"></datalist>
 <div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
-  <div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;color:#0A1F44;">
-    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0F2A4D;">🪪 Issue ID Card • إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
+  <div style="max-width:520px;margin:auto;background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;color:#fff;">
+    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#FFE082;">🪪 Issue ID Card • إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
     <label>Select registered employee • اختر موظف مسجل</label>
     <select id="issue-select" onchange="fillIssueFromWorker()"></select>
-    <p style="text-align:center;color:#999;font-size:13px;margin:10px 0;">— Or write data manually — • أو اكتب البيانات يدوي —</p>
+    <p style="text-align:center;color:#B8C6D6;font-size:13px;margin:10px 0;">— Or write data manually — • أو اكتب البيانات يدوي —</p>
     <div class="grid">
       <div><label>Name • الاسم</label><input id="issue-name" placeholder="Name"></div>
       <div><label>Code • الكود</label><input id="issue-code" placeholder="Code"></div>
@@ -183,7 +246,6 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
     <div style="overflow-x:auto;padding:8px;">
     <svg width="0" height="0" style="position:absolute"><defs><symbol id="cornerOrn" viewBox="0 0 62 62"><g fill="#C9A227" stroke="#FFE082" stroke-width="1"><path d="M2 60 C2 20 20 2 60 2 L60 10 C30 10 10 30 10 60 Z"/><circle cx="14" cy="14" r="6"/><circle cx="28" cy="10" r="4"/><circle cx="10" cy="28" r="4"/><path d="M22 22 Q30 14 38 22 Q30 30 22 22 Z"/></g></symbol></defs></svg>
     <div style="display:flex;flex-direction:column;gap:16px;align-items:center;width:100%">
-    <!-- FRONT HORIZONTAL - NO BARCODE -->
     <div id="cardFront" class="id-card">
       <div class="id-border1"></div><div class="id-border2"></div>
       <svg class="id-corner tl"><use href="#cornerOrn"/></svg><svg class="id-corner tr"><use href="#cornerOrn"/></svg>
@@ -207,7 +269,6 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
       </div>
       <div class="id-sign"><div class="id-sign-name">A. Alotaibi</div><div class="id-sign-line"></div><div class="id-sign-label">توقيع المدير</div><div class="id-sign-label-en">Manager Signature</div></div>
     </div>
-    <!-- BACK HORIZONTAL -->
     <div id="cardBack" class="id-card">
       <div class="id-border1"></div><div class="id-border2"></div>
       <svg class="id-corner tl"><use href="#cornerOrn"/></svg><svg class="id-corner tr"><use href="#cornerOrn"/></svg>
@@ -237,6 +298,15 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
 <script src="firebase-config.js?v=20261111"></script>
 <script src="auth.js?v=20261111"></script>
 <script>
+function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
 let DB = {workers:[], induction:[]};
 let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
 const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded','Active':'Active','Resigned':'Resigned','Excluded':'Excluded'};
@@ -346,430 +416,7 @@ function renderInd(){
   document.getElementById('k-today').innerText=todayCount;
   let ts=document.getElementById('k-total-sub'); if(ts) ts.innerText='+'+todayCount+' this week';
   let hs=document.getElementById('k-hours-sub'); if(hs) hs.innerText='+'+(todayCount*0.25).toFixed(2)+'h this month';
-  if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#999;">No registered yet • مفيش مسجلين لسه</p>'; return; }
-  document.getElementById('indTable').innerHTML='<table><tr><th>Code • الكود</th><th>Name • الاسم</th><th>National ID • الرقم القومي</th><th>Job • الوظيفة</th><th>Company • الشركة</th><th>Date • التاريخ</th><th>Status • الحالة</th><th>Notes • ملاحظات</th><th>ID Card • الكارنيه</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(TJob(x.job)||'-')+'</td><td>'+(x.company||'-')+'</td><td>'+(x.date||'-')+'</td><td><span class="badge '+(TStatus(x.status)==='Active'?'green':TStatus(x.status)==='Resigned'?'':'red')+'">'+TStatus(x.status)+'</span></td><td>'+(x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':(x.notes||'-'))+'</td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 ID Card</button></td></tr>').join('')+'</table>';
-}
-let currentCardIndex = 0;
-let currentCardData = null;
-function fillCardData(x){
-  currentCardData = x;
-  let photo=document.getElementById('c-photo');
-  photo.src = x.img || x.photo || issueImgData || '';
-  if(!photo.src) photo.style.background='#DDE3EA';
-  document.getElementById('c-name').innerText = x.name || '-';
-  document.getElementById('c-name-en').innerText = (x.nameEn || x.name || '').toUpperCase();
-  let jobVal = (TJob(x.job) || x.job || '').trim() || 'Safety Officer';
-  document.getElementById('c-job').innerText = jobVal;
-  document.getElementById('c-job-en').innerText = jobVal;
-  document.getElementById('c-code').innerText = x.code || '-';
-  document.getElementById('c-code-en').innerText = 'Employee Code: '+(x.code||'-');
-  document.getElementById('c-company').innerText = x.company || '-';
-  document.getElementById('c-company-en').innerText = 'Company: '+(x.company||'-');
-  document.getElementById('c-national').innerText = x.nationalId || '-';
-  document.getElementById('c-national-en').innerText = 'National ID: '+(x.nationalId||'-');
-  document.getElementById('c-phone').innerText = x.phone || '-';
-  document.getElementById('c-phone-en').innerText = 'Phone: '+(x.phone||'-');
-  document.getElementById('c-emergency').innerText = x.emergency || '-';
-  document.getElementById('c-emergency-en').innerText = 'Emergency Number: '+(x.emergency||'-');
-  document.getElementById('cardModal').style.display='block';
-}
-function openCard(idx){
-  let x = DB.induction[idx];
-  if(!x) return;
-  currentCardIndex = idx;
-  fillCardData(x);
-}
-function openLastCard(){
-  if(!DB.induction.length) return alert('Register employee first to issue ID card, or press Issue ID Card button and write data manually');
-  openCard(DB.induction.length - 1);
-}
-function openIssueCard(){
-  let sel=document.getElementById('issue-select');
-  sel.innerHTML='<option value="">-- Select employee --</option>' + (DB.induction||[]).map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join('');
-  document.getElementById('issueModal').style.display='block';
-}
-function fillIssueFromWorker(){
-  let idx=document.getElementById('issue-select').value;
-  if(idx==='') return;
-  let x=DB.induction[idx];
-  setVal('issue-name', x.name); setVal('issue-code', x.code); setVal('issue-national', x.nationalId||''); setVal('issue-job', TJob(x.job)||''); setVal('issue-company', x.company||''); setVal('issue-health', THealth(x.health)||''); setVal('issue-phone', x.phone||''); setVal('issue-emergency', x.emergency||'');
-  issueImgData = x.img || x.photo || '';
-  currentCardIndex = parseInt(idx);
-}
-function showCardFromIssue(){
-  if(!val('issue-name')) return alert('Write name or select employee');
-  document.getElementById('issueModal').style.display='none';
-  fillCardData({ name:val('issue-name'), code:val('issue-code'), nationalId:val('issue-national'), job:val('issue-job'), company:val('issue-company'), health:val('issue-health'), phone:val('issue-phone'), emergency:val('issue-emergency'), kin:'', status:'Active', date:new Date().toISOString().slice(0,10), img:issueImgData });
-}
-async function downloadCard(which){
-  let name = currentCardData?.name || DB.induction[currentCardIndex]?.name || 'card';
-  if(which==='front'){
-    let canvas = await html2canvas(document.getElementById('cardFront'), {scale:2, useCORS:true});
-    let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=canvas.toDataURL('image/png'); a.click();
-    return;
-  }
-  let c1 = await html2canvas(document.getElementById('cardFront'), {scale:2, useCORS:true});
-  let c2 = await html2canvas(document.getElementById('cardBack'), {scale:2, useCORS:true});
-  let final = document.createElement('canvas');
-  final.width = Math.max(c1.width, c2.width);
-  final.height = c1.height + c2.height + 20;
-  let ctx = final.getContext('2d');
-  ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,final.width,final.height);
-  ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20);
-  let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=final.toDataURL('image/png'); a.click();
-}
-loadAll();
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>Induction V2 - Register New Employee - RMED</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#EEF1F6;color:#0A1F44}
-.app{max-width:480px;margin:0 auto;background:#F8F9FC;min-height:100vh;padding-bottom:90px;position:relative;overflow:hidden}
-@media(min-width:520px){.app{max-width:1000px;background:#EEF1F6;padding:0 16px 90px}}
-.top-header{background:linear-gradient(180deg,#0B1338,#0F2A4D);color:#fff;border-radius:0 0 28px 28px;padding:20px 18px 28px;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
-.logo-box{display:flex;gap:12px;align-items:center}
-.logo-badge{width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#0A1F44;border:2px solid #FFE082;box-shadow:0 0 0 4px rgba(255,213,79,.25);text-align:center;line-height:1}
-.logo-badge small{font-size:8px;letter-spacing:1px;color:#5A4300}
-.top-header h1{margin:0;font-size:28px;line-height:1}.top-header p{margin:4px 0 0;color:#D6DEE8;font-size:13px}
-.lang-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.6);color:#fff;padding:8px 12px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 14px 0}
-.kpi{background:#fff;border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(10,31,68,.07)}
-.kpi .ic{font-size:38px;line-height:1}.kpi b{font-size:26px;display:block;margin-top:6px;color:#0A1F44}.kpi small{color:#0A1F44;font-size:13px;font-weight:600;display:block}.kpi span{font-size:12px;color:#2E7D32;font-weight:700}
-.card{background:#fff;border-radius:18px;padding:18px;margin:14px;box-shadow:0 4px 20px rgba(10,31,68,.07)}
-.card h2{margin:0;font-size:21px;text-align:center}.card p.sub{margin:4px 0 14px;color:#78909C;font-size:13px;text-align:center}
-.steps{display:flex;align-items:center;justify-content:space-between;margin:14px 0 16px}
-.step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;line-height:1.2}
-.step .dot{width:32px;height:32px;border-radius:50%;background:#0F2A4D;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
-.step small{color:#78909C;font-weight:600;display:block;font-size:11px}
-.steps-line{flex:1;height:2px;background:#E0E0E0;margin:0 6px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px;color:#0A1F44}
-input,select,textarea{width:100%;padding:11px;background:#F1F3F6;border:1px solid #E5E8EE;border-radius:10px;font-size:14px;color:#0A1F44;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#FFD54F;background:#fff}
-textarea{min-height:60px}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.btn{background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;line-height:1.3}
-.btn small{font-weight:600;font-size:12px;color:#B0BEC5;display:block}
-.btn.red{background:#D32F2F}
-.btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:10px 14px;border-radius:9px;cursor:pointer;font-weight:700}
-.note-box{background:#FFF3E0;border:1px solid #FFB300;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:8px;display:none}
-.note-box b{color:#D32F2F}
-.photo-preview{width:90px;height:110px;object-fit:cover;border-radius:10px;border:2px solid #0F2A4D;display:none;margin-top:8px}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center}
-.badge{background:#E3F2FD;color:#0F2A4D;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
-.badge.red{background:#FFEBEE;color:#D32F2F}.badge.green{background:#E8F5E9;color:#2E7D32}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1000px;background:#fff;border-top:1px solid #E5E8EE;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
-.bottom-nav a{text-align:center;color:#78909C;text-decoration:none;font-size:12px;font-weight:700;line-height:1.3}
-.bottom-nav a.active{color:#0F2A4D}.bottom-nav b{font-size:22px;display:block}
-.status-box{background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:10px;font-size:12px;margin:0 14px;text-align:center;color:#5D4037}
-/* ===== ID CARD HORIZONTAL - FINAL NO BARCODE ===== */
-.id-card{width:850px;max-width:100%;height:540px;min-height:540px;background:#0A1B33;border-radius:8px;overflow:hidden;position:relative;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.35);flex-shrink:0}
-.id-border1{position:absolute;inset:10px;border:1.5px solid #C9A227;border-radius:6px;pointer-events:none}
-.id-border2{position:absolute;inset:15px;border:1px solid rgba(201,162,39,.55);border-radius:4px;pointer-events:none}
-.id-corner{position:absolute;width:60px;height:60px;z-index:4;pointer-events:none}
-.id-corner.tl{top:8px;left:8px}.id-corner.tr{top:8px;right:8px;transform:scaleX(-1)}.id-corner.bl{bottom:8px;left:8px;transform:scaleY(-1)}.id-corner.br{bottom:8px;right:8px;transform:scale(-1,-1)}
-.id-photo-col{position:absolute;left:44px;top:46%;transform:translateY(-50%);text-align:center;z-index:3}
-.id-photo-wrap{position:relative}
-.id-photo-frame{position:relative;padding:9px;background:linear-gradient(135deg,#FFF3B0,#D4AF37 25%,#8B6914 50%,#FFE082 75%,#B8860B);border-radius:4px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
-.id-photo-frame:before{content:"";position:absolute;inset:4px;border:1px solid #7A5A00;border-radius:3px;pointer-events:none}
-.id-photo{width:215px;height:290px;object-fit:cover;display:block;border-radius:2px;background:#DDE3EA;border:2px solid #5A4300;position:relative;z-index:1}
-.id-frame-corner{position:absolute;width:22px;height:22px;background:#D4AF37;border:2px solid #7A5A00;border-radius:50%;z-index:2;display:flex;align-items:center;justify-content:center;font-size:10px;color:#5A4300}
-.id-chip{position:absolute;right:-30px;top:50%;transform:translateY(-50%);width:60px;height:44px;border-radius:6px;z-index:5;background:linear-gradient(135deg,#FFE082,#C9A227 50%,#8B6914);display:flex;align-items:center;justify-content:center;color:#0A1F44;font-weight:900;font-size:18px;border:1px solid #7A5A00;box-shadow:0 3px 10px rgba(0,0,0,.5)}
-.id-chip:before{content:"";position:absolute;inset:5px;border:1px solid rgba(0,0,0,.3);border-radius:3px}
-.id-info{position:absolute;right:36px;top:44%;transform:translateY(-50%);width:505px;direction:rtl;text-align:right;z-index:3}
-.id-shield{width:86px;height:94px;position:relative;margin-left:auto}
-.id-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
-.id-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:16px;padding-bottom:8px}
-.id-name{font-size:36px;font-weight:900;line-height:1.2;margin:8px 0 2px;white-space:nowrap}
-.id-name-en{font-size:15px;color:#FFD54F;font-weight:600;direction:ltr;text-align:right}
-.id-job-badge{display:inline-block;margin:10px 0;min-width:290px;text-align:center;background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;padding:9px 22px;border-radius:999px;font-weight:900;font-size:14px;border:1px solid #7A5A00;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-.id-job-badge small{display:block;font-size:11px;color:#5A4300;margin-top:1px}
-.id-fields{line-height:1.7;font-size:14px;margin-top:2px}
-.id-fields .row{display:flex;justify-content:flex-start;gap:8px;align-items:baseline}
-.id-fields b{color:#FFE082;font-size:13px;white-space:nowrap;font-weight:700;min-width:105px}
-.id-fields span{color:#fff;font-weight:600}
-.id-fields .en{color:#C9A227;font-size:11px;display:block;margin-top:-2px}
-.id-fields .emergency b{color:#FF9A8A}
-.id-sign{position:absolute;right:50px;bottom:20px;z-index:3;text-align:center;width:280px}
-.id-sign-name{font-family:'Brush Script MT','Segoe Script',cursive;font-size:36px;color:#fff;line-height:1;transform:rotate(-3deg)}
-.id-sign-line{height:1px;background:#fff;margin:4px 0}
-.id-sign-label{font-size:12px;color:#C9A227}.id-sign-label-en{font-size:11px;color:#C9A227;direction:ltr}
-.id-back-inner{position:absolute;inset:0;padding:32px 50px;display:flex;flex-direction:column;justify-content:center;direction:rtl;text-align:center;z-index:3}
-.id-back-title{font-size:34px;font-weight:900;color:#fff;text-align:center}
-.id-back-sub{font-size:16px;color:#C9A227;text-align:center;margin-top:2px;direction:ltr;font-weight:700}
-.id-back-line{height:1px;background:linear-gradient(90deg,transparent,#C9A227,transparent);margin:14px auto;width:55%}
-.id-back-list{line-height:2.15;font-size:16px;text-align:right}
-.id-back-list b{color:#FFE082}
-.id-back-foot{margin-top:14px;text-align:center;font-size:12px;color:#B8C6D6;border-top:1px solid rgba(201,162,39,.4);padding-top:10px}
-</style>
-</head>
-<body>
-<div class="app">
-<div class="top-header">
-<div class="logo-box"><div class="logo-badge">RMED<small>Safety</small></div><div><h1>Induction V2</h1><p>Register new employee • تسجيل موظف جديد</p></div></div>
-<button class="lang-btn">🌐 EN | AR</button>
-</div>
-<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:12px 14px;margin:12px 14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
-<div><b style="font-size:15px;">🪪 ID Card Issue - V2 NEW</b></div>
-<button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 18px;font-size:14px;" onclick="openIssueCard()">🪪 Issue ID Card</button>
-</div>
-<div class="kpi-grid">
-<div class="kpi"><div class="ic">📅</div><small>Total Attendance</small><b id="k-total">0</b><span id="k-total-sub">+0 this week</span></div>
-<div class="kpi"><div class="ic">🕐</div><small>Total Hours</small><b><span id="k-hours">0.00</span>h</b><span id="k-hours-sub">+0h this month</span></div>
-<div class="kpi"><div class="ic">🛡️</div><small>Rehabilitation</small><b id="k-rehab">0</b><span style="color:#78909C;">active cases</span></div>
-<div class="kpi"><div class="ic">👤</div><small>Today Attendance</small><b id="k-today">0</b><span>92% —</span></div>
-</div>
-<div id="loadStatus" class="status-box">⏳ Loading... • جاري التحميل...</div>
-<div class="card">
-<h2>New Employee Registration</h2>
-<p class="sub">تسجيل موظف جديد</p>
-<div class="steps">
-<div class="step"><span class="dot">✓</span><span>1 Personal Info<small>المعلومات الشخصية</small></span></div><div class="steps-line"></div>
-<div class="step"><span class="dot">📋</span><span>Contact<small>جهة الاتصال</small></span></div><div class="steps-line"></div>
-<div class="step"><span class="dot">📷</span><span>3 Photo<small>الصورة</small></span></div>
-</div>
-<div class="grid">
-<div><label>Code (Automatic) • الرمز (تلقائي)</label><input id="f-code" type="number" placeholder="Will be generated automatically"></div>
-<div><label>National ID (Masked) • رقم الهوية</label><input id="f-national" placeholder="14 digits • 14 رقم" maxlength="14" inputmode="numeric" oninput="checkNational()"></div>
-</div>
-<div><label>Full Name • الاسم الكامل</label><input id="f-name" placeholder="Enter full name / أدخل الاسم الكامل"></div>
-<div class="grid">
-<div><label>Job • المسمى الوظيفي</label><input id="f-job" list="jobList" placeholder="Safety Officer / أخصائي سلامة"></div>
-<div><label>Company • الشركة</label><input id="f-company" list="companyList" placeholder="Company / الشركة"></div>
-<div><label>Start Date • تاريخ المباشرة</label><input type="date" id="f-date"></div>
-<div><label>Health Status • الحالة الصحية</label><input id="f-health" list="healthList" placeholder="Fit / لائق"></div>
-<div><label>Phone • رقم الهاتف</label><input id="f-phone" placeholder="01xxxxxxxxx"></div>
-<div><label>Emergency Number • رقم الطوارئ</label><input id="f-emergency" placeholder="Emergency number"></div>
-<div><label>Kinship • صلة القرابة</label><input id="f-kin" list="kinList" placeholder="Brother / أخ"></div>
-<div><label>Status • الحالة</label><select id="f-status"><option value="Active">✅ Active - Default</option><option value="Resigned">⚠️ Resigned</option><option value="Excluded">⛔ Excluded</option></select></div>
-</div>
-<div><label>Employee Photo • صورة الموظف</label><input type="file" id="f-img" accept="image/*" onchange="previewPhoto(event)"><img id="photoPrev" class="photo-preview"></div>
-<label>Notes • ملاحظات</label>
-<textarea id="f-notes" placeholder="Add any medical notes or remarks... • أضف أي ملاحظات طبية أو ملاحظات..."></textarea>
-<div id="rehabAlert" class="note-box">⚠️ <b>Alert:</b> This national ID is registered before with name <b id="rehabName"></b>, it will be saved in notes: <b>Rehabilitation</b></div>
-<div class="btn-row">
-<button class="btn" onclick="saveInductionWorker()">Save Employee + Induction<small>حفظ الموظف + التدريب</small></button>
-<button class="btn red" onclick="openLastCard()">Issue ID Card<small>إصدار بطاقة الهوية</small></button>
-</div>
-</div>
-<div class="card">
-<h2 style="text-align:left;">📋 Induction Record - Last Registered • سجل المحاضرة</h2>
-<input id="searchInd" placeholder="Search by name, code, national ID or company..." oninput="renderInd()" style="margin:10px 0 8px;">
-<div id="indTable"><p style="text-align:center;">⏳ Loading...</p></div>
-</div>
-<div class="bottom-nav">
-<a href="index.html" class="active"><b>🏠</b>Home<br>الرئيسية</a>
-<a href="stats.html"><b>📊</b>Reports<br>التقارير</a>
-<a href="train.html"><b>🎓</b>Training<br>التدريب</a>
-<a href="users.html"><b>👤</b>Profile<br>الملف الشخصي</a>
-</div>
-</div>
-<datalist id="companyList"><option value="RMED"><option value="ROWAD"></datalist>
-<datalist id="jobList"><option value="Laborer"><option value="Electrician"><option value="Plumber"><option value="Carpenter"><option value="Steel Fixer"><option value="Supervisor"><option value="Engineer"><option value="Driver"></datalist>
-<datalist id="kinList"><option value="Father"><option value="Mother"><option value="Brother"><option value="Sister"><option value="Wife"><option value="Husband"></datalist>
-<datalist id="healthList"><option value="Healthy"><option value="Diabetes"><option value="Blood Pressure"><option value="Heart"><option value="Allergy"><option value="Asthma"></datalist>
-<div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
-  <div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;color:#0A1F44;">
-    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0F2A4D;">🪪 Issue ID Card • إصدار كارنيه</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
-    <label>Select registered employee • اختر موظف مسجل</label>
-    <select id="issue-select" onchange="fillIssueFromWorker()"></select>
-    <p style="text-align:center;color:#999;font-size:13px;margin:10px 0;">— Or write data manually — • أو اكتب البيانات يدوي —</p>
-    <div class="grid">
-      <div><label>Name • الاسم</label><input id="issue-name" placeholder="Name"></div>
-      <div><label>Code • الكود</label><input id="issue-code" placeholder="Code"></div>
-      <div><label>National ID • الرقم القومي</label><input id="issue-national" placeholder="14 digits"></div>
-      <div><label>Job • الوظيفة</label><input id="issue-job" placeholder="Job"></div>
-      <div><label>Company • الشركة</label><input id="issue-company" placeholder="Company" value=""></div>
-      <div><label>Health Status • الصحة</label><input id="issue-health" placeholder="Healthy"></div>
-      <div><label>Phone • التليفون</label><input id="issue-phone" placeholder="Phone"></div>
-      <div><label>Emergency • الطوارئ</label><input id="issue-emergency" placeholder="Emergency"></div>
-    </div>
-    <label>Photo (Optional) • الصورة (اختياري)</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
-    <button class="btn red" style="width:100%;margin-top:14px;" onclick="showCardFromIssue()">👁️ Show ID Card Front & Back • عرض الكارنيه وش وضهر</button>
-  </div>
-</div>
-<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;overflow:auto;padding:16px;">
-  <div style="max-width:900px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;color:#0A1F44;">
-    <div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;color:#0F2A4D;">🪪 Employee ID Card • كارنيه الموظف - V2 NEW</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div>
-    <p style="text-align:center;color:#D32F2F;font-weight:900;">لو شايف كلمة V2 NEW دي يبقى الملف الجديد اتفتح صح ✅</p>
-    <div style="overflow-x:auto;padding:8px;">
-    <svg width="0" height="0" style="position:absolute"><defs><symbol id="cornerOrn" viewBox="0 0 62 62"><g fill="#C9A227" stroke="#FFE082" stroke-width="1"><path d="M2 60 C2 20 20 2 60 2 L60 10 C30 10 10 30 10 60 Z"/><circle cx="14" cy="14" r="6"/><circle cx="28" cy="10" r="4"/><circle cx="10" cy="28" r="4"/><path d="M22 22 Q30 14 38 22 Q30 30 22 22 Z"/></g></symbol></defs></svg>
-    <div style="display:flex;flex-direction:column;gap:16px;align-items:center;width:100%">
-    <!-- FRONT HORIZONTAL - NO BARCODE -->
-    <div id="cardFront" class="id-card">
-      <div class="id-border1"></div><div class="id-border2"></div>
-      <svg class="id-corner tl"><use href="#cornerOrn"/></svg><svg class="id-corner tr"><use href="#cornerOrn"/></svg>
-      <svg class="id-corner bl"><use href="#cornerOrn"/></svg><svg class="id-corner br"><use href="#cornerOrn"/></svg>
-      <div class="id-photo-col"><div class="id-photo-wrap"><div class="id-photo-frame">
-        <div class="id-frame-corner" style="top:-6px;left:-6px;">✦</div><div class="id-frame-corner" style="top:-6px;right:-6px;">✦</div><div class="id-frame-corner" style="bottom:-6px;left:-6px;">✦</div><div class="id-frame-corner" style="bottom:-6px;right:-6px;">✦</div>
-        <img id="c-photo" class="id-photo" src="">
-      </div><div class="id-chip">▦</div></div></div>
-      <div class="id-info">
-        <div class="id-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div>
-        <div class="id-name" id="c-name">-</div>
-        <div class="id-name-en" id="c-name-en">-</div>
-        <div class="id-job-badge"><span id="c-job">-</span><small id="c-job-en"></small></div>
-        <div class="id-fields">
-          <div class="row"><b>رمز الموظف :</b><span id="c-code">-</span></div><div><span class="en" id="c-code-en">Employee Code: -</span></div>
-          <div class="row"><b>الشركة :</b><span id="c-company">-</span></div><div><span class="en" id="c-company-en">Company: -</span></div>
-          <div class="row"><b>الهوية الوطنية :</b><span id="c-national">-</span></div><div><span class="en" id="c-national-en">National ID: -</span></div>
-          <div class="row"><b>رقم الجوال :</b><span id="c-phone">-</span></div><div><span class="en" id="c-phone-en">Phone: -</span></div>
-          <div class="row emergency"><b>رقم الطوارئ :</b><span id="c-emergency">-</span></div><div class="emergency"><span class="en" id="c-emergency-en" style="color:#FF9A8A">Emergency Number: -</span></div>
-        </div>
-      </div>
-      <div class="id-sign"><div class="id-sign-name">A. Alotaibi</div><div class="id-sign-line"></div><div class="id-sign-label">توقيع المدير</div><div class="id-sign-label-en">Manager Signature</div></div>
-    </div>
-    <!-- BACK HORIZONTAL -->
-    <div id="cardBack" class="id-card">
-      <div class="id-border1"></div><div class="id-border2"></div>
-      <svg class="id-corner tl"><use href="#cornerOrn"/></svg><svg class="id-corner tr"><use href="#cornerOrn"/></svg>
-      <svg class="id-corner bl"><use href="#cornerOrn"/></svg><svg class="id-corner br"><use href="#cornerOrn"/></svg>
-      <div class="id-back-inner">
-        <div style="display:flex;justify-content:center;"><div class="id-shield" style="margin:0;"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div></div>
-        <div class="id-back-title">تعليمات السلامة</div><div class="id-back-sub">Safety Instructions</div><div class="id-back-line"></div>
-        <div class="id-back-list">
-          <div>1. <b>ارتدِ معدات الحماية الشخصية دائمًا</b> - Wear appropriate PPE at all times.</div>
-          <div>2. <b>اتبع بروتوكولات النظافة والتعقيم</b> - Follow hygiene and sanitation protocols.</div>
-          <div>3. <b>أبلغ عن أي خطر فورًا للمشرف</b> - Report any hazard immediately to supervisor.</div>
-          <div>4. <b>حافظ على مخارج الطوارئ واضحة</b> - Keep emergency exits clear and accessible.</div>
-        </div>
-        <div class="id-back-foot">RMED • Safety • Compliance • Excellence</div>
-      </div>
-    </div>
-    </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
-    <button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 Download Front & Back • تحميل وش وضهر</button>
-    <button class="btn" onclick="downloadCard('front')">📥 Download Front Only • تحميل الوش بس</button>
-    </div>
-  </div>
-</div>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20261111"></script>
-<script src="auth.js?v=20261111"></script>
-<script>
-let DB = {workers:[], induction:[]};
-let SHEET_URL = "https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
-const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded','Active':'Active','Resigned':'Resigned','Excluded':'Excluded'};
-const HEALTH_MAP={'سليم':'Healthy','سكر':'Diabetes','ضغط':'Blood Pressure','قلب':'Heart','حساسية':'Allergy','ربو':'Asthma'};
-const KIN_MAP={'أب':'Father','أم':'Mother','أخ':'Brother','أخت':'Sister','زوجة':'Wife','زوج':'Husband'};
-const JOB_MAP={'عامل':'Laborer','كهربائي':'Electrician','سباك':'Plumber','نجار':'Carpenter','حداد':'Steel Fixer','مشرف':'Supervisor','مهندس':'Engineer','سائق':'Driver'};
-function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Active'; }
-function THealth(v){ return HEALTH_MAP[String(v||'').trim()]||v||''; }
-function TKin(v){ return KIN_MAP[String(v||'').trim()]||v||''; }
-function TJob(v){ return JOB_MAP[String(v||'').trim()]||v||''; }
-function isRehabNotes(n){ return String(n||'').includes('إعادة تأهيل')||String(n||'').includes('Rehabilitation'); }
-function val(id){ return document.getElementById(id).value.trim(); }
-function setVal(id,v){ document.getElementById(id).value=v; }
-document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-function saveCache(){ try{ localStorage.setItem('rmed_induction_cache', JSON.stringify({time:Date.now(), DB:DB})); }catch(e){} }
-function loadCache(){ try{ let c=JSON.parse(localStorage.getItem('rmed_induction_cache')||'null'); if(c && c.DB){ DB=c.DB; return true; } }catch(e){} return false; }
-async function loadAll(attempt=1){
-  let st=document.getElementById('loadStatus');
-  if(!window.db){
-    if(attempt < 3){ if(st) st.innerText='⏳ Trying to connect... '+attempt+' / 3 • جاري المحاولة...'; setTimeout(()=>loadAll(attempt+1),1200); return; }
-    if(loadCache()){ if(st) st.innerText='⚠️ Showing last saved data • عرض آخر بيانات محفوظة'; renderInd(); refreshCode(); return; }
-    if(st) st.innerText='❌ Cannot connect right now - Please refresh (Ctrl + F5)';
-    return;
-  }
-  try{
-    let s1=await window.db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()}));
-    let s2=await window.db.collection('induction').get(); DB.induction=[]; s2.forEach(d=>DB.induction.push({id:d.id,...d.data()}));
-    if(DB.workers.length===0 && DB.induction.length===0){
-      try{ let old=JSON.parse(localStorage.getItem('safetyDB')||'{}'); DB.workers=old.workers||[]; DB.induction=old.induction||[]; }catch(e){}
-    }
-    saveCache();
-    if(st) st.innerText='✅ Loaded • تم التحميل | Total: '+DB.induction.length;
-  }catch(e){ if(loadCache()){ if(st) st.innerText='⚠️ Showing last saved data'; } }
-  renderInd(); refreshCode();
-}
-function nextCode(){
-  let max=1000;
-  (DB.workers||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
-  (DB.induction||[]).forEach(w=>{ let n=parseInt(w.code); if(!isNaN(n) && n>max) max=n; });
-  return max+1;
-}
-function refreshCode(){ if(!val('f-code')) setVal('f-code', nextCode()); }
-function previewPhoto(e){
-  let f=e.target.files[0]; if(!f) return;
-  let r=new FileReader(); r.onload=ev=>{ let img=document.getElementById('photoPrev'); img.src=ev.target.result; img.style.display='block'; }; r.readAsDataURL(f);
-}
-let issueImgData='';
-function previewIssuePhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ issueImgData=ev.target.result; }; r.readAsDataURL(f); }
-function checkNational(){
-  let nat=val('f-national');
-  let box=document.getElementById('rehabAlert');
-  if(nat.length<14){ box.style.display='none'; return null; }
-  let old=(DB.workers||[]).find(w=>String(w.nationalId)===nat) || (DB.induction||[]).find(w=>String(w.nationalId)===nat);
-  if(old){
-    box.style.display='block';
-    document.getElementById('rehabName').innerText=old.name+' - Code '+old.code;
-    let notes=val('f-notes');
-    if(!isRehabNotes(notes)) setVal('f-notes', (notes?notes+' - ':'')+'Rehabilitation');
-    return old;
-  } else { box.style.display='none'; return null; }
-}
-function readFile(id, cb){ let f=document.getElementById(id)?.files[0]; if(!f) return cb(''); let r=new FileReader(); r.onload=e=>cb(e.target.result); r.readAsDataURL(f); }
-function getMeName(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); return u.name||''; }catch(e){ return ''; } }
-async function saveInductionWorker(){
-  if(!val('f-name')) return alert('Write full name');
-  if(!val('f-national')) return alert('Write national ID');
-  if(val('f-national').length!==14) return alert('National ID must be 14 digits');
-  if(!window.db) return alert('Not connected - Please refresh');
-  let code = val('f-code') || String(nextCode());
-  let codeExists=(DB.workers||[]).find(w=>String(w.code)===String(code));
-  if(codeExists && !confirm('Code '+code+' is already registered with name '+codeExists.name+', continue with same code?')) return;
-  let old = checkNational();
-  let isRehab = !!old;
-  let notes = val('f-notes');
-  if(isRehab && !isRehabNotes(notes)) notes = (notes?notes+' - ':'')+'Rehabilitation';
-  readFile('f-img', async img=>{
-    let w={ name:val('f-name'), code:String(code), nationalId:val('f-national'), job:val('f-job'), company:val('f-company')||'', hire:val('f-date'), date:val('f-date'), health:val('f-health'), phone:val('f-phone'), emergency:val('f-emergency'), kin:val('f-kin'), status:val('f-status'), notes:notes, isRehab:isRehab, img:img, photo:img, reporter: getMeName(), createdAt:new Date().toISOString() };
-    try{
-      let refW = await window.db.collection('workers').add(w); w.id = refW.id;
-      let rec={...w, hoursPer:0.25, totalHours:0.25, type:'induction', title:'Induction - '+w.name};
-      let refI = await window.db.collection('induction').add(rec); rec.id = refI.id;
-      DB.workers.push(w); DB.induction.push(rec); saveCache();
-    }catch(e){ alert('Save problem: '+e.message); return; }
-    try{
-      let params=new URLSearchParams({action:'add', name:w.name, id:w.code, job:w.job, company:w.company, department:'', hireDate:w.hire, phone:w.phone, emergencyPhone:w.emergency, relation:w.kin, health:w.health, status:w.status, expiry:'', photo:'', nationalId:w.nationalId, notes:w.notes});
-      fetch(SHEET_URL+'?'+params.toString());
-    }catch(e){}
-    renderInd();
-    alert('✅ Saved '+w.name+' - Induction 0.25 hour' + (isRehab?' - Rehabilitation':''));
-    setVal('f-name',''); setVal('f-national',''); setVal('f-job',''); setVal('f-phone',''); setVal('f-emergency',''); setVal('f-notes',''); setVal('f-code', nextCode());
-    document.getElementById('photoPrev').style.display='none';
-    document.getElementById('rehabAlert').style.display='none';
-    document.getElementById('f-img').value='';
-  });
-}
-function renderInd(){
-  let q=(document.getElementById('searchInd').value||'').toLowerCase();
-  let list=(DB.induction||[]).map((x,idx)=>({...x,_idx:idx})).filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q));
-  let total=(DB.induction||[]).length;
-  let hours=total*0.25;
-  let rehab=(DB.induction||[]).filter(x=>x.isRehab || isRehabNotes(x.notes)).length;
-  let today=new Date().toISOString().slice(0,10);
-  let todayCount=(DB.induction||[]).filter(x=>x.date===today).length;
-  document.getElementById('k-total').innerText=total;
-  document.getElementById('k-hours').innerText=hours.toFixed(2);
-  document.getElementById('k-rehab').innerText=rehab;
-  document.getElementById('k-today').innerText=todayCount;
-  let ts=document.getElementById('k-total-sub'); if(ts) ts.innerText='+'+todayCount+' this week';
-  let hs=document.getElementById('k-hours-sub'); if(hs) hs.innerText='+'+(todayCount*0.25).toFixed(2)+'h this month';
-  if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#999;">No registered yet • مفيش مسجلين لسه</p>'; return; }
+  if(!list.length){ document.getElementById('indTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No registered yet • مفيش مسجلين لسه</p>'; return; }
   document.getElementById('indTable').innerHTML='<table><tr><th>Code • الكود</th><th>Name • الاسم</th><th>National ID • الرقم القومي</th><th>Job • الوظيفة</th><th>Company • الشركة</th><th>Date • التاريخ</th><th>Status • الحالة</th><th>Notes • ملاحظات</th><th>ID Card • الكارنيه</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(TJob(x.job)||'-')+'</td><td>'+(x.company||'-')+'</td><td>'+(x.date||'-')+'</td><td><span class="badge '+(TStatus(x.status)==='Active'?'green':TStatus(x.status)==='Resigned'?'':'red')+'">'+TStatus(x.status)+'</span></td><td>'+(x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':(x.notes||'-'))+'</td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 ID Card</button></td></tr>').join('')+'</table>';
 }
 let currentCardIndex = 0;
