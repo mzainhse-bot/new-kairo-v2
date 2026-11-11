@@ -1,182 +1,137 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Employee Evaluation - RMED</title>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Employee Evaluation - RMED</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
-.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
-.sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
-.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
-.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
-.sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
-.sidebar a .icon{font-size:18px;width:26px;text-align:center}
-.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-left:260px;transition:0.3s}
-.main.full{margin-left:0}
-.topbar{display:none}
-@media(max-width:900px){
-  .sidebar{left:-270px}
-  .sidebar.open{left:0}
-  .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-  .overlay.show{display:block}
-}
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FFD700;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h2{margin:0;font-size:21px}
-.container{max-width:1000px;margin:auto;padding:0 16px 16px}
-.filter{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-.filter select{padding:10px 12px;border-radius:10px;border:1px solid #CFD8DC;font-weight:bold;background:#fff;min-width:140px;cursor:pointer}
-.btn{background:#0F2A4D;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
-.btn-pdf{background:#D32F2F;color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
-.btn2{background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07);text-align:center}
-.top1{border:4px solid #FFD700;background:linear-gradient(180deg,#FFF8E1,#fff);position:relative}
-.top1 img{width:150px;height:150px;object-fit:cover;border-radius:50%;border:6px solid #FFD700;box-shadow:0 0 0 4px #fff,0 0 20px #FFD700}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#070D26;color:#fff;background-image:radial-gradient(800px 400px at 0% 0%,rgba(255,213,79,.15),transparent),radial-gradient(800px 400px at 100% 0%,rgba(255,213,79,.12),transparent)}
+.app{max-width:1280px;margin:14px auto;background:linear-gradient(180deg,#0B1338,#070D26);border-radius:22px;overflow:hidden;border:1px solid rgba(255,213,79,.35);box-shadow:0 20px 60px rgba(0,0,0,.6);padding:18px}
+.header{display:flex;gap:18px;align-items:center;padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-box{text-align:center;flex-shrink:0}
+.logo-badge{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#0A1F44;box-shadow:0 10px 22px rgba(255,179,0,.5),inset 0 2px 0 #fff,0 0 0 5px #0B1338,0 0 0 7px rgba(255,213,79,.6);border:2px solid #FFE082}
+.logo-box small{display:block;margin-top:6px;font-size:10px;letter-spacing:1px;color:#FFD54F;font-weight:800}
+.header h1{margin:0;font-size:38px;line-height:1}.header h1 span{color:#FFD54F;display:block;font-size:30px}
+.header p{margin:6px 0 0;color:#B8C6D6}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.topnav a{color:#CFD8DC;text-decoration:none;font-size:12px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:8px 10px;border-radius:999px}
+.topnav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
+.filter{background:linear-gradient(180deg,#1C2750,#141C3F);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.filter select{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);font-weight:700;background:#0F1738;color:#fff;min-width:140px;cursor:pointer}
+.btn{background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn-pdf{background:linear-gradient(135deg,#FF5252,#B71C1C);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn2{background:#0F1738;color:#fff;border:1px solid rgba(255,255,255,.15);padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer}
+.card{background:linear-gradient(180deg,#1C2750,#141C3F);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 10px 26px rgba(0,0,0,.35);text-align:center}
+.top1{border:4px solid #FFD700;background:linear-gradient(180deg,#2A2300,#1A244D);position:relative}
+.top1 img{width:150px;height:150px;object-fit:cover;border-radius:50%;border:6px solid #FFD700;box-shadow:0 0 0 4px #0B1338,0 0 20px #FFD700}
 .top23{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.top23{grid-template-columns:1fr}}
-.rank2{border:4px solid #C0C0C0;background:linear-gradient(180deg,#F5F5F5,#fff)}
+.rank2{border:4px solid #C0C0C0;background:linear-gradient(180deg,#2A2E3A,#141C3F)}
 .rank2 img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:5px solid #C0C0C0}
-.rank3{border:4px solid #CD7F32;background:linear-gradient(180deg,#FFF3E0,#fff)}
+.rank3{border:4px solid #CD7F32;background:linear-gradient(180deg,#2A1A00,#141C3F)}
 .rank3 img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:5px solid #CD7F32}
 .crown{font-size:42px;display:block}
-.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:13px;margin:3px}
-.badge-gold{background:#FFD700}.badge-silver{background:#C0C0C0}.badge-bronze{background:#CD7F32;color:#fff}
+.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;font-size:13px;margin:3px;background:rgba(255,255,255,.08);color:#fff}
+.badge-gold{background:#FFD700;color:#0A1F44}.badge-silver{background:#C0C0C0;color:#0A1F44}.badge-bronze{background:#CD7F32;color:#fff}
 .badge-green{background:#E8F5E9;color:#2E7D32}.badge-blue{background:#E3F2FD;color:#1565C0}.badge-red{background:#FFEBEE;color:#D32F2F}
-.list-row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
-.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #0F2A4D;flex-shrink:0}
-.rank-num{font-size:24px;font-weight:bold;width:40px;text-align:center;flex-shrink:0}
+.list-row{display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,#1C2750,#141C3F);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);text-align:left}
+.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #FFD54F;flex-shrink:0}
+.rank-num{font-size:24px;font-weight:900;width:40px;text-align:center;flex-shrink:0;color:#FFD54F}
+.status-box{background:linear-gradient(135deg,#2A2300,#1A244D);border:1.5px solid #FFD54F;border-radius:14px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8;text-align:center}
 .print-head{display:none}
+.bottom-nav{margin-top:14px;background:#0B1338;border:1px solid rgba(255,255,255,.08);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
+.bottom-nav a{text-align:center;color:#9AA9BC;text-decoration:none;font-size:12px;font-weight:800;padding:10px;border-radius:12px}
+.bottom-nav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
+@media(max-width:700px){.header h1{font-size:28px}.header h1 span{font-size:22px}}
 @media print{
-  body{background:#fff}
-  .sidebar,.topbar,.overlay,.page-head,.no-print{display:none !important}
-  .main{margin-left:0}
-  .print-head{display:block;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:12px}
+  body{background:#fff;color:#000}
+  .app{background:#fff;border:none;box-shadow:none}
+  .topnav,.bottom-nav,.no-print,.status-box,.header{display:none !important}
+  .print-head{display:block;text-align:center;border-bottom:2px solid #0F2A4D;padding-bottom:10px;margin-bottom:12px;color:#000}
   .print-head h1{margin:0;font-size:22px}.print-head p{margin:4px 0;color:#555}
-  .container{max-width:100%;padding:0}
-  .card,.list-row{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .card,.list-row{box-shadow:none;border:1px solid #ddd;break-inside:avoid;background:#fff;color:#000}
   @page{margin:12mm}
 }
 </style>
 </head>
 <body>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<div class="app">
+<div class="header">
+<div class="logo-box"><div class="logo-badge">RMED</div><small>RMED SAFETY</small></div>
+<div><h1>Employee Evaluation <span>تقييم الموظفين - موظف الشهر</span></h1><p>Employee Of The Month • موظف الشهر</p></div>
+</div>
+<div class="topnav">
+<a href="index.html">🏠 Home • الرئيسية</a><a href="dashboard.html">📊 My Achievements</a><a href="stats.html">📈 Statistics</a><a href="employee-evaluation.html" class="active">🏆 Employee Evaluation • تقييم الموظفين</a><a href="contractor-eval.html">🏆 Contractor Evaluation</a><a href="daily-count.html">👷‍♂️ Daily Count</a><a href="permits.html">📋 Permits</a><a href="violations.html">⚠️ Violations</a><a href="accidents.html">🚑 Accidents</a>
+</div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
-  <div class="user-box">
-    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
-  </div>
-  <div class="menu-title">📊 MAIN</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation" class="active"><span class="icon">🏆</span> Employee Evaluation</a>
-  <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
-  <div class="menu-title">👷 WORKERS & TRAINING</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
-  <a href="employee-file.html" data-page="employee-file"><span class="icon">📁</span> Employee Files</a>
-  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
-  <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
-  <div class="menu-title">⚙️ ACCOUNT</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
-</aside>
-
-<div class="main">
-<div class="page-head"><h2>🏆 Employee Evaluation - Employee Of The Month</h2><div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print</button><button class="btn2" onclick="toggleSidebar()">◀️ Hide Menu</button></div></div>
-<div class="container">
 <div class="print-head"><h1>🏆 Employee Evaluation Report - Employee Of The Month - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 
-<div class="filter"><b>🗓️ Select Month:</b>
-<label>Year:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
-<label>Month:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
-<span id="periodLabel" style="font-weight:bold;color:#0F2A4D;"></span>
-<span style="flex:1;"></span><span id="totalEmp" style="font-weight:bold;"></span>
+<div class="filter"><b>🗓️ Select Month: • اختر الشهر:</b>
+<label>Year: • السنة:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
+<label>Month: • الشهر:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
+<span id="periodLabel" style="font-weight:700;color:#FFD54F;"></span>
+<span style="flex:1;"></span><span id="totalEmp" style="font-weight:700;"></span>
+<button class="btn-pdf no-print" onclick="exportPDF()">📄 Export PDF / Print • تصدير PDF</button>
 </div>
-<p id="loadStatus" style="text-align:center;color:#1565C0;font-size:13px;">⏳ Loading evaluation from Firebase...</p>
+<div id="loadStatus" class="status-box">⏳ Loading evaluation... • جاري تحميل التقييم...</div>
 
 <div id="top1Box"></div>
 <div id="top23Box" class="top23"></div>
 <div id="restBox" style="margin-top:14px;"></div>
 <div id="emptyBox"></div>
 
-<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print Employee Of The Month Report</button><p style="color:#78909C;font-size:12px;">Select month first, then press Export - Choose Destination = Save as PDF</p></div>
-</div>
+<div class="card no-print" style="text-align:center;"><button class="btn-pdf" onclick="exportPDF()">📄 Export PDF / Print Employee Of The Month Report • تصدير تقرير موظف الشهر</button><p style="color:#9AA9BC;font-size:12px;">Select month first, then press Export - Choose Destination = Save as PDF • اختر الشهر الأول وبعدين تصدير</p></div>
+
+<div class="bottom-nav"><a href="index.html" class="active">🏠<br>Home • الرئيسية</a><a href="stats.html">📊<br>Reports • التقارير</a><a href="train.html">🎓<br>Training • التدريب</a><a href="users.html">👤<br>Profile • الملف الشخصي</a></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="auth.js"></script>
+<script src="firebase-config.js?v=20261111"></script>
+<script src="auth.js?v=20261111"></script>
 <script>
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
-(function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
-  let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
-  if(u.name){ document.getElementById('sideName').innerText=u.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; let t=document.getElementById('topUser'); if(t) t.innerText=u.name; }
-})();
-
 let nowD=new Date();
 let selYear=nowD.getFullYear();
 let selMonth=nowD.getMonth();
 let months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-// ✅ FIREBASE - All data from Firebase
 let FB = {users:[], observations:[], nearMiss:[], accidents:[]};
-
+function saveCache(){ try{ localStorage.setItem('rmed_emp_eval_cache', JSON.stringify({time:Date.now(), FB:FB})); }catch(e){} }
+function loadCache(){ try{ let c=JSON.parse(localStorage.getItem('rmed_emp_eval_cache')||'null'); if(c && c.FB){ FB=c.FB; return true; } }catch(e){} return false; }
 async function fetchCol(name){
   if(!window.db) return [];
   try{ let s=await window.db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
 }
-async function loadAll(){
-  document.getElementById('loadStatus').innerText='⏳ Loading evaluation from Firebase...';
-  FB.users = await fetchCol('users');
-  FB.observations = await fetchCol('observations');
-  if(!FB.observations.length) FB.observations = await fetchCol('safety-observations');
-  FB.nearMiss = await fetchCol('nearMiss');
-  if(!FB.nearMiss.length) FB.nearMiss = await fetchCol('near-miss');
-  FB.accidents = await fetchCol('accidents');
-  // fallback from old localStorage if Firebase is empty
+async function loadAll(attempt=1){
+  let st=document.getElementById('loadStatus');
+  if(!window.db){
+    if(attempt < 3){ if(st) st.innerText='⏳ Trying to connect... '+attempt+' / 3 • جاري المحاولة...'; setTimeout(()=>loadAll(attempt+1),1200); return; }
+    if(loadCache()){ if(st) st.innerText='⚠️ Showing last saved data • عرض آخر بيانات محفوظة'; render(); return; }
+    if(st) st.innerText='❌ Cannot connect right now - Please refresh (Ctrl + F5)';
+    return;
+  }
   try{
-    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    if(!FB.users.length && old.users) FB.users=old.users;
-    if(!FB.observations.length && (old.observations||old.safetyObservations)) FB.observations=old.observations||old.safetyObservations||[];
-    if(!FB.nearMiss.length && old.nearMiss) FB.nearMiss=old.nearMiss;
-    if(!FB.accidents.length && old.accidents) FB.accidents=old.accidents;
-  }catch(e){}
-  document.getElementById('loadStatus').innerText='✅ Loaded '+FB.users.length+' employees - '+FB.observations.length+' observations - '+FB.nearMiss.length+' near miss - '+FB.accidents.length+' accidents from Firebase';
+    FB.users = await fetchCol('users');
+    FB.observations = await fetchCol('observations');
+    if(!FB.observations.length) FB.observations = await fetchCol('safety-observations');
+    FB.nearMiss = await fetchCol('nearMiss');
+    if(!FB.nearMiss.length) FB.nearMiss = await fetchCol('near-miss');
+    FB.accidents = await fetchCol('accidents');
+    try{
+      let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+      if(!FB.users.length && old.users) FB.users=old.users;
+      if(!FB.observations.length && (old.observations||old.safetyObservations)) FB.observations=old.observations||old.safetyObservations||[];
+      if(!FB.nearMiss.length && old.nearMiss) FB.nearMiss=old.nearMiss;
+      if(!FB.accidents.length && old.accidents) FB.accidents=old.accidents;
+    }catch(e){}
+    saveCache();
+    if(st) st.innerText='✅ Loaded '+FB.users.length+' employees - '+FB.observations.length+' observations - '+FB.nearMiss.length+' near miss - '+FB.accidents.length+' accidents';
+  }catch(e){
+    if(loadCache()){ if(st) st.innerText='⚠️ Showing last saved data • عرض آخر بيانات محفوظة'; }
+    else if(st) st.innerText='❌ Error: '+e.message;
+  }
   render();
 }
-
 function fillSelects(){
   let y=document.getElementById('selYear'); y.innerHTML=''; for(let yy=2026;yy<=2030;yy++){ let o=document.createElement('option'); o.value=yy; o.text=yy; if(yy==selYear) o.selected=true; y.appendChild(o); }
   let m=document.getElementById('selMonth'); m.innerHTML=''; months.forEach((mm,i)=>{ let o=document.createElement('option'); o.value=i; o.text=mm; if(i==selMonth) o.selected=true; m.appendChild(o); });
@@ -189,18 +144,12 @@ function exportPDF(){
 }
 function isClosed(x){
   let s=(x.status||x.state||'').toString().trim().toLowerCase();
-  // Read old AR + new EN closed statuses
   return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || s.includes('غلق') || x.isClosed===true || x.closed===true;
 }
-function getReporter(x){
-  return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim();
-}
+function getReporter(x){ return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim(); }
 function getReporterCode(x){ return (x.reporterCode||x.reporterId||x.createdByCode||x.code||'').toString().trim(); }
 function getDate(x){ return x.date||x.createdAt||x.created_at||''; }
-function inMonth(d){
-  if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false;
-  return dt.getFullYear()===selYear && dt.getMonth()===selMonth;
-}
+function inMonth(d){ if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false; return dt.getFullYear()===selYear && dt.getMonth()===selMonth; }
 function render(){
   document.getElementById('periodLabel').innerText='From 1 '+months[selMonth]+' '+selYear+' to '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
   let allUsers = FB.users || [];
@@ -241,15 +190,12 @@ function render(){
     if(r._type==='Near Miss') map[k].near++;
     if(r._type==='Accident') map[k].acc++;
   });
-  let ranked=Object.values(map).sort((a,b)=>{
-    if(b.total!==a.total) return b.total-a.total;
-    return b.closed-a.closed;
-  });
+  let ranked=Object.values(map).sort((a,b)=>{ if(b.total!==a.total) return b.total-a.total; return b.closed-a.closed; });
   document.getElementById('totalEmp').innerText='Total Employees: '+ranked.length+' | Total Reports In Month: '+allReports.length;
   function imgHTML(u, size){
     let src=u.img||u.photo||u.image||u.avatar||'';
     if(src) return '<img src="'+src+'" alt="'+(u.name||'')+'">';
-    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:#ECEFF1;display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid #CFD8DC;">👷</div>';
+    return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid rgba(255,255,255,.15);">👷</div>';
   }
   function statsHTML(r){
     let rate=r.total? Math.round(r.closed/r.total*100):0;
@@ -258,27 +204,27 @@ function render(){
   let top1=document.getElementById('top1Box');
   if(ranked.length && ranked[0].total>0){
     let r=ranked[0];
-    top1.innerHTML='<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#B8860B;">🏆 Employee Of The Month - '+months[selMonth]+' '+selYear+'</h2><p style="color:#78909C;margin:4px 0;">1st Place</p>'+imgHTML(r.user,150)+'<h2 style="margin:10px 0 0;">'+(r.user.name||'No Name')+'</h2><p style="margin:4px 0;color:#78909C;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    top1.innerHTML='<div class="card top1"><span class="crown">👑</span><h2 style="margin:0;color:#FFD54F;">🏆 Employee Of The Month - '+months[selMonth]+' '+selYear+'</h2><p style="color:#B8C6D6;margin:4px 0;">1st Place • المركز الأول</p>'+imgHTML(r.user,150)+'<h2 style="margin:10px 0 0;">'+(r.user.name||'No Name')+'</h2><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.job||r.user.dept||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   } else {
-    top1.innerHTML='<div class="card"><h3>No reports yet in '+months[selMonth]+' '+selYear+'</h3><p style="color:#78909C;">Once employees upload reports, ranking will appear here automatically</p></div>';
+    top1.innerHTML='<div class="card"><h3>No reports yet in '+months[selMonth]+' '+selYear+'</h3><p style="color:#B8C6D6;">Once employees upload reports, ranking will appear here automatically • أول ما الموظفين يرفعوا تقارير، الترتيب هيظهر هنا أوتوماتيك</p></div>';
   }
   let top23=document.getElementById('top23Box');
   let html23='';
   if(ranked[1] && ranked[1].total>0){
     let r=ranked[1];
-    html23+='<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">2nd Place</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank2"><span style="font-size:32px;">🥈</span><h3 style="margin:4px 0;">2nd Place • المركز الثاني</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   if(ranked[2] && ranked[2].total>0){
     let r=ranked[2];
-    html23+='<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">3rd Place</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#78909C;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
+    html23+='<div class="card rank3"><span style="font-size:32px;">🥉</span><h3 style="margin:4px 0;">3rd Place • المركز الثالث</h3>'+imgHTML(r.user,120)+'<h3 style="margin:8px 0 0;">'+r.user.name+'</h3><p style="margin:4px 0;color:#B8C6D6;">'+(r.user.code?'Code: '+r.user.code:'')+'</p>'+statsHTML(r)+'</div>';
   }
   top23.innerHTML=html23;
   let rest=document.getElementById('restBox');
   let restList=ranked.slice(3);
   if(restList.length){
-    rest.innerHTML='<h3 style="margin:10px 0;">📋 Rest Of Ranking</h3>'+restList.map((r,i)=>{
+    rest.innerHTML='<h3 style="margin:10px 0;">📋 Rest Of Ranking • باقي الترتيب</h3>'+restList.map((r,i)=>{
       let rank=i+4;
-      return '<div class="list-row"><div class="rank-num">'+rank+'</div>'+imgHTML(r.user,64)+'<div style="flex:1;"><b style="font-size:16px;">'+(r.user.name||'No Name')+'</b><div style="color:#78909C;font-size:13px;">'+(r.user.job||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">Uploaded: '+r.total+'</span><span class="badge badge-green">Closed: '+r.closed+'</span><span class="badge">👀 '+r.obs+' | ⚡ '+r.near+' | 🚨 '+r.acc+'</span><span class="badge badge-green">Close: '+(r.total?Math.round(r.closed/r.total*100):0)+'%</span></div></div></div>';
+      return '<div class="list-row"><div class="rank-num">'+rank+'</div>'+imgHTML(r.user,64)+'<div style="flex:1;"><b style="font-size:16px;">'+(r.user.name||'No Name')+'</b><div style="color:#B8C6D6;font-size:13px;">'+(r.user.job||'')+' '+(r.user.code?' - Code: '+r.user.code:'')+'</div><div style="font-size:13px;margin-top:4px;"><span class="badge badge-blue">Uploaded: '+r.total+'</span><span class="badge badge-green">Closed: '+r.closed+'</span><span class="badge">👀 '+r.obs+' | ⚡ '+r.near+' | 🚨 '+r.acc+'</span><span class="badge badge-green">Close: '+(r.total?Math.round(r.closed/r.total*100):0)+'%</span></div></div></div>';
     }).join('');
   } else rest.innerHTML='';
 }
