@@ -5,899 +5,184 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accidents - RMED</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
-.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
-.sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
-.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
-.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
-.sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
-.sidebar a .icon{font-size:18px;width:26px;text-align:center}
-.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-left:260px;transition:0.3s}
-.main.full{margin-left:0}
-.topbar{display:none}
-@media(max-width:900px){
-  .sidebar{left:-270px}
-  .sidebar.open{left:0}
-  .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-  .overlay.show{display:block}
-}
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
-.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-textarea{min-height:60px;resize:vertical;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;} .kpi.black{border-bottom-color:#000;}
-.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
-.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
-.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
-.user-bar input{width:auto;flex:1;min-width:180px;}
-.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #ECEFF1;cursor:pointer;}
-.section-title{background:#0F2A4D;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
-.witness-box{background:#F4F6F9;border:1.5px solid #ECEFF1;border-radius:12px;padding:12px;margin-bottom:10px;}
-.chip{display:inline-block;background:#FFEBEE;color:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin:2px;}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#070D26;color:#fff;background-image:radial-gradient(800px 400px at 0% 0%,rgba(255,213,79,.15),transparent),radial-gradient(800px 400px at 100% 0%,rgba(255,213,79,.12),transparent)}
+.app{max-width:1280px;margin:14px auto;background:linear-gradient(180deg,#0B1338,#070D26);border-radius:22px;overflow:hidden;border:1px solid rgba(255,213,79,.35);box-shadow:0 20px 60px rgba(0,0,0,.6);padding:18px}
+.header{display:flex;gap:18px;align-items:center;padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-box{text-align:center;flex-shrink:0}
+.logo-badge{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#0A1F44;box-shadow:0 10px 22px rgba(255,179,0,.5),inset 0 2px 0 #fff,0 0 0 5px #0B1338,0 0 0 7px rgba(255,213,79,.6);border:2px solid #FFE082}
+.logo-box small{display:block;margin-top:6px;font-size:10px;letter-spacing:1px;color:#FFD54F;font-weight:800}
+.header h1{margin:0;font-size:42px;line-height:1}.header h1 span{color:#FFD54F;display:block;font-size:32px}
+.header p{margin:6px 0 0;color:#B8C6D6}
+.topnav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.topnav a{color:#CFD8DC;text-decoration:none;font-size:12px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:8px 10px;border-radius:999px}
+.topnav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
+.kpi{background:linear-gradient(180deg,#1A244D,#121B3A);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+.kpi .ic{font-size:42px;filter:drop-shadow(0 8px 10px rgba(255,179,0,.45));line-height:1}
+.kpi b{font-size:26px;display:block;margin-top:6px}.kpi small{color:#B8C6D6;font-size:12px;display:block;line-height:1.4}
+.kpi small b{font-size:14px;color:#fff;display:block;margin:0}
+.kpi2{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.kpi2 .kpi{padding:10px}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}.kpi-row,.kpi2{grid-template-columns:repeat(2,1fr)}.header h1{font-size:28px}.header h1 span{font-size:22px}}
+.panel{background:linear-gradient(180deg,#1C2750,#141C3F);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.panel h2{margin:0;font-size:18px}.panel h2 span{color:#FFD54F}.panel p{margin:4px 0 12px;color:#9AA9BC;font-size:12px}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px;color:#D6DEE8}
+input,select,textarea{width:100%;padding:11px;background:#0F1738;border:1.5px solid rgba(255,255,255,.12);border-radius:11px;color:#fff;font-size:13px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#FFD54F;box-shadow:0 0 0 3px rgba(255,213,79,.25)}
+textarea{min-height:58px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+.auto{background:#2A2300!important;border-color:#FFD54F!important}
+.class-grid{display:flex;gap:7px;flex-wrap:wrap}
+.class-chip{display:inline-flex;gap:6px;align-items:center;background:#0F1738;border:1.5px solid rgba(255,255,255,.12);padding:9px 10px;border-radius:11px;font-size:12px;font-weight:700;cursor:pointer}
+.class-chip:has(input:checked){border-color:#FFD54F;background:#2A2300}
+.class-chip input{width:auto;accent-color:#FFD54F}
+.btn{width:100%;background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:14px;border-radius:13px;font-weight:900;font-size:15px;cursor:pointer;margin-top:14px;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);border-color:#FF8A80}
+.btn2{background:#0F1738;color:#fff;border:1px solid rgba(255,255,255,.15);padding:8px 10px;border-radius:9px;cursor:pointer;font-weight:700;font-size:12px}
+.section{background:#0F1738;border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:12px;margin-bottom:10px}
+.section b{font-size:13px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.thumbs img{width:72px;height:72px;object-fit:cover;border-radius:11px;border:2px solid #FFD54F;cursor:pointer}
+.chip{display:inline-block;background:#FFEBEE;color:#D32F2F;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:900;margin:2px}
+.searchbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.searchbar input{flex:2}.searchbar select{flex:1}
+.rec-card{background:#0F1738;border:1px solid rgba(255,255,255,.1);border-radius:15px;padding:12px;margin-bottom:12px}
+.rec-card h3{margin:0;font-size:14px;line-height:1.4}.rec-card small{color:#9AA9BC}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.photos div{background:#1A244D;border-radius:11px;padding:8px;text-align:center;font-size:11px;color:#B8C6D6}
+.photos img{width:100%;height:90px;object-fit:cover;border-radius:9px}
+.bottom-nav{margin-top:14px;background:#0B1338;border:1px solid rgba(255,255,255,.08);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
+.bottom-nav a{text-align:center;color:#9AA9BC;text-decoration:none;font-size:12px;font-weight:800;padding:10px;border-radius:12px}
+.bottom-nav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
+.user-bar{background:#1A244D;border:1px solid rgba(255,213,79,.35);border-radius:13px;padding:11px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.user-bar input{flex:1;min-width:160px}
 </style>
 </head>
 <body>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
-<aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
-  <div class="user-box">
-    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
-  </div>
-  <div class="menu-title">📊 MAIN</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
-  <div class="menu-title">👷 WORKERS & TRAINING</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
-  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📋</span> NCR - Non Conformance</a>
-  <div class="menu-title">⚙️ ACCOUNT</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
-</aside>
-
-<div class="main">
-<div class="page-head">
-<div><h1>RMED <span>•</span> Accidents</h1><small>Accidents Reports</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="app">
+<div class="header">
+<div class="logo-box"><div class="logo-badge">RMED</div><small>RMED SAFETY • سلامة RMED</small></div>
+<div><h1>Accidents <span>الحوادث • حوادث</span></h1><p>Accidents • الملاحظات • Safety Reports</p></div>
 </div>
-
-<div class="container">
-
-<div class="user-bar">
-<span style="font-weight:bold;">🦺 Report Prepared By:</span>
-<input id="currentUser" placeholder="Type your name once - it will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ac-reporter').value=this.value; renderAcc();">
-<span style="font-size:12px;color:#2E7D32;">Will appear automatically in every report</span>
+<div class="topnav">
+<a href="index.html">🏠 Home • الرئيسية</a><a href="dashboard.html">📊 Achievements</a><a href="stats.html">📈 Statistics</a><a href="users.html">👥 Employees</a><a href="permits.html">📋 Permits</a><a href="violations.html">⚠️ Violations</a><a href="accidents.html" class="active">🚑 Accidents • الحوادث</a><a href="ncr.html">📋 NCR</a>
 </div>
-
-<div class="kpi-grid">
-<div class="kpi red"><b id="k-total">0</b><small>Total Accidents</small></div>
-<div class="kpi orange"><b id="k-medical">0</b><small>🩹 Medical Treatment Case</small></div>
-<div class="kpi"><b id="k-restricted">0</b><small>🦺 Restricted Work Case</small></div>
-<div class="kpi red"><b id="k-lost">0</b><small>⏰ Lost Time Injury</small></div>
-<div class="kpi black"><b id="k-death">0</b><small>⚫ Fatality</small></div>
-<div class="kpi orange"><b id="k-fire">0</b><small>🔥 Fire Incident</small></div>
-<div class="kpi"><b id="k-property">0</b><small>🏗️ Property Damage</small></div>
-<div class="kpi green"><b id="k-top-comp">-</b><small>Company With Most Accidents</small></div>
+<div class="user-bar"><b>🦺 Report Prepared By • اسم المُبلغ:</b><input id="currentUser" placeholder="Type your name once • اكتب اسمك مرة واحدة" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ac-reporter').value=this.value; renderAcc();"></div>
+<div class="kpi-row">
+<div class="kpi"><div class="ic">📋</div><b id="k-total">0</b><small>Total Accidents •<b>إجمالي الحوادث</b>↑ +12 this month</small></div>
+<div class="kpi"><div class="ic">🩹</div><b id="k-medical">0</b><small>Medical Treatment •<b>علاج طبي</b>Pending • قيد الانتظار</small></div>
+<div class="kpi"><div class="ic">🦺</div><b id="k-restricted">0</b><small>Restricted Work •<b>عمل مقيد</b>Resolved • تم الإغلاق</small></div>
+<div class="kpi"><div class="ic">⏰</div><b id="k-lost">0</b><small>Lost Time Injury •<b>انقطاع عن العمل</b>12 observations</small></div>
+<div class="kpi"><div class="ic">⚫</div><b id="k-death">0</b><small>Fatality •<b>وفاة</b>8 reports • تقارير</small></div>
 </div>
-
-<div class="card red">
-<h2 style="margin:0 0 5px;">🚑 Report New Accident</h2>
-<div class="section-title">📅 Accident Details</div>
-<div class="grid">
-<div><label>📅 Date *</label><input type="date" id="ac-date"></div>
-<div><label>⏰ Time *</label><input type="time" id="ac-time"></div>
-<div><label>🏢 Company Name *</label><input id="ac-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
-<div><label>📍 Accident Location *</label><input id="ac-place" placeholder="Example: Building A - 3rd Floor..." list="placesList"><datalist id="placesList"></datalist></div>
-<div style="grid-column:1/-1;"><label>📝 Accident Description *</label><textarea id="ac-desc" placeholder="Describe what happened in detail..."></textarea></div>
-<div style="grid-column:1/-1;"><label>⚡ Immediate Causes *</label><textarea id="ac-direct" placeholder="Example: Fall from height - Not using PPE..."></textarea></div>
-<div style="grid-column:1/-1;"><label>🔍 Root Causes *</label><textarea id="ac-root" placeholder="Example: No training - No supervision - No PPE provided..."></textarea></div>
+<div class="kpi2">
+<div class="kpi"><small>Fire Incident • حريق</small><b id="k-fire">0</b></div>
+<div class="kpi"><small>Property Damage • ضرر ممتلكات</small><b id="k-property">0</b></div>
+<div class="kpi" style="grid-column:span 3"><small>Company With Most Accidents • الشركة الأكثر حوادث</small><b id="k-top-comp" style="font-size:15px">-</b></div>
 </div>
-<div class="section-title">🏷️ Accident Classification - Select one or more</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
-<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FFCC80;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Medical Treatment Case" class="ac-class" style="width:auto;"> 🩹 Medical Treatment Case</label>
-<label style="background:#E3F2FD;padding:10px 14px;border-radius:10px;border:1px solid #90CAF9;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Restricted Work Case" class="ac-class" style="width:auto;"> 🦺 Restricted Work Case</label>
-<label style="background:#FFEBEE;padding:10px 14px;border-radius:10px;border:1px solid #EF9A9A;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Lost Time Injury" class="ac-class" style="width:auto;"> ⏰ Lost Time Injury</label>
-<label style="background:#F5F5F5;padding:10px 14px;border-radius:10px;border:1px solid #BDBDBD;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Fatality" class="ac-class" style="width:auto;"> ⚫ Fatality</label>
-<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FF9800;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Fire Incident" class="ac-class" style="width:auto;"> 🔥 Fire Incident</label>
-<label style="background:#E8F5E9;padding:10px 14px;border-radius:10px;border:1px solid #A5D6A7;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Property Damage" class="ac-class" style="width:auto;"> 🏗️ Property Damage</label>
+<div class="main-grid">
+<div class="panel">
+<h2>📝 Add New Accident • <span>إضافة حادثة جديدة</span></h2><p>Record a new safety accident • تسجيل حادثة سلامة جديدة</p>
+<div class="grid2">
+<div><label>Reporter Name • اسم المُبلغ</label><input id="ac-reporter" class="auto" readonly placeholder="Auto • تلقائي"></div>
+<div><label>Date • التاريخ</label><input type="date" id="ac-date"></div>
 </div>
-<div class="section-title">👤 Injured Person Details</div>
-<div class="grid">
-<div><label>👤 Injured Person Name *</label><input id="ac-injured" placeholder="Type name..." list="empNames" oninput="lookupInjured(this.value)"><datalist id="empNames"></datalist><small id="injHint" style="color:#2E7D32;font-size:11px;"></small></div>
-<div><label>🔢 Code - Automatic</label><input id="ac-code" class="auto" placeholder="Will fill automatically" readonly></div>
-<div><label>👷 Job - Automatic</label><input id="ac-job" class="auto" placeholder="Will fill automatically" readonly></div>
-<div><label>🦴 Injured Body Part *</label><select id="ac-body"><option value="">-- Select Injured Part --</option><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Shoulder</option><option>Other</option></select></div>
-<div><label>🩹 Nature of Injury *</label><select id="ac-nature"><option value="">-- Select Nature of Injury --</option><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Bruises</option><option>Other</option></select></div>
-<div><label>📝 Other Injury Details - If you selected Other</label><input id="ac-body-other" placeholder="Type injured part or nature if Other..."></div>
+<div class="grid2">
+<div><label>Time • الوقت</label><input type="time" id="ac-time"></div>
+<div><label>Company Name • اسم الشركة *</label><input id="ac-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
 </div>
-<div class="section-title">👁️ Witnesses Names - Up to 5 people</div>
-<div id="witnesses"></div>
-<div class="section-title">✅ Corrective Actions Required - Up to 10 actions</div>
-<div id="correctiveList"></div>
-<button class="btn2" onclick="addCorrectiveField()" style="width:100%;padding:12px;margin-top:8px;">➕ Add Another Corrective Action - Remaining <span id="corrLeft">9</span></button>
-<div class="section-title">📸 Accident Photos - Up to 5 photos</div>
-<input type="file" id="ac-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident','incident')">
-<div class="thumbs" id="prev-incident"></div>
-<div class="section-title">📸 Corrective Action Photos - Up to 10 photos</div>
-<input type="file" id="ac-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action','action')">
-<div class="thumbs" id="prev-action"></div>
-<div class="grid" style="margin-top:14px;">
-<div><label>🦺 Report Prepared By - Automatic</label><input id="ac-reporter" class="auto" placeholder="Your name will appear automatically" readonly></div>
-<div><label>📝 Notes - Optional</label><input id="ac-notes" placeholder="Any notes..."></div>
+<div><label>Accident Location • مكان الحادثة *</label><input id="ac-place" placeholder="Building A / Zone B • المبنى / المنطقة" list="placesList"><datalist id="placesList"></datalist></div>
+<div><label>Accident Description • وصف الحادثة *</label><textarea id="ac-desc" placeholder="Describe what happened... • صف الحالة غير الآمنة التي تمت ملاحظتها..."></textarea></div>
+<div class="grid2">
+<div><label>Immediate Causes • الأسباب المباشرة *</label><textarea id="ac-direct" placeholder="Fall - No PPE..."></textarea></div>
+<div><label>Root Causes • الأسباب الجذرية *</label><textarea id="ac-root" placeholder="No training - No supervision..."></textarea></div>
 </div>
-<button class="btn red" onclick="addAcc()">💾 Save Accident Report</button>
+<label>Accident Classification • نوع الحادثة - Select one or more</label>
+<div class="class-grid">
+<label class="class-chip"><input type="checkbox" value="Medical Treatment Case" class="ac-class"> 🩹 Medical • علاج طبي</label>
+<label class="class-chip"><input type="checkbox" value="Restricted Work Case" class="ac-class"> 🦺 Restricted • عمل مقيد</label>
+<label class="class-chip"><input type="checkbox" value="Lost Time Injury" class="ac-class"> ⏰ Lost Time • انقطاع</label>
+<label class="class-chip"><input type="checkbox" value="Fatality" class="ac-class"> ⚫ Fatality • وفاة</label>
+<label class="class-chip"><input type="checkbox" value="Fire Incident" class="ac-class"> 🔥 Fire • حريق</label>
+<label class="class-chip"><input type="checkbox" value="Property Damage" class="ac-class"> 🏗️ Property • ممتلكات</label>
 </div>
-<div class="card">
-<h2 style="margin:0 0 10px;">📋 Accident Log</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchAc" placeholder="Search by company, location, injured person or description..." oninput="renderAcc()" style="flex:2;">
-<select id="filterClass" onchange="renderAcc()" style="flex:1;"><option value="">All Classifications</option><option>Medical Treatment Case</option><option>Restricted Work Case</option><option>Lost Time Injury</option><option>Fatality</option><option>Fire Incident</option><option>Property Damage</option></select>
-<select id="filterCompany" onchange="renderAcc()" style="flex:1;"><option value="">All Companies</option></select>
+<div class="section"><b>👤 Injured Person • المصاب</b>
+<div class="grid2">
+<div><label>Injured Name • اسم المصاب *</label><input id="ac-injured" placeholder="Type name..." list="empNames" oninput="lookupInjured(this.value)"><datalist id="empNames"></datalist><small id="injHint" style="color:#81C784;font-size:11px"></small></div>
+<div><label>Code • الكود - Auto</label><input id="ac-code" class="auto" readonly></div>
 </div>
+<div class="grid3">
+<div><label>Job • الوظيفة</label><input id="ac-job" class="auto" readonly></div>
+<div><label>Body Part • الجزء المصاب *</label><select id="ac-body"><option value="">-- Select --</option><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Shoulder</option><option>Other</option></select></div>
+<div><label>Nature • طبيعة الإصابة *</label><select id="ac-nature"><option value="">-- Select --</option><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Bruises</option><option>Other</option></select></div>
+</div>
+<div><label>Other Details • تفاصيل أخرى</label><input id="ac-body-other" placeholder="If Other..."></div>
+</div>
+<div class="section"><b>👁️ Witnesses • الشهود - Up to 5</b><div id="witnesses"></div></div>
+<div class="section"><b>✅ Corrective Actions • الإجراءات التصحيحية - Up to 10</b><div id="correctiveList"></div><button class="btn2" onclick="addCorrectiveField()" style="width:100%;margin-top:8px">➕ Add Action • إضافة إجراء - Remaining <span id="corrLeft">9</span></button></div>
+<div class="grid2">
+<div><label>Accident Photos • صورة الحادثة - Up to 5</label><input type="file" id="ac-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident','incident')"><div class="thumbs" id="prev-incident"></div></div>
+<div><label>Action Photos • صورة الإغلاق - Up to 10</label><input type="file" id="ac-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action','action')"><div class="thumbs" id="prev-action"></div></div>
+</div>
+<div><label>Notes • ملاحظات - Optional</label><input id="ac-notes" placeholder="Any notes..."></div>
+<button class="btn red" onclick="addAcc()">💾 Save Accident • حفظ الحادثة</button>
+</div>
+<div class="panel">
+<h2>Observations Record • <span>سجل الحوادث</span></h2><p>All accidents from Firebase • كل الحوادث من Firebase</p>
+<div class="searchbar"><input id="searchAc" placeholder="🔍 Search observations... • ابحث..." oninput="renderAcc()"><select id="filterClass" onchange="renderAcc()"><option value="">All • الكل</option><option>Medical Treatment Case</option><option>Restricted Work Case</option><option>Lost Time Injury</option><option>Fatality</option><option>Fire Incident</option><option>Property Damage</option></select><select id="filterCompany" onchange="renderAcc()"><option value="">All Companies</option></select></div>
+<div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn2" onclick="exportAcc()" style="flex:1;background:#2E7D32;border-color:#81C784">📥 Export Excel • تصدير Excel</button></div>
 <div id="acTable"></div>
-<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-<button class="btn2" onclick="exportAcc()" style="flex:1;padding:12px;">📥 Export All Accident Log Excel / CSV</button>
-<button class="btn2" onclick="clearAcc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
 </div>
 </div>
+<div class="bottom-nav"><a href="index.html" class="active">🏠<br>Home • الرئيسية</a><a href="stats.html">📊<br>Reports • التقارير</a><a href="train.html">🎓<br>Training • التدريب</a><a href="users.html">👤<br>Profile • الملف الشخصي</a></div>
 </div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-
-// === TRANSLATION MAP: Read AR + EN, Display EN only ===
-// دي خريطة الترجمة: بنقرأ عربي وانجليزي، بس بنعرض انجليزي بس. مش بنغير الداتا نفسها
-const T_MAP = {
-  // Classifications
-  'حالة علاج طبي':'Medical Treatment Case', 'Medical Treatment Case':'Medical Treatment Case',
-  'حالة عمل مقيد':'Restricted Work Case', 'Restricted Work Case':'Restricted Work Case',
-  'حالة انقطاع عن العمل':'Lost Time Injury', 'Lost Time Injury':'Lost Time Injury',
-  'حالة وفاة':'Fatality', 'Fatality':'Fatality',
-  'حادث حريق':'Fire Incident', 'Fire Incident':'Fire Incident',
-  'ضرر في الممتلكات':'Property Damage', 'Property Damage':'Property Damage',
-  // Body Parts
-  'الرأس':'Head','Head':'Head','الذراع':'Arm','Arm':'Arm','اليد':'Hand','Hand':'Hand',
-  'القدم':'Foot','Foot':'Foot','الساق':'Leg','Leg':'Leg','الكتف':'Shoulder','Shoulder':'Shoulder',
-  // Nature
-  'جروح':'Wounds','Wounds':'Wounds','كسور':'Fractures','Fractures':'Fractures',
-  'حريق':'Burns','Burns':'Burns','سحجات':'Abrasions','Abrasions':'Abrasions',
-  'كدمات':'Bruises','Bruises':'Bruises','أخرى':'Other','Other':'Other',
-  // Status
-  'مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'
-};
-function T(v){ if(!v) return v; return T_MAP[String(v).trim()] || v; }
-function TList(arr){ return (arr||[]).map(x=>T(x)); }
-// For KPI counting: check if value matches EN or AR version
-function hasClass(x, enVal){ let list = (x.classes||[]).map(c=>T(c)); return list.includes(enVal); }
-
-(function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  let fallbackName=localStorage.getItem('safetyUser')||'';
-  if(u.name||fallbackName){
-    document.getElementById('sideName').innerText=u.name||fallbackName;
-    document.getElementById('sideRole').innerText=T(u.role)||u.job||'Employee';
-    if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo;
-    let t=document.getElementById('topUser'); if(t) t.innerText=u.name||fallbackName;
-  }
-})();
-
-let accidents = [];
-let allPeople = [];
-
-async function loadAccidents(){
-  try{
-    if(window.db){
-      let snap = await db.collection('accidents').orderBy('createdAt','desc').get();
-      accidents = [];
-      snap.forEach(d=> accidents.push({id:d.id, ...d.data()}));
-    }
-  }catch(e){ console.log(e); }
-  renderAcc();
-}
-async function loadPeople(){
-  allPeople = [];
-  try{
-    if(window.db){
-      let s1 = await db.collection('induction').get();
-      s1.forEach(d=>{ let x=d.data(); allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-      let s2 = await db.collection('workers').get().catch(()=>null);
-      if(s2) s2.forEach(d=>{ let x=d.data(); if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-    }
-  }catch(e){}
-  try{
-    let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    (DB.induction||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-    (DB.workers||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-  }catch(e){}
-  renderAcc();
-}
-
-function val(id){ return document.getElementById(id).value.trim(); }
-function setVal(id,v){ document.getElementById(id).value=v||''; }
-let tempIncident=[], tempAction=[];
-function previewImgs(input, prevId, type){
-  let files=[...input.files].slice(0, type==='incident'?5:10);
-  if(input.files.length > (type==='incident'?5:10)) alert('⚠️ Maximum '+(type==='incident'?'5':'10')+' photos only');
-  let container=document.getElementById(prevId); container.innerHTML='';
-  let arr = type==='incident'?tempIncident:tempAction; arr.length=0;
-  files.forEach(f=>{
-    let r=new FileReader();
-    r.onload=e=>{ arr.push(e.target.result); let img=document.createElement('img'); img.src=e.target.result; img.onclick=()=>window.open(e.target.result,'_blank'); container.appendChild(img); };
-    r.readAsDataURL(f);
-  });
-}
-function getAllPeople(){ return allPeople; }
-function lookupInjured(name){
-  let p=allPeople.find(x=>x.name===name.trim());
-  if(p){
-    setVal('ac-code',p.code); setVal('ac-job',p.job);
-    document.getElementById('injHint').innerText='✅ Found - Code: '+p.code+' - Job: '+p.job;
-  } else if(name.trim().length>2){
-    document.getElementById('injHint').innerText='⚠️ Name not found in Induction - Enter code and job manually';
-    document.getElementById('ac-code').readOnly=false; document.getElementById('ac-job').readOnly=false;
-  } else document.getElementById('injHint').innerText='';
-}
-function lookupWitness(i, name){
-  let p=allPeople.find(x=>x.name===name.trim());
-  if(p){
-    document.getElementById('wit-job-'+i).value=p.job;
-    document.getElementById('wit-phone-'+i).value=p.phone;
-    document.getElementById('wit-hint-'+i).innerText='✅ Found - Job: '+p.job+' - Phone: '+p.phone;
-  } else if(name.trim().length>2){
-    document.getElementById('wit-hint-'+i).innerText='⚠️ Not found - Enter job and phone manually';
-  } else document.getElementById('wit-hint-'+i).innerText='';
-}
-function buildWitnesses(){
-  let html='';
-  for(let i=1;i<=5;i++){
-    html+='<div class="witness-box"><b>👁️ Witness '+i+' '+(i===1?'(Primary)':'(Optional)')+'</b><div class="grid3"><div><label>Witness '+i+' Name</label><input id="wit-name-'+i+'" placeholder="Type witness name..." list="empNames" oninput="lookupWitness('+i+',this.value)"><small id="wit-hint-'+i+'" style="color:#2E7D32;font-size:11px;"></small></div><div><label>Witness '+i+' Job</label><input id="wit-job-'+i+'" placeholder="Will fill automatically"></div><div><label>📞 Witness '+i+' Phone</label><input id="wit-phone-'+i+'" placeholder="Will fill automatically" inputmode="tel"></div></div></div>';
-  }
-  document.getElementById('witnesses').innerHTML=html;
-}
+function toggleSidebar(){}
+const T_MAP={'حالة علاج طبي':'Medical Treatment Case','Medical Treatment Case':'Medical Treatment Case','حالة عمل مقيد':'Restricted Work Case','Restricted Work Case':'Restricted Work Case','حالة انقطاع عن العمل':'Lost Time Injury','Lost Time Injury':'Lost Time Injury','حالة وفاة':'Fatality','Fatality':'Fatality','حادث حريق':'Fire Incident','Fire Incident':'Fire Incident','ضرر في الممتلكات':'Property Damage','Property Damage':'Property Damage','الرأس':'Head','Head':'Head','الذراع':'Arm','Arm':'Arm','اليد':'Hand','Hand':'Hand','القدم':'Foot','Foot':'Foot','الساق':'Leg','Leg':'Leg','الكتف':'Shoulder','Shoulder':'Shoulder','جروح':'Wounds','Wounds':'Wounds','كسور':'Fractures','Fractures':'Fractures','حريق':'Burns','Burns':'Burns','سحجات':'Abrasions','Abrasions':'Abrasions','كدمات':'Bruises','Bruises':'Bruises','أخرى':'Other','Other':'Other','مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'};
+function T(v){if(!v)return v;return T_MAP[String(v).trim()]||v}
+function TList(arr){return (arr||[]).map(x=>T(x))}
+function hasClass(x,enVal){let list=(x.classes||[]).map(c=>T(c));return list.includes(enVal)}
+let accidents=[];let allPeople=[];
+async function loadAccidents(){try{if(window.db){let snap=await db.collection('accidents').orderBy('createdAt','desc').get();accidents=[];snap.forEach(d=>accidents.push({id:d.id,...d.data()}))}}catch(e){console.log(e)}renderAcc()}
+async function loadPeople(){allPeople=[];try{if(window.db){let s1=await db.collection('induction').get();s1.forEach(d=>{let x=d.data();allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'})});let s2=await db.collection('workers').get().catch(()=>null);if(s2)s2.forEach(d=>{let x=d.data();if(!allPeople.find(p=>p.name===x.name))allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'})})}}catch(e){}try{let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');(DB.induction||[]).forEach(x=>{if(!allPeople.find(p=>p.name===x.name))allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'})});(DB.workers||[]).forEach(x=>{if(!allPeople.find(p=>p.name===x.name))allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'})})}catch(e){}renderAcc()}
+function val(id){return document.getElementById(id).value.trim()}
+function setVal(id,v){document.getElementById(id).value=v||''}
+let tempIncident=[],tempAction=[];
+function previewImgs(input,prevId,type){let files=[...input.files].slice(0,type==='incident'?5:10);if(input.files.length>(type==='incident'?5:10))alert('⚠️ Maximum '+(type==='incident'?'5':'10')+' photos only');let container=document.getElementById(prevId);container.innerHTML='';let arr=type==='incident'?tempIncident:tempAction;arr.length=0;files.forEach(f=>{let r=new FileReader();r.onload=e=>{arr.push(e.target.result);let img=document.createElement('img');img.src=e.target.result;img.onclick=()=>window.open(e.target.result,'_blank');container.appendChild(img)};r.readAsDataURL(f)})}
+function lookupInjured(name){let p=allPeople.find(x=>x.name===name.trim());if(p){setVal('ac-code',p.code);setVal('ac-job',p.job);document.getElementById('injHint').innerText='✅ Found - Code: '+p.code}else if(name.trim().length>2){document.getElementById('injHint').innerText='⚠️ Not found - Enter manually';document.getElementById('ac-code').readOnly=false;document.getElementById('ac-job').readOnly=false}else document.getElementById('injHint').innerText=''}
+function lookupWitness(i,name){let p=allPeople.find(x=>x.name===name.trim());if(p){document.getElementById('wit-job-'+i).value=p.job;document.getElementById('wit-phone-'+i).value=p.phone;document.getElementById('wit-hint-'+i).innerText='✅ Found'}else if(name.trim().length>2){document.getElementById('wit-hint-'+i).innerText='⚠️ Not found'}else document.getElementById('wit-hint-'+i).innerText=''}
+function buildWitnesses(){let html='';for(let i=1;i<=5;i++){html+='<div style="background:#0B1338;border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:10px;margin-top:8px"><b style="font-size:12px">👁️ Witness '+i+' • الشاهد '+i+'</b><div class="grid3"><div><label>Name • الاسم</label><input id="wit-name-'+i+'" placeholder="Name..." list="empNames" oninput="lookupWitness('+i+',this.value)"><small id="wit-hint-'+i+'" style="color:#81C784;font-size:11px"></small></div><div><label>Job • الوظيفة</label><input id="wit-job-'+i+'"></div><div><label>Phone • الهاتف</label><input id="wit-phone-'+i+'" inputmode="tel"></div></div></div>'}document.getElementById('witnesses').innerHTML=html}
 let corrCount=1;
-function buildCorrective(){
-  let html='';
-  for(let i=1;i<=corrCount;i++){
-    html+='<div style="display:flex;gap:8px;margin-bottom:8px;"><span style="background:#0F2A4D;color:#fff;width:35px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:bold;flex-shrink:0;">'+i+'</span><input id="corr-'+i+'" placeholder="Corrective Action #'+i+' - Example: Provide safety harness - Train workers..."></div>';
-  }
-  document.getElementById('correctiveList').innerHTML=html;
-  document.getElementById('corrLeft').innerText=10-corrCount;
-}
-function addCorrectiveField(){
-  if(corrCount>=10) return alert('You reached max 10 actions');
-  let vals=[]; for(let i=1;i<=corrCount;i++) vals.push(document.getElementById('corr-'+i).value);
-  corrCount++;
-  buildCorrective();
-  vals.forEach((v,i)=>{ document.getElementById('corr-'+(i+1)).value=v; });
-}
-function getCurrentReporter(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  return u.name || localStorage.getItem('safetyUser')||'';
-}
-function getCurrentReporterCode(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  return u.code||u.id||'';
-}
-async function addAcc(){
-  if(!val('ac-date')) return alert('Select date');
-  if(!val('ac-time')) return alert('Select time');
-  if(!val('ac-company')) return alert('Enter company name');
-  if(!val('ac-place')) return alert('Enter accident location');
-  if(!val('ac-desc')) return alert('Enter accident description');
-  if(!val('ac-direct')) return alert('Enter immediate causes');
-  if(!val('ac-root')) return alert('Enter root causes');
-  let classes=[...document.querySelectorAll('.ac-class:checked')].map(c=>c.value);
-  if(!classes.length) return alert('Select at least one accident classification');
-  if(!val('ac-injured')) return alert('Enter injured person name');
-  if(!val('ac-code')) return alert('Enter injured person code');
-  if(!val('ac-job')) return alert('Enter injured person job');
-  if(!val('ac-body')) return alert('Select injured body part');
-  if(!val('ac-nature')) return alert('Select nature of injury');
-  let correctives=[];
-  for(let i=1;i<=corrCount;i++){ let v=document.getElementById('corr-'+i).value.trim(); if(v) correctives.push(v); }
-  if(!correctives.length) return alert('Enter at least one corrective action');
-  let witnesses=[];
-  for(let i=1;i<=5;i++){
-    let n=document.getElementById('wit-name-'+i).value.trim();
-    if(n) witnesses.push({name:n,job:document.getElementById('wit-job-'+i).value.trim(),phone:document.getElementById('wit-phone-'+i).value.trim()});
-  }
-  if(!witnesses.length) return alert('Enter at least one witness name');
-  if(!window.db) return alert('Firebase not connected');
-  // New records are saved in English only
-  let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter')||getCurrentReporter(),reporterCode:getCurrentReporterCode(),reporterName:val('ac-reporter')||getCurrentReporter(),notes:val('ac-notes'),createdAt:new Date().toISOString(),status:'Open'};
-  try{
-    let ref = await db.collection('accidents').add(rec);
-    rec.id = ref.id;
-    accidents.unshift(rec);
-  }catch(e){ return alert('Error saving to Firebase: '+e.message); }
-  renderAcc();
-  alert('✅ Accident report saved to Firebase - '+rec.injured+' - '+classes.join(' + '));
-  ['ac-company','ac-place','ac-desc','ac-direct','ac-root','ac-injured','ac-code','ac-job','ac-body-other','ac-notes'].forEach(id=>setVal(id,''));
-  setVal('ac-body',''); setVal('ac-nature','');
-  document.querySelectorAll('.ac-class').forEach(c=>c.checked=false);
-  for(let i=1;i<=5;i++){ document.getElementById('wit-name-'+i).value=''; document.getElementById('wit-job-'+i).value=''; document.getElementById('wit-phone-'+i).value=''; }
-  corrCount=1; buildCorrective();
-  document.getElementById('ac-img-incident').value=''; document.getElementById('ac-img-action').value='';
-  document.getElementById('prev-incident').innerHTML=''; document.getElementById('prev-action').innerHTML='';
-  tempIncident=[]; tempAction=[];
-  document.getElementById('injHint').innerText='';
-}
+function buildCorrective(){let html='';for(let i=1;i<=corrCount;i++){html+='<div style="display:flex;gap:8px;margin-top:8px"><span style="background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44;width:36px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:900;flex-shrink:0">'+i+'</span><input id="corr-'+i+'" placeholder="Corrective Action #'+i+' • الإجراء التصحيحي..."></div>'}document.getElementById('correctiveList').innerHTML=html;document.getElementById('corrLeft').innerText=10-corrCount}
+function addCorrectiveField(){if(corrCount>=10)return alert('You reached max 10 actions');let vals=[];for(let i=1;i<=corrCount;i++)vals.push(document.getElementById('corr-'+i).value);corrCount++;buildCorrective();vals.forEach((v,i)=>{document.getElementById('corr-'+(i+1)).value=v})}
+function getCurrentReporter(){let u=JSON.parse(localStorage.getItem('currentUser')||'{}');return u.name||localStorage.getItem('safetyUser')||''}
+function getCurrentReporterCode(){let u=JSON.parse(localStorage.getItem('currentUser')||'{}');return u.code||u.id||''}
+async function addAcc(){if(!val('ac-date'))return alert('Select date');if(!val('ac-time'))return alert('Select time');if(!val('ac-company'))return alert('Enter company name');if(!val('ac-place'))return alert('Enter accident location');if(!val('ac-desc'))return alert('Enter accident description');if(!val('ac-direct'))return alert('Enter immediate causes');if(!val('ac-root'))return alert('Enter root causes');let classes=[...document.querySelectorAll('.ac-class:checked')].map(c=>c.value);if(!classes.length)return alert('Select at least one accident classification');if(!val('ac-injured'))return alert('Enter injured person name');if(!val('ac-code'))return alert('Enter injured person code');if(!val('ac-job'))return alert('Enter injured person job');if(!val('ac-body'))return alert('Select injured body part');if(!val('ac-nature'))return alert('Select nature of injury');let correctives=[];for(let i=1;i<=corrCount;i++){let v=document.getElementById('corr-'+i).value.trim();if(v)correctives.push(v)}if(!correctives.length)return alert('Enter at least one corrective action');let witnesses=[];for(let i=1;i<=5;i++){let n=document.getElementById('wit-name-'+i).value.trim();if(n)witnesses.push({name:n,job:document.getElementById('wit-job-'+i).value.trim(),phone:document.getElementById('wit-phone-'+i).value.trim()})}if(!witnesses.length)return alert('Enter at least one witness name');if(!window.db)return alert('Firebase not connected');let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter')||getCurrentReporter(),reporterCode:getCurrentReporterCode(),reporterName:val('ac-reporter')||getCurrentReporter(),notes:val('ac-notes'),createdAt:new Date().toISOString(),status:'Open'};try{let ref=await db.collection('accidents').add(rec);rec.id=ref.id;accidents.unshift(rec)}catch(e){return alert('Error saving to Firebase: '+e.message)}renderAcc();alert('✅ Accident saved - '+rec.injured+' - '+classes.join(' + '));['ac-company','ac-place','ac-desc','ac-direct','ac-root','ac-injured','ac-code','ac-job','ac-body-other','ac-notes'].forEach(id=>setVal(id,''));setVal('ac-body','');setVal('ac-nature','');document.querySelectorAll('.ac-class').forEach(c=>c.checked=false);for(let i=1;i<=5;i++){document.getElementById('wit-name-'+i).value='';document.getElementById('wit-job-'+i).value='';document.getElementById('wit-phone-'+i).value=''}corrCount=1;buildCorrective();document.getElementById('ac-img-incident').value='';document.getElementById('ac-img-action').value='';document.getElementById('prev-incident').innerHTML='';document.getElementById('prev-action').innerHTML='';tempIncident=[];tempAction=[];document.getElementById('injHint').innerText=''}
 function renderAcc(){
-  let people=allPeople;
-  document.getElementById('empNames').innerHTML=people.map(p=>'<option value="'+p.name+'">').join('');
-  let all=accidents||[];
-  let comps=[...new Set(all.map(x=>x.company))];
-  document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
-  let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
-  document.getElementById('placesList').innerHTML=[...new Set(all.map(x=>x.place))].map(p=>'<option value="'+p+'">').join('');
-  document.getElementById('k-total').innerText=all.length;
-  // KPI counts both AR old + EN new, using hasClass()
-  document.getElementById('k-medical').innerText=all.filter(x=>hasClass(x,'Medical Treatment Case')).length;
-  document.getElementById('k-restricted').innerText=all.filter(x=>hasClass(x,'Restricted Work Case')).length;
-  document.getElementById('k-lost').innerText=all.filter(x=>hasClass(x,'Lost Time Injury')).length;
-  document.getElementById('k-death').innerText=all.filter(x=>hasClass(x,'Fatality')).length;
-  document.getElementById('k-fire').innerText=all.filter(x=>hasClass(x,'Fire Incident')).length;
-  document.getElementById('k-property').innerText=all.filter(x=>hasClass(x,'Property Damage')).length;
-  let byComp={}; all.forEach(x=>{ byComp[x.company]=(byComp[x.company]||0)+1; });
-  let topComp=Object.keys(byComp).sort((a,b)=>byComp[b]-byComp[a])[0];
-  document.getElementById('k-top-comp').innerText=topComp?topComp+' ('+byComp[topComp]+')':'-';
-  let q=(document.getElementById('searchAc').value||'').toLowerCase();
-  let fc=document.getElementById('filterClass').value;
-  let fcomp=document.getElementById('filterCompany').value;
-  let list=all.filter(x=>{
-    let okQ=(x.company+x.place+x.desc+x.injured+x.code).toLowerCase().includes(q);
-    // Filter works for both AR and EN old records
-    let okC=!fc||TList(x.classes).includes(fc);
-    let okComp=!fcomp||x.company===fcomp;
-    return okQ&&okC&&okComp;
-  });
-  if(!list.length){ document.getElementById('acTable').innerHTML='<p style="text-align:center;color:#999;">No accidents recorded yet</p>'; return; }
-  document.getElementById('acTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Injured</th><th>Classification</th><th>Location</th><th>Description</th><th>Body Part / Nature</th><th>Witnesses</th><th>Actions</th><th>Photos</th><th>Delete</th></tr>'+list.map(x=>{
-    let idx=accidents.indexOf(x);
-    let chips=TList(x.classes).map(c=>'<span class="chip">'+c+'</span>').join('<br>');
-    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.company+'</b></td><td><b>'+x.injured+'</b><br>'+x.code+' - '+x.job+'</td><td>'+chips+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:200px;">'+x.desc+'<br><small style="color:#78909C;">Immediate: '+x.direct+'</small><br><small style="color:#78909C;">Root: '+x.root+'</small></td><td>'+T(x.body)+'<br>'+T(x.nature)+(x.bodyOther?'<br>'+x.bodyOther:'')+'</td><td style="font-size:11px;">'+(x.witnesses||[]).map(w=>w.name+' - '+w.job+' - '+w.phone).join('<br>')+'</td><td style="font-size:11px;text-align:left;">'+(x.correctives||[]).map((c,i)=>(i+1)+'. '+c).join('<br>')+'</td><td style="font-size:11px;">📸 Accident: '+((x.incidentImgs||[]).length)+'<br>📸 Actions: '+((x.actionImgs||[]).length)+'<br>'+(x.incidentImgs && x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ Accident</button>':'')+' '+(x.actionImgs && x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ Actions</button>':'')+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delAcc('+idx+')">🗑️</button></td></tr>';
-  }).join('')+'</table>';
+let people=allPeople;document.getElementById('empNames').innerHTML=people.map(p=>'<option value="'+p.name+'">').join('');
+let all=accidents||[];let comps=[...new Set(all.map(x=>x.company))];document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
+let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
+document.getElementById('placesList').innerHTML=[...new Set(all.map(x=>x.place))].map(p=>'<option value="'+p+'">').join('');
+document.getElementById('k-total').innerText=all.length;document.getElementById('k-medical').innerText=all.filter(x=>hasClass(x,'Medical Treatment Case')).length;document.getElementById('k-restricted').innerText=all.filter(x=>hasClass(x,'Restricted Work Case')).length;document.getElementById('k-lost').innerText=all.filter(x=>hasClass(x,'Lost Time Injury')).length;document.getElementById('k-death').innerText=all.filter(x=>hasClass(x,'Fatality')).length;document.getElementById('k-fire').innerText=all.filter(x=>hasClass(x,'Fire Incident')).length;document.getElementById('k-property').innerText=all.filter(x=>hasClass(x,'Property Damage')).length;
+let byComp={};all.forEach(x=>{byComp[x.company]=(byComp[x.company]||0)+1});let topComp=Object.keys(byComp).sort((a,b)=>byComp[b]-byComp[a])[0];document.getElementById('k-top-comp').innerText=topComp?topComp+' ('+byComp[topComp]+')':'-';
+let q=(document.getElementById('searchAc').value||'').toLowerCase();let fc=document.getElementById('filterClass').value;let fcomp=document.getElementById('filterCompany').value;
+let list=all.filter(x=>{let okQ=(x.company+x.place+x.desc+x.injured+x.code).toLowerCase().includes(q);let okC=!fc||TList(x.classes).includes(fc);let okComp=!fcomp||x.company===fcomp;return okQ&&okC&&okComp});
+if(!list.length){document.getElementById('acTable').innerHTML='<p style="text-align:center;color:#9AA9BC">No accidents recorded yet • لا توجد حوادث مسجلة</p>';return}
+document.getElementById('acTable').innerHTML=list.map(x=>{let idx=accidents.indexOf(x);let chips=TList(x.classes).map(c=>'<span class="chip">'+c+'</span>').join(' ');let before=(x.incidentImgs&&x.incidentImgs[0])?'<img src="'+x.incidentImgs[0]+'">':'<div style="height:90px;display:flex;align-items:center;justify-content:center">No Photo</div>';let after=(x.actionImgs&&x.actionImgs[0])?'<img src="'+x.actionImgs[0]+'">':'<div style="height:90px;display:flex;align-items:center;justify-content:center">No Photo</div>';return '<div class="rec-card"><div style="display:flex;justify-content:space-between;gap:8px"><h3>'+chips+'<br>#ACC-'+(x.code||'')+' • '+x.injured+'</h3><button class="btn2" style="color:#FF8A80" onclick="delAcc('+idx+')">🗑️</button></div><small>'+x.company+' • '+x.place+' • '+x.date+' '+x.time+'</small><p style="font-size:13px;line-height:1.5;margin:8px 0">'+x.desc+'<br><small>Immediate: '+x.direct+'<br>Root: '+x.root+'</small></p><div class="photos"><div>'+before+'<br>Before • قبل<br>Reporter: '+x.reporter+'</div><div>'+after+'<br>After • بعد<br>Action: '+(x.correctives&&x.correctives[0]?x.correctives[0]:'')+'</div></div><small>Body: '+T(x.body)+' • Nature: '+T(x.nature)+' • Witnesses: '+(x.witnesses||[]).map(w=>w.name).join(', ')+'</small><br><div style="margin-top:8px;display:flex;gap:6px">'+(x.incidentImgs&&x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ Accident Photos</button>':'')+(x.actionImgs&&x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ Action Photos</button>':'')+'</div></div>'}).join('');
 }
-function viewImgs(idx,type){
-  let x=accidents[idx]; let arr=type==='incident'?x.incidentImgs:x.actionImgs;
-  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 Accident Photos':'📸 Action Photos')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>'<img src="'+src+'" style="width:300px;border-radius:12px;">').join('')+'</div>');
-}
-async function delAcc(i){
-  if(!confirm('Delete this accident report?')) return;
-  let rec=accidents[i];
-  try{ if(rec && rec.id && window.db) await db.collection('accidents').doc(rec.id).delete(); }catch(e){}
-  accidents.splice(i,1); renderAcc();
-}
-async function clearAcc(){
-  if(!confirm('Delete all accident log from Firebase?')) return;
-  try{
-    if(window.db){
-      let snap = await db.collection('accidents').get();
-      for(let d of snap.docs){ await db.collection('accidents').doc(d.id).delete(); }
-    }
-  }catch(e){}
-  accidents=[]; renderAcc();
-}
-function exportAcc(){
-  if(!accidents.length) return alert('No data');
-  let csv='Date,Time,Company,Location,Description,Immediate Causes,Root Causes,Classification,Injured Name,Code,Job,Body Part,Nature,Other Details,Witnesses,Corrective Actions,Reporter,Notes,Accident Photos Count,Action Photos Count\n'+accidents.map(x=>[x.date,x.time,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+TList(x.classes).join(' + ')+'"',x.injured,x.code,x.job,T(x.body),T(x.nature),'"'+(x.bodyOther||'').replace(/"/g,'""')+'"','"'+(x.witnesses||[]).map(w=>w.name+' - '+w.job+' - '+w.phone).join(' | ')+'"','"'+(x.correctives||[]).join(' | ')+'"',x.reporter,'"'+(x.notes||'').replace(/"/g,'""')+'"',(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
-  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='accidents.csv'; a.click();
-}
-buildWitnesses(); buildCorrective();
+function viewImgs(idx,type){let x=accidents[idx];let arr=type==='incident'?x.incidentImgs:x.actionImgs;let w=window.open('','_blank');w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;font-family:Arial;background:#070D26;color:#fff"><h2 style="width:100%">'+(type==='incident'?'📸 Accident Photos':'📸 Action Photos')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>'<img src="'+src+'" style="width:300px;border-radius:12px;">').join('')+'</div>')}
+async function delAcc(i){if(!confirm('Delete this accident report?'))return;let rec=accidents[i];try{if(rec&&rec.id&&window.db)await db.collection('accidents').doc(rec.id).delete()}catch(e){}accidents.splice(i,1);renderAcc()}
+function exportAcc(){if(!accidents.length)return alert('No data');let csv='Date,Time,Company,Location,Description,Immediate Causes,Root Causes,Classification,Injured Name,Code,Job,Body Part,Nature,Other Details,Witnesses,Corrective Actions,Reporter,Notes,Accident Photos Count,Action Photos Count\n'+accidents.map(x=>[x.date,x.time,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+TList(x.classes).join(' + ')+'"',x.injured,x.code,x.job,T(x.body),T(x.nature),'"'+(x.bodyOther||'').replace(/"/g,'""')+'"','"'+(x.witnesses||[]).map(w=>w.name+' - '+w.job+' - '+w.phone).join(' | ')+'"','"'+(x.correctives||[]).join(' | ')+'"',x.reporter,'"'+(x.notes||'').replace(/"/g,'""')+'"',(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='accidents.csv';a.click()}
+buildWitnesses();buildCorrective();
 let savedUser=localStorage.getItem('safetyUser')||getCurrentReporter();
-document.getElementById('currentUser').value=savedUser;
-document.getElementById('ac-reporter').value=savedUser;
-document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
-document.getElementById('ac-time').value=new Date().toTimeString().slice(0,5);
-loadAccidents(); loadPeople();
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accidents - RMED</title>
-<style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
-.sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
-.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
-.sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
-.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
-.sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
-.sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
-.sidebar a .icon{font-size:18px;width:26px;text-align:center}
-.sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-left:260px;transition:0.3s}
-.main.full{margin-left:0}
-.topbar{display:none}
-@media(max-width:900px){
-  .sidebar{left:-270px}
-  .sidebar.open{left:0}
-  .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-  .overlay.show{display:block}
-}
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
-.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-textarea{min-height:60px;resize:vertical;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;} .kpi.black{border-bottom-color:#000;}
-.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
-.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
-.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
-.user-bar input{width:auto;flex:1;min-width:180px;}
-.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.thumbs img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #ECEFF1;cursor:pointer;}
-.section-title{background:#0F2A4D;color:#fff;padding:10px 14px;border-radius:10px;font-weight:bold;margin:18px 0 8px;font-size:14px;}
-.witness-box{background:#F4F6F9;border:1.5px solid #ECEFF1;border-radius:12px;padding:12px;margin-bottom:10px;}
-.chip{display:inline-block;background:#FFEBEE;color:#D32F2F;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin:2px;}
-</style>
-</head>
-<body>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
-<aside class="sidebar" id="sidebar">
-  <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
-  <div class="user-box">
-    <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-    <div><b id="sideName">Employee Name</b><small id="sideRole">Role</small></div>
-  </div>
-  <div class="menu-title">📊 MAIN</div>
-  <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
-  <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
-  <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
-  <div class="menu-title">👷 WORKERS & TRAINING</div>
-  <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
-  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
-  <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
-  <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
-  <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
-  <div class="menu-title">🛡️ SAFETY & REPORTS</div>
-  <a href="permits.html" data-page="permits"><span class="icon">📋</span> Permits</a>
-  <a href="violations.html" data-page="violations"><span class="icon">⚠️</span> Contractor Violations</a>
-  <a href="employee-violations.html" data-page="employee-violations"><span class="icon">🚨</span> Employee Violations</a>
-  <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
-  <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
-  <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
-  <a href="ncr.html" data-page="ncr"><span class="icon">📋</span> NCR - Non Conformance</a>
-  <div class="menu-title">⚙️ ACCOUNT</div>
-  <a href="login.html" data-page="login"><span class="icon">🔑</span> Login</a>
-  <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
-  <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
-</aside>
-
-<div class="main">
-<div class="page-head">
-<div><h1>RMED <span>•</span> Accidents</h1><small>Accidents Reports</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
-</div>
-
-<div class="container">
-
-<div class="user-bar">
-<span style="font-weight:bold;">🦺 Report Prepared By:</span>
-<input id="currentUser" placeholder="Type your name once - it will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('ac-reporter').value=this.value; renderAcc();">
-<span style="font-size:12px;color:#2E7D32;">Will appear automatically in every report</span>
-</div>
-
-<div class="kpi-grid">
-<div class="kpi red"><b id="k-total">0</b><small>Total Accidents</small></div>
-<div class="kpi orange"><b id="k-medical">0</b><small>🩹 Medical Treatment Case</small></div>
-<div class="kpi"><b id="k-restricted">0</b><small>🦺 Restricted Work Case</small></div>
-<div class="kpi red"><b id="k-lost">0</b><small>⏰ Lost Time Injury</small></div>
-<div class="kpi black"><b id="k-death">0</b><small>⚫ Fatality</small></div>
-<div class="kpi orange"><b id="k-fire">0</b><small>🔥 Fire Incident</small></div>
-<div class="kpi"><b id="k-property">0</b><small>🏗️ Property Damage</small></div>
-<div class="kpi green"><b id="k-top-comp">-</b><small>Company With Most Accidents</small></div>
-</div>
-
-<div class="card red">
-<h2 style="margin:0 0 5px;">🚑 Report New Accident</h2>
-<div class="section-title">📅 Accident Details</div>
-<div class="grid">
-<div><label>📅 Date *</label><input type="date" id="ac-date"></div>
-<div><label>⏰ Time *</label><input type="time" id="ac-time"></div>
-<div><label>🏢 Company Name *</label><input id="ac-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
-<div><label>📍 Accident Location *</label><input id="ac-place" placeholder="Example: Building A - 3rd Floor..." list="placesList"><datalist id="placesList"></datalist></div>
-<div style="grid-column:1/-1;"><label>📝 Accident Description *</label><textarea id="ac-desc" placeholder="Describe what happened in detail..."></textarea></div>
-<div style="grid-column:1/-1;"><label>⚡ Immediate Causes *</label><textarea id="ac-direct" placeholder="Example: Fall from height - Not using PPE..."></textarea></div>
-<div style="grid-column:1/-1;"><label>🔍 Root Causes *</label><textarea id="ac-root" placeholder="Example: No training - No supervision - No PPE provided..."></textarea></div>
-</div>
-<div class="section-title">🏷️ Accident Classification - Select one or more</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
-<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FFCC80;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Medical Treatment Case" class="ac-class" style="width:auto;"> 🩹 Medical Treatment Case</label>
-<label style="background:#E3F2FD;padding:10px 14px;border-radius:10px;border:1px solid #90CAF9;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Restricted Work Case" class="ac-class" style="width:auto;"> 🦺 Restricted Work Case</label>
-<label style="background:#FFEBEE;padding:10px 14px;border-radius:10px;border:1px solid #EF9A9A;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Lost Time Injury" class="ac-class" style="width:auto;"> ⏰ Lost Time Injury</label>
-<label style="background:#F5F5F5;padding:10px 14px;border-radius:10px;border:1px solid #BDBDBD;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Fatality" class="ac-class" style="width:auto;"> ⚫ Fatality</label>
-<label style="background:#FFF3E0;padding:10px 14px;border-radius:10px;border:1px solid #FF9800;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Fire Incident" class="ac-class" style="width:auto;"> 🔥 Fire Incident</label>
-<label style="background:#E8F5E9;padding:10px 14px;border-radius:10px;border:1px solid #A5D6A7;display:flex;gap:6px;align-items:center;margin:0;"><input type="checkbox" value="Property Damage" class="ac-class" style="width:auto;"> 🏗️ Property Damage</label>
-</div>
-<div class="section-title">👤 Injured Person Details</div>
-<div class="grid">
-<div><label>👤 Injured Person Name *</label><input id="ac-injured" placeholder="Type name..." list="empNames" oninput="lookupInjured(this.value)"><datalist id="empNames"></datalist><small id="injHint" style="color:#2E7D32;font-size:11px;"></small></div>
-<div><label>🔢 Code - Automatic</label><input id="ac-code" class="auto" placeholder="Will fill automatically" readonly></div>
-<div><label>👷 Job - Automatic</label><input id="ac-job" class="auto" placeholder="Will fill automatically" readonly></div>
-<div><label>🦴 Injured Body Part *</label><select id="ac-body"><option value="">-- Select Injured Part --</option><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Shoulder</option><option>Other</option></select></div>
-<div><label>🩹 Nature of Injury *</label><select id="ac-nature"><option value="">-- Select Nature of Injury --</option><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Bruises</option><option>Other</option></select></div>
-<div><label>📝 Other Injury Details - If you selected Other</label><input id="ac-body-other" placeholder="Type injured part or nature if Other..."></div>
-</div>
-<div class="section-title">👁️ Witnesses Names - Up to 5 people</div>
-<div id="witnesses"></div>
-<div class="section-title">✅ Corrective Actions Required - Up to 10 actions</div>
-<div id="correctiveList"></div>
-<button class="btn2" onclick="addCorrectiveField()" style="width:100%;padding:12px;margin-top:8px;">➕ Add Another Corrective Action - Remaining <span id="corrLeft">9</span></button>
-<div class="section-title">📸 Accident Photos - Up to 5 photos</div>
-<input type="file" id="ac-img-incident" accept="image/*" multiple onchange="previewImgs(this,'prev-incident','incident')">
-<div class="thumbs" id="prev-incident"></div>
-<div class="section-title">📸 Corrective Action Photos - Up to 10 photos</div>
-<input type="file" id="ac-img-action" accept="image/*" multiple onchange="previewImgs(this,'prev-action','action')">
-<div class="thumbs" id="prev-action"></div>
-<div class="grid" style="margin-top:14px;">
-<div><label>🦺 Report Prepared By - Automatic</label><input id="ac-reporter" class="auto" placeholder="Your name will appear automatically" readonly></div>
-<div><label>📝 Notes - Optional</label><input id="ac-notes" placeholder="Any notes..."></div>
-</div>
-<button class="btn red" onclick="addAcc()">💾 Save Accident Report</button>
-</div>
-<div class="card">
-<h2 style="margin:0 0 10px;">📋 Accident Log</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
-<input id="searchAc" placeholder="Search by company, location, injured person or description..." oninput="renderAcc()" style="flex:2;">
-<select id="filterClass" onchange="renderAcc()" style="flex:1;"><option value="">All Classifications</option><option>Medical Treatment Case</option><option>Restricted Work Case</option><option>Lost Time Injury</option><option>Fatality</option><option>Fire Incident</option><option>Property Damage</option></select>
-<select id="filterCompany" onchange="renderAcc()" style="flex:1;"><option value="">All Companies</option></select>
-</div>
-<div id="acTable"></div>
-<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-<button class="btn2" onclick="exportAcc()" style="flex:1;padding:12px;">📥 Export All Accident Log Excel / CSV</button>
-<button class="btn2" onclick="clearAcc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
-</div>
-</div>
-</div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="auth.js"></script>
-<script>
-function toggleSidebar(){
-  let s=document.getElementById('sidebar');
-  if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
-  else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
-}
-
-// === TRANSLATION MAP: Read AR + EN, Display EN only ===
-// دي خريطة الترجمة: بنقرأ عربي وانجليزي، بس بنعرض انجليزي بس. مش بنغير الداتا نفسها
-const T_MAP = {
-  // Classifications
-  'حالة علاج طبي':'Medical Treatment Case', 'Medical Treatment Case':'Medical Treatment Case',
-  'حالة عمل مقيد':'Restricted Work Case', 'Restricted Work Case':'Restricted Work Case',
-  'حالة انقطاع عن العمل':'Lost Time Injury', 'Lost Time Injury':'Lost Time Injury',
-  'حالة وفاة':'Fatality', 'Fatality':'Fatality',
-  'حادث حريق':'Fire Incident', 'Fire Incident':'Fire Incident',
-  'ضرر في الممتلكات':'Property Damage', 'Property Damage':'Property Damage',
-  // Body Parts
-  'الرأس':'Head','Head':'Head','الذراع':'Arm','Arm':'Arm','اليد':'Hand','Hand':'Hand',
-  'القدم':'Foot','Foot':'Foot','الساق':'Leg','Leg':'Leg','الكتف':'Shoulder','Shoulder':'Shoulder',
-  // Nature
-  'جروح':'Wounds','Wounds':'Wounds','كسور':'Fractures','Fractures':'Fractures',
-  'حريق':'Burns','Burns':'Burns','سحجات':'Abrasions','Abrasions':'Abrasions',
-  'كدمات':'Bruises','Bruises':'Bruises','أخرى':'Other','Other':'Other',
-  // Status
-  'مفتوح':'Open','Open':'Open','مغلق':'Closed','Closed':'Closed'
-};
-function T(v){ if(!v) return v; return T_MAP[String(v).trim()] || v; }
-function TList(arr){ return (arr||[]).map(x=>T(x)); }
-// For KPI counting: check if value matches EN or AR version
-function hasClass(x, enVal){ let list = (x.classes||[]).map(c=>T(c)); return list.includes(enVal); }
-
-(function(){
-  let page=location.pathname.split('/').pop().replace('.html','')||'index';
-  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  let fallbackName=localStorage.getItem('safetyUser')||'';
-  if(u.name||fallbackName){
-    document.getElementById('sideName').innerText=u.name||fallbackName;
-    document.getElementById('sideRole').innerText=T(u.role)||u.job||'Employee';
-    if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo;
-    let t=document.getElementById('topUser'); if(t) t.innerText=u.name||fallbackName;
-  }
-})();
-
-let accidents = [];
-let allPeople = [];
-
-async function loadAccidents(){
-  try{
-    if(window.db){
-      let snap = await db.collection('accidents').orderBy('createdAt','desc').get();
-      accidents = [];
-      snap.forEach(d=> accidents.push({id:d.id, ...d.data()}));
-    }
-  }catch(e){ console.log(e); }
-  renderAcc();
-}
-async function loadPeople(){
-  allPeople = [];
-  try{
-    if(window.db){
-      let s1 = await db.collection('induction').get();
-      s1.forEach(d=>{ let x=d.data(); allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-      let s2 = await db.collection('workers').get().catch(()=>null);
-      if(s2) s2.forEach(d=>{ let x=d.data(); if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-    }
-  }catch(e){}
-  try{
-    let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-    (DB.induction||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-    (DB.workers||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',phone:x.phone||x.mobile||'',company:x.company||'RMED'}); });
-  }catch(e){}
-  renderAcc();
-}
-
-function val(id){ return document.getElementById(id).value.trim(); }
-function setVal(id,v){ document.getElementById(id).value=v||''; }
-let tempIncident=[], tempAction=[];
-function previewImgs(input, prevId, type){
-  let files=[...input.files].slice(0, type==='incident'?5:10);
-  if(input.files.length > (type==='incident'?5:10)) alert('⚠️ Maximum '+(type==='incident'?'5':'10')+' photos only');
-  let container=document.getElementById(prevId); container.innerHTML='';
-  let arr = type==='incident'?tempIncident:tempAction; arr.length=0;
-  files.forEach(f=>{
-    let r=new FileReader();
-    r.onload=e=>{ arr.push(e.target.result); let img=document.createElement('img'); img.src=e.target.result; img.onclick=()=>window.open(e.target.result,'_blank'); container.appendChild(img); };
-    r.readAsDataURL(f);
-  });
-}
-function getAllPeople(){ return allPeople; }
-function lookupInjured(name){
-  let p=allPeople.find(x=>x.name===name.trim());
-  if(p){
-    setVal('ac-code',p.code); setVal('ac-job',p.job);
-    document.getElementById('injHint').innerText='✅ Found - Code: '+p.code+' - Job: '+p.job;
-  } else if(name.trim().length>2){
-    document.getElementById('injHint').innerText='⚠️ Name not found in Induction - Enter code and job manually';
-    document.getElementById('ac-code').readOnly=false; document.getElementById('ac-job').readOnly=false;
-  } else document.getElementById('injHint').innerText='';
-}
-function lookupWitness(i, name){
-  let p=allPeople.find(x=>x.name===name.trim());
-  if(p){
-    document.getElementById('wit-job-'+i).value=p.job;
-    document.getElementById('wit-phone-'+i).value=p.phone;
-    document.getElementById('wit-hint-'+i).innerText='✅ Found - Job: '+p.job+' - Phone: '+p.phone;
-  } else if(name.trim().length>2){
-    document.getElementById('wit-hint-'+i).innerText='⚠️ Not found - Enter job and phone manually';
-  } else document.getElementById('wit-hint-'+i).innerText='';
-}
-function buildWitnesses(){
-  let html='';
-  for(let i=1;i<=5;i++){
-    html+='<div class="witness-box"><b>👁️ Witness '+i+' '+(i===1?'(Primary)':'(Optional)')+'</b><div class="grid3"><div><label>Witness '+i+' Name</label><input id="wit-name-'+i+'" placeholder="Type witness name..." list="empNames" oninput="lookupWitness('+i+',this.value)"><small id="wit-hint-'+i+'" style="color:#2E7D32;font-size:11px;"></small></div><div><label>Witness '+i+' Job</label><input id="wit-job-'+i+'" placeholder="Will fill automatically"></div><div><label>📞 Witness '+i+' Phone</label><input id="wit-phone-'+i+'" placeholder="Will fill automatically" inputmode="tel"></div></div></div>';
-  }
-  document.getElementById('witnesses').innerHTML=html;
-}
-let corrCount=1;
-function buildCorrective(){
-  let html='';
-  for(let i=1;i<=corrCount;i++){
-    html+='<div style="display:flex;gap:8px;margin-bottom:8px;"><span style="background:#0F2A4D;color:#fff;width:35px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:bold;flex-shrink:0;">'+i+'</span><input id="corr-'+i+'" placeholder="Corrective Action #'+i+' - Example: Provide safety harness - Train workers..."></div>';
-  }
-  document.getElementById('correctiveList').innerHTML=html;
-  document.getElementById('corrLeft').innerText=10-corrCount;
-}
-function addCorrectiveField(){
-  if(corrCount>=10) return alert('You reached max 10 actions');
-  let vals=[]; for(let i=1;i<=corrCount;i++) vals.push(document.getElementById('corr-'+i).value);
-  corrCount++;
-  buildCorrective();
-  vals.forEach((v,i)=>{ document.getElementById('corr-'+(i+1)).value=v; });
-}
-function getCurrentReporter(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  return u.name || localStorage.getItem('safetyUser')||'';
-}
-function getCurrentReporterCode(){
-  let u=JSON.parse(localStorage.getItem('currentUser')||'{}');
-  return u.code||u.id||'';
-}
-async function addAcc(){
-  if(!val('ac-date')) return alert('Select date');
-  if(!val('ac-time')) return alert('Select time');
-  if(!val('ac-company')) return alert('Enter company name');
-  if(!val('ac-place')) return alert('Enter accident location');
-  if(!val('ac-desc')) return alert('Enter accident description');
-  if(!val('ac-direct')) return alert('Enter immediate causes');
-  if(!val('ac-root')) return alert('Enter root causes');
-  let classes=[...document.querySelectorAll('.ac-class:checked')].map(c=>c.value);
-  if(!classes.length) return alert('Select at least one accident classification');
-  if(!val('ac-injured')) return alert('Enter injured person name');
-  if(!val('ac-code')) return alert('Enter injured person code');
-  if(!val('ac-job')) return alert('Enter injured person job');
-  if(!val('ac-body')) return alert('Select injured body part');
-  if(!val('ac-nature')) return alert('Select nature of injury');
-  let correctives=[];
-  for(let i=1;i<=corrCount;i++){ let v=document.getElementById('corr-'+i).value.trim(); if(v) correctives.push(v); }
-  if(!correctives.length) return alert('Enter at least one corrective action');
-  let witnesses=[];
-  for(let i=1;i<=5;i++){
-    let n=document.getElementById('wit-name-'+i).value.trim();
-    if(n) witnesses.push({name:n,job:document.getElementById('wit-job-'+i).value.trim(),phone:document.getElementById('wit-phone-'+i).value.trim()});
-  }
-  if(!witnesses.length) return alert('Enter at least one witness name');
-  if(!window.db) return alert('Firebase not connected');
-  // New records are saved in English only
-  let rec={date:val('ac-date'),time:val('ac-time'),company:val('ac-company'),place:val('ac-place'),desc:val('ac-desc'),direct:val('ac-direct'),root:val('ac-root'),classes:classes,injured:val('ac-injured'),code:val('ac-code'),job:val('ac-job'),body:val('ac-body'),nature:val('ac-nature'),bodyOther:val('ac-body-other'),witnesses:witnesses,correctives:correctives,incidentImgs:[...tempIncident],actionImgs:[...tempAction],reporter:val('ac-reporter')||getCurrentReporter(),reporterCode:getCurrentReporterCode(),reporterName:val('ac-reporter')||getCurrentReporter(),notes:val('ac-notes'),createdAt:new Date().toISOString(),status:'Open'};
-  try{
-    let ref = await db.collection('accidents').add(rec);
-    rec.id = ref.id;
-    accidents.unshift(rec);
-  }catch(e){ return alert('Error saving to Firebase: '+e.message); }
-  renderAcc();
-  alert('✅ Accident report saved to Firebase - '+rec.injured+' - '+classes.join(' + '));
-  ['ac-company','ac-place','ac-desc','ac-direct','ac-root','ac-injured','ac-code','ac-job','ac-body-other','ac-notes'].forEach(id=>setVal(id,''));
-  setVal('ac-body',''); setVal('ac-nature','');
-  document.querySelectorAll('.ac-class').forEach(c=>c.checked=false);
-  for(let i=1;i<=5;i++){ document.getElementById('wit-name-'+i).value=''; document.getElementById('wit-job-'+i).value=''; document.getElementById('wit-phone-'+i).value=''; }
-  corrCount=1; buildCorrective();
-  document.getElementById('ac-img-incident').value=''; document.getElementById('ac-img-action').value='';
-  document.getElementById('prev-incident').innerHTML=''; document.getElementById('prev-action').innerHTML='';
-  tempIncident=[]; tempAction=[];
-  document.getElementById('injHint').innerText='';
-}
-function renderAcc(){
-  let people=allPeople;
-  document.getElementById('empNames').innerHTML=people.map(p=>'<option value="'+p.name+'">').join('');
-  let all=accidents||[];
-  let comps=[...new Set(all.map(x=>x.company))];
-  document.getElementById('compList').innerHTML=comps.map(c=>'<option value="'+c+'">').join('');
-  let sel=document.getElementById('filterCompany'); let cur=sel.value;
-  sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
-  document.getElementById('placesList').innerHTML=[...new Set(all.map(x=>x.place))].map(p=>'<option value="'+p+'">').join('');
-  document.getElementById('k-total').innerText=all.length;
-  // KPI counts both AR old + EN new, using hasClass()
-  document.getElementById('k-medical').innerText=all.filter(x=>hasClass(x,'Medical Treatment Case')).length;
-  document.getElementById('k-restricted').innerText=all.filter(x=>hasClass(x,'Restricted Work Case')).length;
-  document.getElementById('k-lost').innerText=all.filter(x=>hasClass(x,'Lost Time Injury')).length;
-  document.getElementById('k-death').innerText=all.filter(x=>hasClass(x,'Fatality')).length;
-  document.getElementById('k-fire').innerText=all.filter(x=>hasClass(x,'Fire Incident')).length;
-  document.getElementById('k-property').innerText=all.filter(x=>hasClass(x,'Property Damage')).length;
-  let byComp={}; all.forEach(x=>{ byComp[x.company]=(byComp[x.company]||0)+1; });
-  let topComp=Object.keys(byComp).sort((a,b)=>byComp[b]-byComp[a])[0];
-  document.getElementById('k-top-comp').innerText=topComp?topComp+' ('+byComp[topComp]+')':'-';
-  let q=(document.getElementById('searchAc').value||'').toLowerCase();
-  let fc=document.getElementById('filterClass').value;
-  let fcomp=document.getElementById('filterCompany').value;
-  let list=all.filter(x=>{
-    let okQ=(x.company+x.place+x.desc+x.injured+x.code).toLowerCase().includes(q);
-    // Filter works for both AR and EN old records
-    let okC=!fc||TList(x.classes).includes(fc);
-    let okComp=!fcomp||x.company===fcomp;
-    return okQ&&okC&&okComp;
-  });
-  if(!list.length){ document.getElementById('acTable').innerHTML='<p style="text-align:center;color:#999;">No accidents recorded yet</p>'; return; }
-  document.getElementById('acTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Injured</th><th>Classification</th><th>Location</th><th>Description</th><th>Body Part / Nature</th><th>Witnesses</th><th>Actions</th><th>Photos</th><th>Delete</th></tr>'+list.map(x=>{
-    let idx=accidents.indexOf(x);
-    let chips=TList(x.classes).map(c=>'<span class="chip">'+c+'</span>').join('<br>');
-    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.company+'</b></td><td><b>'+x.injured+'</b><br>'+x.code+' - '+x.job+'</td><td>'+chips+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:200px;">'+x.desc+'<br><small style="color:#78909C;">Immediate: '+x.direct+'</small><br><small style="color:#78909C;">Root: '+x.root+'</small></td><td>'+T(x.body)+'<br>'+T(x.nature)+(x.bodyOther?'<br>'+x.bodyOther:'')+'</td><td style="font-size:11px;">'+(x.witnesses||[]).map(w=>w.name+' - '+w.job+' - '+w.phone).join('<br>')+'</td><td style="font-size:11px;text-align:left;">'+(x.correctives||[]).map((c,i)=>(i+1)+'. '+c).join('<br>')+'</td><td style="font-size:11px;">📸 Accident: '+((x.incidentImgs||[]).length)+'<br>📸 Actions: '+((x.actionImgs||[]).length)+'<br>'+(x.incidentImgs && x.incidentImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'incident\')">👁️ Accident</button>':'')+' '+(x.actionImgs && x.actionImgs.length?'<button class="btn2" onclick="viewImgs('+idx+',\'action\')">👁️ Actions</button>':'')+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delAcc('+idx+')">🗑️</button></td></tr>';
-  }).join('')+'</table>';
-}
-function viewImgs(idx,type){
-  let x=accidents[idx]; let arr=type==='incident'?x.incidentImgs:x.actionImgs;
-  let w=window.open('','_blank'); w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;font-family:Arial;"><h2 style="width:100%;">'+(type==='incident'?'📸 Accident Photos':'📸 Action Photos')+' - '+x.company+' - '+x.date+'</h2>'+arr.map(src=>'<img src="'+src+'" style="width:300px;border-radius:12px;">').join('')+'</div>');
-}
-async function delAcc(i){
-  if(!confirm('Delete this accident report?')) return;
-  let rec=accidents[i];
-  try{ if(rec && rec.id && window.db) await db.collection('accidents').doc(rec.id).delete(); }catch(e){}
-  accidents.splice(i,1); renderAcc();
-}
-async function clearAcc(){
-  if(!confirm('Delete all accident log from Firebase?')) return;
-  try{
-    if(window.db){
-      let snap = await db.collection('accidents').get();
-      for(let d of snap.docs){ await db.collection('accidents').doc(d.id).delete(); }
-    }
-  }catch(e){}
-  accidents=[]; renderAcc();
-}
-function exportAcc(){
-  if(!accidents.length) return alert('No data');
-  let csv='Date,Time,Company,Location,Description,Immediate Causes,Root Causes,Classification,Injured Name,Code,Job,Body Part,Nature,Other Details,Witnesses,Corrective Actions,Reporter,Notes,Accident Photos Count,Action Photos Count\n'+accidents.map(x=>[x.date,x.time,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+TList(x.classes).join(' + ')+'"',x.injured,x.code,x.job,T(x.body),T(x.nature),'"'+(x.bodyOther||'').replace(/"/g,'""')+'"','"'+(x.witnesses||[]).map(w=>w.name+' - '+w.job+' - '+w.phone).join(' | ')+'"','"'+(x.correctives||[]).join(' | ')+'"',x.reporter,'"'+(x.notes||'').replace(/"/g,'""')+'"',(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');
-  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='accidents.csv'; a.click();
-}
-buildWitnesses(); buildCorrective();
-let savedUser=localStorage.getItem('safetyUser')||getCurrentReporter();
-document.getElementById('currentUser').value=savedUser;
-document.getElementById('ac-reporter').value=savedUser;
-document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
-document.getElementById('ac-time').value=new Date().toTimeString().slice(0,5);
-loadAccidents(); loadPeople();
+document.getElementById('currentUser').value=savedUser;document.getElementById('ac-reporter').value=savedUser;
+document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);document.getElementById('ac-time').value=new Date().toTimeString().slice(0,5);
+loadAccidents();loadPeople();
 </script>
 </body>
 </html>
