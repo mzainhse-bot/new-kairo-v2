@@ -51,29 +51,36 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
 .bottom-nav a.active{color:#0F2A4D}.bottom-nav b{font-size:22px;display:block}
 .status-box{background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:10px;font-size:12px;margin:0 14px;text-align:center;color:#5D4037}
 
-/* ===== الكارنيه الأفقي الفخم - النسخة النهائية ===== */
+/* ===== الكارنيه الأفقي الفخم - زي التصميم بالمللي ===== */
 .id-wrap{display:flex;flex-direction:column;gap:16px;align-items:center}
-.id-card{width:850px;max-width:100%;aspect-ratio:850/520;background:linear-gradient(135deg,#0B1338 0%,#0F2A4D 55%,#162E5E 100%);border-radius:20px;overflow:hidden;position:relative;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.4);flex-shrink:0}
-.id-card::before{content:'';position:absolute;inset:10px;border:1.5px solid rgba(255,213,79,.9);border-radius:14px;pointer-events:none}
-.id-card::after{content:'';position:absolute;inset:16px;border:1px solid rgba(255,213,79,.45);border-radius:11px;pointer-events:none}
-.id-inner{position:relative;z-index:2;display:flex;gap:20px;padding:28px 30px;height:100%;align-items:center}
-.id-photo-wrap{flex-shrink:0;text-align:center}
-.id-photo{width:225px;height:290px;object-fit:cover;border-radius:12px;border:4px solid #FFD54F;box-shadow:0 0 0 3px #0B1338,0 0 20px rgba(255,213,79,.5);display:block;background:#fff}
-.id-chip{width:56px;height:40px;border-radius:7px;background:linear-gradient(135deg,#FFE082,#B8860B);margin:12px auto 0;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0A1F44;font-weight:900}
-.id-info{flex:1}
-.id-shield{width:58px;height:62px;background:linear-gradient(180deg,#FFE082,#B8860B);clip-path:polygon(50% 0%,100% 15%,100% 55%,50% 100%,0% 55%,0% 15%);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0A1F44;font-size:14px;letter-spacing:.5px}
-.id-name{font-size:42px;font-weight:900;line-height:1;margin:10px 0 2px}
-.id-name-en{font-size:14px;letter-spacing:4px;color:#FFD54F;font-weight:700}
-.id-job-badge{display:inline-block;background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44;padding:8px 18px;border-radius:999px;font-weight:900;font-size:16px;margin:12px 0}
-.id-job-en{display:block;font-size:12px;color:#B8C6D6;font-weight:700;margin-top:2px;text-align:center}
-.id-fields{margin-top:14px;line-height:2;font-size:15px}
-.id-fields b{color:#FFD54F;font-size:13px}
+.id-card{width:850px;max-width:100%;min-height:480px;background:linear-gradient(115deg,rgba(255,213,79,.09) 0%,transparent 30%),linear-gradient(245deg,rgba(255,213,79,.06) 0%,transparent 40%),linear-gradient(135deg,#0B1338 0%,#0F2A4D 55%,#162E5E 100%);border-radius:18px;overflow:hidden;position:relative;color:#fff;box-shadow:0 15px 35px rgba(0,0,0,.5);flex-shrink:0}
+.id-card::before{content:'';position:absolute;inset:10px;border:2px solid #FFD54F;border-radius:13px;pointer-events:none;z-index:3}
+.id-card::after{content:'';position:absolute;inset:17px;border:1px solid rgba(255,213,79,.5);border-radius:10px;pointer-events:none;z-index:3}
+.id-corner{position:absolute;width:52px;height:52px;z-index:4;border:3px solid #FFD54F;pointer-events:none}
+.id-corner.tl{top:10px;left:10px;border-right:none;border-bottom:none;border-top-left-radius:13px}
+.id-corner.tr{top:10px;right:10px;border-left:none;border-bottom:none;border-top-right-radius:13px}
+.id-corner.bl{bottom:10px;left:10px;border-right:none;border-top:none;border-bottom-left-radius:13px}
+.id-corner.br{bottom:10px;right:10px;border-left:none;border-top:none;border-bottom-right-radius:13px}
+.id-inner{position:relative;z-index:2;display:flex;gap:26px;padding:38px 36px;height:100%;align-items:center}
+.id-photo-frame{padding:10px;background:linear-gradient(180deg,#FFE082,#B8860B,#FFE082);border-radius:12px;box-shadow:0 0 0 2px #7A5A00,0 10px 25px rgba(0,0,0,.5);position:relative}
+.id-photo-frame::before{content:'';position:absolute;inset:4px;border:1px solid #7A5A00;border-radius:8px;pointer-events:none}
+.id-photo{width:215px;height:285px;object-fit:cover;display:block;border-radius:6px;background:#ddd;border:2px solid #0B1338}
+.id-chip{width:62px;height:44px;border-radius:8px;background:linear-gradient(135deg,#FFE082 0%,#FFD54F 40%,#B8860B 100%);margin:14px auto 0;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 4px 10px rgba(0,0,0,.4);border:1px solid #FFE082}
+.id-info{flex:1;min-width:0}
+.id-shield{width:66px;height:72px;background:linear-gradient(180deg,#FFE082,#FFD54F 50%,#B8860B);clip-path:polygon(50% 0%,100% 15%,100% 55%,50% 100%,0% 55%,0% 15%);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0A1F44;font-size:15px;letter-spacing:.5px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
+.id-name{font-size:40px;font-weight:900;line-height:1.1;margin:12px 0 4px;text-shadow:0 2px 10px rgba(0,0,0,.4);word-break:break-word}
+.id-name-en{font-size:14px;letter-spacing:4px;color:#FFD54F;font-weight:700;text-transform:uppercase}
+.id-job-badge{display:inline-flex;flex-direction:column;align-items:center;background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44;padding:10px 24px;border-radius:999px;font-weight:900;font-size:17px;margin:14px 0;min-width:190px;box-shadow:0 6px 15px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.7);border:1px solid #FFF3B0}
+.id-job-en{display:block;font-size:11px;color:#5A4300;font-weight:700;margin-top:2px;letter-spacing:1px}
+.id-fields{margin-top:6px;line-height:2.15;font-size:15px}
+.id-fields b{color:#FFD54F;font-size:13px;font-weight:800}
 .id-fields span{color:#fff;font-weight:700}
-.id-back-inner{padding:30px 34px;height:100%;display:flex;flex-direction:column;justify-content:center}
-.id-back-title{font-size:36px;font-weight:900;color:#FFD54F;text-align:center;line-height:1}
-.id-back-sub{font-size:14px;color:#B8C6D6;text-align:center;letter-spacing:3px;margin-top:4px}
-.id-back-list{margin-top:20px;line-height:2.2;font-size:15px}
-.id-back-list b{color:#FFD54F}
+.id-back-inner{padding:38px 40px;height:100%;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.id-back-title{font-size:38px;font-weight:900;color:#FFD54F;text-align:center;line-height:1;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.id-back-sub{font-size:13px;color:#B8C6D6;text-align:center;letter-spacing:4px;margin-top:6px}
+.id-back-line{height:2px;background:linear-gradient(90deg,transparent,#FFD54F,transparent);margin:18px auto;width:70%}
+.id-back-list{line-height:2.3;font-size:15px}
+.id-back-list b{color:#FFE082}
 .id-back-foot{margin-top:18px;text-align:center;font-size:12px;color:#B8C6D6;border-top:1px solid rgba(255,213,79,.3);padding-top:12px}
 </style>
 </head>
@@ -177,18 +184,22 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
     <p style="text-align:center;color:#78909C;font-size:13px;">Horizontal • أفقي - اسحب يمين وشمال لو الشاشة صغيرة</p>
     <div style="overflow-x:auto;padding:8px;">
     <div class="id-wrap">
-    <!-- الوش - أفقي -->
+    <!-- الوش - أفقي فخم -->
     <div id="cardFront" class="id-card">
+      <div class="id-corner tl"></div><div class="id-corner tr"></div>
+      <div class="id-corner bl"></div><div class="id-corner br"></div>
       <div class="id-inner">
-        <div class="id-photo-wrap">
-          <img id="c-photo" class="id-photo" src="">
+        <div style="flex-shrink:0;text-align:center;">
+          <div class="id-photo-frame">
+            <img id="c-photo" class="id-photo" src="">
+          </div>
           <div class="id-chip">💳</div>
         </div>
         <div class="id-info">
           <div class="id-shield">RMED</div>
           <div class="id-name" id="c-name">-</div>
           <div class="id-name-en" id="c-name-en">-</div>
-          <div><span class="id-job-badge"><span id="c-job">-</span><span class="id-job-en" id="c-job-en">-</span></span></div>
+          <div><span class="id-job-badge"><span id="c-job">-</span><span class="id-job-en" id="c-job-en"></span></span></div>
           <div class="id-fields">
             <div><b>رقم الموظف • Employee Code :</b> <span id="c-code">-</span></div>
             <div><b>الشركة • Company :</b> <span id="c-company">-</span></div>
@@ -198,12 +209,15 @@ table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-b
         </div>
       </div>
     </div>
-    <!-- الضهر - أفقي -->
+    <!-- الضهر - أفقي فخم -->
     <div id="cardBack" class="id-card">
+      <div class="id-corner tl"></div><div class="id-corner tr"></div>
+      <div class="id-corner bl"></div><div class="id-corner br"></div>
       <div class="id-back-inner">
         <div style="display:flex;justify-content:center;"><div class="id-shield">RMED</div></div>
         <div class="id-back-title">إرشادات السلامة</div>
         <div class="id-back-sub">SAFETY INSTRUCTIONS</div>
+        <div class="id-back-line"></div>
         <div class="id-back-list">
           <div>🛡️ <b>ارتدِ معدات الوقاية الشخصية دائمًا</b> - Always wear PPE</div>
           <div>⚠️ <b>اتبع تعليمات السلامة في الموقع</b> - Follow site safety procedures</div>
@@ -343,11 +357,13 @@ let currentCardIndex = 0;
 let currentCardData = null;
 function fillCardData(x){
   currentCardData = x;
-  document.getElementById('c-photo').src = x.img || x.photo || issueImgData || 'https://via.placeholder.com/225x290?text=No+Photo';
+  document.getElementById('c-photo').src = x.img || x.photo || issueImgData || 'https://via.placeholder.com/215x285?text=No+Photo';
   document.getElementById('c-name').innerText = x.name || '-';
   document.getElementById('c-name-en').innerText = (x.nameEn || x.name || '').toUpperCase();
-  document.getElementById('c-job').innerText = TJob(x.job) || '-';
-  document.getElementById('c-job-en').innerText = TJob(x.job) || '';
+  let jobVal = (TJob(x.job) || '').trim();
+  if(!jobVal) jobVal = 'Safety Officer';
+  document.getElementById('c-job').innerText = jobVal;
+  document.getElementById('c-job-en').innerText = jobVal;
   document.getElementById('c-code').innerText = x.code || '-';
   document.getElementById('c-company').innerText = x.company || '-';
   document.getElementById('c-national').innerText = x.nationalId || '-';
