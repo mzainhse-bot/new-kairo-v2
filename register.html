@@ -5,33 +5,65 @@
 <title>Register New Account - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#0A1F44}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px}
 .main.full{margin-left:0}
 .topbar{display:none}
-@media(max-width:900px){.sidebar{left:-270px}.sidebar.open{left:0}.main{margin-left:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}.main{padding-top:70px}}
-.box{background:#fff;width:100%;max-width:480px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0F2A4D}
-label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}
-input,select{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;outline:none}
-input:focus{border-color:#0F2A4D}
-button.reg{width:100%;background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
-.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}
-img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px solid #0F2A4D;display:none;margin:auto}
+@media(max-width:900px){.sidebar{left:-270px}.sidebar.open{left:0}.main{margin-left:0}.topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}.topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;color:#0A1F44}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}.main{padding-top:70px}}
+/* ===== REGISTER - SAME LOGIN IMAGE ===== */
+.login-wrap{width:100%;max-width:480px;margin-top:54px;background:#0A1B33;border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);border:1px solid rgba(255,213,79,.35)}
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);padding:18px 18px 0;position:relative;text-align:center;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,213,79,.18),transparent 40%);pointer-events:none}
+.hero-imgs{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;position:relative}
+.hero-helmet{width:58%;filter:drop-shadow(0 16px 18px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-crane{width:42%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.5))}
+.hero-helmet img,.hero-crane img{width:100%;height:auto;object-fit:contain;display:block}
+.hero-helmet .fallback,.hero-crane .fallback{font-size:80px;display:none}
+.banner{background:linear-gradient(180deg,#FF8A00,#E65100);color:#fff;text-align:center;padding:12px 10px;font-weight:900;font-size:26px;letter-spacing:.5px;box-shadow:0 4px 0 rgba(0,0,0,.15);position:relative}
+.banner span{color:#fff}
+.hero-sub{background:#0A1B33;color:#B8C6D6;text-align:center;font-size:13px;padding:10px 12px}
+.box{background:#fff;width:100%;padding:22px 22px 16px;border-radius:18px 18px 0 0}
+.box h2{margin:0;text-align:center;font-size:26px;color:#0A1F44}
+.box .sub{text-align:center;color:#555;font-size:13px;margin:8px 0 16px}
+label{display:block;font-weight:800;font-size:14px;margin:14px 0 6px;color:#0A1F44}
+.input-wrap{position:relative;display:flex;align-items:center;background:#FFF8E1;border:1.5px solid #FFCC80;border-radius:12px;overflow:hidden}
+.input-wrap:focus-within{border-color:#FF9800;box-shadow:0 0 0 3px rgba(255,152,0,.18)}
+.input-ic{width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#FFF3E0;border-right:1px solid #FFE0B2;height:52px}
+.input-ic img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25))}
+.input-ic span{font-size:26px;display:none}
+.input-wrap input,.input-wrap select{border:none !important;outline:none;background:transparent !important;padding:14px 10px !important;font-size:14px;color:#0A1F44;flex:1;width:auto}
+.input-wrap input::placeholder{color:#999}
+.input-wrap select option{background:#fff;color:#0A1F44}
+button.reg{width:100%;background:linear-gradient(180deg,#FF8A00,#E65100);color:#fff;border:none;padding:15px;border-radius:12px;font-weight:900;font-size:20px;cursor:pointer;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 18px rgba(230,81,0,.35)}
+button.reg:active{transform:scale(.98)}
+.reg .shield3d{width:34px;height:34px;filter:drop-shadow(0 4px 5px rgba(0,0,0,.3))}
+.reg .shield3d img{width:100%;height:100%;object-fit:contain}
+.btn2{width:100%;background:#fff;color:#0A1F44;border:1.5px solid #999;padding:13px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.secured{margin:16px auto 0;width:230px;background:linear-gradient(180deg,#2E7D32,#1B5E20);color:#fff;border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 6px 14px rgba(46,125,50,.35)}
+.secured img{width:38px;height:38px;flex-shrink:0}
+.secured b{font-size:13px;display:block}
+.secured small{font-size:10px;color:#C8E6C9;display:block;line-height:1.4}
+.help{text-align:center;color:#B8C6D6;font-size:12px;padding:14px;background:#0A1B33}
+.help a{color:#FFE082;text-decoration:none;font-weight:700}
+img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:3px solid #FF9800;display:none;margin:10px auto;box-shadow:0 8px 14px rgba(0,0,0,.25)}
+.photo-btn{display:block;text-align:center;background:#FFF3E0;border:1.5px dashed #FF9800;border-radius:12px;padding:14px;cursor:pointer;font-weight:700;color:#E65100;font-size:13px}
+.photo-btn input{display:none}
+@keyframes float3d{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 </style>
 </head>
 <body>
@@ -68,23 +100,41 @@ img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px
   <a href="register.html" class="active"><span class="icon">📝</span> Register</a>
 </aside>
 <div class="main">
+<div class="login-wrap">
+<div class="hero">
+<div class="hero-imgs">
+<div class="hero-helmet"><img src="https://img.icons8.com/3d-fluency/94/hard-hat.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🪖</span></div>
+<div class="hero-crane"><img src="https://img.icons8.com/3d-fluency/94/crane.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏗️</span></div>
+</div>
+</div>
+<div class="banner">SAFETY FIRST • <span>السلامة أولاً</span></div>
+<div class="hero-sub">Health, Safety & Environment Register • تسجيل حساب للصحة والسلامة</div>
 <div class="box">
-<h2 style="text-align:center;margin:0;">🏗️ RMED • Register New Account</h2><p style="text-align:center;color:#78909C;font-size:13px;">Register your data, manager will approve you before you login</p>
+<h2>Create New Account • إنشاء حساب جديد</h2>
+<p class="sub">Register your data, manager will approve you before you login • سجل بياناتك، المدير هيوافق عليك قبل الدخول</p>
 <img id="preview" class="prev">
-<label>🖼️ Your Personal Photo</label><input type="file" accept="image/*" onchange="readPhoto(event)">
-<label>👤 Full Name *</label><input id="r-name" placeholder="Example: Ahmed Ali">
-<label>👷 Job *</label><input id="r-job" placeholder="Example: Safety Supervisor - Engineer - Technician">
-<label>🎭 Requested Role *</label><select id="r-role"><option value="employee">👷 Employee</option><option value="supervisor">🦺 Supervisor</option><option value="manager">👑 Manager</option></select>
-<label>📧 Email *</label><input id="r-email" type="email" placeholder="example@gmail.com">
-<label>🔒 Password *</label><input id="r-pass" type="password" placeholder="Choose strong password">
-<button class="reg" onclick="doRegister()">📝 Register Account</button>
-<button class="btn2" onclick="location.href='index.html'">🏠 Home</button>
-<p style="text-align:center;font-size:13px;">Have account? <a href="login.html">Login from here</a></p>
+<label>Your Personal Photo • صورتك الشخصية</label>
+<label class="photo-btn">📸 Choose Your Photo • اختر صورتك<input type="file" accept="image/*" onchange="readPhoto(event)"></label>
+<label>Full Name • الاسم الكامل *</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>👤</span></div><input id="r-name" placeholder="Example: Ahmed Ali • مثال: أحمد علي"></div>
+<label>Job • الوظيفة *</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/hard-hat.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🪖</span></div><input id="r-job" placeholder="Example: Safety Supervisor • مثال: مشرف سلامة"></div>
+<label>Requested Role • الدور المطلوب *</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/shield.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🛡️</span></div><select id="r-role"><option value="employee">👷 Employee • موظف</option><option value="supervisor">🦺 Supervisor • مشرف</option><option value="manager">👑 Manager • مدير</option></select></div>
+<label>Email • البريد الإلكتروني *</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/new-post.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>✉️</span></div><input id="r-email" type="email" placeholder="example@gmail.com"></div>
+<label>Password • كلمة المرور *</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/lock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔒</span></div><input id="r-pass" type="password" placeholder="Choose strong password • اختر كلمة مرور قوية"></div>
+<button class="reg" onclick="doRegister()"><span class="shield3d"><img src="https://img.icons8.com/3d-fluency/94/shield.png" onerror="this.parentElement.innerText='🛡️'"></span> Register • تسجيل</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 Home • الرئيسية</button>
+<p style="text-align:center;font-size:13px;margin:14px 0 0;">Have account? • عندك حساب؟<br><a href="login.html" style="color:#E65100;font-weight:800;">Login from here • سجل دخول من هنا</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;"></p>
 <div id="notifyBox" style="display:none;background:#FFF3E0;border:1px solid #FF9800;border-radius:12px;padding:12px;font-size:13px;margin-top:10px;"></div>
+<div class="secured"><img src="https://img.icons8.com/3d-fluency/94/shield.png" onerror="this.style.display='none'"><div><b>Secured • آمن ومحمي</b><small>SSL Encrypted • Protected by RMED Security • محمي بواسطة RMED - تشفير SSL</small></div></div>
+</div>
+<div class="help">Need help? Contact HSE Support • تحتاج مساعدة؟ تواصل مع دعم السلامة</div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -92,26 +142,19 @@ img.prev{width:100px;height:120px;object-fit:cover;border-radius:12px;border:2px
 function toggleSidebar(){let s=document.getElementById('sidebar');if(window.innerWidth<=900){s.classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}else{s.classList.toggle('closed');document.querySelector('.main').classList.toggle('full');}}
 let photoData='';
 function readPhoto(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{photoData=r.result;let im=document.getElementById('preview');im.src=photoData;im.style.display='block';};r.readAsDataURL(f);}
-
 async function doRegister(){
   let name=document.getElementById('r-name').value.trim(), job=document.getElementById('r-job').value.trim(), email=document.getElementById('r-email').value.trim().toLowerCase(), pass=document.getElementById('r-pass').value;
   let wantedRole=document.getElementById('r-role').value;
   if(!name||!job||!email||!pass) return document.getElementById('msg').innerText='Complete all data';
   if(pass.length<6) return document.getElementById('msg').innerText='Password must be at least 6 characters';
   if(!window.db) return document.getElementById('msg').innerText='Firebase not connected, refresh page';
-
   document.getElementById('msg').innerText='Registering...';
   try{
     let check = await window.db.collection('users').where('email','==',email).get();
     if(!check.empty) return document.getElementById('msg').innerText='This email is already registered, login from Login page';
-
-    // New accounts are always pending - manager approves from Users page. No auto-manager by email.
     let user={name,job,email,pass,photo:photoData,img:photoData,role:wantedRole,requestedRole:wantedRole,status:'pending',createdAt:new Date().toISOString()};
-
     await window.db.collection('users').add(user);
-
     await window.db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('en-US'),createdAt:new Date().toISOString()});
-
     let msgText='New account waiting for your approval - RMED\nName: '+name+'\nJob: '+job+'\nEmail: '+email+'\nRequested Role: '+wantedRole+'\nLogin to Users page to approve it.';
     let nb=document.getElementById('notifyBox');
     nb.style.display='block';
