@@ -6,20 +6,20 @@
 <title>Trainings - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -29,38 +29,69 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
-.container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:1fr;}}
-.kpi{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:28px;display:block;} .kpi small{color:#78909C;font-size:13px;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
+input,select{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
+input::placeholder{color:#8A9AB0}
+select option{background:#0A162E}
+.btn{width:100%;background:linear-gradient(135deg,#FF5252,#B71C1C);color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+/* ===== KPI - EXACT IMAGE: 4 DARK CARDS WITH GOLD 3D ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:linear-gradient(180deg,#101F3D,#0A162E);border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#fff;position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:120px;height:50px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
+.kpi b{font-size:28px;display:block;line-height:1} .kpi small{color:#B8C6D6;font-size:11px;line-height:1.3;display:block}
+.kpi .trend{font-size:11px;color:#81C784;font-weight:700;margin-top:4px}
+.icon3d{width:68px;height:68px;margin:0 auto 6px;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.6));overflow:hidden}
+.icon3d img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.4));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d .fallback{font-size:34px;position:relative;z-index:2;display:none}
+/* TWO COL LIKE IMAGE */
+.two-col{display:grid;grid-template-columns:1fr 1.05fr;gap:14px;margin-bottom:14px;align-items:start}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
 .hours-box{display:flex;gap:8px;}
-.hours-box button{flex:1;padding:12px;border:2px solid #CFD8DC;background:#fff;border-radius:10px;font-weight:bold;cursor:pointer;font-size:15px;color:#0A1F44}
-.hours-box button.active{background:#0F2A4D;color:#fff;border-color:#0F2A4D;}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
+.hours-box button{flex:1;padding:12px;border:2px solid rgba(201,162,39,.45);background:#0A162E;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;color:#fff}
+.hours-box button.active{background:#D32F2F;color:#fff;border-color:#FF8A80;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#2E7D32;color:#fff;display:inline-block}
+.badge.blue{background:#1565C0;color:#fff}
+/* RECORD CARDS LIKE IMAGE */
+.record-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.record-head input{flex:1;min-width:160px}
+.train-card{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
+.train-card .t-ic{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#FFE082,#D4AF37);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 6px 10px rgba(0,0,0,.3)}
+.train-card .t-info{flex:1;min-width:0}
+.train-card .t-info b{font-size:13px;display:block}
+.train-card .t-info small{font-size:11px;color:#B8C6D6;display:block;line-height:1.5}
+.bottom-nav{margin-top:14px;background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.bottom-nav a{text-align:center;color:#999;text-decoration:none;font-size:11px;font-weight:800;padding:10px;border-radius:12px}
+.bottom-nav a.active{background:rgba(255,213,79,.15);color:#FFD54F}
+.bottom-nav span{font-size:20px;display:block}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;color:#fff}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -95,59 +126,62 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Trainings</h1><small>Daily Trainings Registration - From Firebase</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Trainings <span>• التدريبات</span></h1><small>Daily Trainings Registration • التسجيل اليومي للتدريبات</small></div></div>
+<div class="header-actions"><div class="h-ic">SA</div><div class="h-ic">🔔</div><div class="h-ic">EN</div></div>
 </div>
 <div class="container">
+<!-- KPI - EXACT IMAGE -->
 <div class="kpi-grid">
-<div class="kpi"><b id="k-train">0</b><small>Trainings Count</small></div>
-<div class="kpi"><b id="k-att">0</b><small>Total Attendance</small></div>
-<div class="kpi red"><b id="k-hours">0</b><small>Total Training Hours</small></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/graduation-cap.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🎓</span></div><small>Trainings Count<br>عدد التدريبات</small><b id="k-train">0</b><div class="trend" id="k-train-trend">+4 this week • +4 هذا الأسبوع</div></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><small>Total Attendance<br>إجمالي الحضور</small><b id="k-att">0</b><div class="trend" id="k-att-trend">+120 today • +120 اليوم</div></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/clock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⏰</span></div><small>Total Training Hours<br>إجمالي ساعات التدريب</small><b id="k-hours">0</b><div class="trend" id="k-hours-trend">+22h this month • +22 ساعة هذا الشهر</div></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📅</span></div><small>This Month<br>هذا الشهر</small><b id="k-month">0</b><div class="trend">Trainings • تدريب</div></div>
 </div>
-
+<div class="two-col">
+<!-- REGISTER - LIKE IMAGE -->
 <div class="card">
-<h2 style="margin:0 0 5px;">🎓 Register New Training</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">Write name and code & job will load automatically, or write code and name & job will load automatically</p>
+<h2 style="margin:0 0 5px;">🎓 Register New Training • تسجيل تدريب جديد</h2>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Write name and code & job will load automatically, or write code and name & job will load automatically</p>
 <div class="grid">
 <div><label>📅 Date *</label><input type="date" id="t-date"></div>
-<div><label>⏰ Time *</label><input type="time" id="t-time"></div>
 <div><label>📚 Training Title *</label><input id="t-title" placeholder="Example: Work at Height - Fire - Scaffolds"></div>
+<div><label>⏰ Time *</label><input type="time" id="t-time"></div>
+<div><label>🆔 Code</label><input id="t-code" placeholder="Write code... TR-10245" oninput="autoFromCode()"></div>
+<div><label>👤 Trainee Name *</label><input id="t-name" list="workersList" placeholder="Write name... Ahmed Hassan" oninput="autoFromName()"><datalist id="workersList"></datalist></div>
+<div><label>👷 Job - Auto Load</label><input id="t-job" placeholder="Will load automatically" readonly style="background:#0A162E;"></div>
 <div><label>📍 Training Place *</label><input id="t-place" placeholder="Example: Site - Training Hall"></div>
-<div><label>👤 Trainee Name *</label><input id="t-name" list="workersList" placeholder="Write name..." oninput="autoFromName()"><datalist id="workersList"></datalist></div>
-<div><label>🆔 Code</label><input id="t-code" placeholder="Write code..." oninput="autoFromCode()"></div>
-<div><label>👷 Job - Auto Load</label><input id="t-job" placeholder="Will load automatically" readonly style="background:#F4F6F9;"></div>
 <div><label>🏢 Company Name</label><input id="t-company" value="RMED" placeholder="RMED"></div>
+<div><label>🧑‍🏫 Trainer Name *</label><input id="t-trainer" placeholder="Trainer name"></div>
 <div><label>⏱️ Hours Count *</label><div class="hours-box" id="hoursBox">
 <button type="button" onclick="setHours(1,this)">1 Hour</button>
 <button type="button" onclick="setHours(2,this)">2 Hours</button>
 <button type="button" onclick="setHours(3,this)">3 Hours</button>
 </div></div>
-<div><label>🧑‍🏫 Trainer Name *</label><input id="t-trainer" placeholder="Trainer name"></div>
 </div>
-<button class="btn red" onclick="addTraining()">💾 Save Training</button>
+<button class="btn" onclick="addTraining()">💾 Save Training • حفظ التدريب</button>
 </div>
-
+<!-- RECORD - LIKE IMAGE -->
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 Trainings Record</h2>
-<input id="searchT" placeholder="Search by name, code, training title or trainer..." oninput="renderTrain()">
+<div class="record-head"><h2 style="margin:0;">📋 Trainings Record • سجل التدريبات</h2></div>
+<input id="searchT" placeholder="Search Trainings... • ابحث في التدريبات..." oninput="renderTrain()" style="margin-bottom:12px;">
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;"><span style="background:#1A2F52;padding:6px 10px;border-radius:999px;">Training Title • العنوان</span><span style="background:#1A2F52;padding:6px 10px;border-radius:999px;">Trainer • المدرب</span><span style="background:#1A2F52;padding:6px 10px;border-radius:999px;">Attendance • الحضور</span><span style="background:#1A2F52;padding:6px 10px;border-radius:999px;">Date & Time • التاريخ والوقت</span><span style="background:#2E7D32;padding:6px 10px;border-radius:999px;">Status • الحالة</span></div>
 <div id="trainTable"><p style="text-align:center;">⏳ Loading from Firebase...</p></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
 <button class="btn2" onclick="exportTrain()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
-<button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
+<button class="btn2" onclick="clearTrain()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
+<div class="bottom-nav"><a href="index.html"><span>🏠</span>Home | الرئيسية</a><a href="stats.html"><span>📊</span>Reports</a><a href="train.html" class="active"><span>🎓</span>Training | التدريب</a><a href="users.html"><span>👤</span>Profile</a></div>
 </div>
-
+</div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-// ✅ Sidebar
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
@@ -165,7 +199,6 @@ function getReporter(){
   let nm=getReporter();
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
-
 let me = null;
 try{ me = (typeof requireLogin==='function') ? requireLogin() : JSON.parse(localStorage.getItem('currentUser')||'null'); }catch(e){ me=null; }
 let DB = {workers:[], train:[]};
@@ -229,20 +262,42 @@ function renderTrain(){
   let totalTrain=DB.train.length;
   let totalAtt=DB.train.length;
   let totalHours=DB.train.reduce((s,x)=>s+(parseInt(x.hours)||0),0);
+  let now=new Date(); let thisMonth=DB.train.filter(x=>{ let d=new Date(x.date||x.createdAt||''); return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth(); }).length;
+  let weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-7); let thisWeek=DB.train.filter(x=>{ let d=new Date(x.date||x.createdAt||''); return d>=weekAgo; }).length;
+  let todayStr=now.toISOString().slice(0,10); let todayCount=DB.train.filter(x=> String(x.date||'').slice(0,10)===todayStr).length;
   document.getElementById('k-train').innerText=totalTrain;
   document.getElementById('k-att').innerText=totalAtt;
-  document.getElementById('k-hours').innerText=totalHours+' Hours';
-  if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#999;">No trainings yet - Register first training above</p>'; return; }
-  document.getElementById('trainTable').innerHTML='<table><tr><th>Date</th><th>Time</th><th>Training Title</th><th>Trainee</th><th>Code</th><th>Job</th><th>Place</th><th>Hours</th><th>Trainer</th><th>Delete</th></tr>'+list.map((x)=>{
+  document.getElementById('k-hours').innerText=totalHours+'h';
+  document.getElementById('k-month').innerText=thisMonth;
+  document.getElementById('k-train-trend').innerText='+'+thisWeek+' this week • +'+thisWeek+' هذا الأسبوع';
+  document.getElementById('k-att-trend').innerText='+'+todayCount+' today • +'+todayCount+' اليوم';
+  document.getElementById('k-hours-trend').innerText='+'+totalHours+'h this month • +'+totalHours+' ساعة هذا الشهر';
+  if(!list.length){ document.getElementById('trainTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No trainings yet - Register first training above</p>'; return; }
+  // Group by title+date like image: Work at Height / Confined Space Entry
+  let groups={};
+  list.forEach(x=>{ let k=x.title+'|'+x.date+'|'+x.trainer; if(!groups[k]) groups[k]={title:x.title,date:x.date,time:x.time,trainer:x.trainer,place:x.place,count:0,hours:0,items:[]}; groups[k].count++; groups[k].hours+=(parseInt(x.hours)||0); groups[k].items.push(x); });
+  let gArr=Object.values(groups);
+  let icons={'Work at Height':'🪜','Confined Space Entry':'🚪','Hazard Identification':'⚠️','Fire':'🔥','Scaffolds':'🏗️'};
+  document.getElementById('trainTable').innerHTML=gArr.map(g=>{
+    let ic=icons[g.title]||'🎓';
+    return '<div class="train-card"><div class="t-ic">'+ic+'</div><div class="t-info"><b>'+g.title+'</b><small>Trainer: '+g.trainer+' • '+g.count+' attendees • '+g.count+' حاضر</small><small>'+g.date+' • '+g.time+' • '+g.place+' • '+g.hours+'h</small></div><div style="text-align:right;"><span class="badge">Completed • مكتمل</span><br><button class="btn2" style="margin-top:6px;color:#FF8A80;" onclick="delTrainGroup(\''+g.title.replace(/'/g,'')+'\',\''+g.date+'\')">🗑️</button></div></div>';
+  }).join('')+'<div style="margin-top:10px;"><table><tr><th>Date</th><th>Title</th><th>Trainee</th><th>Code</th><th>Hours</th><th>Trainer</th><th>Delete</th></tr>'+list.map(x=>{
     let realIdx=DB.train.indexOf(x);
-    return '<tr><td>'+x.date+'</td><td>'+x.time+'</td><td>'+x.title+'</td><td>'+x.name+'</td><td>'+(x.code||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.place||'-')+'</td><td><span class="badge">'+x.hours+' Hours</span></td><td>'+x.trainer+'</td><td><button class="btn2" style="color:#D32F2F;" onclick="delTrain('+realIdx+')">🗑️</button></td></tr>';
-  }).join('')+'</table>';
+    return '<tr><td>'+x.date+'</td><td>'+x.title+'</td><td>'+x.name+'</td><td>'+(x.code||'-')+'</td><td>'+x.hours+'h</td><td>'+x.trainer+'</td><td><button class="btn2" style="color:#FF8A80;" onclick="delTrain('+realIdx+')">🗑️</button></td></tr>';
+  }).join('')+'</table></div>';
 }
 async function delTrain(i){
   if(!confirm('Delete this training?')) return;
   let rec=DB.train[i];
   try{ if(rec.id && window.db) await window.db.collection('train').doc(rec.id).delete(); }catch(e){}
   DB.train.splice(i,1); renderTrain();
+}
+async function delTrainGroup(title,date){
+  if(!confirm('Delete all trainings for '+title+' on '+date+'?')) return;
+  let toDel=DB.train.filter(x=>x.title===title && x.date===date);
+  for(let rec of toDel){ try{ if(rec.id && window.db) await window.db.collection('train').doc(rec.id).delete(); }catch(e){} }
+  DB.train=DB.train.filter(x=>!(x.title===title && x.date===date));
+  renderTrain();
 }
 async function clearTrain(){
   if(!confirm('Delete all trainings from Firebase?')) return;
