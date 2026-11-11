@@ -6,52 +6,80 @@
 <title>Login - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#0A1F44}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
-.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.main{margin-left:260px;transition:0.3s;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px}
 .main.full{margin-left:0}
 .topbar{display:none}
 @media(max-width:900px){
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:fixed;top:0;left:0;right:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
   .main{padding-top:70px}
 }
-.page-head{position:fixed;top:0;left:260px;right:0;background:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #D32F2F;z-index:80}
+.page-head{position:fixed;top:0;left:260px;right:0;background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #C9A227;z-index:80;color:#fff}
 @media(max-width:900px){.page-head{left:0;top:48px}}
-.box{background:#fff;width:100%;max-width:420px;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(10,31,68,.1);border-top:4px solid #0F2A4D;margin-top:50px}
-label{display:block;font-weight:bold;font-size:13px;margin:10px 0 5px}
-input{width:100%;padding:12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none}
-input:focus{border-color:#0F2A4D}
-button.login-btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:14px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:16px}
-button.login-btn:hover{background:#1A3A6A}
-.btn2{width:100%;background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:12px;border-radius:10px;font-weight:bold;font-size:14px;cursor:pointer;margin-top:10px}
-.show-pass{font-size:12px;color:#0F2A4D;cursor:pointer;font-weight:bold;display:inline-block;margin-top:5px}
+/* ===== LOGIN - EXACT IMAGE ===== */
+.login-wrap{width:100%;max-width:480px;margin-top:54px;background:#0A1B33;border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);border:1px solid rgba(255,213,79,.35)}
+.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);padding:18px 18px 0;position:relative;text-align:center;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,213,79,.18),transparent 40%);pointer-events:none}
+.hero-imgs{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;position:relative}
+.hero-helmet{width:58%;filter:drop-shadow(0 16px 18px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
+.hero-crane{width:42%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.5))}
+.hero-helmet img,.hero-crane img{width:100%;height:auto;object-fit:contain;display:block}
+.hero-helmet .fallback,.hero-crane .fallback{font-size:80px;display:none}
+.banner{background:linear-gradient(180deg,#FF8A00,#E65100);color:#fff;text-align:center;padding:12px 10px;font-weight:900;font-size:26px;letter-spacing:.5px;box-shadow:0 4px 0 rgba(0,0,0,.15);position:relative}
+.banner span{color:#fff}
+.hero-sub{background:#0A1B33;color:#B8C6D6;text-align:center;font-size:13px;padding:10px 12px}
+.box{background:#fff;width:100%;padding:22px 22px 16px;border-radius:18px 18px 0 0}
+.box h2{margin:0;text-align:center;font-size:26px;color:#0A1F44}
+.box .sub{text-align:center;color:#555;font-size:13px;margin:8px 0 16px}
+label{display:block;font-weight:800;font-size:14px;margin:14px 0 6px;color:#0A1F44}
+.input-wrap{position:relative;display:flex;align-items:center;background:#FFF8E1;border:1.5px solid #FFCC80;border-radius:12px;overflow:hidden}
+.input-wrap:focus-within{border-color:#FF9800;box-shadow:0 0 0 3px rgba(255,152,0,.18)}
+.input-ic{width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#FFF3E0;border-right:1px solid #FFE0B2;height:52px}
+.input-ic img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25))}
+.input-ic span{font-size:26px;display:none}
+.input-wrap input{border:none !important;outline:none;background:transparent !important;padding:14px 10px !important;font-size:14px;color:#0A1F44;flex:1;width:auto}
+.input-wrap input::placeholder{color:#999}
+.show-pass{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:#555;cursor:pointer;font-weight:700;display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:999px;border:1px solid #EEE;z-index:2}
+button.login-btn{width:100%;background:linear-gradient(180deg,#FF8A00,#E65100);color:#fff;border:none;padding:15px;border-radius:12px;font-weight:900;font-size:20px;cursor:pointer;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 18px rgba(230,81,0,.35)}
+button.login-btn:active{transform:scale(.98)}
+.login-btn .shield3d{width:34px;height:34px;filter:drop-shadow(0 4px 5px rgba(0,0,0,.3))}
+.login-btn .shield3d img{width:100%;height:100%;object-fit:contain}
+.btn2{width:100%;background:#fff;color:#0A1F44;border:1.5px solid #999;padding:13px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn2 img{width:24px;height:24px}
+.secured{margin:16px auto 0;width:230px;background:linear-gradient(180deg,#2E7D32,#1B5E20);color:#fff;border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 6px 14px rgba(46,125,50,.35)}
+.secured img{width:38px;height:38px;flex-shrink:0}
+.secured b{font-size:13px;display:block}
+.secured small{font-size:10px;color:#C8E6C9;display:block;line-height:1.4}
+.help{text-align:center;color:#B8C6D6;font-size:12px;padding:14px;background:#0A1B33}
+.help a{color:#FFE082;text-decoration:none;font-weight:700}
 .debug{background:#FFF3E0;border:1px solid #FF9800;border-radius:10px;padding:10px;font-size:12px;color:#333;margin-top:12px;display:none}
+@keyframes float3d{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -85,24 +113,35 @@ button.login-btn:hover{background:#1A3A6A}
   <a href="login.html" data-page="login" class="active"><span class="icon">🔑</span> Login</a>
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
 </aside>
-
-<div class="page-head"><b>🏗️ RMED • Login</b><button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button></div>
-
+<div class="page-head"><b>🏗️ RMED • Login • تسجيل الدخول</b><button onclick="toggleSidebar()" style="background:#FFE082;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;color:#0A1F44;">◀️ Hide Menu</button></div>
 <div class="main">
+<div class="login-wrap">
+<div class="hero">
+<div class="hero-imgs">
+<div class="hero-helmet"><img src="https://img.icons8.com/3d-fluency/94/hard-hat.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🪖</span></div>
+<div class="hero-crane"><img src="https://img.icons8.com/3d-fluency/94/crane.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏗️</span></div>
+</div>
+</div>
+<div class="banner">SAFETY FIRST • <span>السلامة أولاً</span></div>
+<div class="hero-sub">Health, Safety & Environment Login • تسجيل الدخول للصحة والسلامة</div>
 <div class="box">
-<h2 style="text-align:center;margin:0;">🏗️ RMED • Login</h2><p style="text-align:center;color:#78909C;font-size:13px;">Login with email and password - From Firebase</p>
-<label>📧 Email</label><input id="l-email" type="email" placeholder="example@gmail.com">
-<label>🔒 Password</label><input id="l-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') doLogin()">
-<span class="show-pass" onclick="togglePass()">👁️ Show Password</span>
-<button class="login-btn" onclick="doLogin()">🚀 Login</button>
-<button class="btn2" onclick="loginAsVisitor()">👁️ Login As Visitor - View Only Without Edit</button>
-<button class="btn2" onclick="location.href='index.html'">🏠 Home</button>
-<p style="text-align:center;font-size:13px;">No account? <a href="register.html">Create new account</a></p>
+<h2>Welcome Back • مرحباً بعودتك</h2>
+<p class="sub">Sign in to continue to RMED Safety • سجل دخولك للاستمرار إلى RMED Safety</p>
+<label>Email • البريد الإلكتروني</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/new-post.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>✉️</span></div><input id="l-email" type="email" placeholder="you@example.com • البريد@example.com"></div>
+<label>Password • كلمة المرور</label>
+<div class="input-wrap"><div class="input-ic"><img src="https://img.icons8.com/3d-fluency/94/lock.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔒</span></div><input id="l-pass" type="password" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') doLogin()"><span class="show-pass" onclick="togglePass()">👁️ Show إظهار</span></div>
+<button class="login-btn" onclick="doLogin()"><span class="shield3d"><img src="https://img.icons8.com/3d-fluency/94/shield.png" onerror="this.parentElement.innerText='🛡️'"></span> Login • دخول</button>
+<button class="btn2" onclick="loginAsVisitor()">👁️ Login As Visitor • View Only • دخول كزائر - عرض فقط</button>
+<button class="btn2" onclick="location.href='index.html'">🏠 Home • الرئيسية</button>
+<p style="text-align:center;font-size:13px;margin:14px 0 0;">Don't have an account? • ليس لديك حساب؟<br><a href="register.html" style="color:#E65100;font-weight:800;">Create new account • إنشاء حساب جديد</a></p>
 <p id="msg" style="text-align:center;color:#D32F2F;font-size:13px;min-height:18px;"></p>
 <div id="debugBox" class="debug"></div>
+<div class="secured"><img src="https://img.icons8.com/3d-fluency/94/shield.png" onerror="this.style.display='none'"><div><b>Secured • آمن ومحمي</b><small>SSL Encrypted • Protected by RMED Security • محمي بواسطة RMED - تشفير SSL</small></div></div>
+</div>
+<div class="help">Need help? Contact HSE Support • تحتاج مساعدة؟ تواصل مع دعم السلامة</div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -121,7 +160,6 @@ function togglePass(){
   let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser');
   if(u){ try{ let o=JSON.parse(u); if(o && o.name && o.role!=='visitor') location.href='dashboard.html'; }catch(e){} }
 })();
-
 async function doLogin(){
   let email=document.getElementById('l-email').value.trim().toLowerCase();
   let pass=document.getElementById('l-pass').value;
@@ -132,7 +170,6 @@ async function doLogin(){
   if(!email) return msg.innerText='Write email';
   if(!pass) return msg.innerText='Write password';
   if(!window.db) return msg.innerText='Firebase not connected - Check firebase-config.js exists';
-
   msg.innerText='Checking...';
   try{
     let snap = await window.db.collection('users').where('email','==',email).get();
@@ -145,23 +182,19 @@ async function doLogin(){
     let doc = snap.docs[0];
     let user = doc.data();
     user.id = doc.id;
-
     let savedPass = user.pass || user.password || user.pwd || '';
     if(String(savedPass)!==String(pass)){
       msg.innerText='Wrong password - Check it, and press Show Password';
       return;
     }
-    // Read old AR + new EN status
     let statusMap={'معلق':'pending','مرفوض':'rejected','محظور':'blocked','مقبول':'approved','موافق عليه':'approved','pending':'pending','rejected':'rejected','blocked':'blocked','approved':'approved'};
     let status=statusMap[String(user.status||'approved').trim().toLowerCase()]||statusMap[String(user.status||'approved').trim()]||'approved';
     if(status==='pending') return msg.innerText='⏳ Your account is still waiting for manager approval, wait a bit';
     if(status==='rejected' || status==='blocked') return msg.innerText='❌ Your account was rejected by manager';
-
     let roleMap={'معلق':'pending','مدير':'manager','مشرف':'supervisor','موظف':'employee','زائر':'visitor'};
     let rawRole=String(user.role||'employee').trim();
     let normRole=roleMap[rawRole]||roleMap[rawRole.toLowerCase()]||rawRole.toLowerCase();
     let finalRole = normRole==='pending' ? (user.requestedRole||'employee') : (normRole||'employee');
-
     let session={id:user.id,email:user.email,name:user.name||user.fullName||email,job:user.job||finalRole||'',role:finalRole,photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
     localStorage.setItem('safetyUser',JSON.stringify(session));
     localStorage.setItem('currentUser',JSON.stringify(session));
