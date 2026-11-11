@@ -6,20 +6,20 @@
 <title>Safety Observations | RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#F4F6F9;color:#0A1F44}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s;padding:0}
@@ -29,47 +29,76 @@ body{margin:0;background:#F4F6F9;color:#0A1F44}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px} .page-head h1 span{color:#D32F2F} .page-head small{color:#78909C}
-.page-head button{background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;color:#0A1F44}
+/* ===== HEADER - EXACT IMAGE ===== */
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:20px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.page-head h1{margin:0;font-size:32px;line-height:1.1;color:#fff;position:relative} .page-head small{color:#FFD54F;font-size:14px;font-weight:700;display:block}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px;text-align:center;line-height:1}
+.header-actions{display:flex;gap:14px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
+.header-actions .admin{display:flex;gap:8px;align-items:center;font-weight:700}
+.header-actions .admin img{width:36px;height:36px;border-radius:50%;border:2px solid #FFD54F;object-fit:cover}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px}
-h1.title{text-align:center;color:#0A1F44;margin:5px 0;font-size:26px}
-h1.title span{color:#D32F2F}
-.sub{text-align:center;color:#78909C;margin-bottom:18px;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
-.card{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 2px 12px rgba(10,31,68,.08);border-bottom:3px solid #0F2A4D}
-.card b{font-size:24px;color:#0A1F44;display:block}
-.card span{font-size:13px;color:#78909C}
-.card.green{border-bottom-color:#2E7D32} .card.green b{color:#2E7D32}
-.card.red{border-bottom-color:#D32F2F} .card.red b{color:#D32F2F}
-.card.blue{border-bottom-color:#FF9800} .card.blue b{color:#E65100}
-.form{background:#fff;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D}
-.form h3{color:#0A1F44;margin:0 0 12px}
+h1.title{text-align:center;color:#fff;margin:14px 0 2px;font-size:26px}
+h1.title span{color:#FFD54F}
+.sub{text-align:center;color:#B8C6D6;margin-bottom:14px;font-size:14px}
+/* ===== KPI 5 - EXACT IMAGE WITH REAL 3D ICONS ===== */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);color:#fff;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:-28px;left:50%;transform:translateX(-50%);width:140px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
+.card b{font-size:26px;color:#fff;display:block;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.card span{font-size:12px;color:#B8C6D6;line-height:1.4;display:block}
+.card small{display:block;font-size:11px;color:#8A9AB0;margin-top:4px}
+.icon3d{width:84px;height:84px;margin:0 auto 8px;border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(400px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));overflow:hidden}
+.icon3d img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.45));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
+.icon3d .fallback{font-size:42px;position:relative;z-index:2;display:none}
+.stats2{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:900px){.stats2{grid-template-columns:repeat(2,1fr)}}
+.stats2 .card{padding:12px 10px}
+.stats2 .card b{font-size:16px}
+/* ===== TWO COLUMNS LIKE IMAGE ===== */
+.two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-bottom:14px;align-items:start}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.form{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
+.form h3{color:#fff;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
-input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1.5px solid #CFD8DC;background:#fff;color:#0A1F44;font-family:inherit;font-size:14px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#0F2A4D}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(201,162,39,.45);background:#0A162E;color:#fff;font-family:inherit;font-size:14px;outline:none}
+input::placeholder,textarea::placeholder{color:#8A9AB0}
+select option{background:#0A162E;color:#fff}
+input:focus,select:focus,textarea:focus{border-color:#FFD54F}
 textarea{grid-column:1/-1;min-height:70px;resize:vertical}
-label{font-size:13px;color:#0A1F44;display:block;margin-bottom:4px;font-weight:bold}
-button.save{background:#0F2A4D;color:#fff;border:none;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
-button.save:hover{background:#1A3A6A}
-.btn2{background:#ECEFF1 !important;color:#0A1F44 !important;border:1px solid #CFD8DC !important;padding:11px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13px;box-shadow:0 2px 12px rgba(10,31,68,.08)}
-th{background:#0F2A4D;color:#fff;padding:11px}
-td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;color:#0A1F44}
-img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #CFD8DC}
+label{font-size:13px;color:#FFE082;display:block;margin-bottom:4px;font-weight:bold}
+button.save{background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;border:1px solid #7A5A00;padding:13px 18px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px;font-size:16px}
+.btn2{background:#1A2F52 !important;color:#fff !important;border:1px solid rgba(201,162,39,.45) !important;padding:11px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
+table{width:100%;border-collapse:collapse;background:transparent;border-radius:14px;overflow:hidden;font-size:13px;color:#fff}
+th{background:#0A162E;color:#FFD54F;padding:11px;border-bottom:1px solid rgba(201,162,39,.4)}
+td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;color:#fff;vertical-align:top}
+img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid rgba(201,162,39,.5)}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;color:#fff}
 .open{background:#D32F2F}.closed{background:#2E7D32}
 .del{background:#D32F2F;padding:5px 10px;border-radius:6px;color:#fff;cursor:pointer;border:none;width:auto;font-size:12px}
-.top{display:flex;gap:10px;flex-wrap:wrap;background:#fff;padding:14px;border-radius:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);margin-bottom:10px}
+.top{display:flex;gap:10px;flex-wrap:wrap;background:#0A162E;padding:12px;border-radius:12px;border:1px solid rgba(201,162,39,.35);margin-bottom:10px}
 .top button{flex:1}
 .top input,.top select{flex:1}
-.table-wrap{background:#fff;border-radius:14px;overflow:hidden;overflow-x:auto}
+.table-wrap{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;overflow:hidden;overflow-x:auto;padding:14px}
+.record-card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.record-card h3{margin:0 0 10px;color:#fff}
 </style>
 </head>
 <body>
@@ -112,26 +141,36 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </aside>
 
 <div class="main">
-<div class="page-head"><div><h1>RMED <span>•</span> Safety Observations</h1><small>Safety Observations - From Firebase</small></div><button onclick="toggleSidebar()">◀️ Hide Menu</button></div>
+<div class="page-head">
+<div class="header-logo">
+<div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div>
+<div><small>RMED Safety</small><h1>Safety Observations</h1><small>ملاحظات السلامة • Observations • الملاحظات</small></div>
+</div>
+<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">⚙️</div><div class="admin"><img id="topImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"><span id="topUser">Admin ▾</span></div></div>
+</div>
 <div class="container">
 
 <h1 class="title">📋 Safety <span>Observations</span></h1>
-<p class="sub">Safety Observations - Record all observations and follow closing them</p>
+<p class="sub">Safety Observations - Record all observations and follow closing them • سجل كل الملاحظات وتابع إغلاقها</p>
 
 <div class="stats">
-<div class="card"><b id="total">0</b><span>Total Observations</span></div>
-<div class="card blue"><b id="cCond">0</b><span>Unsafe Condition</span></div>
-<div class="card blue"><b id="cAct">0</b><span>Unsafe Act</span></div>
-<div class="card red"><b id="cOpen">0</b><span>Open</span></div>
-<div class="card green"><b id="cClosed">0</b><span>Closed</span></div>
-<div class="card"><b id="topLoc">-</b><span>Top Place With Observations</span></div>
-<div class="card"><b id="lowLoc">-</b><span>Lowest Place With Observations</span></div>
-<div class="card"><b id="topPerson">-</b><span>Top Person Reports</span></div>
-<div class="card"><b id="lowPerson">-</b><span>Lowest Person Reports</span></div>
+<div class="card"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📋</span></div><b id="total">0</b><span>Total Observations<br>إجمالي الملاحظات</span></div>
+<div class="card"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/folder.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📂</span></div><b id="cOpen">0</b><span>Open<br>مفتوحة</span></div>
+<div class="card"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/checked.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">✅</span></div><b id="cClosed">0</b><span>Closed<br>مغلقة</span></div>
+<div class="card"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/location-pin.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📍</span></div><b id="topLoc">-</b><span>Top Place With Observations<br>أكثر مكان</span></div>
+<div class="card"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/user.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👤</span></div><b id="topPerson">-</b><span>Top Person Reports<br>أكثر مبلغ</span></div>
 </div>
 
+<div class="stats2">
+<div class="card"><b id="cCond">0</b><span>Unsafe Condition • ظرف غير آمن</span></div>
+<div class="card"><b id="cAct">0</b><span>Unsafe Act • سلوك غير آمن</span></div>
+<div class="card"><b id="lowLoc">-</b><span>Lowest Place • أقل مكان</span></div>
+<div class="card"><b id="lowPerson">-</b><span>Lowest Person • أقل مبلغ</span></div>
+</div>
+
+<div class="two-col">
 <div class="form">
-<h3>➕ Add New Observation</h3>
+<h3>➕ Add New Observation • إضافة ملاحظة جديدة</h3>
 <div class="grid">
 <div><label>Reporter Name / Report Owner</label><input id="reporter" placeholder="Write name"></div>
 <div><label>Date</label><input type="date" id="date"></div>
@@ -139,28 +178,31 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <div><label>Observation Type</label><select id="type"><option>Unsafe Condition</option><option>Unsafe Act</option></select></div>
 <div><label>Observation Place</label><input id="place" placeholder="Example: Building A - Floor 3"></div>
 <div><label>Status</label><select id="status"><option>Open</option><option>Closed</option></select></div>
-<div><label>Observation Photo</label><input type="file" id="img1" accept="image/*"></div>
-<div><label>Closing Photo</label><input type="file" id="img2" accept="image/*"></div>
+<div><label>Observation Photo • صورة الملاحظة</label><input type="file" id="img1" accept="image/*"></div>
+<div><label>Closing Photo • صورة الإغلاق</label><input type="file" id="img2" accept="image/*"></div>
 </div>
 <label style="margin-top:10px">Observation Description</label>
 <textarea id="desc" placeholder="Write observation description in detail..."></textarea>
 <label>Proposed Corrective Action</label>
 <textarea id="action" placeholder="Write proposed corrective action..."></textarea>
-<button class="save" onclick="addObs()">💾 Save Observation</button>
+<button class="save" onclick="addObs()">💾 Save Observation • حفظ الملاحظة</button>
 </div>
 
+<div class="record-card">
+<h3>📋 Observations Record • سجل الملاحظات</h3>
 <div class="top">
 <input id="search" placeholder="🔍 Search by name / place / description..." oninput="render()">
 <select id="filterType" onchange="render()"><option value="">All Types</option><option>Unsafe Condition</option><option>Unsafe Act</option></select>
 <select id="filterStatus" onchange="render()"><option value="">All Statuses</option><option>Open</option><option>Closed</option></select>
 <button class="btn2" onclick="exportExcel()">📥 Export Excel</button>
 </div>
-
-<div class="table-wrap">
+<div style="overflow-x:auto;max-height:620px;overflow-y:auto;">
 <table>
 <thead><tr><th>Date</th><th>Time</th><th>Reporter</th><th>Type</th><th>Place</th><th>Description</th><th>Action</th><th>Status</th><th>Observation Photo</th><th>Closing Photo</th><th>Delete</th></tr></thead>
 <tbody id="tbody"></tbody>
 </table>
+</div>
+</div>
 </div>
 
 </div>
@@ -186,7 +228,7 @@ function getReporter(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getReporter();
-  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
+  if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo){ document.getElementById('sideImg').src=u.img||u.photo; document.getElementById('topImg').src=u.img||u.photo; } } let t=document.getElementById('topUser'); if(t) t.innerText=nm+' ▾'; }
 })();
 
 // ✅ FIREBASE - Data from Firebase
