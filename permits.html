@@ -6,20 +6,20 @@
 <title>Permit Registration - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -29,41 +29,79 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:12px;align-items:center;position:relative}
+.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#0A1F44}
+.card.red{border:1px solid rgba(201,162,39,.55)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.green{border-bottom-color:#2E7D32;} .kpi.red{border-bottom-color:#D32F2F;} .kpi.orange{border-bottom-color:#FF9800;} .kpi b{font-size:26px;display:block;} .kpi small{color:#78909C;font-size:12px;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;}
-.badge.open{background:#E8F5E9;color:#2E7D32;} .badge.closed{background:#E3F2FD;color:#1565C0;} .badge.cancel{background:#FFEBEE;color:#D32F2F;}
-.type-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px;}
-@media(max-width:700px){.type-grid{grid-template-columns:repeat(2,1fr);}}
-.type-box{background:#F4F6F9;border-radius:10px;padding:10px;text-align:center;border:1px solid #ECEFF1;}
-.type-box b{font-size:20px;display:block;color:#0A1F44;} .type-box small{font-size:11px;color:#78909C;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#0A1F44}
+input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;background:#fff;color:#0A1F44}
+input:focus,select:focus{border-color:#FFD54F}
+.btn{width:100%;background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);border-color:#FF8A80} .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+/* ===== OVERVIEW - EXACT IMAGE ===== */
+.overview{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;color:#0A1F44;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.overview h3{margin:0 0 12px;font-size:16px;color:#0A1F44}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ov{border-radius:12px;padding:14px;display:flex;gap:10px;align-items:flex-start;color:#fff;position:relative;overflow:hidden}
+.ov .ov-ic{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ov .ov-ic img{width:32px;height:32px;object-fit:contain}
+.ov .ov-ic span{font-size:24px;display:none}
+.ov small{font-size:11px;opacity:.9;display:block}
+.ov b{font-size:32px;display:block;line-height:1}
+.ov .ov-sub{font-size:11px;opacity:.9}
+.ov.blue{background:linear-gradient(135deg,#1A6A8A,#0F4A6A)}
+.ov.green{background:linear-gradient(135deg,#4CAF50,#2E7D32)}
+.ov.grey{background:linear-gradient(135deg,#9E9E9E,#757575)}
+.ov.red{background:linear-gradient(135deg,#E53935,#B71C1C)}
+/* COUNT BY TYPE - HORIZONTAL LIKE IMAGE */
+.type-scroll{display:flex;gap:8px;overflow-x:auto;padding:6px 2px;scrollbar-width:thin}
+.type-chip{flex-shrink:0;background:#fff;border:1px solid #EEE;border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);color:#0A1F44;min-width:110px}
+.type-chip .t-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.type-chip b{font-size:16px;display:block}
+.type-chip small{font-size:11px;color:#555;display:block}
+/* REGISTER - LIKE IMAGE */
+.reg-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.reg-head .auto-badge{background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
 .permit-num{background:#FFF3E0;border:2px dashed #FF9800;border-radius:10px;padding:10px;text-align:center;font-weight:bold;font-size:18px;color:#D32F2F;letter-spacing:1px;}
+.sup-code{background:#FFF3E0;border:1px solid #FFCC80;border-radius:10px;padding:10px;display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700;color:#E65100;margin-top:12px}
+/* RECORD - CARDS LIKE IMAGE */
+.permit-card{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #EEE;color:#0A1F44;position:relative;overflow:hidden}
+.permit-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px}
+.permit-card.open:before{background:#4CAF50}
+.permit-card.closed:before{background:#9E9E9E}
+.permit-card.cancel:before{background:#E53935}
+.permit-card .pc-info{flex:1;min-width:0}
+.permit-card .pc-info b{font-size:13px}
+.permit-card .pc-info small{font-size:11px;color:#777}
+.permit-card .qr{width:56px;height:56px;border:1px dashed #999;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;color:#555;flex-shrink:0;background:#FAFAFA;text-align:center}
+.badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:bold;display:inline-block}
+.badge.open{background:#4CAF50;color:#fff} .badge.closed{background:#9E9E9E;color:#fff} .badge.cancel{background:#E53935;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;border-bottom:1px solid #EEE;text-align:center;color:#0A1F44}
+.bottom-nav{margin-top:14px;background:#fff;border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.bottom-nav a{text-align:center;color:#999;text-decoration:none;font-size:11px;font-weight:800;padding:10px;border-radius:12px}
+.bottom-nav a.active{background:#E8F5E9;color:#2E7D32}
+.bottom-nav span{font-size:20px;display:block}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -98,34 +136,39 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Permit Registration</h1><small>Work Permits - From Firebase</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Permits <span>• التصاريح</span></h1><small>إدارة | تصاريح العمل • Work Permits</small></div></div>
+<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">👤</div></div>
 </div>
 <div class="container">
-<div class="kpi-grid">
-<div class="kpi"><b id="k-total">0</b><small>Total Permits</small></div>
-<div class="kpi green"><b id="k-open">0</b><small>Open Permits</small></div>
-<div class="kpi"><b id="k-closed">0</b><small>Closed Permits</small></div>
-<div class="kpi red"><b id="k-cancel">0</b><small>Cancelled Permits</small></div>
+<!-- OVERVIEW - EXACT IMAGE -->
+<div class="overview">
+<h3>Overview | نظرة عامة</h3>
+<div class="ov-grid">
+<div class="ov blue"><div class="ov-ic"><img src="https://img.icons8.com/3d-fluency/94/clipboard.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>📋</span></div><div><small>Total Permits | إجمالي التصاريح</small><b id="k-total">0</b><span class="ov-sub">Today | اليوم</span></div></div>
+<div class="ov green"><div class="ov-ic"><img src="https://img.icons8.com/3d-fluency/94/checked.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>✅</span></div><div><small>Open | مفتوح</small><b id="k-open">0</b><span class="ov-sub">Active | نشط</span></div></div>
+<div class="ov grey"><div class="ov-ic"><img src="https://img.icons8.com/3d-fluency/94/checked.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>✅</span></div><div><small>Closed | مغلق</small><b id="k-closed">0</b><span class="ov-sub">Completed | مكتمل</span></div></div>
+<div class="ov red"><div class="ov-ic"><img src="https://img.icons8.com/3d-fluency/94/warning.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>⚠️</span></div><div><small>Expired | منتهي</small><b id="k-cancel">0</b><span class="ov-sub">Requires Action | يتطلب إجراء</span></div></div>
 </div>
-
-<div class="card">
-<h3 style="margin:0 0 8px;">📊 Count Of Each Permit Type</h3>
-<div class="type-grid" id="typeStats"></div>
 </div>
-
+<!-- COUNT BY TYPE -->
 <div class="card">
-<h2 style="margin:0 0 5px;">📋 Register New Permit</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">Permit number is automatic, default status: Open</p>
-<div class="grid">
-<div><label>🔢 Permit Number - Automatic</label><div class="permit-num" id="p-num">PRM-2026-0001</div></div>
-<div><label>🏢 Company Name *</label><input id="p-company" value="RMED" placeholder="RMED"></div>
-<div><label>📅 Start Date *</label><input type="date" id="p-start-date"></div>
-<div><label>⏰ Start Time *</label><input type="time" id="p-start-time"></div>
-<div><label>📋 Permit Type *</label><select id="p-type">
+<h3 style="margin:0 0 8px;">Count by Type | عدد حسب النوع</h3>
+<div class="type-scroll" id="typeStats"></div>
+</div>
+<!-- REGISTER -->
+<div class="card">
+<div class="reg-head"><h2 style="margin:0;">📋 Register New Permit | تسجيل تصريح جديد</h2><span class="auto-badge">Auto | تلقائي</span></div>
+<p style="color:#78909C;font-size:13px;margin:6px 0 0;">Permit number is automatic, default status: Open</p>
+<div class="grid" style="margin-top:10px;">
+<div><label>Permit Number | رقم التصريح</label><div class="permit-num" id="p-num">PRM-2026-0001</div><small style="font-size:11px;color:#2E7D32;">🔒 Automatic | تلقائي</small></div>
+<div><label>Company | الشركة *</label><input id="p-company" value="RMED" placeholder="RMED"></div>
+<div><label>Date | التاريخ *</label><input type="date" id="p-start-date"></div>
+<div><label>End Date | تاريخ الانتهاء *</label><input type="date" id="p-end-date"></div>
+<div><label>Start Time | وقت البدء *</label><input type="time" id="p-start-time" value="08:00"></div>
+<div><label>End Time | وقت الانتهاء *</label><input type="time" id="p-end-time" value="17:00"></div>
+<div><label>Permit Type | نوع التصريح *</label><select id="p-type">
 <option value="">-- Select Permit Type --</option>
 <option>Cold</option>
 <option>Hot</option>
@@ -138,39 +181,37 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <option>Night Shift</option>
 <option>Pressure Test</option>
 </select></div>
-<div><label>📅 End Date *</label><input type="date" id="p-end-date"></div>
-<div><label>⏰ End Time *</label><input type="time" id="p-end-time"></div>
-<div><label>👷 Responsible Supervisor *</label><input id="p-supervisor" placeholder="Supervisor name"></div>
-<div><label>👨‍💼 Responsible Engineer *</label><input id="p-engineer" placeholder="Engineer name"></div>
-<div><label>🦺 Safety Officer *</label><input id="p-safety" placeholder="Safety officer name"></div>
-<div><label>📌 Status - Supervisor Only</label><select id="p-status" onchange="checkSupervisor(this)">
-<option value="Open" selected>🟢 Open - Default</option>
-<option value="Closed">🔵 Closed</option>
-<option value="Cancelled">🔴 Cancelled</option>
-</select>
-<small style="color:#D32F2F;font-size:11px;">⚠️ Changing status from Open to Closed or Cancelled needs supervisor code</small>
+<div><label>Responsible Supervisor | المشرف المسؤول *</label><input id="p-supervisor" placeholder="Enter name | أدخل الاسم"></div>
+<div><label>Responsible Engineer | المهندس المسؤول *</label><input id="p-engineer" placeholder="Enter name | أدخل الاسم"></div>
+<div><label>Safety Officer | مسؤول السلامة *</label><input id="p-safety" placeholder="Enter name | أدخل الاسم"></div>
+<div><label>Location | الموقع</label><input id="p-location" value="Zone A | المنطقة A" placeholder="Zone A | المنطقة A"></div>
+<div><label>Status | الحالة - Supervisor Only</label><select id="p-status" onchange="checkSupervisor(this)">
+<option value="Open" selected>🟢 Open - Default • مفتوح</option>
+<option value="Closed">🔵 Closed • مغلق</option>
+<option value="Cancelled">🔴 Cancelled • ملغي / منتهي</option>
+</select></div>
+<div style="grid-column:1/-1;"><label>Notes | ملاحظات - Optional</label><input id="p-notes" placeholder="Any notes..."></div>
 </div>
-<div><label>📝 Notes - Optional</label><input id="p-notes" placeholder="Any notes..."></div>
+<div class="sup-code">🔒 Supervisor Code required to close | رمز المشرف مطلوب للإغلاق → <span style="margin-left:auto;">إرسال التصريح →</span></div>
+<button class="btn red" onclick="addPermit()">💾 Save Permit • حفظ التصريح</button>
 </div>
-<button class="btn red" onclick="addPermit()">💾 Save Permit</button>
-</div>
-
+<!-- RECORD -->
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 Permits Record</h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;"><h2 style="margin:0;">📋 Permits Record | سجل التصاريح</h2><button class="btn2" onclick="exportPermits()" style="padding:10px 16px;background:#fff;color:#0A1F44;border:1px solid #CFD8DC;">⬇️ Export | تصدير</button></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
 <input id="searchP" placeholder="Search by permit number, type, company or supervisor..." oninput="renderPermits()" style="flex:2;">
 <select id="filterStatus" onchange="renderPermits()" style="flex:1;"><option value="">All Statuses</option><option>Open</option><option>Closed</option><option>Cancelled</option></select>
 <select id="filterType" onchange="renderPermits()" style="flex:1;"><option value="">All Types</option><option>Cold</option><option>Hot</option><option>Work at Height</option><option>Lifting Works</option><option>Confined Spaces</option><option>Concrete Pouring</option><option>Hazard Analysis Card</option><option>Excavation</option><option>Night Shift</option><option>Pressure Test</option></select>
 </div>
-<div id="permitsTable"></div>
+<div id="permitsTable" style="margin-top:12px;"></div>
 <div style="display:flex;gap:8px;margin-top:12px;">
 <button class="btn2" onclick="exportPermits()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
-<button class="btn2" onclick="clearPermits()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
+<button class="btn2" onclick="clearPermits()" style="flex:1;padding:12px;color:#FF8A80;background:#1A2F52;">🗑️ Clear All</button>
 </div>
 </div>
+<div class="bottom-nav"><a href="index.html"><span>🏠</span>Home | الرئيسية</a><a href="permits.html" class="active"><span>📋</span>Permits | التصاريح</a><a href="stats.html"><span>👤</span>Reports</a><a href="users.html"><span>⚙️</span>الإعدادات</a></div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -193,15 +234,11 @@ function getReporter(){
   let nm=getReporter();
   if(nm){ document.getElementById('sideName').innerText=nm; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm; }
 })();
-
-// ✅ FIREBASE - Data from Firebase
 let permits = [];
-// Translate old AR -> EN display, new saves EN only
 const STATUS_MAP={'مفتوح':'Open','تم الغلق':'Closed','تم الالغاء':'Cancelled','تم الإلغاء':'Cancelled','Open':'Open','Closed':'Closed','Cancelled':'Cancelled'};
 const TYPE_MAP={'بارد':'Cold','ساخن':'Hot','عمل علي ارتفاع':'Work at Height','عمل على ارتفاع':'Work at Height','اعمال رفع':'Lifting Works','أعمال رفع':'Lifting Works','اماكن مغلقة':'Confined Spaces','أماكن مغلقة':'Confined Spaces','صب خرسانه':'Concrete Pouring','صب خرسانة':'Concrete Pouring','كارت تحليل المخاطر':'Hazard Analysis Card','حفر':'Excavation','وردية ليليه':'Night Shift','وردية ليلية':'Night Shift','اختبار ضغط':'Pressure Test'};
 function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Open'; }
 function TType(v){ return TYPE_MAP[String(v||'').trim()]||v||''; }
-// Supervisor code is NOT hardcoded anymore - set it once in browser console: localStorage.setItem('supervisorCode','YOUR_CODE')
 function getSupervisorCode(){ return localStorage.getItem('supervisorCode')||''; }
 function askSupervisorCode(){
   let saved=getSupervisorCode();
@@ -210,7 +247,6 @@ function askSupervisorCode(){
   if(code!==saved){ alert('❌ Wrong code - Status will return to Open'); return false; }
   return true;
 }
-
 async function loadPermits(){
   try{
     if(window.db){
@@ -226,7 +262,6 @@ async function loadPermits(){
   }catch(e){}
   renderPermits(); genPermitNum();
 }
-
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
 function genPermitNum(){
@@ -257,7 +292,7 @@ async function addPermit(){
   if(!safety) return alert('Write safety officer');
   if(!window.db) return alert('Firebase not connected');
   let num=document.getElementById('p-num').innerText;
-  let rec={num:num,company:val('p-company'),startDate:val('p-start-date'),startTime:val('p-start-time'),type:val('p-type'),endDate:val('p-end-date'),endTime:val('p-end-time'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:safety,reporter:safety,reporterName:safety,status:val('p-status'),notes:val('p-notes'),createdAt:new Date().toISOString()};
+  let rec={num:num,company:val('p-company'),startDate:val('p-start-date'),startTime:val('p-start-time'),type:val('p-type'),endDate:val('p-end-date'),endTime:val('p-end-time'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:safety,reporter:safety,reporterName:safety,status:val('p-status'),location:val('p-location')||'Zone A',notes:val('p-notes'),createdAt:new Date().toISOString()};
   try{
     let ref = await window.db.collection('permits').add(rec);
     rec.id = ref.id;
@@ -292,16 +327,21 @@ function renderPermits(){
   document.getElementById('k-cancel').innerText=permits.filter(x=>TStatus(x.status)==='Cancelled').length;
   let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Hazard Analysis Card','Excavation','Night Shift','Pressure Test'];
   let icons={'Cold':'🧊','Hot':'🔥','Work at Height':'🪜','Lifting Works':'🏗️','Confined Spaces':'🚪','Concrete Pouring':'🧱','Hazard Analysis Card':'⚠️','Excavation':'⛏️','Night Shift':'🌙','Pressure Test':'🧪'};
+  let arMap={'Cold':'بارد','Hot':'ساخن','Work at Height':'العمل على ارتفاع','Lifting Works':'أعمال الرفع','Confined Spaces':'مساحة مغلقة','Concrete Pouring':'خرسانة','Hazard Analysis Card':'تحليل المخاطر','Excavation':'حفر','Night Shift':'وردية ليلية','Pressure Test':'اختبار ضغط'};
   document.getElementById('typeStats').innerHTML=types.map(t=>{
     let c=permits.filter(x=>TType(x.type)===t).length;
-    return '<div class="type-box"><b>'+c+'</b><small>'+(icons[t]||'')+' '+t+'</small></div>';
+    return '<div class="type-chip"><div class="t-ic" style="background:#FFF3E0;">'+(icons[t]||'')+'</div><div><small>'+t+' • '+arMap[t]+'</small><b>'+c+'</b></div></div>';
   }).join('');
   if(!list.length){ document.getElementById('permitsTable').innerHTML='<p style="text-align:center;color:#999;">No permits yet - Register first permit above</p>'; return; }
-  document.getElementById('permitsTable').innerHTML='<table><tr><th>Permit Number</th><th>Type</th><th>Company</th><th>Start</th><th>End</th><th>Supervisor</th><th>Engineer</th><th>Safety</th><th>Status</th><th>Delete</th></tr>'+list.map(x=>{
+  // Cards like image + table fallback for desktop
+  document.getElementById('permitsTable').innerHTML=list.map(x=>{
     let idx=permits.indexOf(x);
-    let badgeCls=TStatus(x.status)==='Open'?'open':TStatus(x.status)==='Closed'?'closed':'cancel';
-    return '<tr><td><b style="color:#D32F2F;">'+x.num+'</b></td><td>'+TType(x.type)+'</td><td>'+x.company+'</td><td>'+x.startDate+'<br>'+x.startTime+'</td><td>'+x.endDate+'<br>'+x.endTime+'</td><td>'+x.supervisor+'</td><td>'+x.engineer+'</td><td>'+x.safety+'</td><td><select onchange="changeStatus('+idx+',this.value)" style="width:auto;padding:6px;"><option '+(TStatus(x.status)==='Open'?'selected':'')+'>Open</option><option '+(TStatus(x.status)==='Closed'?'selected':'')+'>Closed</option><option '+(TStatus(x.status)==='Cancelled'?'selected':'')+'>Cancelled</option></select><br><span class="badge '+badgeCls+'">'+TStatus(x.status)+'</span></td><td><button class="btn2" style="color:#D32F2F;" onclick="delPermit('+idx+')">🗑️</button></td></tr>';
-  }).join('')+'</table>';
+    let st=TStatus(x.status);
+    let cls=st==='Open'?'open':st==='Closed'?'closed':'cancel';
+    let badgeTxt=st==='Open'?'Open | مفتوح':st==='Closed'?'Closed | مغلق':'Expired | منتهي';
+    let typeAr=arMap[TType(x.type)]||'';
+    return '<div class="permit-card '+cls+'"><div class="pc-info"><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;"><b>'+x.num+' • '+TType(x.type)+' | '+typeAr+'</b><span class="badge '+cls+'">'+badgeTxt+'</span></div><small>'+(x.location||'Zone A')+' • '+x.startDate+' • '+x.startTime+'-'+x.endTime+' • '+x.supervisor+'</small><br><small>Supervisor: '+x.supervisor+' | Engineer: '+x.engineer+' | Safety: '+x.safety+'</small><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;"><select onchange="changeStatus('+idx+',this.value)" style="width:auto;padding:6px;font-size:12px;"><option '+(st==='Open'?'selected':'')+'>Open</option><option '+(st==='Closed'?'selected':'')+'>Closed</option><option '+(st==='Cancelled'?'selected':'')+'>Cancelled</option></select><button class="btn2" style="color:#D32F2F;background:#fff;border:1px solid #EEE;" onclick="delPermit('+idx+')">🗑️ Delete</button></div></div><div class="qr">⬜ QR<br>QR Verify<br>تحقق QR</div></div>';
+  }).join('');
 }
 async function delPermit(i){
   if(!confirm('Delete this permit?')) return;
