@@ -126,12 +126,10 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 </div>
 <div class="container">
 <div class="print-head"><h1 style="margin:0;">⚠️ Contractor Violations Report - RMED</h1><p id="printPeriod" style="color:#555;margin:4px 0;"></p><p id="printDate" style="color:#555;margin:0;"></p></div>
-
 <div class="role-bar no-print">
 <span style="font-weight:bold;color:#FFE082;">🔐 You are logged in as:</span>
 <span id="roleMsg" style="font-size:13px;font-weight:bold;color:#FF8A80;">Loading...</span>
 </div>
-
 <div class="kpi-grid">
 <div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/warning.png"></div><small>عدد المخالفات<br>Total Violations</small><b id="k-count">0</b></div>
 <div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/money.png"></div><small>إجمالي المبالغ المخصومة<br>Total Deducted</small><b id="k-total">0 EGP</b></div>
@@ -140,7 +138,6 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 <div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/calendar.png"></div><small>أعلى شهر في الخصومات<br>Top Month - Deductions</small><b id="k-max-month">-</b></div>
 <div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/calendar.png"></div><small>أقل شهر في الخصومات<br>Lowest Month - Deductions</small><b id="k-min-month">-</b></div>
 </div>
-
 <div class="card" id="addCard">
 <h2 style="margin:0 0 5px;">⚠️ Register New Violation • تسجيل مخالفة جديدة</h2>
 <p style="color:#B8C6D6;font-size:13px;margin:0;">Supervisor and Manager only • المشرف والمدير فقط</p>
@@ -156,7 +153,6 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 </div>
 <button class="btn" onclick="addViolation()">💾 Save Violation • حفظ المخالفة</button>
 </div>
-
 <div class="card no-print">
 <h3 style="margin:0 0 10px;">📥 Export • تصدير PDF / Excel - اختر الفترة</h3>
 <div class="grid">
@@ -169,13 +165,11 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 </div>
 </div>
 </div>
-
 <div class="card">
 <h2 style="margin:0 0 10px;">📋 Violations Record • سجل المخالفات</h2>
 <input id="searchV" placeholder="Search by company or description... • ابحث بالشركة أو الوصف..." oninput="renderViolations()" class="no-print">
 <div id="violationsTable"></div>
 </div>
-
 </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -183,13 +177,11 @@ table th{background:#0A162E;color:#FFD54F;padding:9px} table td{padding:9px;bord
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
-// ===== FIX: تعريف واحد بس على window عشان ميضربش مع auth.js =====
+// ===== الحل النهائي: مفيش اي const ROLE_MAP هنا خالص =====
+// بنستخدم window.ROLE_MAP بس اللي جاي من auth.js
 if (typeof window.ROLE_MAP === 'undefined') {
   window.ROLE_MAP = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
 }
-const ROLE_MAP = window.ROLE_MAP;
-
-// ===== SIDEBAR =====
 function toggleSidebar(){
   let s=document.getElementById('sidebar');
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
@@ -200,25 +192,21 @@ function logout(){
   localStorage.removeItem('safetyUser');
   location.href='login.html';
 }
-// ===== getMe - بيستخدم اللي في auth.js لو موجود =====
-if (typeof window.getMe === 'undefined') {
-  window.getMe = function(){
-    let keys=['currentUser','safetyUser'];
-    for(let k of keys){
-      let raw=localStorage.getItem(k);
-      if(!raw) continue;
-      try{
-        let u=JSON.parse(raw);
-        if(u && typeof u==='object' && u.name) return u;
-      }catch(e){
-        if(raw.trim()) return {name: raw.trim(), role: localStorage.getItem('currentRole')||localStorage.getItem('userRole')||''};
-      }
+function getMe(){
+  if (window.getMeFromAuth) return window.getMeFromAuth();
+  let keys=['currentUser','safetyUser'];
+  for(let k of keys){
+    let raw=localStorage.getItem(k);
+    if(!raw) continue;
+    try{
+      let u=JSON.parse(raw);
+      if(u && typeof u==='object' && u.name) return u;
+    }catch(e){
+      if(raw.trim()) return {name: raw.trim(), role: localStorage.getItem('currentRole')||localStorage.getItem('userRole')||''};
     }
-    return null;
-  };
+  }
+  return null;
 }
-function getMe(){ return window.getMe(); }
-
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
@@ -240,15 +228,13 @@ async function loadViolations(){
       violations=[];
       snap.forEach(d=>violations.push({id:d.id,...d.data()}));
       violations.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
-    } else {
-      console.log('window.db not found - check firebase-config.js');
-    }
+    } else { console.log('window.db not found - check firebase-config.js'); }
   }catch(e){ console.log(e); }
   renderViolations();
 }
 function val(id){ return document.getElementById(id).value.trim(); }
 let _me=getMe();
-let currentRole=ROLE_MAP[String(_me?(_me.role||''):'' ).trim().toLowerCase()]||ROLE_MAP[String(_me?(_me.role||''):'' ).trim()]||localStorage.getItem('currentRole')||'Visitor';
+let currentRole=window.ROLE_MAP[String(_me?(_me.role||''):'' ).trim().toLowerCase()]||window.ROLE_MAP[String(_me?(_me.role||''):'' ).trim()]||localStorage.getItem('currentRole')||'Visitor';
 function canEdit(){ return currentRole==='Supervisor'||currentRole==='Manager'; }
 function applyRole(){
   document.getElementById('roleMsg').innerText = _me ? ('✅ You are '+(currentRole)+' - '+(_me.name)+' - '+(canEdit()?'You can add violations':'Read Only')) : '👁️ Not logged in - Read Only';
