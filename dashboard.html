@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Aid Cases - RMED</title>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>My Achievements - RMED</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#0A1B33;color:#fff}
 .sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
@@ -44,48 +45,34 @@ body{margin:0;background:#0A1B33;color:#fff}
 .header-actions{display:flex;gap:12px;align-items:center;position:relative}
 .header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
-input::placeholder,textarea::placeholder{color:#8A9AB0}
-select option{background:#0A162E}
-textarea{min-height:70px;resize:vertical;}
-.btn{width:100%;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.hero{background:radial-gradient(ellipse at 50% 0%,#1A3A6A,#0A1B33 65%);border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px 18px 0;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
-.hero-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#FFE082;font-weight:700}
-.hero-visual{position:relative;height:170px;display:flex;align-items:center;justify-content:center;margin:8px 0 0}
-.hero-main{width:150px;height:150px;position:relative;z-index:2;filter:drop-shadow(0 14px 16px rgba(0,0,0,.6));animation:float3d 3s ease-in-out infinite}
-.hero-main img{width:100%;height:100%;object-fit:contain}
-.hero-main span{font-size:90px;display:none}
-.hero-small{position:absolute;right:22%;top:8px;width:110px;height:110px;z-index:3;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transform:rotate(18deg);animation:float3d 3.4s ease-in-out infinite}
-.hero-small img{width:100%;height:100%;object-fit:contain}
-.hero-small span{font-size:70px;display:none}
-.hero-title{position:absolute;left:18px;bottom:14px;z-index:4}
-.hero-title b{font-size:22px;display:block;color:#fff}
-.hero-title small{color:#FFE082;font-size:12px}
-.hero-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.hero-pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,213,79,.35);padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#FFE082}
-@keyframes float3d{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(1deg)}}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#0A1F44;position:relative;overflow:hidden}
-.kpi b{font-size:26px;display:block;line-height:1} .kpi small{color:#555;font-size:11px;line-height:1.3;display:block}
-.icon3d{width:62px;height:62px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.35));overflow:hidden}
-.icon3d img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.3));position:relative;z-index:2}
-.icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.profile-bar{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.profile-bar img{width:74px;height:90px;object-fit:cover;border-radius:14px;border:2px solid #FFD54F}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+@media(max-width:700px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:-28px;left:50%;transform:translateX(-50%);width:140px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
+.kpi b{font-size:26px;display:block;margin-top:6px}.kpi small{color:#B8C6D6;font-size:12px;display:block;line-height:1.4}
+.icon3d{width:72px;height:72px;margin:0 auto 6px;border-radius:20px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.55));overflow:hidden}
+.icon3d img{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.45));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
 .icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
 .icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
 .icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
 .icon3d.red{background:radial-gradient(circle at 30% 25%,#EF9A9A,#D32F2F 45%,#8E0000 75%);border:1px solid #EF9A9A}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
 .icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
-.icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rgba(201,162,39,.4)} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;vertical-align:middle;color:#fff}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#1A2F52;color:#FFE082;border:1px solid rgba(201,162,39,.45)}
-.badge.green{background:#E8F5E9;color:#2E7D32;} .badge.orange{background:#FFF3E0;color:#E65100;} .badge.red{background:#FFEBEE;color:#D32F2F;}
+.icon3d .fallback{font-size:36px;position:relative;z-index:2;display:none}
+.panel{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px;box-shadow:0 10px 26px rgba(0,0,0,.35);margin-bottom:14px}
+.panel h2,.panel h3{margin:0;font-size:18px}.panel h2 span,.panel h3 span{color:#FFD54F}.panel p{margin:4px 0 12px;color:#9AA9BC;font-size:12px}
+.btn{width:100%;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;border:none;padding:15px;border-radius:13px;font-weight:900;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:700;font-size:12px}
+.status-box{background:#101F3D;border:1.5px solid #FFD54F;border-radius:14px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;margin-top:10px;overflow:hidden;border-radius:13px}
+table th{background:#0A162E;color:#FFD54F;padding:11px;white-space:nowrap;border-bottom:1px solid rgba(201,162,39,.4)}table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;background:#0A162E;color:#fff}
+.bottom-nav{margin-top:14px;background:#0B1338;border:1px solid rgba(255,255,255,.08);border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
+.bottom-nav a{text-align:center;color:#9AA9BC;text-decoration:none;font-size:12px;font-weight:800;padding:10px;border-radius:12px}
+.bottom-nav a.active{background:linear-gradient(135deg,#FFE082,#FFD54F);color:#0A1F44}
+@media(max-width:700px){table,thead,tbody,tr,th,td{display:block}table th{display:none}table td{border-radius:12px;margin-bottom:6px;text-align:left}}
 </style>
 </head>
 <body>
@@ -99,7 +86,7 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
   </div>
   <div class="menu-title">📊 MAIN</div>
   <a href="index.html" data-page="index"><span class="icon">🏠</span> Home</a>
-  <a href="dashboard.html" data-page="dashboard"><span class="icon">📊</span> My Achievements</a>
+  <a href="dashboard.html" data-page="dashboard" class="active"><span class="icon">📊</span> My Achievements</a>
   <a href="stats.html" data-page="stats"><span class="icon">📈</span> Site Statistics</a>
   <a href="employee-evaluation.html" data-page="employee-evaluation"><span class="icon">🏆</span> Employee Evaluation</a>
   <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
@@ -118,7 +105,7 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
   <a href="safety-observations.html" data-page="safety-observations"><span class="icon">📋</span> Safety Observations</a>
   <a href="near-miss.html" data-page="near-miss"><span class="icon">⚡</span> Near Miss</a>
   <a href="accidents.html" data-page="accidents"><span class="icon">🚑</span> Accidents</a>
-  <a href="first-aid.html" data-page="first-aid" class="active"><span class="icon">🩹</span> First Aid Cases</a>
+  <a href="first-aid.html" data-page="first-aid"><span class="icon">🩹</span> First Aid Cases</a>
   <a href="ncr.html" data-page="ncr"><span class="icon">📄</span> NCR - Non Conformance</a>
   <a href="scaffolds.html" data-page="scaffolds"><span class="icon">🏗️</span> Scaffold Inspection</a>
   <div class="menu-title">⚙️ ACCOUNT</div>
@@ -128,115 +115,119 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 </aside>
 <div class="main">
 <div class="page-head">
-<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>First Aid Cases <span>• حالات الإسعافات</span></h1><small>First Aid & Minor Injuries • الإسعافات والإصابات البسيطة</small></div></div>
-<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">👤</div></div>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>My Achievements <span>• إنجازاتي</span></h1><small>Reports You Uploaded • التقارير اللي رفعتها</small></div></div>
+<div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">⚙️</div></div>
 </div>
 <div class="container">
-<div class="hero">
-<div class="hero-top"><span>حالات الإسعافات الأولية • First Aid Cases</span><span>RMED • 🔔 👤</span></div>
-<div class="hero-visual">
-<div class="hero-main"><img src="https://img.icons8.com/3d-fluency/94/first-aid-kit.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🩹</span></div>
-<div class="hero-small"><img src="https://img.icons8.com/3d-fluency/94/search.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>🔍</span></div>
-<div class="hero-title"><b>First Aid Dashboard</b><small>Quick Treatment & Follow Up • علاج سريع ومتابعة</small><div class="hero-pills"><span id="hero-total">Total: 0</span><span id="hero-month">This Month: 0</span><span id="hero-hosp">Hospital: 0</span></div></div>
+<div id="statusBox" class="status-box" style="display:none;">⏳ Loading...</div>
+<div class="profile-bar">
+<img id="u-photo" src="https://via.placeholder.com/70x85?text=No">
+<div style="flex:1;min-width:220px;"><h2 id="u-name" style="margin:0;">-</h2><p id="u-info" style="margin:6px 0;color:#B8C6D6;font-size:13px;">-</p><p id="roleNote" style="margin:0;color:#FFD54F;font-size:13px;font-weight:700;"></p></div>
+<button class="btn2" onclick="logout()">🚪 Logout • خروج</button>
 </div>
-</div>
-<div class="kpi-grid">
-<div class="kpi"><div class="icon3d red"><img src="https://img.icons8.com/3d-fluency/94/first-aid-kit.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🩹</span></div><small>Total First Aid Cases<br>إجمالي حالات الإسعاف</small><b id="k-total">0</b></div>
-<div class="kpi"><div class="icon3d green"><img src="https://img.icons8.com/3d-fluency/94/checked.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">✅</span></div><small>Treated On Site<br>تم العلاج في الموقع</small><b id="k-site">0</b></div>
-<div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/hospital.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏥</span></div><small>Sent To Hospital<br>تم الإرسال للمستشفى</small><b id="k-hosp">0</b></div>
-<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📅</span></div><small>This Month<br>هذا الشهر</small><b id="k-month">0</b></div>
-</div>
-<div class="card">
-<h2 style="margin:0 0 5px;">🩹 Register New First Aid Case • تسجيل حالة إسعاف جديدة</h2>
-<p style="color:#B8C6D6;font-size:13px;margin:0;">Write name and code & job will load automatically - اكتب الاسم والكود والوظيفة هتتحمل تلقائي</p>
-<div class="grid">
-<div><label>📅 Date *</label><input type="date" id="f-date"></div>
-<div><label>⏰ Time *</label><input type="time" id="f-time"></div>
-<div><label>👤 Injured Name *</label><input id="f-name" list="workersList" placeholder="Write name..." oninput="autoFromName()"><datalist id="workersList"></datalist></div>
-<div><label>🆔 Code</label><input id="f-code" placeholder="Write code..." oninput="autoFromCode()"></div>
-<div><label>👷 Job - Auto Load</label><input id="f-job" placeholder="Will load automatically" readonly></div>
-<div><label>🏢 Company</label><input id="f-company" value="RMED"></div>
-<div><label>🩹 Injury Type *</label><select id="f-type"><option value="">Select...</option><option>Cut / جرح</option><option>Burn / حرق</option><option>Fall / سقوط</option><option>Eye Injury / إصابة عين</option><option>Head Injury / إصابة رأس</option><option>Sprain / التواء</option><option>Other / أخرى</option></select></div>
-<div><label>📍 Body Part</label><input id="f-body" placeholder="Example: Hand - Head - Leg"></div>
-<div style="grid-column:1/-1;"><label>📝 What Happened *</label><textarea id="f-desc" placeholder="Write what happened in detail..."></textarea></div>
-<div style="grid-column:1/-1;"><label>💊 Treatment Given *</label><textarea id="f-treat" placeholder="Example: Cleaning - Bandage - Ice - ..."></textarea></div>
-<div><label>🏥 Action Taken *</label><select id="f-action"><option value="Treated On Site">✅ Treated On Site - تم العلاج في الموقع</option><option value="Sent To Hospital">🏥 Sent To Hospital - تم الإرسال للمستشفى</option><option value="Rest + Follow Up">🛌 Rest + Follow Up - راحة + متابعة</option></select></div>
-<div><label>👨‍⚕️ Treated By</label><input id="f-by" placeholder="Nurse / Safety Officer name"></div>
-</div>
-<button class="btn" onclick="addFirstAid()">💾 Save First Aid Case • حفظ الحالة</button>
-</div>
-<div class="card">
-<h2 style="margin:0 0 10px;">📋 First Aid Record • سجل الإسعافات</h2>
-<input id="searchF" placeholder="Search by name, code, company, injury..." oninput="renderFirstAid()">
-<div id="firstAidTable"></div>
-<div style="display:flex;gap:8px;margin-top:12px;">
-<button class="btn2" onclick="exportFirstAid()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
-<button class="btn2" onclick="clearFirstAid()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
-</div>
-</div>
+<div class="panel"><h3>🏆 Your Achievements - Reports You Uploaded • <span>إنجازاتك - التقارير اللي رفعتها</span></h3>
+<div class="kpi-row"><div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📅</span></div><b id="a-week">0</b><small>Reports This Week •<br>تقارير هذا الأسبوع</small></div><div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🗓️</span></div><b id="a-month">0</b><small>Reports This Month •<br>تقارير هذا الشهر</small></div><div class="kpi"><div class="icon3d orange"><img src="https://img.icons8.com/3d-fluency/94/calendar.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">📆</span></div><b id="a-year">0</b><small>Reports This Year •<br>تقارير هذه السنة</small></div><div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏆</span></div><b id="a-total">0</b><small>Total All Reports •<br>إجمالي كل التقارير</small></div></div>
+<p style="margin:10px 0 0;font-size:13px;">📊 Most Used Page: <b id="a-top" style="color:#FFD54F;">-</b> | 📅 Last Report: <b id="a-last" style="color:#FFD54F;">-</b></p></div>
+<div class="panel"><h3>📋 Last 5 Reports You Uploaded • <span>آخر 5 تقارير رفعتها</span></h3><div id="last5"></div></div>
+<button class="btn" onclick="location.href='index.html'">🚀 Go To Site - Upload Your Reports • روح للموقع - ارفع تقاريرك</button>
+<div class="bottom-nav"><a href="index.html" class="active">🏠<br>Home • الرئيسية</a><a href="stats.html">📊<br>Reports • التقارير</a><a href="train.html">🎓<br>Training • التدريب</a><a href="users.html">👤<br>Profile • الملف الشخصي</a></div>
 </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="auth.js"></script>
+<script src="firebase-config.js?v=20261111"></script>
+<script src="auth.js?v=20261111"></script>
 <script>
 function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
-function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
+function logout(){ try{ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); }catch(e){} location.href='login.html'; }
+function roleLabel(r){ let m={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor','معلق':'Suspended'}; return m[String(r||'').trim().toLowerCase()] || m[String(r||'').trim()] || r || 'Suspended'; }
 function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; }
-(function(){ let page=location.pathname.split('/').pop().replace('.html','')||'index'; document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); }); let nm=getMe(); if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; } })();
-let DB={workers:[], firstAid:[]};
-function val(id){ return document.getElementById(id).value.trim(); }
-function setVal(id,v){ document.getElementById(id).value=v||''; }
-async function loadAll(){
-  try{ if(window.db){ let s1=await window.db.collection('workers').get(); DB.workers=[]; s1.forEach(d=>DB.workers.push({id:d.id,...d.data()})); let s2=await window.db.collection('firstAid').get(); DB.firstAid=[]; s2.forEach(d=>DB.firstAid.push({id:d.id,...d.data()})); DB.firstAid.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||''))); } }catch(e){ console.log(e); }
-  refreshWorkersList(); renderFirstAid();
+let me = null;
+try{ me = (typeof requireLogin==='function') ? requireLogin() : getMe(); }catch(e){ me=getMe(); }
+(function(){
+  let page=location.pathname.split('/').pop().replace('.html','')||'index';
+  document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
+  let nm=getMe();
+  if(nm){ document.getElementById('sideName').innerText=nm.name; document.getElementById('sideRole').innerText=roleLabel(nm.role)||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+})();
+if(me){
+  document.getElementById('u-photo').src=me.photo||me.img||'https://via.placeholder.com/70x85?text=No';
+  document.getElementById('u-name').innerText='Welcome, '+me.name;
+  document.getElementById('u-info').innerText=(me.job||'')+' • '+(me.email||'')+' • Role: '+roleLabel(me.role);
+  let roleNote={visitor:'👁️ You are a Visitor - You can view statistics and pages without editing',employee:'👷 You are an Employee - You can upload reports on all pages except NCR and the Delivered field in Permits',supervisor:'🦺 You are a Supervisor - You have all edit permissions except Users page',manager:'👑 You are the Manager - You have full permissions',admin:'👑 You are the Manager - You have full permissions'};
+  document.getElementById('roleNote').innerText=roleNote[String(me.role||'').toLowerCase()]||'';
+  loadData();
 }
-function refreshWorkersList(){ let dl=document.getElementById('workersList'); dl.innerHTML=DB.workers.map(w=>'<option value="'+w.name+'">').join(''); }
-function autoFromName(){ let name=val('f-name'); let w=DB.workers.find(x=>x.name===name || (x.name||'').toLowerCase()===name.toLowerCase()); if(w){ setVal('f-code',w.code); setVal('f-job',w.job||''); setVal('f-company',w.company||'RMED'); } }
-function autoFromCode(){ let code=val('f-code'); let w=DB.workers.find(x=>String(x.code)===String(code)); if(w){ setVal('f-name',w.name); setVal('f-job',w.job||''); setVal('f-company',w.company||'RMED'); } }
-async function addFirstAid(){
-  if(!val('f-date')) return alert('Select date');
-  if(!val('f-time')) return alert('Select time');
-  if(!val('f-name')) return alert('Write injured name');
-  if(!val('f-type')) return alert('Select injury type');
-  if(!val('f-desc')) return alert('Write what happened');
-  if(!val('f-treat')) return alert('Write treatment given');
-  if(!window.db) return alert('Firebase not connected');
-  let _m=getMe();
-  let rec={date:val('f-date'),time:val('f-time'),name:val('f-name'),code:val('f-code'),job:val('f-job'),company:val('f-company')||'RMED',type:val('f-type'),body:val('f-body'),desc:val('f-desc'),treatment:val('f-treat'),action:val('f-action'),treatedBy:val('f-by')||(_m?_m.name:''),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
-  try{ let ref=await window.db.collection('firstAid').add(rec); rec.id=ref.id; }catch(e){ alert('Save problem in Firebase: '+e.message); return; }
-  DB.firstAid.unshift(rec); renderFirstAid();
-  alert('✅ Saved First Aid Case - '+rec.name+' - '+rec.type);
-  ['f-name','f-code','f-job','f-body','f-desc','f-treat','f-by'].forEach(id=>setVal(id,'')); setVal('f-company','RMED'); setVal('f-type','');
+function renderAchievements(all){
+  let now=new Date();
+  let inDays=(d,days)=>{ let dt=new Date(d); if(isNaN(dt)) return false; return (now-dt)/(1000*60*60*24)<=days && (now-dt)>=0; };
+  document.getElementById('a-week').innerText=all.filter(x=>inDays(x.date,7)).length;
+  document.getElementById('a-month').innerText=all.filter(x=>inDays(x.date,30)).length;
+  document.getElementById('a-year').innerText=all.filter(x=>inDays(x.date,365)).length;
+  document.getElementById('a-total').innerText=all.length;
+  let byPage={}; all.forEach(x=>byPage[x.page]=(byPage[x.page]||0)+1);
+  let top=Object.entries(byPage).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('a-top').innerText=top? top[0]+' ('+top[1]+' reports)':'-';
+  all.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  document.getElementById('a-last').innerText=all.length? all[0].date+' - '+all[0].page:'No reports yet';
+  document.getElementById('last5').innerHTML=all.length? '<table><tr><th>Date • التاريخ</th><th>Page • الصفحة</th><th>Description • الوصف</th></tr>'+all.slice(0,5).map(x=>'<tr><td>'+(x.date||'-')+'</td><td>'+x.page+'</td><td style="text-align:left;">'+((x.desc||'').slice(0,80))+'</td></tr>').join('')+'</table>':'<p style="color:#9AA9BC;text-align:center;">You have not uploaded reports yet, start from the Go To Site button • لسه مرفعتش تقارير</p>';
 }
-function renderFirstAid(){
-  let q=(document.getElementById('searchF').value||'').toLowerCase();
-  let list=DB.firstAid.filter(x=>((x.name||'')+(x.code||'')+(x.company||'')+(x.type||'')+(x.desc||'')).toLowerCase().includes(q));
-  let total=DB.firstAid.length;
-  let onSite=DB.firstAid.filter(x=>x.action==='Treated On Site').length;
-  let hosp=DB.firstAid.filter(x=>x.action==='Sent To Hospital').length;
-  let now=new Date(); let month=DB.firstAid.filter(x=>{ let d=new Date(x.date||x.createdAt||''); return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth(); }).length;
-  document.getElementById('k-total').innerText=total;
-  document.getElementById('k-site').innerText=onSite;
-  document.getElementById('k-hosp').innerText=hosp;
-  document.getElementById('k-month').innerText=month;
-  document.getElementById('hero-total').innerText='Total: '+total;
-  document.getElementById('hero-month').innerText='This Month: '+month;
-  document.getElementById('hero-hosp').innerText='Hospital: '+hosp;
-  if(!list.length){ document.getElementById('firstAidTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No first aid cases yet - Register first case above</p>'; return; }
-  document.getElementById('firstAidTable').innerHTML='<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Injury</th><th>Treatment</th><th>Action</th><th>Delete</th></tr>'+list.map(x=>{
-    let idx=DB.firstAid.indexOf(x);
-    let badgeCls=x.action==='Treated On Site'?'green':x.action==='Sent To Hospital'?'red':'orange';
-    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.name+'</b><br><small style="color:#B8C6D6;">'+(x.company||'')+'</small></td><td>'+(x.code||'-')+'</td><td>'+x.type+'<br><small style="color:#B8C6D6;">'+(x.body||'')+'</small></td><td style="text-align:left;max-width:200px;">'+x.treatment+'</td><td><span class="badge '+badgeCls+'">'+x.action+'</span></td><td><button class="btn2" style="color:#FF8A80;" onclick="delFirstAid('+idx+')">🗑️</button></td></tr>';
-  }).join('')+'</table>';
+async function loadData(attempt=1){
+  let sb=document.getElementById('statusBox');
+  if(sb) sb.style.display='block';
+  let all=[];
+  function collect(arr, label){
+    (arr||[]).forEach(x=>{
+      let rep=(x.reporter||x.reporterName||x.createdBy||x.user||'').toString().trim();
+      let byName = rep===me.name;
+      let byEmail = x.email && x.email===me.email;
+      let byTrainer = x.trainer===me.name;
+      if(byName||byEmail||byTrainer){
+        all.push({label, date:x.date||x.createdAt||'', desc:x.desc||x.topic||x.title||x.description||'', page:label});
+      }
+    });
+  }
+  async function fetchCol(names){
+    if(!window.db) return [];
+    for(let n of names){
+      try{ let snap=await window.db.collection(n).get(); if(!snap.empty){ let arr=[]; snap.forEach(d=>arr.push(d.data())); return arr; } }catch(e){}
+    }
+    return [];
+  }
+  try{
+    if(window.db){
+      let map=[
+        [['scaffolds'],'Scaffold Inspection'],
+        [['accidents'],'Accidents'],
+        [['violations'],'Contractor Violations'],
+        [['employeeViolations','employee-violations'],'Employee Violations'],
+        [['ncr'],'NCR - Non Conformance'],
+        [['nearMiss','near-miss'],'Near Miss'],
+        [['observations','safety-observations','safetyObs'],'Safety Observations'],
+        [['permits'],'Permits'],
+        [['train','trainings'],'Trainings'],
+        [['weekly','weeklyLect'],'Weekly Meeting'],
+        [['induction'],'Induction'],
+        [['firstAid','first-aid'],'First Aid Cases'],
+        [['dailyWorkers','daily-count','dailyCount'],'Daily Count']
+      ];
+      for(let [names,label] of map){
+        let arr=await fetchCol(names);
+        collect(arr, label);
+      }
+      try{ localStorage.setItem('rmed_ach_cache_'+me.name, JSON.stringify({time:Date.now(), data:all})); }catch(e){}
+      if(sb) sb.innerHTML='✅ Loaded • تم التحميل | Total: <b>'+all.length+'</b>';
+    } else {
+      if(attempt < 3){ if(sb) sb.innerHTML='⏳ Trying to connect... '+attempt+' / 3 • جاري المحاولة...'; setTimeout(()=>loadData(attempt+1),1200); return; }
+      let cached=null; try{ cached=JSON.parse(localStorage.getItem('rmed_ach_cache_'+me.name)||'null'); }catch(e){}
+      if(cached && cached.data){ all=cached.data; if(sb) sb.innerHTML='⚠️ Showing last saved data • عرض آخر بيانات محفوظة'; }
+      else {
+        let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+        collect(DB.scaffolds,'Scaffold Inspection'); collect(DB.accidents,'Accidents'); collect(DB.violations,'Contractor Violations'); collect(DB.empViolations,'Employee Violations'); collect(DB.ncr,'NCR - Non Conformance'); collect(DB.nearMiss,'Near Miss'); collect(DB.observations,'Safety Observations'); collect(DB.permits,'Permits'); collect(DB.train,'Trainings'); collect(DB.weeklyLect,'Weekly Meeting'); collect(DB.induction,'Induction'); collect(DB.firstAid,'First Aid Cases');
+        if(sb) sb.innerHTML='⚠️ Showing local data • عرض بيانات محلية';
+      }
+    }
+  }catch(e){ console.log(e); if(sb) sb.innerHTML='⚠️ Showing last saved data'; }
+  renderAchievements(all);
 }
-async function delFirstAid(i){ if(!confirm('Delete this case?')) return; let rec=DB.firstAid[i]; try{ if(rec.id && window.db) await window.db.collection('firstAid').doc(rec.id).delete(); }catch(e){} DB.firstAid.splice(i,1); renderFirstAid(); }
-async function clearFirstAid(){ if(!confirm('Delete all first aid cases from Firebase?')) return; try{ if(window.db){ let snap=await window.db.collection('firstAid').get(); for(let d of snap.docs) await window.db.collection('firstAid').doc(d.id).delete(); } }catch(e){} DB.firstAid=[]; renderFirstAid(); }
-function exportFirstAid(){ if(!DB.firstAid.length) return alert('No data'); let csv='Date,Time,Name,Code,Job,Company,Injury Type,Body Part,What Happened,Treatment,Action,Treated By\n'+DB.firstAid.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.type,x.body,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.treatment||'').replace(/"/g,'""')+'"',x.action,x.treatedBy].join(',')).join('\n'); let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='first-aid-cases.csv'; a.click(); }
-document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
-document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
-loadAll();
-</script>
-</body>
-</html>
+</script></body></html>
