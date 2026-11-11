@@ -3,24 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workers - RMED</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<title>Daily Workers Count - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -30,79 +29,69 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #D32F2F;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#D32F2F;} .page-head small{color:#78909C;}
-.container{max-width:1100px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.red{border-top-color:#D32F2F;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:24px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-actions{display:flex;gap:10px;align-items:center;position:relative}
+.header-actions .h-ic{height:38px;padding:0 10px;border:1px solid rgba(255,213,79,.5);border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;background:rgba(255,255,255,.05)}
+.header-actions .h-ic.active{background:#FFD54F;color:#0A1F44;border-color:#FFD54F}
+.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.red{background:#D32F2F;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi b{font-size:24px;display:block;} .kpi small{color:#78909C;font-size:12px;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
+input,select{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
+input::placeholder{color:#8A9AB0}
+select option{background:#0A162E}
+.btn{width:100%;background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;border:1px solid #7A5A00;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
+.btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+/* HERO - EXACT IMAGE: WORKERS PHOTO */
+.hero{position:relative;border-radius:18px;overflow:hidden;margin-bottom:14px;border:1px solid rgba(201,162,39,.55);box-shadow:0 10px 26px rgba(0,0,0,.35);min-height:170px;background:#0A162E}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,27,51,.92) 0%,rgba(10,27,51,.55) 45%,rgba(10,27,51,.15) 100%)}
+.hero-content{position:relative;z-index:2;padding:22px 18px}
+.hero-content h2{margin:0;font-size:26px;line-height:1.2}
+.hero-content h2 span{color:#FFD54F}
+.hero-content p{color:#D6DEE8;font-size:13px;margin:8px 0 0;max-width:520px}
+.hero-content small{color:#FFE082;font-size:11px}
+/* KPI - EXACT IMAGE: 4 DARK CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:linear-gradient(180deg,#101F3D,#0A162E);border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.3);color:#fff;position:relative;overflow:hidden}
+.kpi b{font-size:26px;display:block;line-height:1} .kpi small{color:#B8C6D6;font-size:11px;line-height:1.3;display:block}
+.kpi .trend{font-size:11px;color:#81C784;font-weight:700;margin-top:4px}
+.icon3d{width:62px;height:62px;margin:0 auto 6px;border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));overflow:hidden}
+.icon3d img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(0,0,0,.4));position:relative;z-index:2}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 38%);pointer-events:none;z-index:3}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
+.icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
+.icon3d .fallback{font-size:30px;position:relative;z-index:2;display:none}
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:14px;margin-bottom:14px;align-items:start}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.total-box{background:linear-gradient(180deg,#FFF3E0,#FFE0B2);border:2px dashed #FF9800;border-radius:12px;padding:12px;text-align:center;color:#0A1F44;margin-top:12px}
+.total-box b{font-size:26px;color:#D32F2F;display:block}
 table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;background:#E3F2FD;}
-.badge.red{background:#FFEBEE;color:#D32F2F;} .badge.green{background:#E8F5E9;color:#2E7D32;}
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-.filters button{padding:8px 14px;border-radius:20px;border:1px solid #CFD8DC;background:#fff;cursor:pointer;font-weight:bold;}
-.filters button.active{background:#0F2A4D;color:#fff;}
-
-/* ===== ID CARD - ARABIC - HORIZONTAL - SAME SIZE ===== */
-.id-card{position:relative;overflow:hidden;border-radius:16px;width:100%;height:340px;direction:rtl;text-align:right;font-family:'Segoe UI',Tahoma,Arial;box-shadow:0 10px 30px rgba(0,0,0,.25);}
-.id-card-front{background:linear-gradient(115deg,#0F2A4D 0%,#132E5E 42%,#1A3A6A 68%,#0A1F44 100%);color:#fff;}
-.id-card-front:before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,79,.35) 0%,rgba(255,213,79,0) 70%);top:-140px;left:-80px;}
-.id-card-front:after{content:'';position:absolute;width:220px;height:220px;border-radius:50%;border:28px solid rgba(211,47,47,.55);bottom:-110px;right:-60px;}
-.id-card-gold-circle{position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,213,79,.45);top:118px;left:210px;z-index:1;}
-.id-card-gold-circle2{position:absolute;width:90px;height:90px;border-radius:50%;border:2px solid rgba(255,213,79,.28);top:150px;left:242px;z-index:1;}
-.id-card-red-bar{position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#D32F2F 0%,#FF5252 30%,#FFD54F 55%,#D32F2F 100%);z-index:5;}
-.id-card-top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 0;position:relative;z-index:3;}
-.id-card-logo-box{background:#fff;border-radius:10px;padding:4px 8px;display:flex;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.25);}
-.id-card-logo-box img{width:110px;height:36px;object-fit:contain;}
-.id-card-top-title{text-align:left;direction:ltr;}
-.id-card-top-title b{font-size:20px;letter-spacing:1px;display:block;line-height:1;}
-.id-card-top-title small{color:#FFD54F;font-size:11px;font-weight:bold;letter-spacing:2px;}
-.id-card-title-pill{background:#D32F2F;color:#fff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.25);}
-.id-card-body{display:flex;gap:16px;padding:14px 18px 10px;position:relative;z-index:3;}
-.id-card-photo-wrap{flex-shrink:0;text-align:center;}
-.id-card-photo-wrap img{width:112px;height:142px;object-fit:cover;border-radius:12px;border:3px solid #FFD54F;box-shadow:0 6px 16px rgba(0,0,0,.35);background:#fff;}
-.id-card-code-under{margin-top:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,213,79,.5);border-radius:20px;padding:3px 8px;font-size:12px;font-weight:bold;}
-.id-card-code-under span{color:#FFD54F;}
-.id-card-data{flex:1;}
-.id-card-name{font-size:21px;font-weight:bold;line-height:1.2;margin-bottom:8px;}
-.id-card-name small{display:block;font-size:12px;color:#FFD54F;font-weight:bold;margin-top:2px;}
-.id-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px;line-height:1.6;}
-.id-card-grid .lbl{color:#B0BEC5;font-size:11px;display:block;line-height:1.2;}
-.id-card-grid .val{font-weight:bold;border-bottom:1px dashed rgba(255,255,255,.22);padding-bottom:2px;}
-.id-card-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:8px 18px;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(211,47,47,.75));font-size:11px;color:#fff;z-index:3;}
-.id-card-status{padding:3px 12px;border-radius:20px;font-weight:bold;font-size:12px;background:#2E7D32;color:#fff;}
-.id-card-back{background:linear-gradient(115deg,#0A1F44 0%,#132E5E 50%,#1A3A6A 100%);color:#fff;}
-.id-card-back:before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,79,.28) 0%,rgba(255,213,79,0) 70%);top:-120px;right:-70px;}
-.id-card-back:after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;border:22px solid rgba(211,47,47,.5);bottom:-90px;left:-50px;}
-.id-card-back-inner{position:relative;z-index:3;padding:14px 18px;}
-.id-card-back-head{display:flex;justify-content:space-between;align-items:center;}
-.id-card-back-head h4{margin:0;font-size:16px;}
-.id-card-back-head h4 span{color:#FFD54F;}
-.id-card-instructions{background:#fff;color:#0A1F44;border-radius:12px;padding:10px 14px;margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:12.5px;line-height:1.9;border-right:5px solid #D32F2F;box-shadow:0 6px 16px rgba(0,0,0,.25);}
-.id-card-instructions b{color:#D32F2F;}
-.id-card-back-footer{margin-top:10px;background:#D32F2F;border-radius:10px;padding:8px;text-align:center;font-weight:bold;font-size:12.5px;border:1px solid rgba(255,213,79,.6);}
-@media(max-width:700px){ .id-card{height:auto;} .id-card-body{flex-direction:column;} .id-card-instructions{grid-template-columns:1fr;} .id-card-bottom{position:relative;margin-top:10px;} }
+table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rgba(201,162,39,.4)} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;vertical-align:middle;color:#fff}
+.pill{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;display:inline-block}
+.pill.green{background:#2E7D32;color:#fff} .pill.yellow{background:#FFC107;color:#0A1F44} .pill.red{background:#D32F2F;color:#fff} .pill.blue{background:#1565C0;color:#fff}
+.bar{height:10px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;border-radius:999px}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
@@ -117,8 +106,8 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="contractor-eval.html" data-page="contractor-eval"><span class="icon">🏆</span> Contractor Evaluation</a>
   <div class="menu-title">👷 WORKERS & TRAINING</div>
   <a href="users.html" data-page="users"><span class="icon">👥</span> Employees</a>
-  <a href="daily-count.html" data-page="daily-count"><span class="icon">👷‍♂️</span> Daily Count</a>
-  <a href="workers.html" data-page="workers" class="active"><span class="icon">👥</span> Workers - Alt</a>
+  <a href="daily-count.html" data-page="daily-count" class="active"><span class="icon">👷‍♂️</span> Daily Count</a>
+  <a href="workers.html" data-page="workers"><span class="icon">👥</span> Workers - Alt</a>
   <a href="induction.html" data-page="induction"><span class="icon">📘</span> Induction</a>
   <a href="train.html" data-page="train"><span class="icon">🎓</span> Trainings</a>
   <a href="weekly.html" data-page="weekly"><span class="icon">📅</span> Weekly Meeting</a>
@@ -137,128 +126,59 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Workers</h1><small>All Workers Database - From Firebase</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Daily Count <span>• العدد اليومي</span></h1><small>Daily Workers Count • العدد اليومي للعمال</small></div></div>
+<div class="header-actions"><div class="h-ic active">Dashboard | لوحة التحكم</div><div class="h-ic">أعمال</div><div class="h-ic">تقارير</div><div class="h-ic">SA</div><div class="h-ic">🔔</div><div class="h-ic">EN</div></div>
 </div>
 <div class="container">
-
-<div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-<div style="display:flex;gap:10px;align-items:center;"><img src="logo.png" style="width:80px;height:32px;object-fit:contain;" onerror="this.style.display='none'"><b>ID Card Issuance - RMED</b></div>
-<button class="btn2" style="background:#D32F2F;color:#fff;border:none;padding:12px 20px;font-size:15px;" onclick="openIssueCard()">🪪 Issue ID Card - Fixed</button>
+<!-- HERO - EXACT IMAGE -->
+<div class="hero">
+<img class="bg" src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80" onerror="this.src='https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80'">
+<div class="hero-content">
+<h2>Daily Workers Count | <span>العدد اليومي للعمال</span></h2>
+<p>متابعة دقيقة لعدد العمال اليومي across all companies on site in real time<br>Real-time monitoring of daily worker count across all companies on site</p>
+<small id="hero-date">Today • اليوم • 2025-10-15 • 10:32</small>
 </div>
-
+</div>
+<!-- KPI - EXACT IMAGE -->
 <div class="kpi-grid">
-<div class="kpi"><b id="k-all">0</b><small>Total Workers</small></div>
-<div class="kpi"><b id="k-active">0</b><small>Active</small></div>
-<div class="kpi red"><b id="k-resign">0</b><small>Resigned</small></div>
-<div class="kpi red"><b id="k-excluded">0</b><small>Excluded</small></div>
+<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/conference.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">👥</span></div><small>Total Workers Today<br>إجمالي عمال اليوم</small><b id="k-total">0</b><div class="trend" id="k-total-trend">+42 Today • +42 اليوم</div></div>
+<div class="kpi"><div class="icon3d teal"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Companies Count<br>عدد الشركات</small><b id="k-companies">0</b><div class="trend">+2 This Month • +2 هذا الشهر</div></div>
+<div class="kpi"><div class="icon3d gold"><img src="https://img.icons8.com/3d-fluency/94/trophy.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">⭐</span></div><small>Largest Company<br>أكبر شركة</small><b id="k-largest" style="font-size:15px;">-</b><small id="k-largest-n" style="color:#FFE082;font-weight:800;">0 Worker</small></div>
+<div class="kpi"><div class="icon3d blue"><img src="https://img.icons8.com/3d-fluency/94/company.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">🏢</span></div><small>Lowest Company<br>أصغر شركة</small><b id="k-lowest" style="font-size:15px;">-</b><small id="k-lowest-n" style="color:#90CAF9;font-weight:800;">0 Workers</small></div>
 </div>
-
+<div class="two-col">
+<!-- REGISTER -->
 <div class="card">
-<h2 style="margin:0 0 10px;">👷 Search & Filter</h2>
-<input id="searchW" placeholder="Search by name, code, national ID, company or job..." oninput="renderWorkers()">
-<div class="filters" style="margin-top:10px;">
-<button id="f-all" class="active" onclick="setFilter('all')">All</button>
-<button id="f-active" onclick="setFilter('Active')">✅ Active</button>
-<button id="f-resign" onclick="setFilter('Resigned')">⚠️ Resigned</button>
-<button id="f-excluded" onclick="setFilter('Excluded')">⛔ Excluded</button>
-<button id="f-rehab" onclick="setFilter('rehab')">🔁 Rehabilitation</button>
-</div>
-<div id="workersTable"><p style="text-align:center;">⏳ Loading workers from Firebase...</p></div>
-</div>
-
-<div class="card red">
-<h2 style="margin:0 0 10px;">➕ Add Worker Manually - Without Induction</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">If old worker and you want to add him quickly here without entering induction</p>
+<h2 style="margin:0 0 5px;">📝 Register New Daily Count • تسجيل عدد يومي جديد</h2>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Daily workers count registration across all companies on site • تسجيل العدد اليومي للعمال</p>
 <div class="grid">
-<div><label>Name *</label><input id="w-name" placeholder="Name"></div>
-<div><label>Code</label><input id="w-code" placeholder="Automatic"></div>
-<div><label>National ID</label><input id="w-national" placeholder="14 Digits" maxlength="14"></div>
-<div><label>Job</label><input id="w-job" placeholder="Job"></div>
-<div><label>Company</label><input id="w-company" placeholder="RMED" value="RMED"></div>
-<div><label>Phone</label><input id="w-phone" placeholder="Phone"></div>
-<div><label>Status</label><select id="w-status"><option value="Active">Active</option><option value="Resigned">Resigned</option><option value="Excluded">Excluded</option></select></div>
-<div><label>Health Status</label><input id="w-health" placeholder="Fit"></div>
+<div><label>📅 Date *</label><input type="date" id="d-date"></div>
+<div><label>🏢 Company *</label><input id="d-company" placeholder="Example: Al Salam Construction" list="compList"><datalist id="compList"></datalist></div>
+<div><label>👷 Workers Count *</label><input type="number" id="d-count" placeholder="Example: 120" min="0" oninput="updateTotalPreview()"></div>
+<div><label>📝 Notes - Optional</label><input id="d-notes" placeholder="Any notes..."></div>
 </div>
-<button class="btn" onclick="addWorkerManual()">💾 Add Worker</button>
+<div class="total-box"><small>Total Workers Today • إجمالي عمال اليوم</small><b id="total-preview">0</b><small id="total-preview-sub">After saving this company</small></div>
+<div style="display:flex;gap:8px;"><button class="btn" onclick="addCount()" style="flex:2;">💾 Save Count • حفظ العدد</button><button class="btn2" onclick="clearForm()" style="flex:1;padding:13px;margin-top:14px;">Clear</button></div>
 </div>
+<!-- RECORDS -->
+<div class="card">
+<h2 style="margin:0 0 10px;">📋 Daily Count Records • سجلات العدد اليومي</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="searchD" placeholder="Search by company..." oninput="renderCounts()" style="flex:2;">
+<input type="date" id="filterDate" onchange="renderCounts()" style="flex:1;">
+<select id="filterCompany" onchange="renderCounts()" style="flex:1;"><option value="">All Companies</option></select>
 </div>
-</div>
-
-<div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px;">
-<div style="max-width:520px;margin:auto;background:#fff;border-radius:16px;padding:18px;">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 Issue ID Card</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div>
-<label>Select Worker</label><select id="issue-select" onchange="fillIssueFromWorker()"></select>
-<p style="text-align:center;color:#999;font-size:13px;">— Or write manually —</p>
-<div class="grid"><div><label>Name</label><input id="issue-name"></div><div><label>Code</label><input id="issue-code"></div><div><label>National ID</label><input id="issue-national"></div><div><label>Job</label><input id="issue-job"></div><div><label>Company</label><input id="issue-company" value="RMED"></div><div><label>Health Status</label><input id="issue-health"></div><div><label>Phone</label><input id="issue-phone"></div><div><label>Emergency</label><input id="issue-emergency"></div></div>
-<label>Photo</label><input type="file" id="issue-img" accept="image/*" onchange="previewIssuePhoto(event)">
-<button class="btn red" onclick="showCardFromIssue()">👁️ Show ID Card</button>
-</div>
-</div>
-
-<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px;">
-<div style="max-width:720px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;">
-<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;">🪪 كارنيه الموظف</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ إغلاق</button></div>
-
-<!-- FRONT - ARABIC -->
-<div id="cardFront" class="id-card id-card-front" style="margin-top:12px;">
-<div class="id-card-red-bar"></div>
-<div class="id-card-gold-circle"></div><div class="id-card-gold-circle2"></div>
-<div class="id-card-top">
-<div class="id-card-logo-box"><img src="logo.png" onerror="this.style.display='none'"></div>
-<div class="id-card-top-title"><b>RMED</b><small>JOINT VENTURE</small></div>
-<span class="id-card-title-pill">🪪 كارنيه موظف</span>
-</div>
-<div class="id-card-body">
-<div class="id-card-photo-wrap">
-<img id="c-photo" src="">
-<div class="id-card-code-under">الكود: <span id="c-code"></span></div>
-</div>
-<div class="id-card-data">
-<div class="id-card-name"><span id="c-name"></span><small id="c-company-top"></small></div>
-<div class="id-card-grid">
-<div><span class="lbl">المهنة</span><span class="val" id="c-job"></span></div>
-<div><span class="lbl">الشركة</span><span class="val" id="c-company"></span></div>
-<div><span class="lbl">الرقم القومي</span><span class="val" id="c-national"></span></div>
-<div><span class="lbl">الحالة الصحية</span><span class="val" id="c-health"></span></div>
-<div><span class="lbl">الهاتف</span><span class="val" id="c-phone"></span></div>
-<div><span class="lbl">طوارئ</span><span class="val"><span id="c-emergency"></span> (<span id="c-kin"></span>)</span></div>
+<div id="countTable"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button class="btn2" onclick="exportCounts()" style="flex:1;padding:12px;">📥 Export Excel / CSV</button>
+<button class="btn2" onclick="clearCounts()" style="flex:1;padding:12px;color:#FF8A80;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
-<div class="id-card-bottom"><span>الكود: <span id="c-code2"></span> - RMED</span><span>الحالة: <span class="id-card-status" id="c-status"></span></span></div>
-</div>
-
-<!-- BACK - ARABIC -->
-<div id="cardBack" class="id-card id-card-back" style="margin-top:12px;">
-<div class="id-card-red-bar"></div>
-<div class="id-card-back-inner">
-<div class="id-card-back-head">
-<div style="display:flex;align-items:center;gap:8px;"><img src="logo.png" style="width:110px;height:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;" onerror="this.style.display='none'"></div>
-<h4>⚠️ <span>تعليمات السلامة</span> - يجب الالتزام بها</h4>
-</div>
-<div class="id-card-instructions">
-<div><b>1.</b> ارتداء مهمات الوقاية الشخصية PPE طوال وقت العمل</div>
-<div><b>2.</b> ممنوع العمل بدون تصريح عمل</div>
-<div><b>3.</b> ممنوع العمل على ارتفاع بدون حزام أمان</div>
-<div><b>4.</b> الإبلاغ فوراً عن أي حادث أو حادث وشيك</div>
-<div><b>5.</b> ممنوع التدخين إلا في الأماكن المخصصة</div>
-<div><b>6.</b> الحفاظ على ممرات الطوارئ خالية</div>
-<div><b>7.</b> في حالة الطوارئ التوجه لنقطة التجمع فوراً</div>
-<div><b>8.</b> الكارنيه شخصي وممنوع إعطاؤه لشخص آخر</div>
-</div>
-<div class="id-card-back-footer">في حالة فقدان الكارنيه إبلاغ السلامة فوراً - RMED</div>
 </div>
 </div>
-
-<button class="btn" style="background:#D32F2F;" onclick="downloadCard()">📥 تحميل الكارنيه وش وضهر كصورة</button>
-<button class="btn" onclick="downloadCard('front')">📥 تحميل الوش بس</button>
-</div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -269,113 +189,128 @@ function toggleSidebar(){
   if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); }
 }
-function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
-function getMe(){
-  try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){}
-  return null;
-}
+function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); location.href='login.html'; }
+function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
-  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let u=JSON.parse(localStorage.getItem('currentUser')||'{}'); if(typeof u==='object'){ let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(u.role||'').trim().toLowerCase()]||rm[String(u.role||'').trim()]||u.role||u.job||''; if(u.img||u.photo) document.getElementById('sideImg').src=u.img||u.photo; } let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
-let me = null;
-try{ me = (typeof requireLogin==='function') ? requireLogin() : getMe(); }catch(e){ me=getMe(); }
-let DB = {workers:[]};
-let workersList = [];
-
-// Translate old AR -> EN display, new saves EN only
-const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded','Active':'Active','Resigned':'Resigned','Excluded':'Excluded'};
-function TStatus(v){ return STATUS_MAP[String(v||'').trim()]||v||'Active'; }
-const STATUS_AR={'Active':'نشط','Resigned':'استقال','Excluded':'استبعاد','نشط':'نشط','استقال':'استقال','استبعاد':'استبعاد'};
-function TStatusAR(v){ return STATUS_AR[TStatus(v)]||'نشط'; }
-
-async function loadWorkers(){
-  workersList = [];
+let counts=[];
+async function loadCounts(){
   try{
     if(window.db){
-      let snap = await window.db.collection('workers').get();
-      snap.forEach(d=> workersList.push({id:d.id, ...d.data()}));
+      let snap=await window.db.collection('dailyWorkers').get();
+      counts=[];
+      snap.forEach(d=> counts.push({id:d.id, ...d.data()}));
+      // Fallback: try dailyCount collection if empty
+      if(!counts.length){
+        let snap2=await window.db.collection('dailyCount').get();
+        snap2.forEach(d=> counts.push({id:d.id, ...d.data()}));
+      }
+      counts.sort((a,b)=> String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
     }
   }catch(e){ console.log(e); }
-  if(workersList.length===0){
-    try{
-      let old = JSON.parse(localStorage.getItem('safetyDB')||'{}');
-      (old.workers||[]).forEach((w,i)=> workersList.push({id:'local-'+i, ...w}));
-    }catch(e){}
-  }
-  DB.workers = workersList;
-  renderWorkers();
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    if(!counts.length && old.dailyWorkers) counts=old.dailyWorkers;
+    if(!counts.length && old.dailyCount) counts=old.dailyCount;
+  }catch(e){}
+  renderCounts();
 }
 function val(id){ return document.getElementById(id).value.trim(); }
-function setVal(id,v){ document.getElementById(id).value=v; }
-let curFilter='all';
-function setFilter(f){
-  curFilter=f;
-  document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
-  if(f==='all') document.getElementById('f-all').classList.add('active');
-  if(f==='Active') document.getElementById('f-active').classList.add('active');
-  if(f==='Resigned') document.getElementById('f-resign').classList.add('active');
-  if(f==='Excluded') document.getElementById('f-excluded').classList.add('active');
-  if(f==='rehab') document.getElementById('f-rehab').classList.add('active');
-  renderWorkers();
+function getTodayStr(){ return new Date().toISOString().slice(0,10); }
+function updateTotalPreview(){
+  let today=getTodayStr();
+  let dateVal=val('d-date')||today;
+  let todayTotal=counts.filter(x=> String(x.date||'').slice(0,10)===dateVal).reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
+  let add=parseInt(val('d-count'))||0;
+  document.getElementById('total-preview').innerText=(todayTotal+add).toLocaleString();
 }
-function renderWorkers(){
-  let q=(document.getElementById('searchW').value||'').toLowerCase();
-  let list=DB.workers.map((x,i)=>({...x,_idx:i})).filter(x=>{
-    let ok=((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')+(x.job||'')).toLowerCase().includes(q);
-    if(curFilter==='rehab') return ok && (x.isRehab || (x.notes||'').includes('إعادة تأهيل') || (x.notes||'').toLowerCase().includes('rehabilitation'));
-    if(curFilter!=='all') return ok && TStatus(x.status)===curFilter;
-    return ok;
-  });
-  document.getElementById('k-all').innerText=DB.workers.length;
-  document.getElementById('k-active').innerText=DB.workers.filter(x=>TStatus(x.status)==='Active').length;
-  document.getElementById('k-resign').innerText=DB.workers.filter(x=>TStatus(x.status)==='Resigned').length;
-  document.getElementById('k-excluded').innerText=DB.workers.filter(x=>TStatus(x.status)==='Excluded').length;
-  if(!list.length){ document.getElementById('workersTable').innerHTML='<p style="text-align:center;color:#999;">No workers with this filter - Register from induction first</p>'; return; }
-  document.getElementById('workersTable').innerHTML='<table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Status</th><th>Control</th></tr>'+list.slice().reverse().map(x=>'<tr><td>'+x.code+'</td><td>'+x.name+' '+(x.isRehab?'<br><span class="badge red">Rehabilitation</span>':'')+'</td><td>'+(x.nationalId||'-')+'</td><td>'+(x.job||'-')+'</td><td>'+(x.company||'-')+'</td><td><select onchange="changeStatus('+x._idx+',this.value)" style="width:auto;padding:6px;"><option '+(TStatus(x.status)==='Active'?'selected':'')+'>Active</option><option '+(TStatus(x.status)==='Resigned'?'selected':'')+'>Resigned</option><option '+(TStatus(x.status)==='Excluded'?'selected':'')+'>Excluded</option></select></td><td><button class="btn2" onclick="openCard('+x._idx+')">🪪 ID Card</button> <button class="btn2" style="color:#D32F2F;" onclick="delWorker('+x._idx+')">🗑️</button></td></tr>').join('')+'</table>';
-}
-async function changeStatus(idx,v){
-  let w=DB.workers[idx]; if(!w) return; w.status=v;
-  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await window.db.collection('workers').doc(w.id).update({status:v}); }catch(e){}
-  renderWorkers();
-}
-async function delWorker(idx){
-  if(!confirm('Delete '+DB.workers[idx].name+' ?')) return;
-  let w=DB.workers[idx];
-  try{ if(w.id && !String(w.id).startsWith('local-') && window.db) await window.db.collection('workers').doc(w.id).delete(); }catch(e){}
-  DB.workers.splice(idx,1); renderWorkers();
-}
-async function addWorkerManual(){
-  if(!val('w-name')) return alert('Write name');
+async function addCount(){
+  if(!val('d-date')) return alert('Select date');
+  if(!val('d-company')) return alert('Write company name');
+  if(!val('d-count')) return alert('Write workers count');
   if(!window.db) return alert('Firebase not connected');
-  let nums=DB.workers.map(w=>parseInt(w.code)||0);
-  let code=val('w-code')||String((nums.length?Math.max(...nums):1000)+1);
-  let w={name:val('w-name'),code:code,nationalId:val('w-national'),job:val('w-job'),company:val('w-company')||'RMED',phone:val('w-phone'),status:val('w-status'),health:val('w-health'),date:new Date().toISOString().slice(0,10),isRehab:false,img:'',emergency:'',kin:'',reporter: me?me.name:'', createdAt:new Date().toISOString()};
-  try{ let ref=await window.db.collection('workers').add(w); w.id=ref.id; }catch(e){ alert('Save problem in Firebase: '+e.message); return; }
-  DB.workers.push(w); renderWorkers(); alert('✅ Added '+w.name+' in Firebase');
-  ['w-name','w-code','w-national','w-job','w-phone','w-health'].forEach(id=>setVal(id,''));
+  let _m=getMe();
+  let rec={date:val('d-date'),company:val('d-company'),workers:parseInt(val('d-count')),count:parseInt(val('d-count')),total:parseInt(val('d-count')),notes:val('d-notes'),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
+  try{
+    let ref=await window.db.collection('dailyWorkers').add(rec);
+    rec.id=ref.id;
+    counts.unshift(rec);
+  }catch(e){ return alert('Save problem in Firebase: '+e.message); }
+  renderCounts();
+  alert('✅ Saved - '+rec.company+' - '+rec.workers+' workers');
+  document.getElementById('d-company').value=''; document.getElementById('d-count').value=''; document.getElementById('d-notes').value='';
+  updateTotalPreview();
 }
-let curCard=null, issueImgData='';
-function previewIssuePhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{issueImgData=ev.target.result;}; r.readAsDataURL(f); }
-function fillCardData(x){
-  curCard=x;
-  document.getElementById('c-photo').src=x.img||x.photo||issueImgData||'https://via.placeholder.com/112x142?text=No+Photo';
-  document.getElementById('c-name').innerText=x.name||'-'; document.getElementById('c-code').innerText=x.code||'-'; document.getElementById('c-code2').innerText=x.code||'-';
-  document.getElementById('c-job').innerText=x.job||'-'; document.getElementById('c-company').innerText=x.company||'RMED';
-  document.getElementById('c-company-top').innerText=x.company||'RMED';
-  document.getElementById('c-national').innerText=x.nationalId||'-'; document.getElementById('c-health').innerText=x.health||'-';
-  document.getElementById('c-phone').innerText=x.phone||'-'; document.getElementById('c-emergency').innerText=x.emergency||'-'; document.getElementById('c-kin').innerText=x.kin||'-';
-  document.getElementById('c-status').innerText=TStatusAR(x.status);
-  document.getElementById('cardModal').style.display='block';
+function clearForm(){ document.getElementById('d-company').value=''; document.getElementById('d-count').value=''; document.getElementById('d-notes').value=''; updateTotalPreview(); }
+function renderCounts(){
+  let q=(document.getElementById('searchD').value||'').toLowerCase();
+  let fDate=document.getElementById('filterDate').value;
+  let fComp=document.getElementById('filterCompany').value;
+  let today=getTodayStr();
+  // KPI for today (or selected date if filter set)
+  let kpiDate=fDate||today;
+  let todayList=counts.filter(x=> String(x.date||'').slice(0,10)===kpiDate);
+  let totalToday=todayList.reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
+  let byComp={};
+  todayList.forEach(x=>{ if(!byComp[x.company]) byComp[x.company]=0; byComp[x.company]+=(parseInt(x.workers||x.count||x.total||0)||0); });
+  let compArr=Object.entries(byComp).map(([name,total])=>({name,total})).sort((a,b)=>b.total-a.total);
+  document.getElementById('k-total').innerText=totalToday.toLocaleString();
+  document.getElementById('k-companies').innerText=compArr.length;
+  document.getElementById('k-largest').innerText=compArr.length?compArr[0].name:'-';
+  document.getElementById('k-largest-n').innerText=compArr.length?compArr[0].total.toLocaleString()+' Worker':'0 Worker';
+  document.getElementById('k-lowest').innerText=compArr.length?compArr[compArr.length-1].name:'-';
+  document.getElementById('k-lowest-n').innerText=compArr.length?compArr[compArr.length-1].total.toLocaleString()+' Workers':'0 Workers';
+  // Yesterday diff for trend
+  let y=new Date(); y.setDate(y.getDate()-1); let yStr=y.toISOString().slice(0,10);
+  let yTotal=counts.filter(x=> String(x.date||'').slice(0,10)===yStr).reduce((s,x)=>s+(parseInt(x.workers||x.count||x.total||0)||0),0);
+  let diff=totalToday-yTotal;
+  document.getElementById('k-total-trend').innerText=(diff>=0?'+': '')+diff.toLocaleString()+' Today • '+(diff>=0?'+': '')+diff.toLocaleString()+' اليوم';
+  // Datalist + filter
+  let allComps=[...new Set(counts.map(x=>x.company))];
+  document.getElementById('compList').innerHTML=allComps.map(c=>'<option value="'+c+'">').join('');
+  let sel=document.getElementById('filterCompany'); let cur=sel.value;
+  sel.innerHTML='<option value="">All Companies</option>'+allComps.map(c=>'<option '+(c===cur?'selected':'')+'>'+c+'</option>').join('');
+  let list=counts.filter(x=>{
+    let okQ=(x.company||'').toLowerCase().includes(q);
+    let okD=!fDate||String(x.date||'').slice(0,10)===fDate;
+    let okC=!fComp||x.company===fComp;
+    return okQ&&okD&&okC;
+  });
+  if(!list.length){ document.getElementById('countTable').innerHTML='<p style="text-align:center;color:#B8C6D6;">No records yet - Register first count above</p>'; return; }
+  let maxTotal=Math.max(...list.map(x=>parseInt(x.workers||x.count||x.total||0)||0),1);
+  document.getElementById('countTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Workers</th><th>% of Total</th><th>Notes</th><th>Delete</th></tr>'+list.slice(0,50).map(x=>{
+    let idx=counts.indexOf(x);
+    let w=parseInt(x.workers||x.count||x.total||0)||0;
+    let pct=totalToday?Math.round(w/totalToday*1000)/10:0;
+    let pillCls=pct>=20?'green':pct>=10?'yellow':pct>=5?'blue':'red';
+    let barColor=pct>=20?'#2E7D32':pct>=10?'#FFC107':pct>=5?'#1565C0':'#D32F2F';
+    return '<tr><td>'+x.date+'</td><td><b>'+x.company+'</b></td><td><b>'+w.toLocaleString()+'</b><div class="bar"><div class="bar-fill" style="width:'+Math.min(100,Math.round(w/maxTotal*100))+'%;background:'+barColor+'"></div></div></td><td><span class="pill '+pillCls+'">'+pct+'%</span></td><td>'+(x.notes||'-')+'</td><td><button class="btn2" style="color:#FF8A80;" onclick="delCount('+idx+')">🗑️</button></td></tr>';
+  }).join('')+'</table>';
 }
-function openCard(idx){ fillCardData(DB.workers[idx]); }
-function openIssueCard(){ let sel=document.getElementById('issue-select'); sel.innerHTML='<option value="">-- Select Worker --</option>'+DB.workers.map((x,i)=>'<option value="'+i+'">'+x.code+' - '+x.name+'</option>').join(''); document.getElementById('issueModal').style.display='block'; }
-function fillIssueFromWorker(){ let idx=document.getElementById('issue-select').value; if(idx==='') return; let x=DB.workers[idx]; setVal('issue-name',x.name); setVal('issue-code',x.code); setVal('issue-national',x.nationalId||''); setVal('issue-job',x.job||''); setVal('issue-company',x.company||'RMED'); setVal('issue-health',x.health||''); setVal('issue-phone',x.phone||''); setVal('issue-emergency',x.emergency||''); issueImgData=x.img||x.photo||''; }
-function showCardFromIssue(){ if(!val('issue-name')) return alert('Write name or select worker'); document.getElementById('issueModal').style.display='none'; fillCardData({name:val('issue-name'),code:val('issue-code'),nationalId:val('issue-national'),job:val('issue-job'),company:val('issue-company'),health:val('issue-health'),phone:val('issue-phone'),emergency:val('issue-emergency'),status:'Active',img:issueImgData}); }
-async function downloadCard(which){ let name=curCard?.name||'card'; if(which==='front'){ let c=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let a=document.createElement('a'); a.download='Card-Front-'+name+'.png'; a.href=c.toDataURL('image/png'); a.click(); return; } let c1=await html2canvas(document.getElementById('cardFront'),{scale:2,useCORS:true}); let c2=await html2canvas(document.getElementById('cardBack'),{scale:2,useCORS:true}); let f=document.createElement('canvas'); f.width=Math.max(c1.width,c2.width); f.height=c1.height+c2.height+20; let ctx=f.getContext('2d'); ctx.fillStyle='#F4F6F9'; ctx.fillRect(0,0,f.width,f.height); ctx.drawImage(c1,0,0); ctx.drawImage(c2,0,c1.height+20); let a=document.createElement('a'); a.download='Card-Full-'+name+'.png'; a.href=f.toDataURL('image/png'); a.click(); }
-loadWorkers();
+async function delCount(i){
+  if(!confirm('Delete this record?')) return;
+  let rec=counts[i];
+  try{ if(rec && rec.id && window.db) await window.db.collection('dailyWorkers').doc(rec.id).delete(); }catch(e){}
+  counts.splice(i,1); renderCounts(); updateTotalPreview();
+}
+async function clearCounts(){
+  if(!confirm('Delete all daily counts from Firebase?')) return;
+  try{ if(window.db){ let snap=await window.db.collection('dailyWorkers').get(); for(let d of snap.docs) await window.db.collection('dailyWorkers').doc(d.id).delete(); } }catch(e){}
+  counts=[]; renderCounts(); updateTotalPreview();
+}
+function exportCounts(){
+  if(!counts.length) return alert('No data');
+  let csv='Date,Company,Workers Count,Notes\n'+counts.map(x=>[x.date,x.company,(x.workers||x.count||x.total||0),'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='daily-workers-count.csv'; a.click();
+}
+document.getElementById('d-date').value=getTodayStr();
+document.getElementById('filterDate').value='';
+document.getElementById('hero-date').innerText='Today • اليوم • '+getTodayStr()+' • '+new Date().toTimeString().slice(0,5);
+loadCounts(); updateTotalPreview();
 </script>
 </body>
 </html>
