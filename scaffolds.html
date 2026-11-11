@@ -6,20 +6,20 @@
 <title>Scaffold Inspection - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial;}
-body{margin:0;background:#F4F6F9;color:#0A1F44;}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0F2A4D;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s}
+body{margin:0;background:#0A1B33;color:#fff;}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid #263A5E;padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
 .sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
-.sidebar .logo small{color:#90A4AE}
-.sidebar .user-box{background:#132E5E;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .logo small{color:#B8C6D6}
+.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
 .sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#90A4AE;font-size:12px}
+.sidebar .user-box small{color:#B8C6D6;font-size:12px}
 .sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
 .sidebar a:hover{background:#1A3A6A;color:#fff}
-.sidebar a.active{background:#FFD54F;color:#0A1F44}
+.sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
 .main{margin-left:260px;transition:0.3s}
@@ -29,32 +29,48 @@ body{margin:0;background:#F4F6F9;color:#0A1F44;}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0F2A4D;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
+  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FF9800;margin-bottom:16px;border-radius:0 0 14px 14px}
-.page-head h1{margin:0;font-size:21px;} .page-head h1 span{color:#FF9800;} .page-head small{color:#78909C;}
+.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:20px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;border-radius:0 0 18px 18px;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
+.page-head h1{margin:0;font-size:30px;line-height:1.1;color:#fff;position:relative} .page-head h1 span{color:#FFD54F;} .page-head small{color:#FFD54F;font-size:14px;font-weight:700}
+.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:13px;padding-bottom:6px}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0F2A4D;}
-.card.orange{border-top-color:#FF9800;}
+.card{background:#101F3D;border:1px solid rgba(201,162,39,.45);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,0,0,.25);border-top:3px solid #C9A227;color:#fff}
+.card.orange{border-top-color:#FFD54F;}
+.card h2,.card h3{color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
-label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;outline:none;}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid rgba(201,162,39,.45);border-radius:10px;font-size:14px;outline:none;background:#0A162E;color:#fff}
+input::placeholder,textarea::placeholder{color:#8A9AB0}
+select option{background:#0A162E;color:#fff}
 textarea{min-height:60px;resize:vertical;}
-.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
-.btn.orange{background:#FF9800;color:#000;} .btn2{background:#ECEFF1;color:#0A1F44;border:1px solid #CFD8DC;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.btn{width:100%;background:#0F2A4D;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;border:1px solid rgba(201,162,39,.5)}
+.btn.orange{background:linear-gradient(180deg,#FFE082,#D4AF37 50%,#B8860B);color:#0A1F44;border:1px solid #7A5A00;} .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border-bottom:3px solid #0F2A4D;}
-.kpi.red{border-bottom-color:#D32F2F;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FF9800;}
-.kpi b{font-size:22px;display:block;} .kpi small{color:#78909C;font-size:12px;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
-table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border-bottom:1px solid #ECEFF1;text-align:center;vertical-align:middle;}
-.auto{background:#FFF8E1!important;border-color:#FF9800!important;}
-.user-bar{background:#E8F5E9;border:1.5px solid #2E7D32;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.kpi{background:#101F3D;border:1px solid rgba(201,162,39,.45);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);border-bottom:3px solid #C9A227;color:#fff;position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:140px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
+.kpi.red{border-bottom-color:#FF5252;} .kpi.green{border-bottom-color:#2E7D32;} .kpi.orange{border-bottom-color:#FFD54F;}
+.kpi b{font-size:28px;display:block;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)} .kpi small{color:#B8C6D6;font-size:12px;line-height:1.4;display:block}
+/* ===== 3D ICONS ===== */
+.icon3d{width:84px;height:84px;margin:0 auto 10px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:48px;line-height:1;position:relative;transform:perspective(300px) rotateX(8deg) rotateY(-8deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.55)) drop-shadow(0 2px 2px rgba(255,255,255,.25));text-shadow:0 6px 10px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.4)}
+.icon3d:after{content:"";position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,0) 35%);pointer-events:none}
+.icon3d.gold{background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);border:1px solid #FFE082}
+.icon3d.green{background:radial-gradient(circle at 30% 25%,#A5D6A7,#2E7D32 45%,#1B5E20 75%);border:1px solid #A5D6A7}
+.icon3d.orange{background:radial-gradient(circle at 30% 25%,#FFCC80,#FF9800 45%,#E65100 75%);border:1px solid #FFCC80}
+.icon3d.teal{background:radial-gradient(circle at 30% 25%,#80CBC4,#009688 45%,#004D40 75%);border:1px solid #80CBC4}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;color:#fff}
+table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rgba(201,162,39,.4)} table td{padding:9px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center;vertical-align:middle;}
+.auto{background:#1A2F52!important;border-color:#FFD54F!important;color:#FFE082!important}
+.user-bar{background:#101F3D;border:1px solid rgba(201,162,39,.45);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;color:#fff}
 .user-bar input{width:auto;flex:1;min-width:180px;}
 .badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block;}
 .badge.on{background:#E8F5E9;color:#2E7D32;}
@@ -102,32 +118,35 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 
 <div class="main">
 <div class="page-head">
-<div><h1>RMED <span>•</span> Scaffold Inspection</h1><small>Scaffolding - From Firebase</small></div>
-<button onclick="toggleSidebar()" style="background:#ECEFF1;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">◀️ Hide Menu</button>
+<div class="header-logo">
+<div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div>
+<div><small>RMED Safety</small><h1>Scaffold Inspection</h1><small>Scaffolding • السقالات • فحص السقالات</small></div>
+</div>
+<button onclick="toggleSidebar()" style="background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.5);padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;position:relative;">◀️ Hide Menu</button>
 </div>
 <div class="container">
 
 <div class="user-bar">
-<span style="font-weight:bold;">🦺 Inspector Name:</span>
+<span style="font-weight:bold;color:#FFE082;">🦺 Inspector Name:</span>
 <input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUser',this.value); document.getElementById('sc-inspector').value=this.value; renderSc();">
 <span style="font-size:12px;color:#2E7D32;">Will appear automatically in every inspection</span>
 </div>
 
 <div class="kpi-grid">
-<div class="kpi"><b id="k-total">0</b><small>Total Scaffolds In Record</small></div>
-<div class="kpi green"><b id="k-on">0</b><small>Erected Scaffolds Count</small></div>
-<div class="kpi red"><b id="k-off">0</b><small>Dismantled Scaffolds Count</small></div>
-<div class="kpi orange"><b id="k-on-p">0%</b><small>Erected Scaffolds Percentage</small></div>
+<div class="kpi"><div class="icon3d gold">🏗️</div><b id="k-total">0</b><small>Total Scaffolds<br>إجمالي السقالات</small></div>
+<div class="kpi green"><div class="icon3d green">🏢</div><b id="k-on">0</b><small>Erected Scaffolds<br>مركبة</small></div>
+<div class="kpi red"><div class="icon3d orange">🔧</div><b id="k-off">0</b><small>Dismantled Scaffolds<br>مفككة</small></div>
+<div class="kpi orange"><div class="icon3d teal">📊</div><b id="k-on-p">0%</b><small>Erected Percentage<br>نسبة التركيب</small></div>
 </div>
 
 <div class="card">
-<h3 style="margin:0 0 8px;">🏢 Company Breakdown - Erected / Dismantled</h3>
+<h3 style="margin:0 0 8px;">🏢 Company Breakdown - Erected / Dismantled • تفصيل الشركات</h3>
 <div id="compTable"></div>
 </div>
 
 <div class="card orange">
-<h2 style="margin:0 0 5px;">🏗️ Register New Scaffold Inspection</h2>
-<p style="color:#78909C;font-size:13px;margin:0;">Scaffold number is generated automatically, default status is Erected</p>
+<h2 style="margin:0 0 5px;">🏗️ Register New Scaffold Inspection • تسجيل فحص سقالة جديدة</h2>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Scaffold number is generated automatically, default status is Erected</p>
 <div class="grid">
 <div><label>🏗️ Scaffold Number - Automatic</label><input id="sc-num" class="auto" placeholder="Will be generated automatically" readonly></div>
 <div><label>🏢 Company Name *</label><input id="sc-company" placeholder="Example: RMED ..." list="compList"><datalist id="compList"></datalist></div>
@@ -141,11 +160,11 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <div><label>📌 Status *</label><select id="sc-status"><option value="Erected" selected>🟢 Erected</option><option value="Dismantled">🔴 Dismantled</option></select></div>
 <div style="grid-column:1/-1;"><label>📝 Inspection Notes - Optional</label><textarea id="sc-notes" placeholder="Any notes on scaffold... Board condition - Bracing - Ladder..."></textarea></div>
 </div>
-<button class="btn orange" onclick="addSc()">💾 Save Scaffold Inspection</button>
+<button class="btn orange" onclick="addSc()">💾 Save Scaffold Inspection • حفظ فحص السقالة</button>
 </div>
 
 <div class="card">
-<h2 style="margin:0 0 10px;">📋 Scaffolds Record</h2>
+<h2 style="margin:0 0 10px;">📋 Scaffolds Record • سجل السقالات</h2>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
 <input id="searchSc" placeholder="Search by scaffold number, company or building..." oninput="renderSc()" style="flex:2;">
 <select id="filterStatus" onchange="renderSc()" style="flex:1;"><option value="">All Statuses</option><option>Erected</option><option>Dismantled</option></select>
@@ -155,7 +174,7 @@ table th{background:#0F2A4D;color:#fff;padding:9px;} table td{padding:9px;border
 <div id="scTable"></div>
 <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
 <button class="btn2" onclick="exportSc()" style="flex:1;padding:12px;">📥 Export All Record Excel / CSV</button>
-<button class="btn2" onclick="clearSc()" style="flex:1;padding:12px;color:#D32F2F;">🗑️ Clear All</button>
+<button class="btn2" onclick="clearSc()" style="flex:1;padding:12px;color:#FF5252;">🗑️ Clear All</button>
 </div>
 </div>
 </div>
@@ -274,7 +293,7 @@ function renderSc(){
   if(!list.length){ document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#999;">No scaffolds registered yet</p>'; return; }
   document.getElementById('scTable').innerHTML='<table><tr><th>Scaffold Number</th><th>Company</th><th>Type</th><th>Load</th><th>Building / Floor / Cluster</th><th>Erection Date</th><th>Inspector</th><th>Status</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=scaffolds.indexOf(x);
-    return '<tr><td><b style="color:#FF9800;">'+x.num+'</b></td><td><b>'+x.company+'</b></td><td>'+x.type+'</td><td>'+TLoad(x.load)+'</td><td>Building '+x.building+'<br>Floor '+x.floor+'<br>Cluster '+x.cluster+'</td><td>'+x.date+'</td><td>'+x.inspector+'</td><td><span class="badge '+(TStatus(x.status)==='Erected'?'on':'off')+'">'+TStatus(x.status)+'</span><br><small style="color:#78909C;">'+(x.notes||'')+'</small></td><td><button class="btn2" onclick="toggleSc('+idx+')">'+(TStatus(x.status)==='Erected'?'🔴 Dismantle Scaffold':'🟢 Return To Erected')+'</button></td><td><button class="btn2" style="color:#D32F2F;" onclick="delSc('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td><b style="color:#FFD54F;">'+x.num+'</b></td><td><b>'+x.company+'</b></td><td>'+x.type+'</td><td>'+TLoad(x.load)+'</td><td>Building '+x.building+'<br>Floor '+x.floor+'<br>Cluster '+x.cluster+'</td><td>'+x.date+'</td><td>'+x.inspector+'</td><td><span class="badge '+(TStatus(x.status)==='Erected'?'on':'off')+'">'+TStatus(x.status)+'</span><br><small style="color:#B8C6D6;">'+(x.notes||'')+'</small></td><td><button class="btn2" onclick="toggleSc('+idx+')">'+(TStatus(x.status)==='Erected'?'🔴 Dismantle Scaffold':'🟢 Return To Erected')+'</button></td><td><button class="btn2" style="color:#FF5252;" onclick="delSc('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
 }
 async function toggleSc(i){
