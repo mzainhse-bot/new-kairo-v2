@@ -7,19 +7,19 @@
 <title>Employee Evaluation - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#0A1B33;color:#fff}
-.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:#0A162E;color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(201,162,39,.35)}
+body{margin:0;background:#050505;color:#fff;background-image:radial-gradient(ellipse at 50% 0%,rgba(255,213,79,.12),transparent 55%),linear-gradient(180deg,#0A0A0A,#050505)}
+.sidebar{position:fixed;top:0;left:0;width:260px;height:100vh;background:linear-gradient(180deg,#0A0A0A,#111);color:#fff;padding:18px 14px;z-index:100;overflow-y:auto;transition:0.3s;border-right:1px solid rgba(255,215,128,.35)}
 .sidebar.closed{left:-270px}
-.sidebar .logo{text-align:center;border-bottom:1px solid rgba(201,162,39,.35);padding-bottom:14px;margin-bottom:14px}
-.sidebar .logo b{font-size:22px;color:#FFD54F;display:block}
+.sidebar .logo{text-align:center;border-bottom:1px solid rgba(255,215,128,.35);padding-bottom:14px;margin-bottom:14px}
+.sidebar .logo b{font-size:24px;color:#FFD700;display:block;letter-spacing:2px;text-shadow:0 0 20px rgba(255,215,0,.5)}
 .sidebar .logo small{color:#B8C6D6}
-.sidebar .user-box{background:#101F3D;border:1px solid rgba(201,162,39,.35);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD54F}
+.sidebar .user-box{background:linear-gradient(135deg,#1A1A1A,#0F0F0F);border:1px solid rgba(255,215,128,.4);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.sidebar .user-box img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #FFD700}
 .sidebar .user-box b{display:block;font-size:14px}
-.sidebar .user-box small{color:#B8C6D6;font-size:12px}
-.sidebar .menu-title{color:#FFD54F;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
+.sidebar .user-box small{color:#E8C86A;font-size:12px}
+.sidebar .menu-title{color:#FFD700;font-size:12px;font-weight:bold;margin:16px 6px 6px;letter-spacing:1px}
 .sidebar a{display:flex;align-items:center;gap:10px;color:#CFD8DC;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;font-weight:bold;margin-bottom:3px}
-.sidebar a:hover{background:#1A3A6A;color:#fff}
+.sidebar a:hover{background:#1A1A1A;color:#FFD700}
 .sidebar a.active{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44}
 .sidebar a .icon{font-size:18px;width:26px;text-align:center}
 .sidebar .logout{margin-top:16px;background:#D32F2F !important;color:#fff !important;justify-content:center}
@@ -30,31 +30,31 @@ body{margin:0;background:#0A1B33;color:#fff}
   .sidebar{left:-270px}
   .sidebar.open{left:0}
   .main{margin-left:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A162E;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(201,162,39,.35)}
-  .topbar button{background:#FFD54F;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
+  .topbar{display:flex;justify-content:space-between;align-items:center;background:#0A0A0A;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(255,215,128,.35)}
+  .topbar button{background:#FFD700;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:18px;color:#0A1F44}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-.page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
-.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
-.header-logo{display:flex;gap:12px;align-items:center;position:relative}
+.page-head{background:linear-gradient(180deg,#111,#0A0A0A);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #FFD700;position:relative;overflow:hidden}
+.page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,215,0,.22),transparent 45%);pointer-events:none}
+.header-logo{display:flex;gap:14px;align-items:center;position:relative}
 .header-shield{width:62px;height:68px;position:relative;flex-shrink:0}
-.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
-.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD54F;font-size:12px;padding-bottom:6px}
-.page-head h1{margin:0;font-size:28px;color:#fff} .page-head h1 span{color:#FFD54F} .page-head small{color:#FFD54F;font-weight:700}
+.header-shield svg{width:100%;height:100%;filter:drop-shadow(0 4px 12px rgba(255,215,0,.4))}
+.header-shield span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#FFD700;font-size:12px;padding-bottom:6px}
+.page-head h1{margin:0;font-size:30px;color:#fff} .page-head h1 span{color:#FFD700} .page-head small{color:#FFD700;font-weight:700}
 .header-actions{display:flex;gap:12px;align-items:center;position:relative}
-.header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
-.container{max-width:1150px;margin:auto;padding:0 16px 16px;}
-.filter{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 10px 26px rgba(0,0,0,.35)}
-.filter select{padding:10px 12px;border-radius:10px;border:1px solid rgba(201,162,39,.45);font-weight:700;background:#0A162E;color:#fff;min-width:140px;cursor:pointer}
-.filter select option{background:#0A162E}
+.header-actions .h-ic{width:40px;height:40px;border:1px solid rgba(255,215,128,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
+.container{max-width:1150px;margin:auto;padding:18px 16px 16px;}
+.filter{background:linear-gradient(135deg,#161616,#0C0C0C);border:1px solid rgba(255,215,128,.55);border-radius:18px;padding:16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.filter select{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,215,128,.45);font-weight:700;background:#0A0A0A;color:#fff;min-width:140px;cursor:pointer}
+.filter select option{background:#0A0A0A}
 .btn-pdf{background:linear-gradient(180deg,#FF5252,#B71C1C);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px 10px;text-align:left;display:flex;gap:10px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
-.kpi:before{content:"";position:absolute;top:-28px;left:20px;width:120px;height:60px;background:radial-gradient(ellipse,rgba(255,213,79,.18),transparent);pointer-events:none}
-.kpi b{font-size:24px;color:#fff;display:block;line-height:1.1}
-.kpi span{font-size:12px;color:#B8C6D6;display:block}
+.kpi{background:linear-gradient(180deg,#1A1A1A,#0D0D0D);border:1px solid rgba(255,215,128,.45);border-radius:16px;padding:14px 10px;text-align:left;display:flex;gap:10px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#FFD700,transparent)}
+.kpi b{font-size:24px;color:#FFD700;display:block;line-height:1.1}
+.kpi span{font-size:12px;color:#D8D8D8;display:block}
 .kpi small{font-size:11px;color:#FFE082;display:block}
 .icon3d{width:68px;height:68px;flex-shrink:0;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;transform:perspective(300px) rotateX(6deg) rotateY(-6deg);filter:drop-shadow(0 12px 14px rgba(0,0,0,.55));overflow:hidden;animation:float3d 3s ease-in-out infinite}
 .icon3d img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.45));position:relative;z-index:2}
@@ -67,7 +67,7 @@ body{margin:0;background:#0A1B33;color:#fff}
 .icon3d.blue{background:radial-gradient(circle at 30% 25%,#90CAF9,#1565C0 45%,#0D47A1 75%);border:1px solid #90CAF9}
 .icon3d .fallback{font-size:32px;position:relative;z-index:2;display:none}
 @keyframes float3d{0%,100%{transform:perspective(300px) rotateX(6deg) rotateY(-6deg) translateY(0)}50%{transform:perspective(300px) rotateX(6deg) rotateY(-6deg) translateY(-5px)}}
-.card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 10px 26px rgba(0,0,0,.35);text-align:center}
+.card{background:linear-gradient(180deg,#151515,#0C0C0C);border:1px solid rgba(255,215,128,.5);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 10px 26px rgba(0,0,0,.35);text-align:center}
 .top1{border:3px solid #FFD700;background:linear-gradient(180deg,#3A2E00,#2A2300 30%,#101F3D);position:relative;overflow:hidden;box-shadow:0 0 0 2px rgba(255,215,0,.3),0 0 35px rgba(255,215,0,.45),0 18px 40px rgba(0,0,0,.5)}
 .top1:before{content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:420px;height:220px;background:radial-gradient(ellipse,rgba(255,215,0,.45),transparent 65%);pointer-events:none}
 .top1:after{content:"✨ ⭐ ✨ ⭐ ✨ ⭐ ✨ ⭐ ✨";position:absolute;top:10px;left:0;right:0;font-size:18px;opacity:.9;pointer-events:none;animation:twinkle 1.6s ease-in-out infinite}
@@ -102,11 +102,11 @@ body{margin:0;background:#0A1B33;color:#fff}
 .crown{font-size:42px;display:block}
 .badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;font-size:13px;margin:3px;background:rgba(255,255,255,.08);color:#fff}
 .badge-green{background:#E8F5E9;color:#2E7D32}.badge-blue{background:#E3F2FD;color:#1565C0}.badge-red{background:#FFEBEE;color:#D32F2F}
-.list-row{display:flex;align-items:center;gap:12px;background:#101F3D;border:1px solid rgba(201,162,39,.45);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);text-align:left}
-.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #FFD54F;flex-shrink:0}
-.rank-num{font-size:24px;font-weight:900;width:40px;text-align:center;flex-shrink:0;color:#FFD54F}
+.list-row{display:flex;align-items:center;gap:12px;background:#151515;border:1px solid rgba(255,215,128,.45);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);text-align:left}
+.list-row img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:3px solid #FFD700;flex-shrink:0}
+.rank-num{font-size:24px;font-weight:900;width:40px;text-align:center;flex-shrink:0;color:#FFD700}
 .rank-badge{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#FFF3B0,#FFD54F 35%,#B8860B 70%,#7A5A00);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0A1F44;font-size:16px;flex-shrink:0;box-shadow:0 6px 12px rgba(0,0,0,.4)}
-.status-box{background:#101F3D;border:1.5px solid #FFD54F;border-radius:14px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8;text-align:center}
+.status-box{background:#111;border:1.5px solid #FFD700;border-radius:14px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.8;text-align:center;color:#FFD700}
 .print-head{display:none}
 @media print{
   body{background:#fff;color:#000}
@@ -168,7 +168,7 @@ body{margin:0;background:#0A1B33;color:#fff}
 <div class="filter"><b>🗓️ Select Month: • اختر الشهر:</b>
 <label>Year: • السنة:</label><select id="selYear" onchange="selYear=+this.value;render();"></select>
 <label>Month: • الشهر:</label><select id="selMonth" onchange="selMonth=+this.value;render();"></select>
-<span id="periodLabel" style="font-weight:700;color:#FFD54F;"></span>
+<span id="periodLabel" style="font-weight:700;color:#FFD700;"></span>
 <span style="flex:1;"></span><span id="totalEmp" style="font-weight:700;"></span>
 <button class="btn-pdf no-print" onclick="exportPDF()">📄 Export PDF / Print • تصدير PDF</button>
 </div>
@@ -195,12 +195,37 @@ body{margin:0;background:#0A1B33;color:#fff}
 <script>
 function toggleSidebar(){ let s=document.getElementById('sidebar'); if(window.innerWidth<=900){ s.classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); } else { s.classList.toggle('closed'); document.querySelector('.main').classList.toggle('full'); } }
 function logout(){ if(window.signOutUser) return signOutUser(); localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href='login.html'; }
-function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return u; }catch(e){} return null; }
+// ===== FIX: normalize user - name + photo from ANY field name =====
+function normUser(raw){
+  if(!raw || typeof raw!=='object') return null;
+  let name = raw.name || raw.fullName || raw.displayName || raw.username || raw.userName || raw.employeeName || '';
+  name = String(name||'').trim();
+  if(!name) return null;
+  let photo = raw.photo || raw.img || raw.image || raw.avatar || raw.photoURL || raw.profilePic || raw.profileImage || raw.picture || raw.profilePhoto || raw.photoUrl || '';
+  if(photo && typeof photo==='object') photo = photo.url || photo.src || photo.downloadURL || '';
+  photo = String(photo||'').trim();
+  // لو الصورة base64 قصيرة او فاضية تجاهلها
+  if(photo && photo.length < 10) photo='';
+  return {
+    ...raw,
+    name: name,
+    photo: photo,
+    img: photo,
+    image: photo,
+    avatar: photo,
+    code: raw.code || raw.employeeCode || raw.empCode || raw.id || raw.userCode || '',
+    email: raw.email || raw.mail || '',
+    job: raw.job || raw.position || raw.title || raw.dept || raw.department || '',
+    role: raw.role || raw.permission || raw.type || raw.accountType || ''
+  };
+}
+function getPhoto(u){ return (u && (u.photo || u.img || u.image || u.avatar || u.photoURL || u.profilePic || u.profileImage)) || ''; }
+function getMe(){ try{ let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); if(typeof u==='object' && u.name) return normUser(u); }catch(e){} return null; }
 (function(){
   let page=location.pathname.split('/').pop().replace('.html','')||'index';
   document.querySelectorAll('.sidebar a[data-page]').forEach(a=>{ if(a.dataset.page===page) a.classList.add('active'); });
   let nm=getMe();
-  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; if(nm.img||nm.photo) document.getElementById('sideImg').src=nm.img||nm.photo; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
+  if(nm){ document.getElementById('sideName').innerText=nm.name; let rm={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'}; document.getElementById('sideRole').innerText=rm[String(nm.role||'').trim().toLowerCase()]||rm[String(nm.role||'').trim()]||nm.role||nm.job||''; let ph=getPhoto(nm); if(ph) document.getElementById('sideImg').src=ph; let t=document.getElementById('topUser'); if(t) t.innerText=nm.name; }
 })();
 let nowD=new Date();
 let selYear=nowD.getFullYear();
@@ -208,10 +233,45 @@ let selMonth=nowD.getMonth();
 let months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 let FB = {users:[], observations:[], nearMiss:[], accidents:[]};
 function saveCache(){ try{ localStorage.setItem('rmed_emp_eval_cache', JSON.stringify({time:Date.now(), FB:FB})); }catch(e){} }
-function loadCache(){ try{ let c=JSON.parse(localStorage.getItem('rmed_emp_eval_cache')||'null'); if(c && c.FB){ FB=c.FB; return true; } }catch(e){} return false; }
+function loadCache(){ try{ let c=JSON.parse(localStorage.getItem('rmed_emp_eval_cache')||'null'); if(c && c.FB){ FB=c.FB; FB.users=(FB.users||[]).map(normUser).filter(Boolean); return true; } }catch(e){} return false; }
 async function fetchCol(name){
   if(!window.db) return [];
   try{ let s=await window.db.collection(name).get(); let arr=[]; s.forEach(d=>arr.push({id:d.id, ...d.data()})); return arr; }catch(e){ return []; }
+}
+// ===== FIX: جيب المستخدمين من كل الجداول المحتملة وادمجهم =====
+async function fetchAllUsers(){
+  let all=[];
+  let cols=['users','employees','safetyUsers','registeredUsers','accounts','staff','team'];
+  for(let c of cols){
+    let arr=await fetchCol(c);
+    if(arr.length) console.log('Users from',c,arr.length);
+    all.push(...arr);
+  }
+  // من localStorage كمان
+  try{
+    let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
+    let localUsers = old.users || old.employees || old.safetyUsers || [];
+    if(Array.isArray(localUsers)) all.push(...localUsers);
+    // users اللي متسجلين في المتصفح
+    let keys=['rmed_users','users','employees'];
+    keys.forEach(k=>{
+      try{ let v=JSON.parse(localStorage.getItem(k)||'[]'); if(Array.isArray(v)) all.push(...v); }catch(e){}
+    });
+  }catch(e){}
+  // دمج ومنع التكرار بالاسم + الايميل
+  let seen={}; let out=[];
+  all.forEach(raw=>{
+    let u=normUser(raw);
+    if(!u) return;
+    let key=(u.email||'').toLowerCase().trim()+'|'+u.name.toLowerCase().trim();
+    if(seen[key]) {
+      // لو القديم معندوش صورة والجديد عنده، خد الصورة
+      if(!getPhoto(seen[key]) && getPhoto(u)) seen[key].photo=getPhoto(u), seen[key].img=getPhoto(u);
+      return;
+    }
+    seen[key]=u; out.push(u);
+  });
+  return out;
 }
 async function loadAll(attempt=1){
   let st=document.getElementById('loadStatus');
@@ -222,15 +282,15 @@ async function loadAll(attempt=1){
     return;
   }
   try{
-    FB.users = await fetchCol('users');
+    FB.users = await fetchAllUsers();
     FB.observations = await fetchCol('observations');
     if(!FB.observations.length) FB.observations = await fetchCol('safety-observations');
+    if(!FB.observations.length) FB.observations = await fetchCol('safetyObs');
     FB.nearMiss = await fetchCol('nearMiss');
     if(!FB.nearMiss.length) FB.nearMiss = await fetchCol('near-miss');
     FB.accidents = await fetchCol('accidents');
     try{
       let old=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-      if(!FB.users.length && old.users) FB.users=old.users;
       if(!FB.observations.length && (old.observations||old.safetyObservations)) FB.observations=old.observations||old.safetyObservations||[];
       if(!FB.nearMiss.length && old.nearMiss) FB.nearMiss=old.nearMiss;
       if(!FB.accidents.length && old.accidents) FB.accidents=old.accidents;
@@ -257,16 +317,17 @@ function isClosed(x){
   let s=(x.status||x.state||'').toString().trim().toLowerCase();
   return ['closed','done','مغلق','مغلقة','تم','تم الغلق'].includes(s) || s.includes('غلق') || x.isClosed===true || x.closed===true;
 }
-function getReporter(x){ return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'').toString().trim(); }
+function getReporter(x){ return (x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||x.fullName||x.displayName||'').toString().trim(); }
 function getReporterCode(x){ return (x.reporterCode||x.reporterId||x.createdByCode||x.code||'').toString().trim(); }
 function getDate(x){ return x.date||x.createdAt||x.created_at||''; }
 function inMonth(d){ if(!d) return false; let dt=new Date(d); if(isNaN(dt)) return false; return dt.getFullYear()===selYear && dt.getMonth()===selMonth; }
 function render(){
   document.getElementById('periodLabel').innerText='From 1 '+months[selMonth]+' '+selYear+' to '+new Date(selYear, selMonth+1, 0).getDate()+' '+months[selMonth]+' '+selYear;
-  let allUsers = FB.users || [];
+  let allUsers = (FB.users||[]).map(normUser).filter(Boolean);
+  // ===== FIX: متستبعدش حد غير المدير والمشرف الحقيقيين بس، ولو role فاضي اعتبره موظف =====
   let employees = allUsers.filter(u=>{
-    let role=(u.role||u.permission||u.type||u.accountType||'').toString().trim().toLowerCase();
-    if(['مدير','مشرف','manager','supervisor','admin','أدمن','ادمن'].includes(role)) return false;
+    let role=(u.role||'').toString().trim().toLowerCase();
+    if(['manager','admin','supervisor','مدير','مشرف','أدمن','ادمن'].includes(role)) return false;
     if(['مدير','مشرف'].includes((u.role||'').toString().trim())) return false;
     return true;
   });
@@ -276,20 +337,21 @@ function render(){
   let allReports=[...obs.map(x=>({...x,_type:'Observation'})), ...near.map(x=>({...x,_type:'Near Miss'})), ...acc.map(x=>({...x,_type:'Accident'}))];
   let map={};
   employees.forEach(u=>{
-    let key=(u.code||u.id||u.name||'').toString();
+    let key=(u.email||u.name).toLowerCase().trim();
     map[key]={user:u, total:0, closed:0, obs:0, near:0, acc:0};
   });
   function findKey(reporter, code){
-    let found=null;
-    if(code){ found=Object.keys(map).find(k=> (map[k].user.code||map[k].user.id||'') .toString()===code); if(found) return found; }
-    if(reporter){
-      found=Object.keys(map).find(k=> (map[k].user.name||'').toString().trim()===reporter);
-      if(found) return found;
-      let nk='extra-'+reporter;
-      if(!map[nk]) map[nk]={user:{name:reporter, code:code||'', img:'', photo:''}, total:0, closed:0, obs:0, near:0, acc:0};
-      return nk;
-    }
-    return null;
+    if(!reporter) return null;
+    let low=reporter.toLowerCase().trim();
+    // 1- بالاسم بالظبط
+    let found=Object.keys(map).find(k=> map[k].user.name.toLowerCase().trim()===low);
+    if(found) return found;
+    // 2- بالكود
+    if(code){ found=Object.keys(map).find(k=> String(map[k].user.code||'').trim()===String(code).trim()); if(found) return found; }
+    // 3- لو مش موجود، اعمله حساب جديد بس بصورته لو موجودة في التقرير نفسه
+    let nk='extra-'+low;
+    if(!map[nk]) map[nk]={user:normUser({name:reporter, code:code||'', photo:'', img:''}), total:0, closed:0, obs:0, near:0, acc:0};
+    return nk;
   }
   allReports.forEach(r=>{
     let rep=getReporter(r); let code=getReporterCode(r);
@@ -300,6 +362,9 @@ function render(){
     if(r._type==='Observation') map[k].obs++;
     if(r._type==='Near Miss') map[k].near++;
     if(r._type==='Accident') map[k].acc++;
+    // لو التقرير فيه صورة للمستخدم والمستخدم معندوش صورة، خدها
+    let rp = getPhoto(r);
+    if(rp && !getPhoto(map[k].user)){ map[k].user.photo=rp; map[k].user.img=rp; }
   });
   let ranked=Object.values(map).sort((a,b)=>{ if(b.total!==a.total) return b.total-a.total; return b.closed-a.closed; });
   document.getElementById('totalEmp').innerText='Total Employees: '+ranked.length+' | Total Reports In Month: '+allReports.length;
@@ -313,13 +378,13 @@ function render(){
   document.getElementById('kTop').innerText=(ranked[0]&&ranked[0].total>0)?(ranked[0].user.name||'-'):'-';
   document.getElementById('kRate').innerText=rate+'%';
   function imgHTML(u, size, cls){
-    let src=u.img||u.photo||u.image||u.avatar||'';
-    if(src) return '<img class="'+(cls||'')+'" src="'+src+'" alt="'+(u.name||'')+'" style="width:'+size+'px;height:'+size+'px;object-fit:cover;border-radius:50%;">';
+    let src=getPhoto(u);
+    if(src) return '<img class="'+(cls||'')+'" src="'+src+'" onerror="this.onerror=null;this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'" alt="'+(u.name||'')+'" style="width:'+size+'px;height:'+size+'px;object-fit:cover;border-radius:50%;">';
     return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:40px;margin:auto;border:4px solid rgba(255,255,255,.15);">👷</div>';
   }
   function imgHTMLChampion(u){
-    let src=u.img||u.photo||u.image||u.avatar||'';
-    let imgTag = src ? '<img class="champion-img" src="'+src+'">' : '<div class="champion-img" style="display:flex;align-items:center;justify-content:center;font-size:60px;background:#101F3D;">👷</div>';
+    let src=getPhoto(u);
+    let imgTag = src ? '<img class="champion-img" src="'+src+'" onerror="this.onerror=null;this.src=\'https://cdn-icons-png.flaticon.com/512/3135/3135715.png\'">' : '<div class="champion-img" style="display:flex;align-items:center;justify-content:center;font-size:60px;background:#101F3D;">👷</div>';
     return '<div class="champion-wrap"><div class="champion-laurel"><svg viewBox="0 0 200 200"><g fill="none" stroke="#FFD54F" stroke-width="3"><path d="M28 100 C28 50 60 28 100 22"/><path d="M172 100 C172 50 140 28 100 22"/><path d="M28 100 C28 150 60 172 100 178"/><path d="M172 100 C172 150 140 172 100 178"/></g><g fill="#FFD54F"><circle cx="32" cy="70" r="5"/><circle cx="38" cy="50" r="5"/><circle cx="58" cy="32" r="5"/><circle cx="82" cy="24" r="5"/><circle cx="168" cy="70" r="5"/><circle cx="162" cy="50" r="5"/><circle cx="142" cy="32" r="5"/><circle cx="118" cy="24" r="5"/><circle cx="32" cy="130" r="5"/><circle cx="38" cy="150" r="5"/><circle cx="58" cy="168" r="5"/><circle cx="82" cy="176" r="5"/><circle cx="168" cy="130" r="5"/><circle cx="162" cy="150" r="5"/><circle cx="142" cy="168" r="5"/><circle cx="118" cy="176" r="5"/></g></svg></div><div class="champion-crown"><img src="https://img.icons8.com/3d-fluency/94/crown.png" onerror="this.style.display=\'none\'"></div>'+imgTag+'</div>';
   }
   function statsHTML(r){
