@@ -34,7 +34,6 @@ body{margin:0;background:#0A1B33;color:#fff}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
   .overlay.show{display:block}
 }
-/* HEADER - SAME VIOLATIONS IMAGE */
 .page-head{background:linear-gradient(180deg,#0B1338,#0F2A4D);padding:20px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:2px solid #C9A227;position:relative;overflow:hidden}
 .page-head:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(255,213,79,.12),transparent 40%);pointer-events:none}
 .header-logo{display:flex;gap:12px;align-items:center;position:relative}
@@ -46,7 +45,6 @@ body{margin:0;background:#0A1B33;color:#fff}
 .header-actions .h-ic{width:38px;height:38px;border:1px solid rgba(255,213,79,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,.05)}
 .container{max-width:1150px;margin:auto;padding:0 16px 16px;}
 .card{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.3);color:#fff}
-.card.red{border:1px solid rgba(201,162,39,.55);}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:700px){.grid{grid-template-columns:1fr;}}
 label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px;color:#FFE082}
@@ -57,7 +55,6 @@ input:focus,select:focus,textarea:focus{border-color:#FFD54F}
 textarea{min-height:60px;resize:vertical;}
 .btn{width:100%;background:linear-gradient(180deg,#1A244D,#0F1738);color:#fff;border:1.5px solid #FFD54F;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:14px;}
 .btn.red{background:linear-gradient(135deg,#FF5252,#B71C1C);border-color:#FF8A80} .btn2{background:#1A2F52;color:#fff;border:1px solid rgba(201,162,39,.45);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:12px;}
-/* KPI - SAME 3D ICONS */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 .kpi{background:#101F3D;border:1px solid rgba(201,162,39,.55);border-radius:16px;padding:14px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
@@ -79,12 +76,57 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 .auto{background:#1A2F52!important;border-color:#FFD54F!important;color:#FFE082!important}
 .user-bar{background:#101F3D;border:1.5px solid #FFD54F;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .user-bar input{width:auto;flex:1;min-width:180px;}
+.ncw-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+@media(max-width:700px){.ncw-grid{grid-template-columns:1fr}}
+.ncw-item{display:flex;gap:8px;align-items:flex-start;background:#0A162E;border:1px solid rgba(201,162,39,.35);border-radius:10px;padding:10px;font-size:13px;cursor:pointer}
+.ncw-item input{width:18px;height:18px;margin-top:2px;accent-color:#FFD54F;flex-shrink:0}
+.ncw-item b{display:block}
+.ncw-item small{color:#B8C6D6}
+.warn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.warn-row label{flex:1;min-width:110px;background:#0A162E;border:1px solid rgba(201,162,39,.35);border-radius:10px;padding:10px;text-align:center;cursor:pointer;font-size:13px;color:#fff}
+.warn-row input{width:auto}
+.photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.photo-preview img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:2px solid #FFD54F}
+.photo-preview .pwrap{position:relative}
+.photo-preview button{position:absolute;top:-6px;right:-6px;background:#D32F2F;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer}
+/* PRINT - A4 */
+#printArea{display:none}
+@media print{
+  body{background:#fff;color:#000}
+  body *{visibility:hidden}
+  #printArea, #printArea *{visibility:visible}
+  #printArea{display:block!important;position:absolute;top:0;left:0;width:100%}
+  .no-print{display:none!important}
+}
+.a4{width:210mm;min-height:297mm;margin:0 auto;background:#fff;color:#000;padding:14mm 14mm 10mm;page-break-after:always;position:relative}
+.a4:last-child{page-break-after:auto}
+.a4 h2{font-size:16px;text-align:center;margin:4px 0}
+.a4 .top-logo{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #000;padding-bottom:8px}
+.a4 .top-logo b{font-size:20px}
+.a4 .info-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.a4 .info-table td{border:1px solid #000;padding:7px;color:#000;text-align:left}
+.a4 .viol-table{width:100%;border-collapse:collapse;font-size:12px}
+.a4 .viol-table td{border:1px solid #000;padding:7px;color:#000;text-align:left;vertical-align:top}
+.a4 .viol-table td.checked{background:#f2f2f2;font-weight:bold}
+.a4 .sig-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}
+.a4 .sig-table td{border:1px solid #000;padding:8px;color:#000}
+.attach-head{text-align:center;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:10px;color:#000}
+.attach-head h2{margin:2px 0;font-size:18px}
+.attach-grid{display:grid;gap:8px;height:240mm}
+.attach-grid.n1{grid-template-columns:1fr;grid-template-rows:1fr}
+.attach-grid.n2{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+.attach-grid.n3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;grid-template-areas:"a a" "b c"}
+.attach-grid.n3 .p1{grid-area:a}
+.attach-grid.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.attach-grid figure{margin:0;border:1px solid #000;overflow:hidden;display:flex;flex-direction:column}
+.attach-grid figure img{width:100%;height:100%;object-fit:cover;flex:1;min-height:0}
+.attach-grid figcaption{text-align:center;font-size:12px;padding:5px;border-top:1px solid #000;color:#000;background:#fff}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="topbar"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
-<aside class="sidebar" id="sidebar">
+<div class="topbar no-print"><button onclick="toggleSidebar()">☰ Menu</button><b>🏗️ RMED</b><span id="topUser"></span></div>
+<aside class="sidebar no-print" id="sidebar">
   <div class="logo"><b>🏗️ RMED</b><small>Safety Management System</small></div>
   <div class="user-box">
     <img id="sideImg" src="" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
@@ -118,7 +160,7 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
   <a href="register.html" data-page="register"><span class="icon">📝</span> Register</a>
   <a href="#" onclick="logout();return false;" class="logout"><span class="icon">🚪</span> Logout</a>
 </aside>
-<div class="main">
+<div class="main no-print">
 <div class="page-head">
 <div class="header-logo"><div class="header-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A1B33" stroke="#FFD54F" stroke-width="3"/><path d="M43 8 L74 18 V52 C74 70 60 80 43 86 C26 80 12 70 12 52 V18 Z" fill="none" stroke="#C9A227" stroke-width="1"/><circle cx="43" cy="14" r="4" fill="#FFD54F"/></svg><span>RMED</span></div><div><small>RMED Safety • السلامة</small><h1>Employee Violations <span>• الانتهاكات</span></h1><small>Employee Violations - From Firebase • انتهاكات الموظفين</small></div></div>
 <div class="header-actions"><div class="h-ic">🔔</div><div class="h-ic">⚙️</div></div>
@@ -145,7 +187,7 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 </div>
 <div class="card red">
 <h2 style="margin:0 0 5px;">🚨 Register Employee Violation • <span style="color:#FFD54F;">تسجيل مخالفة موظف</span></h2>
-<p style="color:#B8C6D6;font-size:13px;margin:0;">Write name or code, rest will auto-fill from Induction</p>
+<p style="color:#B8C6D6;font-size:13px;margin:0;">Write name or code, rest will auto-fill from Induction - Project is fixed NEW KAIRO</p>
 <div class="grid">
 <div><label>📅 Date *</label><input type="date" id="ev-date"></div>
 <div><label>⏰ Time *</label><input type="time" id="ev-time"></div>
@@ -153,8 +195,9 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 <div><label>🔢 Code - Automatic</label><input id="ev-code" class="auto" placeholder="Write code here if you know it" oninput="lookupByCode(this.value)"><small style="color:#FF8A80;font-size:11px;">If you write code, name will appear automatically</small></div>
 <div><label>👷 Job - Automatic</label><input id="ev-job" class="auto" placeholder="Will appear automatically" readonly></div>
 <div><label>🏢 Company - Automatic</label><input id="ev-company" class="auto" placeholder="Will appear automatically" readonly></div>
-<div><label>📍 Violation Place *</label><input id="ev-place" placeholder="Example: Building A - 3rd Floor - Excavation Area..." list="placesList"><datalist id="placesList"></datalist></div>
-<div><label>⚖️ Action Taken *</label><select id="ev-action">
+<div><label>🏗️ Project - Fixed</label><input id="ev-project" class="auto" value="NEW KAIRO" readonly></div>
+<div><label>📍 Violation Place *</label><input id="ev-place" placeholder="Example: Building A - 3rd Floor..." list="placesList"><datalist id="placesList"></datalist></div>
+<div><label>⚖️ Action Taken *</label><select id="ev-action" onchange="syncDeduction()">
 <option value="">-- Select Action --</option>
 <option>Written Warning</option>
 <option>1 Day Deduction</option>
@@ -162,9 +205,25 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 <option>3 Days Deduction</option>
 <option>Final Exclusion</option>
 </select></div>
-<div style="grid-column:1/-1;"><label>📝 Violation Description *</label><textarea id="ev-desc" placeholder="Example: Not wearing helmet - Working without safety belt - Smoking on site..." list="descList"></textarea></div>
+<div><label>💰 Deduction - Auto from Action</label><input id="ev-deduction" class="auto" placeholder="Auto" readonly></div>
+<div style="grid-column:1/-1;"><label>📝 Violation Description *</label><textarea id="ev-desc" placeholder="Example: Not wearing helmet - Working without safety belt - Smoking on site..."></textarea></div>
 <div><label>🦺 Safety Officer Name - Automatic</label><input id="ev-safety" class="auto" placeholder="Your name will appear automatically" readonly></div>
 <div><label>📝 Notes - Optional</label><input id="ev-notes" placeholder="Any notes..."></div>
+</div>
+<div style="margin-top:14px;border-top:1px solid rgba(201,162,39,.35);padding-top:10px;">
+<h3 style="margin:0 0 6px;">📄 NCW Form - اختر المخالفات للفورمة (بالترتيب والتكرار الأصلي)</h3>
+<div class="ncw-grid" id="ncwGrid"></div>
+<label>⚠️ Warning Number *</label>
+<div class="warn-row">
+<label><input type="radio" name="ev-warning" value="1" checked> 1st Warning - التحذير الأول</label>
+<label><input type="radio" name="ev-warning" value="2"> 2nd Warning - التحذير الثاني</label>
+<label><input type="radio" name="ev-warning" value="3"> 3rd Warning - التحذير الثالث</label>
+</div>
+<label>✍️ Others - أخرى (لو اخترت Others)</label><input id="ev-others" placeholder="Write other violation...">
+<label>📸 Violation Photos - صور المخالفة (حتى 4 صور - هتتحفظ جوه المخالفة، من غير Storage)</label>
+<input type="file" id="ev-photos" accept="image/*" multiple onchange="handlePhotos(this)">
+<div class="photo-preview" id="photoPreview"></div>
+<small style="color:#B8C6D6;">الصور هتتضغط أوتوماتيك عشان تتحفظ في Firestore من غير Storage مدفوع</small>
 </div>
 <button class="btn red" onclick="addEmpViolation()">💾 Save Employee Violation • حفظ مخالفة الموظف</button>
 </div>
@@ -182,6 +241,7 @@ table th{background:#0A162E;color:#FFD54F;padding:9px;border-bottom:1px solid rg
 </div>
 </div>
 </div>
+<div id="printArea"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -202,6 +262,33 @@ function logout(){ if(window.signOutUser) return signOutUser(); localStorage.rem
 })();
 let empViolations = [];
 let allPeople = [];
+let currentPhotos = [];
+const PROJECT_FIXED = 'NEW KAIRO';
+const NCW_LIST = [
+  {en:'Violation against Rowad HSE Rules', ar:'مخالفة ضد قواعد وتعليمات السلامة'},
+  {en:'Working in site without PPE', ar:'العمل بدون مهمات وقاية شخصية'},
+  {en:'Misbehavior / Horseplay / Bullying', ar:'سوء التصرف / المزاح / التنمر والسخرية'},
+  {en:'Smoking in undesignated places', ar:'التدخين فى الأماكن الغير مخصصة'},
+  {en:'Leaving the site before duty time', ar:'مغادرة الموقع قبل وقت العمل المحدد'},
+  {en:'Littering in undesignated places', ar:'رمى النفايات فى الأماكن الغير مخصصة'},
+  {en:'Working at heights without Proper Scaffolding', ar:'العمل على إرتفاع بدون إستخدام سقلات آمنة'},
+  {en:'Working at heights without Proper Scaffolding', ar:'العمل على إرتفاع بدون إستخدام سقلات آمنة'},
+  {en:'Working at heights without Proper Harness', ar:'العمل على إرتفاع بدون إستخدام حذام أمان مناسب'},
+  {en:'Working at heights without Proper Harness', ar:'العمل على إرتفاع بدون إستخدام حذام أمان مناسب'},
+  {en:'Others', ar:'أخرى'}
+];
+function renderNCWGrid(){
+  document.getElementById('ncwGrid').innerHTML = NCW_LIST.map((v,i)=>{
+    return '<label class="ncw-item"><input type="checkbox" class="ncw-check" value="'+i+'"><span><b>'+(i+1)+'. '+v.en+'</b><small>'+v.ar+'</small></span></label>';
+  }).join('');
+}
+renderNCWGrid();
+function syncDeduction(){
+  let a = document.getElementById('ev-action').value;
+  let map = {'Written Warning':'0','1 Day Deduction':'1 Day','2 Days Deduction':'2 Days','3 Days Deduction':'3 Days','Final Exclusion':'Final Exclusion'};
+  document.getElementById('ev-deduction').value = map[a]||'';
+}
+function norm(s){ return String(s||'').trim().toLowerCase(); }
 const ACTION_MAP={'انذار كتابي':'Written Warning','خصم يوم':'1 Day Deduction','خصم يومين':'2 Days Deduction','خصم 3 ايام':'3 Days Deduction','خصم ٣ ايام':'3 Days Deduction','استبعاد نهائي':'Final Exclusion','استبعاد':'Exclusion','Written Warning':'Written Warning','1 Day Deduction':'1 Day Deduction','2 Days Deduction':'2 Days Deduction','3 Days Deduction':'3 Days Deduction','Final Exclusion':'Final Exclusion'};
 function TAction(v){ return ACTION_MAP[String(v||'').trim()]||v||''; }
 async function loadAll(){
@@ -214,25 +301,25 @@ async function loadAll(){
       let s1 = await window.db.collection('induction').get();
       s1.forEach(d=>{ let x=d.data(); allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
       let s2 = await window.db.collection('workers').get().catch(()=>null);
-      if(s2) s2.forEach(d=>{ let x=d.data(); if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
+      if(s2) s2.forEach(d=>{ let x=d.data(); if(!allPeople.find(p=>norm(p.name)===norm(x.name))) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
     }
   }catch(e){ console.log(e); }
   try{
     let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
     if(!empViolations.length && DB.empViolations) empViolations=DB.empViolations;
-    (DB.induction||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
-    (DB.workers||[]).forEach(x=>{ if(!allPeople.find(p=>p.name===x.name)) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
+    (DB.induction||[]).forEach(x=>{ if(!allPeople.find(p=>norm(p.name)===norm(x.name))) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
+    (DB.workers||[]).forEach(x=>{ if(!allPeople.find(p=>norm(p.name)===norm(x.name))) allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'}); });
   }catch(e){}
   renderEmpViol();
 }
 function val(id){ return document.getElementById(id).value.trim(); }
 function setVal(id,v){ document.getElementById(id).value=v||''; }
-function getAllPeople(){ return allPeople; }
 function lookupByName(name){
-  let p=allPeople.find(x=>x.name===name.trim());
+  let p=allPeople.find(x=>norm(x.name)===norm(name));
   if(p){
     setVal('ev-code',p.code); setVal('ev-job',p.job); setVal('ev-company',p.company);
     document.getElementById('nameHint').innerText='✅ Found - Code: '+p.code+' - Job: '+p.job;
+    document.getElementById('ev-job').readOnly=true; document.getElementById('ev-company').readOnly=true;
   } else if(name.trim().length>2){
     document.getElementById('nameHint').innerText='⚠️ Name not found in Induction - Write code and job manually if you want';
     document.getElementById('ev-job').readOnly=false;
@@ -241,7 +328,7 @@ function lookupByName(name){
 }
 function lookupByCode(code){
   if(!code.trim()) return;
-  let p=allPeople.find(x=>(x.code||'').toString()===code.trim());
+  let p=allPeople.find(x=>norm(x.code)===norm(code));
   if(p){
     setVal('ev-name',p.name); setVal('ev-job',p.job); setVal('ev-company',p.company);
     document.getElementById('nameHint').innerText='✅ Found by code - Name: '+p.name+' - Job: '+p.job;
@@ -251,6 +338,35 @@ function getReporter(){
   let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');
   if(typeof u==='object' && u.name) return u.name;
   return localStorage.getItem('safetyUser')||'';
+}
+function compressImage(file){
+  return new Promise((resolve)=>{
+    let reader=new FileReader();
+    reader.onload=(e)=>{
+      let img=new Image();
+      img.onload=()=>{
+        let canvas=document.createElement('canvas');
+        let max=1200; let w=img.width, h=img.height;
+        if(w>max){ h=h*max/w; w=max; }
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',0.75));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function handlePhotos(input){
+  let files=[...input.files].slice(0,4);
+  currentPhotos=[];
+  for(let f of files){ currentPhotos.push(await compressImage(f)); }
+  renderPhotoPreview();
+}
+function renderPhotoPreview(){
+  document.getElementById('photoPreview').innerHTML = currentPhotos.map((src,i)=>{
+    return '<div class="pwrap"><img src="'+src+'"><button onclick="currentPhotos.splice('+i+',1);renderPhotoPreview()">×</button></div>';
+  }).join('');
 }
 async function addEmpViolation(){
   if(!val('ev-date')) return alert('Select date');
@@ -263,7 +379,9 @@ async function addEmpViolation(){
   if(!val('ev-action')) return alert('Select action taken');
   if(!window.db) return alert('Firebase not connected');
   let rep=val('ev-safety')||getReporter();
-  let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',place:val('ev-place'),desc:val('ev-desc'),action:val('ev-action'),safety:rep,reporter:rep,reporterName:rep,notes:val('ev-notes'),createdAt:new Date().toISOString()};
+  let checked=[...document.querySelectorAll('.ncw-check:checked')].map(c=>parseInt(c.value));
+  let warn=document.querySelector('input[name="ev-warning"]:checked');
+  let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',project:PROJECT_FIXED,place:val('ev-place'),desc:val('ev-desc'),action:val('ev-action'),deduction:val('ev-deduction'),warning: warn?warn.value:'1',ncwChecks:checked,others:val('ev-others'),photos:currentPhotos,safety:rep,reporter:rep,reporterName:rep,notes:val('ev-notes'),createdAt:new Date().toISOString()};
   try{
     let ref = await window.db.collection('employeeViolations').add(rec);
     rec.id = ref.id;
@@ -273,9 +391,12 @@ async function addEmpViolation(){
   let count=empViolations.filter(x=>x.name===rec.name).length;
   if(count>1) alert('⚠️ Note - '+rec.name+' this is violation number '+count+' for him!');
   else alert('✅ Saved violation for '+rec.name+' in Firebase - '+rec.action);
-  ['ev-name','ev-code','ev-job','ev-company','ev-place','ev-desc','ev-notes'].forEach(id=>setVal(id,''));
-  setVal('ev-action',''); document.getElementById('nameHint').innerText='';
+  ['ev-name','ev-code','ev-job','ev-company','ev-place','ev-desc','ev-notes','ev-others'].forEach(id=>setVal(id,''));
+  setVal('ev-project',PROJECT_FIXED);
+  setVal('ev-action',''); setVal('ev-deduction',''); document.getElementById('nameHint').innerText='';
   document.getElementById('ev-job').readOnly=true; document.getElementById('ev-company').readOnly=true;
+  document.querySelectorAll('.ncw-check').forEach(c=>c.checked=false);
+  currentPhotos=[]; renderPhotoPreview(); document.getElementById('ev-photos').value='';
 }
 function topOf(arr, key){
   let m={}; arr.forEach(x=>{ let k=key==='action'?TAction(x[key]):x[key]; if(!k) return; m[k]=(m[k]||0)+1; });
@@ -321,10 +442,51 @@ function renderEmpViol(){
     return '<tr><td><b style="color:#FF8A80;">'+name+'</b></td><td>'+v.code+'</td><td>'+v.job+'</td><td><b>'+v.count+'</b></td><td>'+last.date+' - '+last.desc+'</td></tr>';
   }).join('')+'</table>';
   if(!list.length){ document.getElementById('empViolTable').innerHTML='<p style="text-align:center;color:#999;">No employee violations yet</p>'; return; }
-  document.getElementById('empViolTable').innerHTML='<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Job</th><th>Place</th><th>Violation Description</th><th>Action</th><th>Amount</th><th>Delete</th></tr>'+list.map(x=>{
+  document.getElementById('empViolTable').innerHTML='<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Job</th><th>Place</th><th>Violation Description</th><th>Action</th><th>NCW</th><th>Delete</th></tr>'+list.map(x=>{
     let idx=empViolations.indexOf(x);
-    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.name+'</b></td><td>'+x.code+'</td><td>'+x.job+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:200px;">'+x.desc+'</td><td>'+TAction(x.action)+'</td><td style="font-size:11px;color:#B8C6D6;">By: '+(x.safety||'-')+'</td><td><button class="btn2" style="color:#FF8A80;" onclick="delEmpViol('+idx+')">🗑️</button></td></tr>';
+    return '<tr><td>'+x.date+'<br>'+x.time+'</td><td><b>'+x.name+'</b></td><td>'+x.code+'</td><td>'+x.job+'</td><td>'+x.place+'</td><td style="text-align:left;max-width:200px;">'+x.desc+'</td><td>'+TAction(x.action)+'</td><td><button class="btn2" onclick="printNCW('+idx+')">🖨️ NCW PDF</button><br><small style="color:#B8C6D6;">By: '+(x.safety||'-')+'</small></td><td><button class="btn2" style="color:#FF8A80;" onclick="delEmpViol('+idx+')">🗑️</button></td></tr>';
   }).join('')+'</table>';
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function printNCW(idx){
+  let x = empViolations[idx];
+  if(!x) return;
+  let checks = x.ncwChecks || [];
+  let warning = x.warning || '1';
+  let photos = x.photos || [];
+  let violRows = '';
+  for(let r=0;r<5;r++){
+    let c1 = r*2, c2 = r*2+1;
+    let v1 = NCW_LIST[c1], v2 = NCW_LIST[c2];
+    let is1 = checks.includes(c1), is2 = checks.includes(c2);
+    let t1 = v1.en + '<br>' + v1.ar + (c1===10 && x.others ? '<br><b>Others: '+esc(x.others)+'</b>' : '');
+    let t2 = v2 ? v2.en + '<br>' + v2.ar + (c2===10 && x.others ? '<br><b>Others: '+esc(x.others)+'</b>' : '') : '';
+    if(r===5){}
+    violRows += '<tr><td class="'+(is1?'checked':'')+'">'+(is1?'☑ ':'☐ ')+t1+'</td><td class="'+(is2?'checked':'')+'">'+(is2?'☑ ':'☐ ')+t2+'</td></tr>';
+  }
+  let attachHtml = '';
+  if(photos.length){
+    let cls = 'n'+Math.min(photos.length,4);
+    let figs = photos.slice(0,4).map((src,i)=>'<figure class="p'+(i+1)+'"><img src="'+src+'"><figcaption>Photo '+(i+1)+' - '+esc(x.name)+' - '+esc(x.date)+'</figcaption></figure>').join('');
+    attachHtml = '<div class="a4"><div class="attach-head"><h2>Violation Photos - Attachments</h2><p>'+esc(x.project||PROJECT_FIXED)+' - '+esc(x.name)+' - '+esc(x.code)+' - '+esc(x.date)+' '+esc(x.time)+'</p><p>'+esc(x.desc)+'</p></div><div class="attach-grid '+cls+'">'+figs+'</div></div>';
+  }
+  let html = '<div class="a4">'
+        + '<div class="top-logo"><div><b>RMED</b><br><small>Rowad Modern Engineering & Development</small></div><div style="text-align:right"><b>NON-COMPLIANCE WARNING</b><br><small>F-P-SF-01-07 - NCW</small></div></div>'
+        + '<h2>Non-Compliance Warning - تحذير عدم الالتزام</h2>'
+        + '<table class="info-table"><tr><td>To Mr : <b>'+esc(x.name)+'</b></td><td>Rowad ID : <b>'+esc(x.code)+'</b></td></tr>'
+        + '<tr><td>Company : <b>'+esc(x.company)+'</b></td><td>Project : <b>'+esc(x.project||PROJECT_FIXED)+'</b></td></tr>'
+        + '<tr><td>Date : <b>'+esc(x.date)+'</b></td><td>Time : <b>'+esc(x.time)+'</b></td></tr></table>'
+        + '<p style="font-size:13px;color:#000"><b>Violation Description:</b> '+esc(x.desc)+'<br><b>Place:</b> '+esc(x.place)+'</p>'
+        + '<table class="viol-table">'+violRows+'</table>'
+        + '<p style="font-size:13px;color:#000;margin:10px 0;">This is Considered as: '+(warning==='1'?'☑':'☐')+' 1st Warning &nbsp; '+(warning==='2'?'☑':'☐')+' 2nd Warning &nbsp; '+(warning==='3'?'☑':'☐')+' 3rd Warning</p>'
+        + '<p style="font-size:13px;color:#000;text-align:right;">التحذير الثالث '+(warning==='3'?'☑':'☐')+' &nbsp; التحذير الثانى '+(warning==='2'?'☑':'☐')+' &nbsp; التحذير الأول '+(warning==='1'?'☑':'☐')+' &nbsp; هذا التحذير يعتبر</p>'
+        + '<p style="font-size:13px;color:#000;"><b>Amount of Deduction ( قيمة الخصم ) :</b> '+esc(x.deduction||'')+' - Action: '+esc(TAction(x.action))+'</p>'
+        + '<table class="sig-table"><tr><td>Reported By HSE Engineer<br>تم الإعداد بواسطة</td><td>Name ( الإسم )<br><b>'+esc(x.safety||'')+'</b></td><td>Signature ( التوقيع )<br><br></td></tr>'
+        + '<tr><td>Action By HSE Manager<br>تم تطبيق الإجراء بواسطة</td><td>Name ( الإسم )<br><br></td><td>Signature ( التوقيع )<br><br></td></tr></table>'
+        + '<p style="font-size:11px;color:#000;text-align:center;margin-top:10px;">Project: '+esc(x.project||PROJECT_FIXED)+' - Printed from RMED Safety System</p>'
+        + '</div>' + attachHtml;
+  document.getElementById('printArea').innerHTML = html;
+  setTimeout(()=>window.print(), 300);
 }
 async function delEmpViol(i){
   if(!confirm('Delete this violation?')) return;
@@ -344,7 +506,7 @@ async function clearEmpViol(){
 }
 function exportEmpViol(){
   if(!empViolations.length) return alert('No data');
-  let csv='Date,Time,Violator Name,Code,Job,Company,Violation Place,Violation Description,Action Taken,Safety Officer,Notes\n'+empViolations.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"',TAction(x.action),x.safety,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+  let csv='Date,Time,Violator Name,Code,Job,Company,Project,Violation Place,Violation Description,Action Taken,Safety Officer,Notes\n'+empViolations.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.project||PROJECT_FIXED,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"',TAction(x.action),x.safety,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
   let blob=new Blob(['\ufeff'+csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='employee-violations.csv'; a.click();
 }
 let savedUser=getReporter();
@@ -352,6 +514,7 @@ document.getElementById('currentUser').value=savedUser;
 document.getElementById('ev-safety').value=savedUser;
 document.getElementById('ev-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('ev-time').value=new Date().toTimeString().slice(0,5);
+document.getElementById('ev-project').value=PROJECT_FIXED;
 loadAll();
 </script>
 </body>
