@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة المشرف - RMED</title>
+<title>لوحة المشرف - RMED - Firebase</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
-.top{background:#0A1F44;color:#fff;padding:16px 20px}
+.top{background:#0A1F44;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .top b{font-size:20px}.top b span{color:#FFD54F}
 .container{max-width:1200px;margin:auto;padding:16px}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44}
 .card.gold{border-top-color:#FFD54F}
-.card.err{background:#FFEBEE;border:1px solid #EF9A9A;color:#B71C1C}
 .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
 .filters label{font-size:12px;font-weight:bold;color:#546E7A;display:block;margin-bottom:4px}
 .filters input,.filters select{padding:10px 12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;min-width:150px}
@@ -30,15 +29,12 @@ canvas{width:100%;background:#fff;border:1px solid #EEE;border-radius:12px}
 </style>
 </head>
 <body>
-<div class="top"><div><b>RMED <span>•</span> لوحة المشرف</b><br><small>Supervisor & Manager Only - V3 خفيفة</small></div><div id="who">جاري التحميل...</div></div>
+<div class="top"><div><b>RMED <span>•</span> لوحة المشرف - Firebase</b><br><small>Supervisor & Manager Only</small></div><div id="who">جاري التحميل...</div></div>
 
 <div class="container">
-  <div class="card err" id="errBox" style="display:none"></div>
-
   <div class="card" style="background:#FFF8E1">
-    <b>🔍 فحص الداتا:</b>
-    <div id="debugBox" style="font-size:13px;line-height:1.9">جاري الفحص...</div>
-    <button class="btn" onclick="showAll()">عرض الكل من غير فلتر</button>
+    <b>🔍 حالة الاتصال بـ Firebase:</b>
+    <div id="debugBox" style="font-size:13px;line-height:1.9">جاري الاتصال بـ Firebase...</div>
   </div>
 
   <div class="card gold">
@@ -50,6 +46,7 @@ canvas{width:100%;background:#fff;border:1px solid #EEE;border-radius:12px}
       <button class="btn" onclick="renderAll(false)">🔍 عرض</button>
       <button class="btn dark" onclick="setToday()">اليوم بس</button>
       <button class="btn dark" onclick="setMonth()">الشهر ده</button>
+      <button class="btn dark" onclick="loadAll()">🔄 تحديث من Firebase</button>
     </div>
   </div>
 
@@ -61,217 +58,184 @@ canvas{width:100%;background:#fff;border:1px solid #EEE;border-radius:12px}
   </div>
 
   <div class="card">
-    <h3 style="margin:0">📈 تطور أداء كل موظف</h3>
-    <small style="color:#78909C">الخط الطالع = بيتحسن، النازل = بيقل</small>
+    <h3 style="margin:0">📈 تطور أداء كل موظف - الخط الطالع = بيتحسن</h3>
     <canvas id="myChart" height="220" style="margin-top:12px"></canvas>
     <div id="chartLegend" style="font-size:12px;margin-top:8px"></div>
   </div>
 
   <div class="card">
     <h3 style="margin:0">👥 نشاط الموظفين - اضغط على موظف للتفاصيل</h3>
-    <div id="empTable"><p style="text-align:center;color:#999">جاري التحميل...</p></div>
+    <div id="empTable"><p style="text-align:center;color:#999">جاري جلب الداتا من Firebase...</p></div>
   </div>
 
   <div class="card" id="detailCard" style="display:none"><h3 style="margin:0" id="detailTitle"></h3><div id="detailBody"></div></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
 <script>
-// لو حصل اي غلط، اعرضه بدل الصفحة البيضاء
-window.onerror = function(msg, url, line){
-  var b = document.getElementById('errBox');
-  b.style.display = 'block';
-  b.innerHTML = '⚠️ فيه غلط في الكود: ' + msg + ' - سطر ' + line + '<br>ابعتلي الرسالة دي وانا اصلحها.';
-};
-
-var me = null;
-try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){ me = {}; }
-document.getElementById('who').innerHTML = 'مرحباً: <b>' + (me.name || 'ضيف') + '</b> - ' + (me.role || me.job || '');
+function getMe(){
+  if(window.getMeFromAuth) return window.getMeFromAuth();
+  try{ return JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}'); }catch(e){ return {}; }
+}
+var me = getMe();
+document.getElementById('who').innerHTML = 'مرحباً: <b>'+(me.name||'')+'</b> - '+(me.role||me.job||'');
 
 function parseDate(raw){
   if(!raw) return '';
-  if(typeof raw === 'number') return new Date(raw).toISOString().slice(0,10);
-  var s = String(raw).trim();
-  if(!s) return '';
-  if(s.indexOf('T') !== -1) return s.slice(0,10);
-  if(s.indexOf('/') !== -1){
-    var p = s.split('/');
-    if(p.length === 3){
-      var a = parseInt(p[0],10), b = parseInt(p[1],10), y = parseInt(p[2],10);
-      if(y < 100) y += 2000;
-      var d, m;
-      if(a > 12){ d = a; m = b; } else if(b > 12){ d = b; m = a; } else { d = a; m = b; }
-      return y + '-' + (m<10?'0':'') + m + '-' + (d<10?'0':'') + d;
-    }
+  if(typeof raw==='number') return new Date(raw).toISOString().slice(0,10);
+  var s=String(raw).trim(); if(!s) return '';
+  if(s.indexOf('T')!==-1) return s.slice(0,10);
+  if(s.indexOf('/')!==-1){
+    var p=s.split('/'); if(p.length===3){ var a=parseInt(p[0],10),b=parseInt(p[1],10),y=parseInt(p[2],10); if(y<100) y+=2000; var d,m; if(a>12){d=a;m=b}else if(b>12){d=b;m=a}else{d=a;m=b} return y+'-'+(m<10?'0':'')+m+'-'+(d<10?'0':'')+d; }
   }
-  if(s.indexOf('-') !== -1) return s.slice(0,10);
-  var t = new Date(s);
-  if(!isNaN(t)) return t.toISOString().slice(0,10);
+  if(s.indexOf('-')!==-1) return s.slice(0,10);
+  var t=new Date(s); if(!isNaN(t)) return t.toISOString().slice(0,10);
   return '';
 }
-function getDate(x){ return parseDate(x.date || x.createdAt || x.created_at || x.timestamp || x.day || ''); }
+function getDate(x){
+  // Firebase ممكن يرجع Timestamp
+  var v = x.date || x.createdAt || x.created_at || x.day || x.timestamp;
+  if(v && typeof v==='object' && v.toDate) return v.toDate().toISOString().slice(0,10);
+  if(v && typeof v==='object' && v.seconds) return new Date(v.seconds*1000).toISOString().slice(0,10);
+  return parseDate(v);
+}
 function getName(x){
-  var n = x.reporter || x.by || x.trainer || x.createdBy || x.user || x.employee || x.empName || x.name || x.author || x.uploadedBy;
-  if(n && typeof n === 'object') n = n.name;
-  if(!n) n = (me && me.name) ? me.name : 'غير معروف';
+  var n = x.reporter || x.reporterName || x.by || x.trainer || x.createdBy || x.user || x.employee || x.empName || x.name || x.author || x.uploadedBy || x.officer || x.supervisor;
+  if(n && typeof n==='object') n=n.name;
+  if(!n) n = me.name || 'غير معروف';
   return String(n).trim();
 }
-function getDetail(x, fb){ return String(x.desc || x.title || x.name || x.company || x.subject || fb || '').slice(0,70); }
-
-var DB = {};
-try{ DB = JSON.parse(localStorage.getItem('safetyDB') || '{}'); }catch(e){ DB = {}; }
-if(!DB || Object.keys(DB).length === 0){
-  try{ DB = JSON.parse(localStorage.getItem('DB') || '{}'); }catch(e){}
-}
-// لو كل نوع متخزن لوحده
-var singleKeys = ['induction','train','weeklyLect','weekly','observations','safetyObservations','violations','permits','accidents'];
-for(var i=0;i<singleKeys.length;i++){
-  var k = singleKeys[i];
-  if(!DB[k]){
-    try{ var v = JSON.parse(localStorage.getItem(k) || '[]'); if(Array.isArray(v)) DB[k] = v; }catch(e){}
-  }
-}
+function getDetail(x, fb){ return String(x.desc || x.description || x.title || x.name || x.company || x.subject || fb || '').slice(0,70); }
 
 var allActs = [];
-function push(list, type, pts){
-  if(!Array.isArray(list)) return;
-  for(var i=0;i<list.length;i++){
-    var x = list[i] || {};
-    allActs.push({ d: getDate(x), raw: (x.date || x.createdAt || ''), name: getName(x), type: type, pts: pts, detail: getDetail(x, type) });
+var COLS = [
+  {col:'inductions', type:'📘 أولية', pts:5},
+  {col:'induction', type:'📘 أولية', pts:5},
+  {col:'trainings', type:'🎓 تدريب', pts:5},
+  {col:'train', type:'🎓 تدريب', pts:5},
+  {col:'weekly', type:'📅 أسبوعية', pts:10},
+  {col:'weeklyMeetings', type:'📅 أسبوعية', pts:10},
+  {col:'weeklyLectures', type:'📅 أسبوعية', pts:10},
+  {col:'safetyObservations', type:'📋 ملاحظة', pts:3},
+  {col:'observations', type:'📋 ملاحظة', pts:3},
+  {col:'violations', type:'⚠️ مخالفة مقاول', pts:2},
+  {col:'employeeViolations', type:'🚨 مخالفة موظف', pts:2},
+  {col:'employee-violations', type:'🚨 مخالفة موظف', pts:2},
+  {col:'permits', type:'📋 تصريح', pts:2},
+  {col:'accidents', type:'🚑 حادث', pts:2},
+  {col:'nearMiss', type:'⚡ Near Miss', pts:3},
+  {col:'near-miss', type:'⚡ Near Miss', pts:3},
+  {col:'ncr', type:'📄 NCR', pts:2},
+  {col:'scaffolds', type:'🏗️ سقالة', pts:2},
+  {col:'firstAid', type:'🩹 إسعاف', pts:2},
+  {col:'first-aid', type:'🩹 إسعاف', pts:2}
+];
+
+async function loadAll(){
+  document.getElementById('debugBox').innerHTML = 'جاري الاتصال...';
+  if(!window.db){
+    document.getElementById('debugBox').innerHTML = '❌ window.db مش موجود - اتأكد ان ملف firebase-config.js جنب الصفحة دي في نفس الفولدر';
+    return;
   }
+  allActs = [];
+  var logs = [];
+  for(var i=0;i<COLS.length;i++){
+    var c = COLS[i];
+    try{
+      var snap = await window.db.collection(c.col).get();
+      logs.push(c.col + ': ' + snap.size + ' عنصر');
+      snap.forEach(function(doc){
+        var x = doc.data() || {};
+        allActs.push({d:getDate(x), raw:(x.date||x.createdAt||''), name:getName(x), type:c.type, pts:c.pts, detail:getDetail(x,c.type), col:c.col});
+      });
+    }catch(e){
+      // الكوليكشن مش موجود، عادي نتخطاه
+      logs.push(c.col + ': مش موجود / ' + e.message.slice(0,40));
+    }
+  }
+  document.getElementById('debugBox').innerHTML = '✅ متصل بـ Firebase - إجمالي: <b>'+allActs.length+'</b> نشاط<br>' + logs.join(' | ');
+  // حدث قايمة الموظفين
+  var names=[]; for(var i=0;i<allActs.length;i++){ if(names.indexOf(allActs[i].name)===-1) names.push(allActs[i].name); }
+  names.sort();
+  var sel=document.getElementById('empSelect'); sel.innerHTML='<option value="">كل الموظفين</option>';
+  for(var i=0;i<names.length;i++){ var o=document.createElement('option'); o.value=names[i]; o.textContent=names[i]; sel.appendChild(o); }
+  setMonth();
 }
-push(DB.induction || DB.inductions, '📘 أولية', 5);
-push(DB.train || DB.trainings || DB.training, '🎓 تدريب', 5);
-push(DB.weeklyLect || DB.weekly || DB.weeklyLectures, '📅 أسبوعية', 10);
-push(DB.observations || DB.safetyObservations || DB.obs, '📋 ملاحظة', 3);
-push(DB.violations || DB.violationsList, '⚠️ مخالفة', 2);
-push(DB.empViolations, '⚠️ مخالفة موظف', 2);
-push(DB.permits, '📋 تصريح', 2);
-
-var names = [];
-for(var i=0;i<allActs.length;i++){ if(names.indexOf(allActs[i].name) === -1) names.push(allActs[i].name); }
-names.sort();
-var sel = document.getElementById('empSelect');
-for(var i=0;i<names.length;i++){ var o = document.createElement('option'); o.value = names[i]; o.textContent = names[i]; sel.appendChild(o); }
-
-document.getElementById('debugBox').innerHTML =
-  'إجمالي اللي اتقرأ: <b>' + allActs.length + '</b> نشاط<br>' +
-  'مفاتيح safetyDB: ' + Object.keys(DB).join(', ') + '<br>' +
-  'induction: ' + (DB.induction||[]).length + ' | train: ' + (DB.train||[]).length + ' | weekly: ' + ((DB.weeklyLect||DB.weekly||[]).length) + ' | obs: ' + ((DB.observations||DB.safetyObservations||[]).length) + ' | viol: ' + ((DB.violations||[]).length) + '<br>' +
-  'أول 3: ' + allActs.slice(0,3).map(function(a){ return a.raw + ' -> ' + a.d + ' - ' + a.name; }).join(' | ');
 
 var today = new Date().toISOString().slice(0,10);
-function setToday(){ document.getElementById('fromDate').value = today; document.getElementById('toDate').value = today; renderAll(false); }
-function setMonth(){ var d = new Date(); var f = d.getFullYear() + '-' + (d.getMonth()+1<10?'0':'') + (d.getMonth()+1) + '-01'; document.getElementById('fromDate').value = f; document.getElementById('toDate').value = today; renderAll(false); }
-function showAll(){ document.getElementById('fromDate').value = ''; document.getElementById('toDate').value = ''; renderAll(true); }
+function setToday(){ document.getElementById('fromDate').value=today; document.getElementById('toDate').value=today; renderAll(false); }
+function setMonth(){ var d=new Date(); var f=d.getFullYear()+'-'+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)+'-01'; document.getElementById('fromDate').value=f; document.getElementById('toDate').value=today; renderAll(false); }
 
 function getFiltered(ignoreDate){
-  var f = document.getElementById('fromDate').value;
-  var t = document.getElementById('toDate').value;
-  var emp = document.getElementById('empSelect').value;
-  var out = [];
+  var f=document.getElementById('fromDate').value, t=document.getElementById('toDate').value, emp=document.getElementById('empSelect').value;
+  var out=[];
   for(var i=0;i<allActs.length;i++){
-    var a = allActs[i];
+    var a=allActs[i];
     if(!ignoreDate){
-      if(f && a.d && a.d < f) continue;
-      if(t && a.d && a.d > t) continue;
-      if(f && !a.d) continue;
+      if(f && a.d && a.d<f) continue;
+      if(t && a.d && a.d>t) continue;
     }
-    if(emp && a.name !== emp) continue;
+    if(emp && a.name!==emp) continue;
     out.push(a);
   }
   return out;
 }
-
-var currentEmp = '';
 function renderAll(ignoreDate){
-  var list = getFiltered(ignoreDate);
-  var by = {};
-  for(var i=0;i<list.length;i++){
-    var a = list[i];
-    if(!by[a.name]) by[a.name] = {pts:0, count:0, last:a.d};
-    by[a.name].pts += a.pts; by[a.name].count++;
-    if(a.d > by[a.name].last) by[a.name].last = a.d;
-  }
-  var arr = [];
-  for(var k in by){ arr.push({name:k, pts:by[k].pts, count:by[k].count, last:by[k].last}); }
-  arr.sort(function(a,b){ return b.pts - a.pts; });
-  var totalPts = 0; for(var i=0;i<list.length;i++) totalPts += list[i].pts;
-  document.getElementById('k-acts').innerHTML = list.length;
-  document.getElementById('k-emps').innerHTML = arr.length;
-  document.getElementById('k-points').innerHTML = totalPts;
-  document.getElementById('k-top').innerHTML = arr[0] ? arr[0].name + ' (' + arr[0].pts + ')' : '-';
-  var html = '<table><tr><th>#</th><th>الموظف</th><th>عدد النشاطات</th><th>النقاط</th><th>آخر نشاط</th></tr>';
-  for(var i=0;i<arr.length;i++){
-    html += '<tr class="emp-row" onclick="openDetail(\'' + arr[i].name.replace(/'/g,'') + '\')"><td>' + (i+1) + '</td><td><b>' + arr[i].name + '</b></td><td>' + arr[i].count + '</td><td><b>' + arr[i].pts + '</b></td><td>' + (arr[i].last||'-') + '</td></tr>';
-  }
-  html += '</table>';
-  document.getElementById('empTable').innerHTML = arr.length ? html : '<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي - دوس (عرض الكل من غير فلتر) فوق</p>';
+  var list=getFiltered(ignoreDate);
+  var by={};
+  for(var i=0;i<list.length;i++){ var a=list[i]; if(!by[a.name]) by[a.name]={pts:0,count:0,last:a.d}; by[a.name].pts+=a.pts; by[a.name].count++; if(a.d>by[a.name].last) by[a.name].last=a.d; }
+  var arr=[]; for(var k in by) arr.push({name:k,pts:by[k].pts,count:by[k].count,last:by[k].last});
+  arr.sort(function(a,b){return b.pts-a.pts});
+  var tot=0; for(var i=0;i<list.length;i++) tot+=list[i].pts;
+  document.getElementById('k-acts').innerHTML=list.length;
+  document.getElementById('k-emps').innerHTML=arr.length;
+  document.getElementById('k-points').innerHTML=tot;
+  document.getElementById('k-top').innerHTML=arr[0]?arr[0].name+' ('+arr[0].pts+')':'-';
+  var html='<table><tr><th>#</th><th>الموظف</th><th>عدد النشاطات</th><th>النقاط</th><th>آخر نشاط</th></tr>';
+  for(var i=0;i<arr.length;i++){ html+='<tr class="emp-row" onclick="openDetail(\''+arr[i].name.replace(/'/g,'')+'\')"><td>'+(i+1)+'</td><td><b>'+arr[i].name+'</b></td><td>'+arr[i].count+'</td><td><b>'+arr[i].pts+'</b></td><td>'+(arr[i].last||'-')+'</td></tr>'; }
+  html+='</table>';
+  document.getElementById('empTable').innerHTML=arr.length?html:'<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي - جرب توسع الفترة أو دوس تحديث من Firebase</p>';
   drawChart(list, arr);
 }
-
 function drawChart(list, arr){
-  var canvas = document.getElementById('myChart');
-  var ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width, canvas.height);
-  var top = arr.slice(0,4);
-  if(top.length === 0){ ctx.fillStyle = '#999'; ctx.font = '16px Arial'; ctx.fillText('مفيش داتا للرسم - دوس عرض الكل', 20, 50); return; }
-  var days = [];
-  for(var i=0;i<list.length;i++){ if(list[i].d && days.indexOf(list[i].d) === -1) days.push(list[i].d); }
-  days.sort();
-  days = days.slice(-14);
-  if(days.length === 0) days = [today];
-  var colors = ['#0A1F44','#D32F2F','#2E7D32','#FF9800'];
-  var maxPts = 10;
+  var canvas=document.getElementById('myChart'); var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height);
+  var top=arr.slice(0,4);
+  if(!top.length){ ctx.fillStyle='#999'; ctx.font='16px Arial'; ctx.fillText('مفيش داتا للرسم',20,50); return; }
+  var days=[]; for(var i=0;i<list.length;i++){ if(list[i].d && days.indexOf(list[i].d)===-1) days.push(list[i].d); }
+  days.sort(); days=days.slice(-14); if(!days.length) days=[today];
+  var colors=['#0A1F44','#D32F2F','#2E7D32','#FF9800'];
+  var maxPts=10;
+  for(var i=0;i<top.length;i++){ var cum=0; for(var j=0;j<days.length;j++){ var dp=0; for(var k=0;k<list.length;k++){ if(list[k].name===top[i].name && list[k].d===days[j]) dp+=list[k].pts; } cum+=dp; if(cum>maxPts) maxPts=cum; } }
+  var W=canvas.width, H=canvas.height;
+  ctx.strokeStyle='#EEE'; ctx.beginPath(); ctx.moveTo(40,10); ctx.lineTo(40,H-30); ctx.lineTo(W-10,H-30); ctx.stroke();
   for(var i=0;i<top.length;i++){
-    var cum = 0;
-    for(var j=0;j<days.length;j++){
-      var dayPts = 0;
-      for(var k=0;k<list.length;k++){ if(list[k].name === top[i].name && list[k].d === days[j]) dayPts += list[k].pts; }
-      cum += dayPts; if(cum > maxPts) maxPts = cum;
-    }
+    var cum=0; var pts=[];
+    for(var j=0;j<days.length;j++){ var dp=0; for(var k=0;k<list.length;k++){ if(list[k].name===top[i].name && list[k].d===days[j]) dp+=list[k].pts; } cum+=dp; var x=50+(j*(W-70)/Math.max(1,days.length-1)); var y=(H-30)-(cum/maxPts)*(H-60); pts.push({x:x,y:y}); }
+    ctx.strokeStyle=colors[i%colors.length]; ctx.lineWidth=3; ctx.beginPath(); for(var j=0;j<pts.length;j++){ if(j===0) ctx.moveTo(pts[j].x,pts[j].y); else ctx.lineTo(pts[j].x,pts[j].y); } ctx.stroke();
+    ctx.fillStyle=colors[i%colors.length]; for(var j=0;j<pts.length;j++){ ctx.beginPath(); ctx.arc(pts[j].x,pts[j].y,4,0,7); ctx.fill(); }
   }
-  var W = canvas.width, H = canvas.height;
-  ctx.strokeStyle = '#EEE'; ctx.beginPath(); ctx.moveTo(40,10); ctx.lineTo(40,H-30); ctx.lineTo(W-10,H-30); ctx.stroke();
-  ctx.fillStyle = '#999'; ctx.font = '12px Arial';
-  for(var i=0;i<top.length;i++){
-    var cum = 0; var points = [];
-    for(var j=0;j<days.length;j++){
-      var dayPts = 0;
-      for(var k=0;k<list.length;k++){ if(list[k].name === top[i].name && list[k].d === days[j]) dayPts += list[k].pts; }
-      cum += dayPts;
-      var x = 50 + (j * (W-70) / Math.max(1, days.length-1));
-      var y = (H-30) - (cum / maxPts) * (H-60);
-      points.push({x:x, y:y});
-    }
-    ctx.strokeStyle = colors[i % colors.length]; ctx.lineWidth = 3; ctx.beginPath();
-    for(var j=0;j<points.length;j++){ if(j===0) ctx.moveTo(points[j].x, points[j].y); else ctx.lineTo(points[j].x, points[j].y); }
-    ctx.stroke();
-    ctx.fillStyle = colors[i % colors.length];
-    for(var j=0;j<points.length;j++){ ctx.beginPath(); ctx.arc(points[j].x, points[j].y, 4, 0, 7); ctx.fill(); }
-  }
-  var legend = '';
-  for(var i=0;i<top.length;i++){ legend += '<span style="color:' + colors[i%colors.length] + '">● ' + top[i].name + ' - ' + top[i].pts + ' نقطة</span> &nbsp; '; }
-  legend += '<br><small style="color:#999">الأيام: ' + days.join(' , ') + '</small>';
-  document.getElementById('chartLegend').innerHTML = legend;
+  var leg=''; for(var i=0;i<top.length;i++){ leg+='<span style="color:'+colors[i%colors.length]+'">● '+top[i].name+' - '+top[i].pts+' نقطة</span> &nbsp; '; }
+  leg+='<br><small style="color:#999">الأيام: '+days.join(' , ')+'</small>';
+  document.getElementById('chartLegend').innerHTML=leg;
 }
-
 function openDetail(name){
-  currentEmp = name;
-  var list = getFiltered(false).filter(function(a){ return a.name === name; });
-  if(list.length === 0) list = allActs.filter(function(a){ return a.name === name; });
-  list.sort(function(a,b){ return String(b.d).localeCompare(String(a.d)); });
-  var tot = 0; for(var i=0;i<list.length;i++) tot += list[i].pts;
-  document.getElementById('detailCard').style.display = 'block';
-  document.getElementById('detailTitle').innerHTML = '📋 تفاصيل ' + name + ' - ' + list.length + ' نشاط - ' + tot + ' نقطة';
-  var html = '<table><tr><th>اليوم</th><th>النوع</th><th>التفاصيل</th><th>النقاط</th></tr>';
-  for(var i=0;i<list.length;i++){ html += '<tr><td>' + (list[i].d || list[i].raw || '-') + '</td><td>' + list[i].type + '</td><td class="r">' + list[i].detail + '</td><td><b>' + list[i].pts + '</b></td></tr>'; }
-  html += '</table>';
-  document.getElementById('detailBody').innerHTML = html;
+  var list=getFiltered(false).filter(function(a){return a.name===name});
+  if(!list.length) list=allActs.filter(function(a){return a.name===name});
+  list.sort(function(a,b){return String(b.d).localeCompare(String(a.d))});
+  var tot=0; for(var i=0;i<list.length;i++) tot+=list[i].pts;
+  document.getElementById('detailCard').style.display='block';
+  document.getElementById('detailTitle').innerHTML='📋 تفاصيل '+name+' - '+list.length+' نشاط - '+tot+' نقطة';
+  var html='<table><tr><th>اليوم</th><th>النوع</th><th>التفاصيل</th><th>النقاط</th></tr>';
+  for(var i=0;i<list.length;i++){ html+='<tr><td>'+(list[i].d||'-')+'</td><td>'+list[i].type+'</td><td class="r">'+list[i].detail+'</td><td><b>'+list[i].pts+'</b></td></tr>'; }
+  html+='</table>';
+  document.getElementById('detailBody').innerHTML=html;
   document.getElementById('detailCard').scrollIntoView({behavior:'smooth'});
 }
-
-// شغل الصفحة على الشهر كله مش اليوم بس، عشان الداتا تظهر
-setMonth();
+// استنى Firebase يجهز وبعدين حمل
+setTimeout(loadAll, 800);
 </script>
 </body>
 </html>
