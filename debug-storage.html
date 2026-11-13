@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8"><title>فحص الداتا</title>
+<style>body{font-family:Arial;padding:16px;background:#F4F6F9} .card{background:#fff;padding:16px;border-radius:12px;margin-bottom:12px} pre{background:#0A1F44;color:#7CFC00;padding:12px;border-radius:8px;white-space:pre-wrap;word-break:break-all;font-size:12px;max-height:300px;overflow:auto} button{background:#FFD54F;border:none;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer}</style>
+</head>
+<body>
+<h2>🔍 فحص مكان الداتا الحقيقي</h2>
+<p>الصفحة دي هتقولنا الداتا متخزنة فين بالظبط، صورها وابعتها.</p>
+<button onclick="copyAll()">📋 نسخ كل المفاتيح</button>
+<div id="out"></div>
+<script>
+var out = document.getElementById('out');
+var html = '';
+for(var i=0;i<localStorage.length;i++){
+  var key = localStorage.key(i);
+  var val = localStorage.getItem(key) || '';
+  var sample = val.slice(0,800);
+  var count = '';
+  try{ var j = JSON.parse(val); if(Array.isArray(j)) count = ' - عدد العناصر: ' + j.length; else if(typeof j==='object') count = ' - مفاتيح جواه: ' + Object.keys(j).join(', '); }catch(e){ count = ' - مش JSON'; }
+  html += '<div class="card"><b>🔑 ' + key + '</b> - طول الداتا: ' + val.length + count + '<pre>' + sample.replace(/</g,'&lt;') + '</pre></div>';
+}
+if(!html) html = '<div class="card">localStorage فاضي خالص - مفيش اي داتا متخزنة على الجهاز ده</div>';
+out.innerHTML = html;
+function copyAll(){
+  var txt = '';
+  for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); txt += k + ' = ' + localStorage.getItem(k).slice(0,500) + '\n---\n'; }
+  navigator.clipboard.writeText(txt).then(()=>alert('اتنسخ، ابعتهولي'));
+}
+</script>
+</body>
+</html>
