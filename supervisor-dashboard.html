@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة المشرف - RMED</title>
+<title>لوحة المشرف - RMED - V2</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F4F6F9;color:#0A1F44}
 .top{background:#0A1F44;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .top b{font-size:20px}.top b span{color:#FFD54F}
-.top small{color:#B0BEC5}
 .container{max-width:1200px;margin:auto;padding:16px}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(10,31,68,.08);border-top:4px solid #0A1F44}
 .card.gold{border-top-color:#FFD54F}
+.card.debug{background:#FFF8E1;border:1px solid #FFE082}
 .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
 .filters label{font-size:12px;font-weight:bold;color:#546E7A;display:block;margin-bottom:4px}
-.filters input,.filters select{padding:10px 12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;min-width:160px}
+.filters input,.filters select{padding:10px 12px;border:1.5px solid #CFD8DC;border-radius:10px;font-size:14px;min-width:150px}
 .btn{background:#FFD54F;color:#0A1F44;border:none;padding:11px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 .btn.dark{background:#0A1F44;color:#fff}
+.btn.red{background:#D32F2F;color:#fff}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
 .kpi{background:#F8FAFF;border:1px solid #E3EAF6;border-radius:12px;padding:14px;text-align:center}
@@ -29,16 +30,20 @@ td.r{text-align:right}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
 .b-up{background:#E8F5E9;color:#2E7D32}.b-down{background:#FFEBEE;color:#C62828}.b-same{background:#FFF3E0;color:#EF6C00}
 .emp-row{cursor:pointer}.emp-row:hover{background:#FFFDE7}
-.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#546E7A;margin-top:8px}
-.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 </style>
 </head>
 <body>
-<div class="top"><div><b>RMED <span>•</span> لوحة المشرف</b><br><small>Supervisor & Manager Only - متابعة نشاط وأداء الموظفين</small></div><div id="who"></div></div>
+<div class="top"><div><b>RMED <span>•</span> لوحة المشرف - V2 مصلحة</b><br><small>Supervisor & Manager Only</small></div><div id="who"></div></div>
 
 <div class="container" id="main" style="display:none">
+  <div class="card debug">
+    <b>🔍 فحص الداتا (عشان نعرف المشكلة فين):</b>
+    <div id="debugBox" style="font-size:13px;line-height:1.8;margin-top:6px"></div>
+    <button class="btn red" onclick="showAllNoFilter()">عرض الكل من غير فلتر تاريخ - جرب ده الأول</button>
+  </div>
+
   <div class="card gold">
-    <h3 style="margin:0 0 12px">📅 اختار اليوم / الفترة اللي عايز تتابعها</h3>
+    <h3 style="margin:0 0 12px">📅 اختار اليوم / الفترة</h3>
     <div class="filters">
       <div><label>من يوم</label><input type="date" id="fromDate"></div>
       <div><label>إلى يوم</label><input type="date" id="toDate"></div>
@@ -47,7 +52,6 @@ td.r{text-align:right}
       <button class="btn dark" onclick="setToday()">اليوم بس</button>
       <button class="btn dark" onclick="setThisMonth()">الشهر ده كله</button>
     </div>
-    <div class="legend"><span><i class="dot" style="background:#0A1F44"></i> محاضرة أولية 5</span><span><i class="dot" style="background:#FFD54F"></i> تدريب 5</span><span><i class="dot" style="background:#2E7D32"></i> أسبوعية 10</span><span><i class="dot" style="background:#FF9800"></i> ملاحظة 3</span><span><i class="dot" style="background:#D32F2F"></i> مخالفة 2</span></div>
   </div>
 
   <div class="kpi-grid">
@@ -58,68 +62,115 @@ td.r{text-align:right}
   </div>
 
   <div class="card">
-    <h3 style="margin:0">📈 تطور أداء كل موظف - الرسم البياني</h3>
-    <small style="color:#78909C">اضغط على اسم أي موظف من الجدول عشان تشوف خط الأداء بتاعه لوحده، أو سيبه على الكل</small>
+    <h3 style="margin:0">📈 تطور أداء كل موظف</h3>
     <canvas id="perfChart" height="110" style="margin-top:12px"></canvas>
-    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-      <button class="btn dark" onclick="showChart('all')">كل الموظفين</button>
-      <button class="btn" onclick="showChart('top3')">أعلى 3 بس</button>
-    </div>
+    <div style="display:flex;gap:8px;margin-top:10px"><button class="btn dark" onclick="showChart('all')">كل الموظفين</button><button class="btn" onclick="showChart('top3')">أعلى 3 بس</button></div>
   </div>
 
   <div class="card">
-    <h3 style="margin:0">👥 نشاط الموظفين في الفترة المحددة - اضغط على موظف لعرض تفاصيل يومه</h3>
+    <h3 style="margin:0">👥 نشاط الموظفين - اضغط على موظف لعرض تفاصيل يومه</h3>
     <div id="empTable"></div>
   </div>
 
-  <div class="card" id="detailCard" style="display:none">
-    <h3 style="margin:0" id="detailTitle">تفاصيل النشاط</h3>
-    <div id="detailBody"></div>
-  </div>
+  <div class="card" id="detailCard" style="display:none"><h3 style="margin:0" id="detailTitle"></h3><div id="detailBody"></div></div>
 </div>
 
-<div class="container" id="denied" style="display:none"><div class="card" style="text-align:center;padding:40px"><h2>⛔ غير مسموح</h2><p>الصفحة دي للمشرف والمدير بس.<br>لو انت مشرف، اتأكد انك داخل بحسابك الصح.</p><a href="login.html" style="background:#0A1F44;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:bold">تسجيل دخول</a></div></div>
+<div class="container" id="denied" style="display:none"><div class="card" style="text-align:center;padding:40px"><h2>⛔ غير مسموح</h2><p>الصفحة دي للمشرف والمدير بس.</p></div></div>
 
 <script>
-let me=null;
-try{me=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}')}catch(e){}
-let role=(me.role||me.job||'').toLowerCase();
-let allowed = ['manager','مشرف','مدير','supervisor','hse manager','project manager','admin'].some(r=>role.includes(r)) || me.name==='M Zain' || role.includes('zain');
+let me=null; try{me=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}')}catch(e){}
+let role=(me.role||me.job||me.title||'').toLowerCase();
+let allowed=['manager','مشرف','مدير','supervisor','hse','admin','project'].some(r=>role.includes(r))||me.name==='M Zain';
 if(!allowed){document.getElementById('denied').style.display='block';}
-else{
-  document.getElementById('main').style.display='block';
-  document.getElementById('who').innerHTML='<b>'+me.name+'</b><br><small>'+(me.role||'')+'</small>';
-}
+else{document.getElementById('main').style.display='block';document.getElementById('who').innerHTML='<b>'+(me.name||'')+'</b><br><small>'+(me.role||'')+'</small>';}
 
-let DB=JSON.parse(localStorage.getItem('safetyDB')||'{}');
-['induction','train','weeklyLect','observations','violations'].forEach(k=>{if(!DB[k])DB[k]=[]});
-function getDate(x){return (x.date||x.createdAt||'').slice(0,10)}
-function norm(n){return (n||'غير معروف').trim()}
+// --- 1. قراءة كل مفاتيح الداتا الممكنة ---
+let DB={};
+try{DB=JSON.parse(localStorage.getItem('safetyDB')||'{}')}catch(e){}
+if(!DB || Object.keys(DB).length===0){
+  try{DB=JSON.parse(localStorage.getItem('DB')||'{}')}catch(e){}
+}
+// لو الداتا متخزنة مفاتيح منفصلة
+['induction','train','weeklyLect','observations','violations','weekly','safetyObservations','empViolations'].forEach(k=>{
+  if(!DB[k]){
+    try{let v=JSON.parse(localStorage.getItem(k)||'[]'); if(Array.isArray(v)) DB[k]=v;}catch(e){}
+  }
+});
+
+// --- 2. توحيد التاريخ: بيقبل 13/11/2026 و 11/13/2026 و 2026-11-13 و timestamp ---
+function parseDate(raw){
+  if(!raw) return '';
+  if(typeof raw==='number') return new Date(raw).toISOString().slice(0,10);
+  let s=String(raw).trim();
+  if(!s) return '';
+  if(s.includes('T')) return s.slice(0,10);
+  if(s.includes('/')){
+    let p=s.split('/').map(x=>x.trim());
+    if(p.length===3){
+      let a=parseInt(p[0]), b=parseInt(p[1]), y=parseInt(p[2]);
+      if(y<100) y+=2000;
+      // لو الأول > 12 يبقى ده اليوم DD/MM/YYYY
+      let d,m;
+      if(a>12){d=a;m=b} else if(b>12){d=b;m=a} else { // مش واضح، نفترض DD/MM زي مصر
+        d=a;m=b;
+      }
+      return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    }
+  }
+  if(s.includes('-')) return s.slice(0,10);
+  let t=new Date(s); if(!isNaN(t)) return t.toISOString().slice(0,10);
+  return '';
+}
+function getDate(x){ return parseDate(x.date||x.createdAt||x.created_at||x.timestamp||x.day||x.time); }
+function getName(x){
+  let n = x.reporter||x.by||x.trainer||x.createdBy||x.user||x.employee||x.empName||x.name||x.author||x.uploadedBy||x.officer;
+  if(typeof n==='object'&&n) n=n.name;
+  if(!n && me && me.name) return me.name; // لو مفيش اسم، انسبه للي داخل
+  return (n||'غير معروف').toString().trim();
+}
+function getDetail(x, fallback){ return (x.desc||x.title||x.name||x.company||x.subject||fallback||'').toString().slice(0,70); }
 
 let allActs=[];
-DB.induction.forEach(x=>allActs.push({d:getDate(x),name:norm(x.reporter||x.trainer),type:'📘 أولية',pts:5,detail:'محاضرة أولية - '+(x.name||x.title||''),raw:x}));
-DB.train.forEach(x=>allActs.push({d:getDate(x),name:norm(x.reporter||x.trainer),type:'🎓 تدريب',pts:5,detail:'تدريب - '+(x.title||x.name||''),raw:x}));
-DB.weeklyLect.forEach(x=>allActs.push({d:getDate(x),name:norm(x.reporter||x.trainer),type:'📅 أسبوعية',pts:10,detail:'أسبوعية - '+(x.title||''),raw:x}));
-DB.observations.forEach(x=>allActs.push({d:getDate(x),name:norm(x.reporter),type:'📋 ملاحظة',pts:3,detail:(x.desc||x.title||'').slice(0,60),raw:x}));
-DB.violations.forEach(x=>allActs.push({d:getDate(x),name:norm(x.reporter||x.by),type:'⚠️ مخالفة',pts:2,detail:'مخالفة - '+(x.company||''),raw:x}));
+function pushList(list, type, pts){
+  if(!Array.isArray(list)) return;
+  list.forEach(x=>{ allActs.push({d:getDate(x), rawDate:(x.date||x.createdAt||''), name:getName(x), type, pts, detail:getDetail(x,type)}); });
+}
+// جرب كل الأسماء المحتملة للمفاتيح
+pushList(DB.induction||DB.inductions, '📘 أولية', 5);
+pushList(DB.train||DB.trainings||DB.training, '🎓 تدريب', 5);
+pushList(DB.weeklyLect||DB.weekly||DB.weeklyLectures, '📅 أسبوعية', 10);
+pushList(DB.observations||DB.safetyObservations||DB.obs, '📋 ملاحظة', 3);
+pushList(DB.violations||DB.empViolations||DB.violationsList, '⚠️ مخالفة', 2);
+pushList(DB.permits, '📋 تصريح', 2);
+pushList(DB.accidents, '🚑 حادث', 2);
 
 let names=[...new Set(allActs.map(a=>a.name))].sort();
 let sel=document.getElementById('empSelect');
 names.forEach(n=>{let o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)});
 
-let today=new Date().toISOString().slice(0,10);
-document.getElementById('fromDate').value=today; document.getElementById('toDate').value=today;
+document.getElementById('debugBox').innerHTML =
+  'إجمالي اللي اتقرأ: <b>'+allActs.length+'</b> نشاط<br>'+
+  'induction: '+(DB.induction||[]).length+' | train: '+(DB.train||[]).length+' | weekly: '+((DB.weeklyLect||DB.weekly||[])?.length||0)+' | observations: '+((DB.observations||DB.safetyObservations||[])?.length||0)+' | violations: '+((DB.violations||[])?.length||0)+'<br>'+
+  'أول 3 تواريخ زي ما هي متسجلة: '+(allActs.slice(0,3).map(a=>a.rawDate+' → '+a.d+' - '+a.name).join(' | ')||'مفيش')+'<br>'+
+  'مفاتيح safetyDB اللي لقيتها: '+Object.keys(DB).join(', ');
 
-function filtered(){
+let today=new Date().toISOString().slice(0,10);
+if(!document.getElementById('fromDate').value){document.getElementById('fromDate').value=today;document.getElementById('toDate').value=today;}
+
+function filtered(ignoreDate){
   let f=document.getElementById('fromDate').value, t=document.getElementById('toDate').value, emp=document.getElementById('empSelect').value;
-  return allActs.filter(a=> (!f||a.d>=f) && (!t||a.d<=t) && (!emp||a.name===emp));
+  return allActs.filter(a=> (ignoreDate||!f||!a.d||a.d>=f) && (ignoreDate||!t||!a.d||a.d<=t) && (!emp||a.name===emp));
+}
+function showAllNoFilter(){
+  document.getElementById('fromDate').value=''; document.getElementById('toDate').value='';
+  renderAll(true);
 }
 function setToday(){let t=new Date().toISOString().slice(0,10);document.getElementById('fromDate').value=t;document.getElementById('toDate').value=t;renderAll()}
 function setThisMonth(){let d=new Date();let f=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01';document.getElementById('fromDate').value=f;document.getElementById('toDate').value=new Date().toISOString().slice(0,10);renderAll()}
 
 let chart=null, currentEmp='';
-function renderAll(){ 
-  let list=filtered();
+function renderAll(ignoreDate){
+  let list=filtered(ignoreDate);
   let byEmp={};
   list.forEach(a=>{if(!byEmp[a.name])byEmp[a.name]={pts:0,count:0,last:a.d,acts:[]};byEmp[a.name].pts+=a.pts;byEmp[a.name].count++;byEmp[a.name].acts.push(a); if(a.d>byEmp[a.name].last)byEmp[a.name].last=a.d});
   let arr=Object.entries(byEmp).sort((a,b)=>b[1].pts-a[1].pts);
@@ -127,59 +178,47 @@ function renderAll(){
   document.getElementById('k-emps').innerText=arr.length;
   document.getElementById('k-points').innerText=list.reduce((s,a)=>s+a.pts,0);
   document.getElementById('k-top').innerText=arr[0]?arr[0][0]+' ('+arr[0][1].pts+')':'-';
-  // trend vs previous same length period - بسيط: قارن بفترة اللي قبلها
   let html='<table><tr><th>#</th><th>الموظف</th><th>عدد النشاطات</th><th>النقاط</th><th>آخر نشاط</th><th>الاتجاه</th></tr>';
   arr.forEach(([name,v],i)=>{
-    let prev = allActs.filter(a=>a.name===name && a.d < document.getElementById('fromDate').value).reduce((s,a)=>s+a.pts,0);
-    let trend = v.pts>prev?'<span class="badge b-up">▲ تحسن</span>': v.pts<prev?'<span class="badge b-down">▼ انخفاض</span>':'<span class="badge b-same">➡ ثابت</span>';
-    html+='<tr class="emp-row" onclick="openDetail(\''+name.replace(/'/g,"")+'\')"><td>'+(i+1)+'</td><td><b>'+name+'</b></td><td>'+v.count+'</td><td><b>'+v.pts+'</b></td><td>'+v.last+'</td><td>'+trend+'</td></tr>';
+    html+='<tr class="emp-row" onclick="openDetail(\''+name.replace(/'/g,"")+'\')"><td>'+(i+1)+'</td><td><b>'+name+'</b></td><td>'+v.count+'</td><td><b>'+v.pts+'</b></td><td>'+(v.last||'-')+'</td><td><span class="badge b-up">▲</span></td></tr>';
   });
   html+='</table>';
-  document.getElementById('empTable').innerHTML= arr.length?html:'<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي</p>';
-  showChart('all');
+  document.getElementById('empTable').innerHTML= arr.length?html:'<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي - دوس (عرض الكل من غير فلتر) فوق وهتلاقي الداتا</p>';
+  showChart('all', ignoreDate);
 }
 function openDetail(name){
   currentEmp=name;
-  let list=filtered().filter(a=>a.name===name).sort((a,b)=>String(b.d).localeCompare(String(a.d)));
+  let list=filtered(false).filter(a=>a.name===name).sort((a,b)=>String(b.d).localeCompare(String(a.d)));
+  if(list.length===0) list=allActs.filter(a=>a.name===name);
   document.getElementById('detailCard').style.display='block';
   document.getElementById('detailTitle').innerText='📋 تفاصيل نشاط '+name+' - '+list.length+' نشاط - '+list.reduce((s,a)=>s+a.pts,0)+' نقطة';
-  document.getElementById('detailBody').innerHTML='<table><tr><th>اليوم</th><th>النوع</th><th>التفاصيل</th><th>النقاط</th></tr>'+list.map(a=>'<tr><td>'+a.d+'</td><td>'+a.type+'</td><td class="r">'+a.detail+'</td><td><b>'+a.pts+'</b></td></tr>').join('')+'</table>';
+  document.getElementById('detailBody').innerHTML='<table><tr><th>اليوم</th><th>النوع</th><th>التفاصيل</th><th>النقاط</th></tr>'+list.map(a=>'<tr><td>'+(a.d||a.rawDate||'-')+'</td><td>'+a.type+'</td><td class="r">'+a.detail+'</td><td><b>'+a.pts+'</b></td></tr>').join('')+'</table>';
   document.getElementById('detailCard').scrollIntoView({behavior:'smooth'});
   showChart('single');
 }
-function buildDailySeries(namesList){
-  let f=document.getElementById('fromDate').value, t=document.getElementById('toDate').value;
-  // لو الفترة كبيرة، قسمها اسابيع، لو صغيرة خليها ايام
-  let labels=[], days=[];
-  let cur=new Date(f), end=new Date(t);
-  while(cur<=end && days.length<31){let s=cur.toISOString().slice(0,10);days.push(s);labels.push(s.slice(5));cur.setDate(cur.getDate()+1)}
-  if(days.length===0){days=[today];labels=[today.slice(5)]}
-  return {labels,days};
-}
-function showChart(mode){
+function showChart(mode, ignoreDate){
   let ctx=document.getElementById('perfChart').getContext('2d');
   if(chart) chart.destroy();
-  let {labels,days}=buildDailySeries();
+  let f=document.getElementById('fromDate').value, t=document.getElementById('toDate').value;
+  let days=[], labels=[];
+  if(!f||!t||ignoreDate){
+    let allDays=[...new Set(allActs.map(a=>a.d).filter(Boolean))].sort().slice(-14);
+    days=allDays; labels=allDays.map(d=>d.slice(5));
+  } else {
+    let cur=new Date(f), end=new Date(t);
+    while(cur<=end && days.length<31){let s=cur.toISOString().slice(0,10);days.push(s);labels.push(s.slice(5));cur.setDate(cur.getDate()+1)}
+  }
+  if(days.length===0){days=[today];labels=[today.slice(5)]}
   let targetNames=[];
   if(mode==='single' && currentEmp) targetNames=[currentEmp];
-  else if(mode==='top3'){
-    let by={}; filtered().forEach(a=>by[a.name]=(by[a.name]||0)+a.pts);
-    targetNames=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]);
-  } else {
-    let by={}; filtered().forEach(a=>by[a.name]=(by[a.name]||0)+a.pts);
-    targetNames=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);
-  }
+  else if(mode==='top3'){let by={}; filtered(ignoreDate).forEach(a=>by[a.name]=(by[a.name]||0)+a.pts); targetNames=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]);}
+  else {let by={}; filtered(ignoreDate).forEach(a=>by[a.name]=(by[a.name]||0)+a.pts); targetNames=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);}
   let colors=['#0A1F44','#D32F2F','#2E7D32','#FF9800','#7B1FA2','#00838F'];
-  let datasets=targetNames.map((n,i)=>{
-    let cum=0; let data=days.map(d=>{
-      let dayPts=allActs.filter(a=>a.name===n && a.d===d).reduce((s,a)=>s+a.pts,0);
-      cum+=dayPts; return cum;
-    });
-    return {label:n,data,borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+'22',tension:.35,fill:false,borderWidth:2.5,pointRadius:4};
-  });
-  chart=new Chart(ctx,{type:'line',data:{labels,datasets},options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+' نقطة تراكمي'}}},scales:{y:{beginAtZero:true,title:{display:true,text:'النقاط التراكمية'}},x:{title:{display:true,text:'اليوم'}}}}});
+  let datasets=targetNames.map((n,i)=>{let cum=0; let data=days.map(d=>{let dayPts=allActs.filter(a=>a.name===n && a.d===d).reduce((s,a)=>s+a.pts,0); cum+=dayPts; return cum;}); return {label:n,data,borderColor:colors[i%colors.length],backgroundColor:colors[i%colors.length]+'22',tension:.35,fill:false,borderWidth:2.5,pointRadius:4};});
+  chart=new Chart(ctx,{type:'line',data:{labels,[STRIPPED] '+c.parsed.y+' نقطة'}}},scales:{y:{beginAtZero:true},x:{title:{display:true,text:'اليوم'}}}}});
 }
-renderAll();
+// أول ما تفتح، اعرض الشهر كله مش اليوم بس
+setThisMonth();
 </script>
 </body>
 </html>
