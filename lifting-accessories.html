@@ -47,14 +47,33 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html" class="active">🪝 <span data-i18n="liftAcc">Lifting Accessories</span></a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 <span data-i18n="liftAcc">Lifting Accessories</span></a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -71,6 +90,7 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">أدوات الرفع</span> <span style="color:#FF6B00">• Lifting Accessories</span></h1>
 <p style="color:#666;font-size:13px">New Kairo Project • Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div id="notifyBox" class="notify-box"><b>🔔 <span data-i18n="monthlyReminder">تذكير بالفحص الشهري</span></b><br><span id="notifyText"></span><br><button class="btn2" onclick="dismissNotify()" style="margin-top:8px">✅ تمام - فهمت</button></div>
 <div id="overdueBox" class="alert-box"><b>⚠️ <span data-i18n="overdue">شركات متأخرة في الفحص</span></b><br><span id="overdueText"></span></div>
@@ -120,6 +140,43 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 let allAcc=[],checkImgs=[],accImgs=[],calImgs=[],permits=[];
+// ===== FIX: توحيد الحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normAcc(raw){
+  let status=String(pick(raw,['status','state','result'])||'Accepted');
+  if(status.toLowerCase().includes('reject')||status.includes('مرفوض')) status='Rejected'; else status='Accepted';
+  let color=pick(raw,['colorCode','color','colour']);
+  if(status==='Rejected' && !color) color='Red - أحمر 🔴';
+  return {
+    id: raw.id, _coll: raw._coll||'liftingAccessories',
+    project: pick(raw,['project','projectName'])||'New Kairo Project',
+    date: normDate(pick(raw,['date','inspectionDate','createdAt'])),
+    location: pick(raw,['location','workLocation','place','site','building']),
+    company: pick(raw,['company','companyName','contractor']),
+    type: pick(raw,['type','accessoryType','category'])||'Web Sling',
+    serial: pick(raw,['serial','serialNo','serialNumber','sn']),
+    code: pick(raw,['code','accessoryCode','accCode','laCode']),
+    inspector: pick(raw,['inspector','inspectorName','checkedBy','reporter']),
+    calCert: pick(raw,['calCert','calibrationCert','calibrationCertificate','cert']),
+    calDate: normDate(pick(raw,['calDate','calibrationDate'])),
+    calExpiry: normDate(pick(raw,['calExpiry','calibrationExpiry','calibrationExpire'])),
+    status: status,
+    colorCode: color||'Green - أخضر',
+    colorHex: pick(raw,['colorHex','hex'])||(status==='Rejected'?'#E53935':'#2ECC71'),
+    notes: pick(raw,['notes','note','remarks','desc']),
+    checkImgs: raw.checkImgs||raw.checklistImgs||[],
+    accImgs: raw.accImgs||raw.images||raw.photos||[],
+    calImgs: raw.calImgs||raw.calibrationImgs||[],
+    createdAt: raw.createdAt||''
+  };
+}
 function genCode(){let L='ABCDEFGHIJKMNOPQRSTUVWXYZ';let c='LA-'+L[Math.floor(Math.random()*L.length)]+L[Math.floor(Math.random()*L.length)]+'-'+Math.floor(1000+Math.random()*9000);document.getElementById('la-code').value=c;return c}
 function getColorHex(){let s=document.getElementById('la-color');return s.options[s.selectedIndex]?.getAttribute('data-hex')||'#2ECC71'}
 function onColorChange(){document.getElementById('colorPreview').style.background=getColorHex()}
@@ -130,8 +187,20 @@ function checkNotify(){let today=new Date(),day=today.getDate();let key='la_noti
 function dismissNotify(){let t=new Date();localStorage.setItem('la_notify_'+t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate(),'done');document.getElementById('notifyBox').classList.remove('show')}
 function loadLive(){
  try{
-  firebase.firestore().collection('liftingAccessories').orderBy('createdAt','desc').onSnapshot(snap=>{let old=allAcc.length;allAcc=snap.docs.map(d=>({id:d.id,...d.data()}));if(allAcc.length>old&&old>0)playBeep();renderAcc();});
-  firebase.firestore().collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>p.location||p.workLocation).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');});
+  let db=firebase.firestore();
+  ['liftingAccessories','lifting-accessories','lifting_accessories','liftingAcc'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normAcc);
+      let merged=[...allAcc].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=allAcc.length; allAcc=merged;
+      allAcc.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(allAcc.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي الأدوات: '+allAcc.length;
+      renderAcc();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  try{ let local=JSON.parse(localStorage.getItem('liftingAccessories')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!allAcc.find(x=>x.id==='local-'+i)) allAcc.push(normAcc({id:'local-'+i,_coll:'local',...l})); }); }catch(e){}
+  db.collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>pick(p,['location','workLocation','place','site'])).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');}, ()=>{});
  }catch(e){console.log(e)}
 }
 async function addAcc(){
@@ -139,7 +208,7 @@ async function addAcc(){
  if(!company||!code||!loc||!serial||!cert||!ins||!calDate||!calExp) return alert('املأ كل الحقول المطلوبة *');
  if(new Date(calExp)<=new Date(calDate)) return alert('تاريخ الانتهاء لازم يكون بعد تاريخ المعايرة');
  if(checkCal()) return alert('مش هينفع تضيف - الانتهاء أكتر من 6 شهور من المعايرة!');
- let data={project:'New Kairo Project',date:document.getElementById('la-date').value||new Date().toISOString().slice(0,10),location:loc,workLocation:loc,company,type:document.getElementById('la-type').value,serial,code,inspector:ins,calCert:cert,calDate,calExpiry:calExp,status:document.getElementById('la-status').value,colorCode:document.getElementById('la-color').value,colorHex:getColorHex(),notes:document.getElementById('la-notes').value,checkImgs,accImgs,calImgs,createdAt:new Date().toISOString()};
+ let data={project:'New Kairo Project',date:document.getElementById('la-date').value||new Date().toISOString().slice(0,10),location:loc,workLocation:loc,company,type:document.getElementById('la-type').value,serial,serialNo:serial,code,accessoryCode:code,inspector:ins,calCert:cert,calibrationCert:cert,calDate,calibrationDate:calDate,calExpiry:calExp,calibrationExpiry:calExp,status:document.getElementById('la-status').value,colorCode:document.getElementById('la-color').value,colorHex:getColorHex(),notes:document.getElementById('la-notes').value,checkImgs,accImgs,calImgs,createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('liftingAccessories').add(data);alert('✅ تم حفظ أداة الرفع');if(data.status==='Rejected')playBeep();}catch(e){alert(e.message)}
  ['la-company','la-location','la-serial','la-cal-cert','la-notes'].forEach(id=>document.getElementById(id).value='');['la-cal-date','la-cal-expiry'].forEach(id=>document.getElementById(id).value='');checkImgs=[];accImgs=[];calImgs=[];['prev-check','prev-acc','prev-cal'].forEach(id=>document.getElementById(id).innerHTML='');document.getElementById('calWarn').classList.remove('show');genCode();onStatusChange();
 }
@@ -149,21 +218,20 @@ function renderAcc(){
  let today=new Date().toISOString().slice(0,10);
  animateNum('k-total',allAcc.length);animateNum('k-accepted',allAcc.filter(p=>p.status==='Accepted').length);let rej=allAcc.filter(p=>p.status==='Rejected').length;animateNum('k-rejected',rej);let exp=allAcc.filter(p=>p.calExpiry&&p.calExpiry<today).length;animateNum('k-expired',exp);document.getElementById('rejectedIcon').classList.toggle('shake',rej>0);document.getElementById('expiredIcon').classList.toggle('shake',exp>0);
  let perType={};allAcc.forEach(p=>perType[p.type]=(perType[p.type]||0)+1);
- document.getElementById('perType').innerHTML=Object.keys(perType).length?Object.entries(perType).map(([t,c])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🪝 ${escapeHtml(t)}</span><span><b style="color:#FF6B00">${c}</b></span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد أدوات بعد</p>';
- let per={};allAcc.forEach(p=>{if(!per[p.company])per[p.company]={total:0,accepted:0,rejected:0};per[p.company].total++;if(p.status==='Accepted')per[p.company].accepted++;if(p.status==='Rejected')per[p.company].rejected++});
+ document.getElementById('perType').innerHTML=Object.keys(perType).length?Object.entries(perType).map(([t,c])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🪝 ${escapeHtml(t)}</span><span><b style="color:#FF6B00">${c}</b></span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد أدوات بعد - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
+ let per={};allAcc.forEach(p=>{let c=p.company||'Not Specified';if(!per[c])per[c]={total:0,accepted:0,rejected:0};per[c].total++;if(p.status==='Accepted')per[c].accepted++;if(p.status==='Rejected')per[c].rejected++});
  document.getElementById('perCompany').innerHTML=Object.keys(per).length?Object.entries(per).map(([c,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🏢 ${escapeHtml(c)}</span><span><b style="color:#FF6B00">${v.total}</b> أداة | مقبول: ${v.accepted} | مرفوض: ${v.rejected}</span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد أدوات بعد</p>';
  document.getElementById('compList').innerHTML=Object.keys(per).map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let now=new Date(),curMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
  let thisMonth=new Set(allAcc.filter(p=>(p.date||'').startsWith(curMonth)).map(p=>p.company)),allComp=new Set(allAcc.map(p=>p.company));
  let overdue=[...allComp].filter(c=>!thisMonth.has(c));
  if(overdue.length){document.getElementById('overdueBox').classList.add('show');document.getElementById('overdueText').textContent='الشركات دي عدى معاد فحصها: '+overdue.join(' ، ')}else document.getElementById('overdueBox').classList.remove('show');
- document.getElementById('laTable').innerHTML=list.length?list.map(p=>`<div class="rec-card"><h3 style="margin:0">🪝 ${escapeHtml(p.code)} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Type: ${escapeHtml(p.type)} • Serial: ${escapeHtml(p.serial)} • Inspector: ${escapeHtml(p.inspector)}</small><br><small>Cal Cert: ${escapeHtml(p.calCert)} • Cal Date: ${escapeHtml(p.calDate)} • Cal Expiry: ${escapeHtml(p.calExpiry)} ${p.calExpiry<today?' <b style="color:#E53935">• منتهية ⚠️</b>':''}</small><div style="margin:8px 0"><span class="chip gold">${escapeHtml(p.type)}</span><span class="chip ${p.status==='Accepted'?'green':'red'}">${escapeHtml(p.status)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.accImgs?.length?'<div class="photos">'+p.accImgs.map(img=>`<div><img src="${img}"><br>Accessory</div>`).join('')+'</div>':''}${p.calImgs?.length?'<div class="photos">'+p.calImgs.map(img=>`<div><img src="${img}"><br>Calibration Cert</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delAcc('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printAcc('${p.id}')">🖨️ Print</button></div></div>`).join(''):'<p style="text-align:center;color:#888">No accessories yet</p>';
+ document.getElementById('laTable').innerHTML=list.length?list.map(p=>`<div class="rec-card"><h3 style="margin:0">🪝 ${escapeHtml(p.code||'-')} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Type: ${escapeHtml(p.type)} • Serial: ${escapeHtml(p.serial)} • Inspector: ${escapeHtml(p.inspector)}</small><br><small>Cal Cert: ${escapeHtml(p.calCert)} • Cal Date: ${escapeHtml(p.calDate)} • Cal Expiry: ${escapeHtml(p.calExpiry)} ${p.calExpiry<today?' <b style="color:#E53935">• منتهية ⚠️</b>':''}</small><div style="margin:8px 0"><span class="chip gold">${escapeHtml(p.type)}</span><span class="chip ${p.status==='Accepted'?'green':'red'}">${escapeHtml(p.status)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.accImgs?.length?'<div class="photos">'+p.accImgs.map(img=>`<div><img src="${img}"><br>Accessory</div>`).join('')+'</div>':''}${p.calImgs?.length?'<div class="photos">'+p.calImgs.map(img=>`<div><img src="${img}"><br>Calibration Cert</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delAcc('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printAcc('${p.id}')">🖨️ Print</button></div></div>`).join(''):'<p style="text-align:center;color:#888">No accessories yet</p>';
  let notifs=[...allAcc.filter(p=>p.status==='Rejected').slice(0,3).map(p=>`❌ أداة مرفوضة: ${p.code} - ${p.company}`),...allAcc.filter(p=>p.calExpiry&&p.calExpiry<today).slice(0,3).map(p=>`📜 معايرة منتهية: ${p.code} - ${p.calExpiry}`),...overdue.map(c=>`⚠️ شركة ${c} متأخرة`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function delAcc(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('liftingAccessories').doc(id).delete();}
+async function delAcc(id){if(!confirm('حذف؟'))return; if(String(id).startsWith('local-')){ allAcc=allAcc.filter(x=>x.id!==id); renderAcc(); return; } let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'liftingAccessories'; await firebase.firestore().collection(coll).doc(realId).delete();}
 function printAcc(id){let p=allAcc.find(x=>x.id==id);if(!p)return;let w=window.open('');w.document.write(`<h2>Lifting Accessories - New Kairo</h2><p>${escapeHtml(p.code)} | ${escapeHtml(p.company)} | ${escapeHtml(p.type)}</p><p>Cal: ${escapeHtml(p.calCert)} | ${escapeHtml(p.calDate)} - ${escapeHtml(p.calExpiry)}</p>`);w.print();}
 function exportAcc(){let rows=[['Project','Date','Location','Company','Type','Serial','Code','Inspector','Cal Cert','Cal Date','Cal Expiry','Status','Color','Notes']];allAcc.forEach(p=>rows.push([p.project,p.date,p.location,p.company,p.type,p.serial,p.code,p.inspector,p.calCert,p.calDate,p.calExpiry,p.status,p.colorCode,p.notes]));let csv=rows.map(r=>r.map(c=>'"'+String(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='lifting-accessories.csv';a.click();}
 document.getElementById('la-date').value=new Date().toISOString().slice(0,10);genCode();onStatusChange();checkNotify();loadLive();
