@@ -48,15 +48,33 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html" class="active">🚨 <span data-i18n="empViol">Employee Violations</span></a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="employee-file.html">📁 Employee Files</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 <span data-i18n="empViol">Employee Violations</span></a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -73,6 +91,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">مخالفات الموظفين</span> <span style="color:#FF6B00">• Employee Violations</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">From Firebase • Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="user-bar"><span style="font-weight:800;color:#FF6B00">🦺 Safety Officer:</span><input id="currentUser" placeholder="Write your name once" oninput="localStorage.setItem('safetyUser',this.value);document.getElementById('ev-safety').value=this.value;renderEmpViol()"><span style="font-size:12px;color:#2E7D32">هيظهر أوتوماتيك في كل مخالفة</span></div>
 
@@ -119,14 +138,67 @@ function renderNCWGrid(){document.getElementById('ncwGrid').innerHTML=NCW_LIST.m
 renderNCWGrid();
 function syncDeduction(){let a=document.getElementById('ev-action').value;let map={'Written Warning':'0','1 Day Deduction':'1 Day','2 Days Deduction':'2 Days','3 Days Deduction':'3 Days','Final Exclusion':'Final Exclusion'};document.getElementById('ev-deduction').value=map[a]||''}
 function norm(s){return String(s||'').trim().toLowerCase()}
-const ACTION_MAP={'انذار كتابي':'Written Warning','خصم يوم':'1 Day Deduction','خصم يومين':'2 Days Deduction','خصم 3 ايام':'3 Days Deduction','خصم ٣ ايام':'3 Days Deduction','استبعاد نهائي':'Final Exclusion','استبعاد':'Exclusion'};
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+const ACTION_MAP={'انذار كتابي':'Written Warning','خصم يوم':'1 Day Deduction','خصم يومين':'2 Days Deduction','خصم 3 ايام':'3 Days Deduction','خصم ٣ ايام':'3 Days Deduction','استبعاد نهائي':'Final Exclusion','استبعاد':'Exclusion','Exclusion':'Final Exclusion'};
 function TAction(v){return ACTION_MAP[String(v||'').trim()]||v||''}
+function normViol(raw){
+  return {
+    id: raw.id,
+    _coll: raw._coll||'employeeViolations',
+    date: normDate(pick(raw,['date','violationDate','createdAt'])),
+    time: pick(raw,['time','violationTime'])||'',
+    name: pick(raw,['name','violator','violatorName','employeeName','workerName','person']),
+    code: String(pick(raw,['code','employeeCode','empCode','idNumber'])||''),
+    job: pick(raw,['job','profession','position']),
+    company: pick(raw,['company','companyName','contractor']),
+    project: pick(raw,['project','projectName'])||PROJECT_FIXED,
+    place: pick(raw,['place','location','workLocation','site']),
+    desc: pick(raw,['desc','description','violation','violationDesc','details']),
+    action: TAction(pick(raw,['action','actionTaken','penalty','punishment'])),
+    deduction: pick(raw,['deduction','deductionDays']),
+    warning: pick(raw,['warning','warningNo'])||'1',
+    ncwChecks: raw.ncwChecks||raw.checks||[],
+    others: pick(raw,['others','other']),
+    photos: raw.photos||raw.images||[],
+    safety: pick(raw,['safety','reporter','reporterName','safetyOfficer','createdBy']),
+    notes: pick(raw,['notes','note','remarks']),
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('employeeViolations').orderBy('createdAt','desc').onSnapshot(snap=>{let old=empViolations.length;empViolations=snap.docs.map(d=>({id:d.id,...d.data()}));if(empViolations.length>old&&old>0){let last=empViolations[0];if(TAction(last.action)==='Final Exclusion')playBeep();}renderEmpViol();});
-  db.collection('induction').onSnapshot(snap=>{let arr=snap.docs.map(d=>d.data());arr.forEach(x=>{if(!allPeople.find(p=>norm(p.name)===norm(x.name)))allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'})});renderEmpViol();});
-  db.collection('workers').onSnapshot(snap=>{snap.docs.forEach(d=>{let x=d.data();if(!allPeople.find(p=>norm(p.name)===norm(x.name)))allPeople.push({name:x.name,code:x.code||x.id||'',job:x.job||x.profession||'',company:x.company||'RMED'})});renderEmpViol();});
+  // بدون orderBy + بنجرب كل أسماء الكوليكشنز
+  ['employeeViolations','employee-violations','employee_violations'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normViol);
+      let merged=[...empViolations];
+      // شيل القديم بتاع الكوليكشن ده وحط الجديد - عشان الحذف يبان
+      merged=merged.filter(x=>x._coll!==coll);
+      merged=[...merged,...arr];
+      let old=empViolations.length; empViolations=merged;
+      empViolations.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(empViolations.length>old&&old>0){let last=empViolations[0];if(TAction(last.action)==='Final Exclusion')playBeep();}
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي المخالفات: '+empViolations.length;
+      renderEmpViol();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  // People من Induction + Workers + Users
+  [['induction','induction'],['workers','workers'],['users','users'],['employees','employees']].forEach(([coll])=>{
+    db.collection(coll).onSnapshot(snap=>{
+      snap.docs.forEach(d=>{ let x=d.data(); let name=pick(x,['name','fullName','employeeName']); if(!name) return; if(!allPeople.find(p=>norm(p.name)===norm(name))) allPeople.push({name,code:String(pick(x,['code','id','employeeCode'])||''),job:pick(x,['job','profession','position'])||'',company:pick(x,['company','companyName'])||'RMED'}); });
+      renderEmpViol();
+    }, ()=>{});
+  });
+  // localStorage fallback
+  try{ let local=JSON.parse(localStorage.getItem('employeeViolations')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!empViolations.find(x=>x.id==='local-'+i)) empViolations.push(normViol({id:'local-'+i,_coll:'local',...l})); }); }catch(e){}
  }catch(e){console.log(e)}
 }
 function val(id){return document.getElementById(id).value.trim()}
@@ -142,7 +214,7 @@ async function addEmpViolation(){
  let rep=val('ev-safety')||getReporter();
  let checked=[...document.querySelectorAll('.ncw-check:checked')].map(c=>parseInt(c.value));
  let warn=document.querySelector('input[name="ev-warning"]:checked');
- let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',project:PROJECT_FIXED,place:val('ev-place'),desc:val('ev-desc'),action:val('ev-action'),deduction:val('ev-deduction'),warning:warn?warn.value:'1',ncwChecks:checked,others:val('ev-others'),photos:currentPhotos,safety:rep,reporter:rep,reporterName:rep,notes:val('ev-notes'),createdAt:new Date().toISOString()};
+ let rec={date:val('ev-date'),time:val('ev-time'),name:val('ev-name'),violator:val('ev-name'),code:val('ev-code'),job:val('ev-job'),company:val('ev-company')||'RMED',project:PROJECT_FIXED,place:val('ev-place'),location:val('ev-place'),desc:val('ev-desc'),description:val('ev-desc'),action:val('ev-action'),actionTaken:val('ev-action'),deduction:val('ev-deduction'),warning:warn?warn.value:'1',ncwChecks:checked,others:val('ev-others'),photos:currentPhotos,safety:rep,reporter:rep,reporterName:rep,notes:val('ev-notes'),createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('employeeViolations').add(rec);playBeep();}catch(e){return alert('Save problem: '+e.message)}
  let count=empViolations.filter(x=>x.name===rec.name).length;alert(count>1?'⚠️ Note - '+rec.name+' this is violation number '+(count+1)+' for him!':'✅ Saved violation for '+rec.name);
  ['ev-name','ev-code','ev-job','ev-company','ev-place','ev-desc','ev-notes','ev-others'].forEach(id=>setVal(id,''));setVal('ev-project',PROJECT_FIXED);setVal('ev-action','');setVal('ev-deduction','');document.getElementById('nameHint').textContent='';document.querySelectorAll('.ncw-check').forEach(c=>c.checked=false);currentPhotos=[];renderPhotoPreview();document.getElementById('ev-photos').value='';
@@ -150,7 +222,7 @@ async function addEmpViolation(){
 function topOf(arr,key){let m={};arr.forEach(x=>{let k=key==='action'?TAction(x[key]):x[key];if(!k)return;m[k]=(m[k]||0)+1});let keys=Object.keys(m);if(!keys.length)return null;keys.sort((a,b)=>m[b]-m[a]);return {name:keys[0],count:m[keys[0]],all:m}}
 function renderEmpViol(){
  document.getElementById('empNames').innerHTML=allPeople.map(p=>`<option value="${escapeHtml(p.name)}">`).join('');
- let places=[...new Set(empViolations.map(x=>x.place))];document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');
+ let places=[...new Set(empViolations.map(x=>x.place).filter(Boolean))];document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');
  let q=(document.getElementById('searchEV').value||'').toLowerCase(),fa=document.getElementById('filterAction').value;
  let list=empViolations.filter(x=>((x.name||'')+(x.code||'')+(x.desc||'')+(x.place||'')+(x.job||'')).toLowerCase().includes(q)&&(!fa||TAction(x.action)===fa));
  animateNum('k-total',empViolations.length);
@@ -160,23 +232,23 @@ function renderEmpViol(){
  document.getElementById('k-top-place').textContent=tPlace?tPlace.name+' ('+tPlace.count+')':'-';
  if(tAction){document.getElementById('k-top-action').textContent=tAction.name+' ('+tAction.count+')';let actions=Object.keys(tAction.all).sort((a,b)=>tAction.all[a]-tAction.all[b]);document.getElementById('k-least-action').textContent=actions[0]+' ('+tAction.all[actions[0]]+')'}else{document.getElementById('k-top-action').textContent='-';document.getElementById('k-least-action').textContent='-'}
  document.getElementById('k-top-reporter').textContent=tReporter?(tReporter.name||'Not recorded')+' ('+tReporter.count+')':'-';
- let byPerson={};empViolations.forEach(x=>{if(!byPerson[x.name])byPerson[x.name]={count:0,code:x.code,job:x.job};byPerson[x.name].count++});
+ let byPerson={};empViolations.forEach(x=>{if(!x.name) return; if(!byPerson[x.name])byPerson[x.name]={count:0,code:x.code,job:x.job};byPerson[x.name].count++});
  let repeats=Object.entries(byPerson).filter(([k,v])=>v.count>1).sort((a,b)=>b[1].count-a[1].count);
- animateNum('k-repeat-count',repeats.length);document.getElementById('repeatIcon').classList.toggle('shake',repeats.length>0);if(repeats.length)playBeep();
+ animateNum('k-repeat-count',repeats.length);document.getElementById('repeatIcon').classList.toggle('shake',repeats.length>0);
  document.getElementById('repeatList').innerHTML=repeats.length?'<table><tr><th>Name</th><th>Code</th><th>Job</th><th>Count</th><th>Last Violation</th></tr>'+repeats.map(([name,v])=>{let last=empViolations.filter(x=>x.name===name)[0];return `<tr><td><b style="color:#E53935">${escapeHtml(name)}</b></td><td>${escapeHtml(v.code)}</td><td>${escapeHtml(v.job)}</td><td><b>${v.count}</b></td><td>${escapeHtml(last.date)} - ${escapeHtml(last.desc)}</td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#2E7D32">✅ No one has repeated violations yet</p>';
- document.getElementById('empViolTable').innerHTML=list.length?'<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Job</th><th>Place</th><th>Description</th><th>Action</th><th>NCW</th><th>Delete</th></tr>'+list.map(x=>{let idx=empViolations.indexOf(x);return `<tr><td>${escapeHtml(x.date)}<br>${escapeHtml(x.time)}</td><td><b>${escapeHtml(x.name)}</b></td><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.job)}</td><td>${escapeHtml(x.place)}</td><td style="text-align:left;max-width:200px">${escapeHtml(x.desc)}</td><td>${escapeHtml(TAction(x.action))}</td><td><button class="btn2" onclick="printNCW(${idx})">🖨️ NCW PDF</button><br><small>By: ${escapeHtml(x.safety||'-')}</small></td><td><button class="btn2" style="color:#FF8A80" onclick="delEmpViol(${idx})">🗑️</button></td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#888">No employee violations yet</p>';
+ document.getElementById('empViolTable').innerHTML=list.length?'<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Job</th><th>Place</th><th>Description</th><th>Action</th><th>NCW</th><th>Delete</th></tr>'+list.map(x=>{let idx=empViolations.indexOf(x);return `<tr><td>${escapeHtml(x.date)}<br>${escapeHtml(x.time)}</td><td><b>${escapeHtml(x.name)}</b></td><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.job)}</td><td>${escapeHtml(x.place)}</td><td style="text-align:left;max-width:200px">${escapeHtml(x.desc)}</td><td>${escapeHtml(TAction(x.action))}</td><td><button class="btn2" onclick="printNCW(${idx})">🖨️ NCW PDF</button><br><small>By: ${escapeHtml(x.safety||'-')}</small></td><td><button class="btn2" style="color:#FF8A80" onclick="delEmpViol(${idx})">🗑️</button></td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#888">No employee violations yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  let notifs=[];
  empViolations.filter(x=>TAction(x.action)==='Final Exclusion').slice(0,3).forEach(x=>notifs.push(`🚨 استبعاد نهائي: ${x.name} - ${x.desc}`));
  repeats.slice(0,3).forEach(([n,v])=>notifs.push(`🔁 ${n} متكرر - ${v.count} مخالفات`));
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
- document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
+ document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n.text)}</div>`).join('')||'لا توجد إشعارات';
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function printNCW(idx){let x=empViolations[idx];if(!x)return;let checks=x.ncwChecks||[],warning=x.warning||'1',photos=x.photos||[];let violRows='';for(let r=0;r<5;r++){let c1=r*2,c2=r*2+1;let v1=NCW_LIST[c1],v2=NCW_LIST[c2];let is1=checks.includes(c1),is2=checks.includes(c2);violRows+=`<tr><td class="${is1?'checked':''}">${is1?'☑ ':'☐ '}${esc(v1.en)}<br>${esc(v1.ar)}${c1===10&&x.others?'<br><b>Others: '+esc(x.others)+'</b>':''}</td><td class="${is2?'checked':''}">${v2?(is2?'☑ ':'☐ ')+esc(v2.en)+'<br>'+esc(v2.ar):''}</td></tr>`}
  let attachHtml='';if(photos.length){let cls='n'+Math.min(photos.length,4);attachHtml=`<div class="a4"><div class="attach-head"><h2>Violation Photos - Attachments</h2><p>${esc(x.project||PROJECT_FIXED)} - ${esc(x.name)} - ${esc(x.code)} - ${esc(x.date)} ${esc(x.time)}</p><p>${esc(x.desc)}</p></div><div class="attach-grid ${cls}">${photos.slice(0,4).map((src,i)=>`<figure><img src="${src}"><figcaption>Photo ${i+1} - ${esc(x.name)} - ${esc(x.date)}</figcaption></figure>`).join('')}</div></div>`}
  let html=`<div class="a4"><div class="top-logo"><div><b>RMED</b><br><small>Rowad Modern Engineering & Development</small></div><div style="text-align:right"><b>NON-COMPLIANCE WARNING</b><br><small>F-P-SF-01-07 - NCW</small></div></div><h2>Non-Compliance Warning - تحذير عدم الالتزام</h2><table class="info-table"><tr><td>To Mr : <b>${esc(x.name)}</b></td><td>Rowad ID : <b>${esc(x.code)}</b></td></tr><tr><td>Company : <b>${esc(x.company)}</b></td><td>Project : <b>${esc(x.project||PROJECT_FIXED)}</b></td></tr><tr><td>Date : <b>${esc(x.date)}</b></td><td>Time : <b>${esc(x.time)}</b></td></tr></table><p style="font-size:13px"><b>Violation Description:</b> ${esc(x.desc)}<br><b>Place:</b> ${esc(x.place)}</p><table class="viol-table">${violRows}</table><p style="font-size:13px;margin:10px 0">This is Considered as: ${warning==='1'?'☑':'☐'} 1st Warning &nbsp; ${warning==='2'?'☑':'☐'} 2nd Warning &nbsp; ${warning==='3'?'☑':'☐'} 3rd Warning</p><p style="font-size:13px"><b>Amount of Deduction:</b> ${esc(x.deduction||'')} - Action: ${esc(TAction(x.action))}</p><table class="sig-table"><tr><td>Reported By HSE Engineer</td><td>Name: <b>${esc(x.safety||'')}</b></td><td>Signature<br><br></td></tr><tr><td>Action By HSE Manager</td><td>Name<br><br></td><td>Signature<br><br></td></tr></table></div>`+attachHtml;
  document.getElementById('printArea').innerHTML=html;setTimeout(()=>window.print(),300)}
-async function delEmpViol(i){if(!confirm('Delete this violation?'))return;let rec=empViolations[i];try{if(rec&&rec.id)await firebase.firestore().collection('employeeViolations').doc(rec.id).delete()}catch(e){}renderEmpViol()}
+async function delEmpViol(i){if(!confirm('Delete this violation?'))return;let rec=empViolations[i];try{if(rec&&rec.id && !String(rec.id).startsWith('local-')){ let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; await firebase.firestore().collection(rec._coll||'employeeViolations').doc(realId).delete(); }}catch(e){} empViolations.splice(i,1); renderEmpViol();}
 async function clearEmpViol(){if(!confirm('Delete all employee violations from Firebase?'))return;try{let snap=await firebase.firestore().collection('employeeViolations').get();for(let d of snap.docs)await firebase.firestore().collection('employeeViolations').doc(d.id).delete()}catch(e){}renderEmpViol()}
 function exportEmpViol(){if(!empViolations.length)return alert('No data');let csv='Date,Time,Violator Name,Code,Job,Company,Project,Violation Place,Violation Description,Action Taken,Safety Officer,Notes\n'+empViolations.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.project||PROJECT_FIXED,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"',TAction(x.action),x.safety,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='employee-violations.csv';a.click()}
 let savedUser=getReporter();document.getElementById('currentUser').value=savedUser;document.getElementById('ev-safety').value=savedUser;document.getElementById('ev-date').value=new Date().toISOString().slice(0,10);document.getElementById('ev-time').value=new Date().toTimeString().slice(0,5);document.getElementById('ev-project').value=PROJECT_FIXED;loadLive();
