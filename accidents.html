@@ -42,14 +42,33 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{disp
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html" class="active">🚑 <span data-i18n="accidents">Accidents</span></a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="permits.html">📄 Permits</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 <span data-i18n="accidents">Accidents</span></a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -65,6 +84,7 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{disp
 <div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
 
 <div style="padding:16px 20px">
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d red">🚑</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي الحوادث</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d orange">🩹</span><div><b id="k-medical">0</b><small>Medical</small></div></div></div>
@@ -84,6 +104,12 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{disp
 <label>Injured Person *</label><input id="ac-injured" placeholder="Name...">
 <div class="grid2"><div><label>Body Part</label><select id="ac-body"><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Other</option></select></div><div><label>Nature</label><select id="ac-nature"><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Other</option></select></div></div>
 <div class="grid2"><div><label>Date</label><input type="date" id="ac-date"></div><div><label>Severity</label><select id="ac-sev"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div></div>
+<label>Classification</label>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" id="cls-medical" style="width:auto"> Medical Treatment</label>
+<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" id="cls-restricted" style="width:auto"> Restricted Work</label>
+<label style="display:flex;gap:6px;align-items:center;font-weight:600"><input type="checkbox" id="cls-lost" style="width:auto"> Lost Time</label>
+</div>
 <label>Photos (Max 5 - Compressed)</label><input type="file" id="ac-img" accept="image/*" multiple>
 <button class="btn-orange" style="width:100%;margin-top:14px" onclick="addAcc()">💾 <span data-i18n="save">Save Accident</span></button>
 </div>
@@ -109,30 +135,79 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 async function compressImage(file){return new Promise(res=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=1024,r=Math.min(1,max/img.width,max/img.height);c.width=img.width*r;c.height=img.height*r;c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',0.7))};img.src=URL.createObjectURL(file)})}
+// ===== FIX: توحيد أسماء الحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normAcc(raw){
+  let classes = raw.classes || raw.classification || raw.class || raw.type || [];
+  if(typeof classes==='string') classes=[classes];
+  if(!Array.isArray(classes)) classes=[];
+  let date = pick(raw,['date','incidentDate','createdAt']);
+  if(date && date.length>10) date=date.slice(0,10);
+  return {
+    id: raw.id,
+    company: pick(raw,['company','companyName','contractor']),
+    place: pick(raw,['place','location','workLocation','site','workplace']),
+    desc: pick(raw,['desc','description','details','whatHappened']),
+    direct: pick(raw,['direct','directCause','directCauses']),
+    root: pick(raw,['root','rootCause','rootCauses']),
+    injured: pick(raw,['injured','injuredName','injuredPerson','workerName','employeeName','name']),
+    body: pick(raw,['body','bodyPart','injuredPart']),
+    nature: pick(raw,['nature','injuryNature','injuryType']),
+    severity: pick(raw,['severity','level']) || 'Low',
+    date: date,
+    classes: classes,
+    incidentImgs: raw.incidentImgs || raw.images || raw.photos || [],
+    closed: raw.closed===true || raw.status==='Closed' || raw.status==='closed',
+    createdAt: raw.createdAt || date || '',
+    _raw: raw
+  };
+}
 let allAcc=[],permits=[],showing=20;
 function loadLive(){
  try{
-  firebase.firestore().collection('accidents').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{
-   let old=allAcc.length; allAcc=snap.docs.map(d=>({id:d.id,...d.data()}));
+  let db=firebase.firestore();
+  // 1) Firebase - بدون orderBy عشان لو حقل createdAt مش موجود في القديم ميعملش error
+  db.collection('accidents').onSnapshot(snap=>{
+   let old=allAcc.length;
+   let fromFB = snap.docs.map(d=>({id:d.id,...d.data()})).map(normAcc);
+   // دمج مع localStorage من غير تكرار
+   let merged = [...fromFB];
+   let local = [];
+   try{ local = JSON.parse(localStorage.getItem('accidents')||'[]'); }catch(e){}
+   if(Array.isArray(local)) local.forEach(l=>{ if(!merged.find(x=>x.id===l.id)) merged.push(normAcc({id:'local-'+Math.random().toString(36).slice(2),...l})); });
+   merged.sort((a,b)=>String(b.date||b.createdAt||'').localeCompare(String(a.date||a.createdAt||'')));
+   allAcc=merged;
    if(allAcc.length>old && old>0){playBeep(); document.getElementById('openIcon').classList.add('shake')}
+   document.getElementById('loadStatus').textContent='✅ Live - '+allAcc.length+' حادث (Firebase: '+fromFB.length+' + Local: '+local.length+')';
    renderAcc(); loadNotif();
+  }, err=>{
+    console.log('Firestore error',err);
+    document.getElementById('loadStatus').textContent='⚠️ Firebase error: '+err.message+' - جاري القراءة من الجهاز...';
+    try{ let local=JSON.parse(localStorage.getItem('accidents')||'[]'); allAcc=local.map(l=>normAcc({id:'local-'+Math.random().toString(36).slice(2),...l})); renderAcc(); }catch(e){}
   });
-  // أماكن التصاريح عشان الـ Datalist يبقى موحد
-  firebase.firestore().collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>p.location||p.workLocation).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');let comps=[...new Set([...allAcc.map(a=>a.company),...permits.map(p=>p.company)].filter(Boolean))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');});
- }catch(e){console.log(e)}
+  // أماكن التصاريح - بنفس التوحيد
+  db.collection('permits').onSnapshot(snap=>{
+    permits=snap.docs.map(d=>({id:d.id,...d.data()})).map(p=>({ ...p, location: pick(p,['location','workLocation','place','site']), company: pick(p,['company','companyName']), num: pick(p,['num','number','permitNo']), endDate: pick(p,['endDate','end','toDate']), status: pick(p,['status','state']) }));
+    let places=[...new Set(permits.map(p=>p.location).filter(Boolean))];
+    document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');
+    let comps=[...new Set([...allAcc.map(a=>a.company),...permits.map(p=>p.company)].filter(Boolean))];
+    document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');
+  }, ()=>{});
+ }catch(e){console.log(e); document.getElementById('loadStatus').textContent='❌ '+e.message}
 }
 function renderAcc(){
  let q=(document.getElementById('searchAc').value||'').toLowerCase();
- let list=allAcc.filter(a=>((a.company||'')+' '+(a.place||a.location||'')+' '+(a.desc||'')+' '+(a.injured||'')).toLowerCase().includes(q)).slice(0,showing);
+ let list=allAcc.filter(a=>((a.company||'')+' '+(a.place||'')+' '+(a.desc||'')+' '+(a.injured||'')).toLowerCase().includes(q)).slice(0,showing);
  animateNum('k-total',allAcc.length);
- animateNum('k-medical',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Medical')).length);
- animateNum('k-restricted',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Restricted')).length);
- animateNum('k-lost',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Lost')).length);
+ animateNum('k-medical',allAcc.filter(a=>(a.classes||[]).join(' ').toLowerCase().includes('medical')).length);
+ animateNum('k-restricted',allAcc.filter(a=>(a.classes||[]).join(' ').toLowerCase().includes('restricted')).length);
+ animateNum('k-lost',allAcc.filter(a=>(a.classes||[]).join(' ').toLowerCase().includes('lost')).length);
  let open=allAcc.filter(a=>!a.closed).length; animateNum('k-open',open);
  document.getElementById('openIcon').classList.toggle('shake',open>0);
  document.getElementById('acTable').innerHTML=list.map(a=>{
-  let hasPermit=permits.some(p=>p.location===a.place||p.workLocation===a.place);
-  return `<div class="rec-card"><h3 style="margin:0">${escapeHtml(a.company)} - 📍 ${escapeHtml(a.place||a.location||'')}</h3><small>${escapeHtml(a.date||a.createdAt||'')} • ${escapeHtml(a.injured||'')} • ${escapeHtml(a.severity||'')}</small><p style="font-size:13px">${escapeHtml(a.desc)}</p>${hasPermit?'<span class="chip">📄 كان فيه تصريح شغال في نفس المكان</span>':''}<div style="margin-top:8px;display:flex;gap:6px"><button class="btn-ghost" onclick="delAcc('${a.id}')">🗑️ Delete</button><button class="btn-ghost" onclick="printAcc('${a.id}')">🖨️ Print</button><button class="btn-ghost" onclick="closeAcc('${a.id}')">🔒 Close</button></div></div>`}).join('')||'<p>No accidents</p>';
+  let hasPermit=permits.some(p=>p.location && a.place && p.location===a.place);
+  let imgs=(a.incidentImgs||[]).slice(0,3).map(u=>`<img src="${u}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;margin:2px">`).join('');
+  return `<div class="rec-card"><h3 style="margin:0">${escapeHtml(a.company||'-')} - 📍 ${escapeHtml(a.place||'-')}</h3><small>${escapeHtml(a.date||'')} • ${escapeHtml(a.injured||'')} • ${escapeHtml(a.severity||'')} • ${(a.classes||[]).join(' + ')}</small><p style="font-size:13px">${escapeHtml(a.desc||'')}</p>${a.direct?`<p style="font-size:12px;color:#666">Direct: ${escapeHtml(a.direct)}</p>`:''}${a.root?`<p style="font-size:12px;color:#666">Root: ${escapeHtml(a.root)}</p>`:''}${imgs}<div>${hasPermit?'<span class="chip">📄 كان فيه تصريح شغال في نفس المكان</span>':''} ${a.closed?'<span class="chip" style="background:#E8F5E9;color:#2E7D32">🔒 Closed</span>':'<span class="chip" style="background:#FFEBEE;color:#D32F2F">🔴 Open</span>'}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn-ghost" onclick="delAcc('${a.id}')">🗑️ Delete</button><button class="btn-ghost" onclick="printAcc('${a.id}')">🖨️ Print</button>${a.closed?'':`<button class="btn-ghost" onclick="closeAcc('${a.id}')">🔒 Close</button>`}</div></div>`}).join('')||'<p>No accidents - مفيش حوادث، لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
 }
 async function loadNotif(){
  let notifs=allAcc.filter(a=>!a.closed).slice(0,5).map(a=>({text:`🚑 حادث مفتوح: ${a.company} - ${a.place}`,crit:true}));
@@ -145,12 +220,13 @@ async function addAcc(){
  let company=document.getElementById('ac-company').value.trim(),place=document.getElementById('ac-place').value.trim(),desc=document.getElementById('ac-desc').value.trim();
  if(!company||!place||!desc) return alert('املأ الحقول المطلوبة');
  let imgs=[]; for(let f of document.getElementById('ac-img').files){if(imgs.length>=5)break; imgs.push(await compressImage(f))}
- await firebase.firestore().collection('accidents').add({company,place,location:place,desc,direct:document.getElementById('ac-direct').value,root:document.getElementById('ac-root').value,injured:document.getElementById('ac-injured').value,body:document.getElementById('ac-body').value,nature:document.getElementById('ac-nature').value,severity:document.getElementById('ac-sev').value,date:document.getElementById('ac-date').value||new Date().toISOString().slice(0,10),incidentImgs:imgs,createdAt:new Date().toISOString(),closed:false});
+ let classes=[]; if(document.getElementById('cls-medical').checked) classes.push('Medical'); if(document.getElementById('cls-restricted').checked) classes.push('Restricted'); if(document.getElementById('cls-lost').checked) classes.push('Lost Time');
+ await firebase.firestore().collection('accidents').add({company,place,location:place,desc,description:desc,direct:document.getElementById('ac-direct').value,root:document.getElementById('ac-root').value,injured:document.getElementById('ac-injured').value,body:document.getElementById('ac-body').value,nature:document.getElementById('ac-nature').value,severity:document.getElementById('ac-sev').value,date:document.getElementById('ac-date').value||new Date().toISOString().slice(0,10),classes,incidentImgs:imgs,createdAt:new Date().toISOString(),closed:false});
  playBeep(); alert('✅ تم الحفظ'); document.getElementById('ac-desc').value='';
 }
-async function delAcc(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('accidents').doc(id).delete();}
+async function delAcc(id){if(!confirm('حذف؟'))return; if(String(id).startsWith('local-')){ let arr=JSON.parse(localStorage.getItem('accidents')||'[]'); localStorage.setItem('accidents',JSON.stringify(arr)); allAcc=allAcc.filter(x=>x.id!==id); renderAcc(); return; } await firebase.firestore().collection('accidents').doc(id).delete();}
 async function closeAcc(id){await firebase.firestore().collection('accidents').doc(id).update({closed:true,closedAt:new Date().toISOString()});}
-function printAcc(id){let a=allAcc.find(x=>x.id==id);let w=window.open('');w.document.write(`<h2>RMED - Accident Report</h2><p>${escapeHtml(a.company)} - ${escapeHtml(a.place)}</p><p>${escapeHtml(a.desc)}</p>`);w.print();}
+function printAcc(id){let a=allAcc.find(x=>x.id==id);let w=window.open('');w.document.write(`<h2>RMED - Accident Report</h2><p>${escapeHtml(a.company)} - ${escapeHtml(a.place)}</p><p>${escapeHtml(a.desc)}</p><p>Direct: ${escapeHtml(a.direct||'')}</p><p>Root: ${escapeHtml(a.root||'')}</p>`);w.print();}
 function loadMore(){showing+=20;renderAcc();}
 document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
 loadLive();
