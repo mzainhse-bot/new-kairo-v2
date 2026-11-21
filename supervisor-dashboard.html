@@ -40,14 +40,33 @@ canvas{width:100%;background:#F8F9FA;border:1px solid #eee;border-radius:12px}
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html" class="active">👨‍💼 <span data-i18n="supervisor">Supervisor Dashboard</span></a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="safety-observations.html">👁️ Observations</a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 <span data-i18n="supervisor">Supervisor Dashboard</span></a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -63,7 +82,7 @@ canvas{width:100%;background:#F8F9FA;border:1px solid #eee;border-radius:12px}
 
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">لوحة المشرف</span> <span style="color:#FF6B00">• Supervisor</span></h1>
-<p style="color:#666;font-size:13px">Supervisor & Manager Only • Live • V4 Final</p>
+<p style="color:#666;font-size:13px">Supervisor & Manager Only • Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
 <p style="color:#666;font-size:13px">مرحباً: <span id="who">جاري التحميل...</span></p>
 
 <div class="panel"><b>🔍 حالة الاتصال بـ Firebase:</b><div id="debugBox" class="debug" style="margin-top:10px">جاري الاتصال بـ Firebase...</div></div>
@@ -97,12 +116,52 @@ function toggleNotif(){document.getElementById('notifPanel').classList.toggle('s
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 function getMe(){try{return JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}')}catch(e){return{}}}
 var me=getMe();document.getElementById('who').innerHTML='مرحباً: <b>'+escapeHtml(me.name||'')+'</b> - '+escapeHtml(me.role||me.job||'');
-function parseDate(raw){if(!raw)return '';if(typeof raw==='number')return new Date(raw).toISOString().slice(0,10);var s=String(raw).trim();if(!s)return '';if(s.indexOf('T')!==-1)return s.slice(0,10);if(s.indexOf('/')!==-1){var p=s.split('/');if(p.length===3){var a=parseInt(p[0],10),b=parseInt(p[1],10),y=parseInt(p[2],10);if(y<100)y+=2000;var d,m;if(a>12){d=a;m=b}else if(b>12){d=b;m=a}else{d=a;m=b}return y+'-'+(m<10?'0':'')+m+'-'+(d<10?'0':'')+d}}if(s.indexOf('-')!==-1)return s.slice(0,10);var t=new Date(s);if(!isNaN(t))return t.toISOString().slice(0,10);return ''}
-function getDate(x){var v=x.date||x.createdAt||x.created_at||x.day||x.timestamp;if(v&&typeof v==='object'&&v.toDate)return v.toDate().toISOString().slice(0,10);if(v&&typeof v==='object'&&v.seconds)return new Date(v.seconds*1000).toISOString().slice(0,10);return parseDate(v)}
-function getName(x){var n=x.reporter||x.reporterName||x.by||x.trainer||x.createdBy||x.user||x.employee||x.empName||x.name||x.author||x.uploadedBy||x.officer||x.supervisor||x.inspector;if(n&&typeof n==='object')n=n.name;if(!n)n=me.name||'غير معروف';return String(n).trim()}
-function getDetail(x,fb){return String(x.desc||x.description||x.title||x.name||x.company||x.subject||fb||'').slice(0,70)}
+// ===== FIX: parseDate بقى بيفهم DD-MM-YYYY و DD/MM/YYYY صح =====
+function parseDate(raw){
+  if(!raw) return '';
+  if(typeof raw==='number') return new Date(raw).toISOString().slice(0,10);
+  var s=String(raw).trim(); if(!s) return '';
+  if(s.indexOf('T')!==-1) return s.slice(0,10);
+  if(s.indexOf('/')!==-1 || s.indexOf('-')!==-1){
+    var sep=s.indexOf('/')!==-1?'/':'-';
+    var p=s.split(sep);
+    if(p.length===3){
+      // لو أول جزء 4 أرقام = YYYY-MM-DD
+      if(p[0].length===4) return p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].slice(0,2).padStart(2,'0');
+      // غير كده = DD-MM-YYYY (الصيغة المصرية القديمة)
+      var d=parseInt(p[0],10), m=parseInt(p[1],10), y=parseInt(p[2],10);
+      if(y<100) y+=2000;
+      if(m<1||m>12||d<1||d>31) return '';
+      return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    }
+  }
+  var t=new Date(s); if(!isNaN(t)) return t.toISOString().slice(0,10); return '';
+}
+function getDate(x){var v=x.date||x.createdAt||x.created_at||x.day||x.timestamp||x.inspectionDate;if(v&&typeof v==='object'&&v.toDate)return v.toDate().toISOString().slice(0,10);if(v&&typeof v==='object'&&v.seconds)return new Date(v.seconds*1000).toISOString().slice(0,10);return parseDate(v)}
+function getName(x){
+  var n=x.reporter||x.reporterName||x.by||x.trainer||x.createdBy||x.user||x.employee||x.empName||x.name||x.author||x.uploadedBy||x.officer||x.supervisor||x.inspector||x.inspectorName;
+  if(n&&typeof n==='object')n=n.name;
+  if(!n)n=me.name||'غير معروف';
+  return String(n).trim();
+}
+function getDetail(x,fb){return String(x.desc||x.description||x.observation||x.title||x.name||x.company||x.subject||fb||'').slice(0,70)}
 var allActs=[];
-var COLS=[{col:'inductions',type:'📘 أولية',pts:5},{col:'induction',type:'📘 أولية',pts:5},{col:'trainings',type:'🎓 تدريب',pts:5},{col:'train',type:'🎓 تدريب',pts:5},{col:'weekly',type:'📅 أسبوعية',pts:10},{col:'weeklyMeetings',type:'📅 أسبوعية',pts:10},{col:'weeklyLectures',type:'📅 أسبوعية',pts:10},{col:'safetyObservations',type:'📋 ملاحظة',pts:3},{col:'observations',type:'📋 ملاحظة',pts:3},{col:'violations',type:'⚠️ مخالفة مقاول',pts:2},{col:'employeeViolations',type:'🚨 مخالفة موظف',pts:2},{col:'employee-violations',type:'🚨 مخالفة موظف',pts:2},{col:'permits',type:'📋 تصريح',pts:2},{col:'accidents',type:'🚑 حادث',pts:2},{col:'nearMiss',type:'⚡ Near Miss',pts:3},{col:'near-miss',type:'⚡ Near Miss',pts:3},{col:'ncr',type:'📄 NCR',pts:2},{col:'scaffolds',type:'🏗️ سقالة',pts:2},{col:'firstAid',type:'🩹 إسعاف',pts:2},{col:'first-aid',type:'🩹 إسعاف',pts:2}];
+var COLS=[
+  {col:'inductions',type:'📘 أولية',pts:5},{col:'induction',type:'📘 أولية',pts:5},
+  {col:'trainings',type:'🎓 تدريب',pts:5},{col:'train',type:'🎓 تدريب',pts:5},{col:'training',type:'🎓 تدريب',pts:5},
+  {col:'weekly',type:'📅 أسبوعية',pts:10},{col:'weeklyMeetings',type:'📅 أسبوعية',pts:10},{col:'weeklyLectures',type:'📅 أسبوعية',pts:10},{col:'weeklyMeeting',type:'📅 أسبوعية',pts:10},
+  // ===== FIX: observations بدل safetyObservations =====
+  {col:'observations',type:'📋 ملاحظة',pts:3},{col:'safetyObservations',type:'📋 ملاحظة',pts:3},{col:'safety-observations',type:'📋 ملاحظة',pts:3},
+  {col:'violations',type:'⚠️ مخالفة مقاول',pts:2},{col:'contractorViolations',type:'⚠️ مخالفة مقاول',pts:2},
+  {col:'employeeViolations',type:'🚨 مخالفة موظف',pts:2},{col:'employee-violations',type:'🚨 مخالفة موظف',pts:2},
+  {col:'permits',type:'📋 تصريح',pts:2},{col:'permitToWork',type:'📋 تصريح',pts:2},
+  {col:'accidents',type:'🚑 حادث',pts:2},
+  {col:'nearMiss',type:'⚡ Near Miss',pts:3},{col:'near-miss',type:'⚡ Near Miss',pts:3},{col:'near_miss',type:'⚡ Near Miss',pts:3},
+  {col:'ncr',type:'📄 NCR',pts:2},
+  {col:'scaffolds',type:'🏗️ سقالة',pts:2},{col:'scaffoldInspections',type:'🏗️ سقالة',pts:2},
+  {col:'firstAid',type:'🩹 إسعاف',pts:2},{col:'first-aid',type:'🩹 إسعاف',pts:2},
+  {col:'powerTools',type:'🔧 Power Tool',pts:2},{col:'safetyHarness',type:'🦺 Harness',pts:2},{col:'storeInspection',type:'🏬 Store',pts:2},{col:'vehicles',type:'🚐 Vehicle',pts:2}
+];
 function loadLive(){
  try{
   let db=firebase.firestore();
@@ -112,7 +171,7 @@ function loadLive(){
    db.collection(c.col).onSnapshot(snap=>{
     logs.push(c.col+': '+snap.size);
     snap.docChanges().forEach(ch=>{if(ch.type==='added'&&allActs.length>0)playBeep()});
-    let arr=snap.docs.map(d=>{let x=d.data()||{};return {d:getDate(x),raw:(x.date||x.createdAt||''),name:getName(x),type:c.type,pts:c.pts,detail:getDetail(x,c.type),col:c.col,id:d.id}});
+    let arr=snap.docs.map(d=>{let x=d.data()||{};return {d:getDate(x),raw:(x.date||x.createdAt||''),name:getName(x),type:c.type,pts:c.pts,detail:getDetail(x,c.type),col:c.col,id:c.col+':'+d.id}});
     allActs=allActs.filter(a=>a.col!==c.col);allActs.push(...arr);
     document.getElementById('debugBox').innerHTML='✅ متصل بـ Firebase - إجمالي: <b>'+allActs.length+'</b> نشاط<br>'+logs.join(' | ');
     let names=[...new Set(allActs.map(a=>a.name))].sort();let sel=document.getElementById('empSelect');let cur=sel.value;sel.innerHTML='<option value="">كل الموظفين</option>'+names.map(n=>`<option ${n===cur?'selected':''}>${escapeHtml(n)}</option>`).join('');
@@ -131,12 +190,11 @@ function renderAll(ignoreDate){
  var tot=0;for(var i=0;i<list.length;i++)tot+=list[i].pts;
  animateNum('k-acts',list.length);animateNum('k-emps',arr.length);animateNum('k-points',tot);document.getElementById('k-top').innerHTML=arr[0]?escapeHtml(arr[0].name)+' ('+arr[0].pts+')':'-';
  var html='<table><tr><th>#</th><th>الموظف</th><th>عدد النشاطات</th><th>النقاط</th><th>آخر نشاط</th></tr>';for(var i=0;i<arr.length;i++){html+='<tr class="emp-row" onclick="openDetail(\''+escapeHtml(arr[i].name).replace(/'/g,'')+'\')"><td>'+(i+1)+'</td><td><b>'+escapeHtml(arr[i].name)+'</b></td><td>'+arr[i].count+'</td><td><b>'+arr[i].pts+'</b></td><td>'+(arr[i].last||'-')+'</td></tr>'}html+='</table>';
- document.getElementById('empTable').innerHTML=arr.length?html:'<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي - جرب توسع الفترة أو دوس تحديث من Firebase</p>';
+ document.getElementById('empTable').innerHTML=arr.length?html:'<p style="text-align:center;color:#999">مفيش نشاط في الفترة دي - جرب توسع الفترة أو دوس تحديث من Firebase - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  drawChart(list,arr);
  let notifs=list.slice(0,3).map(a=>`👨‍💼 ${a.name} - ${a.type} - ${a.detail} - ${a.d}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
 function drawChart(list,arr){
  var canvas=document.getElementById('myChart');var ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);var top=arr.slice(0,4);if(!top.length){ctx.fillStyle='#999';ctx.font='16px Arial';ctx.fillText('مفيش داتا للرسم',20,50);return}
