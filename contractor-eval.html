@@ -1,259 +1,168 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contractor Evaluation V4 - RMED</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contractor Eval V4 Final - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#F6F7F9;color:#111}
-.sidebar{position:fixed;top:0;right:0;width:280px;height:100vh;background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
+body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+.icon3d{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;cursor:pointer;transition:.15s;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 18px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.15);background:linear-gradient(145deg,#fff,#e8e8e8)}
+.icon3d:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.icon3d.small{width:48px;height:48px;border-radius:14px;font-size:24px}.icon3d.mini{width:38px;height:38px;border-radius:11px;font-size:20px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.icon3d.blue{background:linear-gradient(145deg,#64B5F6,#1565C0);color:#fff}.icon3d.green{background:linear-gradient(145deg,#81C784,#2E7D32);color:#fff}.icon3d.red{background:linear-gradient(145deg,#E57373,#B71C1C);color:#fff}.icon3d.orange{background:linear-gradient(145deg,#FFB74D,#EF6C00);color:#fff}.icon3d.purple{background:linear-gradient(145deg,#BA68C8,#6A1B9A);color:#fff}.icon3d.gold{background:linear-gradient(145deg,#FFD54F,#FF8F00)}.icon3d.teal{background:linear-gradient(145deg,#4DB6AC,#00695C);color:#fff}
+.icon3d.shake{animation:shake .5s infinite}@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) scale(1.05)}75%{transform:rotate(8deg) scale(1.05)}}
+.sidebar{position:fixed;top:10px;right:0;width:280px;height:calc(100vh - 10px);background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
 html[dir="ltr"] .sidebar{right:auto;left:0}
-.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}
-.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
-.logo-box{text-align:center;padding:10px 0 14px;border-bottom:1px solid rgba(255,255,255,.1)}
-.logo-box b{font-size:32px;letter-spacing:2px}
-.main{margin-right:280px;min-height:100vh}
-html[dir="ltr"] .main{margin-right:0;margin-left:280px}
-.hazard{height:8px;background:repeating-linear-gradient(45deg,#FFD700 0 16px,#111 16px 32px)}
-.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;position:sticky;top:0;z-index:90;background:#fff;border-bottom:3px solid #111}
-.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}
-.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
-.btn-ghost.active{background:#111;color:#fff}
+.logo-box{text-align:center;padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.12)}.logo-box b{font-size:32px;letter-spacing:3px}.logo-box small{color:#FFB380;font-size:10px}.logo-box em{color:#8AA0B8;font-size:9px;font-style:normal}
+.nav-group{margin:12px 0 4px}.nav-head{font-size:11px;font-weight:900;color:#FFB380;padding:0 10px;margin-bottom:6px}
+.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}.sidebar a:hover{background:rgba(255,255,255,.08);color:#fff}.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
+.user-card{margin-top:auto;background:rgba(255,255,255,.08);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center}.user-card img{width:44px;height:44px;border-radius:50%;border:2px solid #FF6B00}
+.logout{margin-top:10px;background:rgba(211,47,47,.25);border:1px solid #FF5252;color:#FFCDD2;text-align:center;padding:11px;border-radius:12px;font-weight:800;text-decoration:none;display:block}
+.main{margin-right:280px}html[dir="ltr"] .main{margin-right:0;margin-left:280px}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:90}
+.menu-btn{background:#FF6B00;border:none;width:38px;height:38px;border-radius:10px;font-size:18px;color:#fff;cursor:pointer}
+.search{flex:1;max-width:380px;display:flex;gap:8px;background:#F1F3F5;border-radius:99px;padding:9px 14px}.search input{border:none;outline:none;background:transparent;width:100%}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:#F1F3F5;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer}
+.badge-n{position:absolute;top:-6px;left:-6px;background:#E53935;color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pill{border:1px solid #ddd;background:#fff;padding:8px 16px;border-radius:99px;font-weight:700;cursor:pointer}.pill.active{background:#111;color:#fff}
+.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
-.kpi{background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.kpi b{font-size:26px;display:block}
-.kpi small{color:#666}
+.kpi{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}.kpi-top{display:flex;gap:12px;align-items:center}.kpi b{font-size:26px;display:block}.kpi small{color:#666;font-size:12px}
 .panel{background:#fff;border:1px solid #eee;border-radius:18px;padding:18px;margin-bottom:14px}
-input,select,textarea{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px;font-size:13px;outline:none}
-input:focus{border-color:#FF6B00}
-label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
-table th{background:#0F2A4D;color:#fff;padding:11px}
-table td{padding:10px;border-bottom:1px solid #eee;text-align:center;background:#fff}
-.badge{padding:5px 10px;border-radius:99px;font-size:11px;font-weight:900}
-.badge.green{background:#E8F5E9;color:#2E7D32}.badge.orange{background:#FFF3E0;color:#EF6C00}.badge.red{background:#FFEBEE;color:#D32F2F}
-.notif-panel{position:fixed;top:60px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:200;display:none;padding:14px}
-.notif-panel.show{display:block}
-.notif-item{padding:10px;border-bottom:1px solid #eee;font-size:13px;cursor:pointer}
-.notif-item.critical{border-right:4px solid #E53935;background:#FFF5F5}
-.range-row{display:flex;gap:10px;align-items:center}
-.range-row input{flex:1;accent-color:#FF6B00}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px;outline:none}input:focus{border-color:#FF6B00}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F2A4D;color:#fff;padding:11px}table td{padding:10px;border-bottom:1px solid #eee;text-align:center}
+.badge{padding:5px 10px;border-radius:99px;font-size:11px;font-weight:900}.badge.green{background:#E8F5E9;color:#2E7D32}.badge.orange{background:#FFF3E0;color:#EF6C00}.badge.red{background:#FFEBEE;color:#D32F2F}
+.notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
+.range-row{display:flex;gap:10px;align-items:center}.range-row input{flex:1;accent-color:#FF6B00}
 .final-box{background:#FFF8E1;border-radius:14px;padding:14px;margin-top:14px}
-@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+.score-bar{height:10px;background:#eee;border-radius:99px;overflow:hidden;margin-top:6px}.score-bar i{display:block;height:100%;border-radius:99px;transition:width .6s}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search{display:none}}
 </style>
 </head>
 <body>
 <div class="hazard"></div>
-<aside class="sidebar">
-<div class="logo-box"><b>RMED</b><br><small data-i18n="subtitle">HSE MANAGEMENT SYSTEM</small></div>
-<!-- workers.html REMOVED - migrated to employees -->
-<a href="index.html">🏠 <span data-i18n="home">Home</span></a>
-<a href="dashboard.html">📊 <span data-i18n="dashboard">Dashboard</span></a>
-<a href="induction.html">📋 <span data-i18n="induction">Induction</span></a>
-<a href="accidents.html">🚑 <span data-i18n="accidents">Accidents</span></a>
-<a href="ncr.html">📄 NCR</a>
-<a href="violations.html">⚠️ Violations</a>
-<a href="contractor-eval.html" class="active">🏗️ <span data-i18n="contractors">Contractors</span></a>
-<a href="fire-extinguishers.html">🧯 Fire Extinguishers</a>
+<aside class="sidebar" id="sidebar">
+<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
+<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
+<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a><a href="violations.html">⚠️ Violations</a><a href="contractor-eval.html" class="active">🏗️ <span data-i18n="contractors">Contractors</span></a></div>
+<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
+<a href="#" class="logout">↩ Logout</a>
 </aside>
-
 <div class="main">
 <div class="topbar">
+<button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
 <b data-i18n="title">تقييم المقاولين • Contractor Evaluation</b>
-<div style="margin-inline-start:auto;display:flex;gap:8px">
-<button class="btn-ghost" onclick="toggleNotif()">🔔 <span id="notifCount" style="background:#E53935;color:#fff;border-radius:50%;padding:2px 7px;font-size:11px;display:none">0</span></button>
-<button class="btn-ghost" id="btnAr" onclick="setLang('ar')">عربي</button>
-<button class="btn-ghost" id="btnEn" onclick="setLang('en')">EN</button>
+<div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
+<button class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+<button class="icon-btn" onclick="toggleNotif()">🔔<span class="badge-n" id="notifCount" style="display:none">0</span></button>
+<button class="pill" id="btnAr" onclick="setLang('ar')">عربي</button>
+<button class="pill" id="btnEn" onclick="setLang('en')">EN</button>
 </div>
 </div>
-<div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList"></div></div>
+<div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
 
 <div style="padding:16px 20px">
-<!-- FILTER BY PERIOD - FIX: Evaluation on period, not all history -->
 <div class="panel" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-<div style="flex:1"><label data-i18n="period">الفترة</label><select id="f-period" onchange="loadAll()"><option value="month">Monthly - شهري</option><option value="quarter">Quarterly - ربع سنوي</option><option value="year">Annual - سنوي</option><option value="all">All Time - الكل</option></select></div>
-<div style="flex:1"><label data-i18n="month">الشهر</label><input type="month" id="f-month" onchange="loadAll()"></div>
-<div><button class="btn-orange" onclick="loadAll()">🔄 <span data-i18n="refresh">تحديث</span></button></div>
-<div id="periodInfo" style="font-size:12px;color:#666"></div>
+<div style="flex:1"><label data-i18n="period">الفترة</label><select id="f-period" onchange="renderAll()"><option value="month">Monthly - شهري</option><option value="quarter">Quarterly - ربع سنوي</option><option value="year">Annual - سنوي</option><option value="all">All Time - الكل</option></select></div>
+<div style="flex:1"><label data-i18n="month">الشهر</label><input type="month" id="f-month" onchange="renderAll()"></div>
+<div><button class="btn-orange" onclick="loadLive()">🔄 <span data-i18n="refresh">تحديث</span></button></div>
+<span style="font-size:12px;color:#2E7D32;font-weight:800">● Live</span>
+<div id="periodInfo" style="font-size:12px;color:#666;width:100%"></div>
 </div>
 
 <div class="kpi-row">
-<div class="kpi"><b id="k-companies">0</b><small data-i18n="companies">Companies</small></div>
-<div class="kpi"><b id="k-evals">0</b><small>Evaluations</small></div>
-<div class="kpi"><b id="k-avgScore">0</b><small>Avg Score</small></div>
-<div class="kpi"><b id="k-totalDeduct">0</b><small>Total Deduction</small></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d blue">🏢</span><div><b id="k-companies">0</b><small data-i18n="companies">Companies</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d purple">📋</span><div><b id="k-evals">0</b><small>Evaluations</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d gold">⭐</span><div><b id="k-avgScore">0</b><small>Avg Score</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d red" id="deductIcon">📉</span><div><b id="k-totalDeduct">0</b><small>Total Deduction</small></div></div></div>
 </div>
 
-<div class="panel">
-<h2 data-i18n="autoTitle">التقييم الأوتوماتيك</h2>
-<p style="font-size:12px;color:#666">Score = 100 - Deduction (Violation x3 + Open NCR x2 + Accident x10 + Open Near Miss x1 + Open Observation x0.5 - Max 60) • على الفترة المختارة فقط</p>
-<div style="overflow-x:auto"><table><thead><tr><th>Company</th><th>Violations x3</th><th>Open NCR x2</th><th>Accidents x10</th><th>Near Miss x1</th><th>Observations x0.5</th><th>Deduction</th><th>Score</th><th>Status</th></tr></thead><tbody id="autoEvalBody"><tr><td colspan="9">Loading...</td></tr></tbody></table></div>
+<div class="panel"><h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small green">🤖</span> <span data-i18n="autoTitle">التقييم الأوتوماتيك</span></h2>
+<p style="font-size:12px;color:#666">Score = 100 - Deduction (Violation x3 + Open NCR x2 + Accident x10 + Open Near Miss x1 + Open Observation x0.5 - Max 60) • على الفترة المختارة فقط • Live</p>
+<div style="overflow-x:auto"><table><tr><th>Company</th><th>Violations x3</th><th>Open NCR x2</th><th>Accidents x10</th><th>Near Miss x1</th><th>Observations x0.5</th><th>Deduction</th><th>Score</th><th>Status</th></tr><tbody id="autoEvalBody"></tbody></table></div>
 <button class="btn-orange" style="width:100%;margin-top:12px" onclick="saveAllAuto()">💾 Save All Automatic Evaluations</button>
-<button class="btn-ghost" style="width:100%;margin-top:8px" onclick="exportEval()">📥 Export Excel</button>
-</div>
+<button class="btn-ghost" style="width:100%;margin-top:8px" onclick="exportEval()">📥 Export Excel</button></div>
 
-<div class="panel">
-<h2 data-i18n="manualTitle">تعديل يدوي لشركة واحدة</h2>
+<div class="panel"><h2 style="margin:0" data-i18n="manualTitle">تعديل يدوي لشركة واحدة</h2>
 <label>Company *</label><select id="e-company" onchange="onCompanyChange()"><option value="">-- Select --</option></select>
 <input id="e-company-new" placeholder="Or type new company..." style="margin-top:8px">
 <div id="autoBox" style="display:none;background:#FFF8E1;padding:12px;border-radius:12px;margin-top:10px;font-size:13px;line-height:2"><span id="autoText"></span></div>
 <div id="criteriaBox"></div>
 <label>Notes</label><textarea id="e-notes"></textarea>
 <label>Recommendation</label><select id="e-recommend"><option>Acceptable</option><option>Conditionally Accepted</option><option>Not Accepted</option><option>Suspended</option></select>
-<div class="final-box">Manual: <b id="calc-manual">0</b> / 100 | Deduction: <b id="calc-deduct">0</b> | Score: <b id="calc-final">0</b><br><button class="btn-orange" onclick="saveEval()" style="margin-top:10px">💾 Save Manual</button></div>
-</div>
+<div class="final-box">Manual: <b id="calc-manual">0</b> / 100 | Deduction: <b id="calc-deduct">0</b> | Score: <b id="calc-final">0</b><br><button class="btn-orange" onclick="saveEval()" style="margin-top:10px">💾 Save Manual</button></div></div>
 
-<div class="panel"><h2>Saved Evaluations</h2><div style="overflow-x:auto"><table><thead><tr><th>Company</th><th>Period</th><th>Manual</th><th>Deduction</th><th>Final</th><th>Recommendation</th></tr></thead><tbody id="evalTableBody"><tr><td colspan="6">Loading...</td></tr></tbody></table></div></div>
-</div>
-</div>
+<div class="panel"><h2>Saved Evaluations</h2><div style="overflow-x:auto"><table><tr><th>Company</th><th>Period</th><th>Manual</th><th>Deduction</th><th>Final</th><th>Recommendation</th></tr><tbody id="evalTableBody"></tbody></table></div></div>
+</div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-// ===== LANGUAGE =====
-const I18N={
-ar:{subtitle:"نظام إدارة السلامة",home:"الرئيسية",dashboard:"لوحة التحكم",induction:"التعريف",accidents:"الحوادث",contractors:"المقاولين",title:"تقييم المقاولين",notifications:"الإشعارات",period:"الفترة",month:"الشهر",refresh:"تحديث",companies:"الشركات",autoTitle:"التقييم الأوتوماتيك",manualTitle:"تعديل يدوي لشركة واحدة"},
-en:{subtitle:"HSE MANAGEMENT SYSTEM",home:"Home",dashboard:"Dashboard",induction:"Induction",accidents:"Accidents",contractors:"Contractors",title:"Contractor Evaluation",notifications:"Notifications",period:"Period",month:"Month",refresh:"Refresh",companies:"Companies",autoTitle:"Automatic Evaluation",manualTitle:"Manual Edit"}
-};
+const I18N={ar:{home:'الرئيسية',contractors:'المقاولين',title:'تقييم المقاولين',notifications:'الإشعارات',period:'الفترة',month:'الشهر',refresh:'تحديث',companies:'الشركات',autoTitle:'التقييم الأوتوماتيك',manualTitle:'تعديل يدوي لشركة واحدة'},en:{home:'Home',contractors:'Contractors',title:'Contractor Evaluation',notifications:'Notifications',period:'Period',month:'Month',refresh:'Refresh',companies:'Companies',autoTitle:'Automatic Evaluation',manualTitle:'Manual Edit'}};
 function setLang(l){localStorage.setItem('lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[l][k])el.textContent=I18N[l][k]});document.getElementById('btnAr').classList.toggle('active',l==='ar');document.getElementById('btnEn').classList.toggle('active',l==='en')}
 setLang(localStorage.getItem('lang')||'ar');
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+let soundOn=localStorage.getItem('rmed_sound')!=='off';
+function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundOn?'on':'off');document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇'}
+document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
+function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.2)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
-
-// ===== REAL NOTIFICATIONS =====
-async function loadNotifications(){
- let notifs=[];
- try{
-  let db=firebase.firestore();
-  let a=await db.collection('accidents').orderBy('createdAt','desc').limit(5).get();
-  a.forEach(d=>{let x=d.data(); notifs.push({text:`🚑 حادث: ${x.company||''} - ${x.place||''}`,crit:true})});
-  let p=await db.collection('permits').limit(5).get();
-  p.forEach(d=>{let x=d.data(); if(x.expiry && (new Date(x.expiry)-new Date())/86400000<2) notifs.push({text:`⚠️ تصريح ${x.number||''} هينتهي قريب`})});
- }catch(e){}
- let c=document.getElementById('notifCount'); c.style.display=notifs.length?'inline-block':'none'; c.textContent=notifs.length;
- document.getElementById('notifList').innerHTML=notifs.map(n=>`<div class="notif-item ${n.crit?'critical':''}">${escapeHtml(n.text)}</div>`).join('')||'لا توجد إشعارات';
-}
-
-// ===== CORE - FIXED LOGIC =====
+function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 let DB={violations:[],ncr:[],accidents:[],nearMiss:[],observations:[],evals:[]};
 function normCompany(s){return String(s||'').trim().replace(/^شركة\s+/,'').replace(/^company\s+/i,'').trim()||'Not Specified'}
-function getCompany(r){return normCompany(r.company||r.contractor||r.companyName||r.contractorName||'Not Specified')}
-function isClosed(r){let s=String(r.status||'').toLowerCase(); return s.includes('closed')||s.includes('done')||s.includes('resolved')||s.includes('مغلق')||!!r.closedAt}
-function inPeriod(dateStr){
- let period=document.getElementById('f-period').value, monthVal=document.getElementById('f-month').value;
- if(period==='all'||!dateStr) return true;
- if(!monthVal) return true;
- let d=new Date(dateStr); if(isNaN(d)) return true;
- let [y,m]=monthVal.split('-').map(Number);
- if(period==='month') return d.getFullYear()===y && (d.getMonth()+1)===m;
- if(period==='quarter'){ let q=Math.floor((m-1)/3); let dq=Math.floor(d.getMonth()/3); return d.getFullYear()===y && dq===q; }
- if(period==='year') return d.getFullYear()===y;
- return true;
-}
-function getDate(r){return r.date||r.createdAt||r.created_at||''}
-
-async function loadAll(){
+function getCompany(r){return normCompany(r.company||r.contractor||r.companyName||'Not Specified')}
+function isClosed(r){let s=String(r.status||'').toLowerCase();return s.includes('closed')||s.includes('done')||s.includes('resolved')||s.includes('مغلق')||!!r.closedAt}
+function inPeriod(ds){let p=document.getElementById('f-period').value,m=document.getElementById('f-month').value;if(p==='all'||!ds||!m) return true;let d=new Date(ds);if(isNaN(d))return true;let [y,mo]=m.split('-').map(Number);if(p==='month')return d.getFullYear()===y&&(d.getMonth()+1)===mo;if(p==='quarter')return d.getFullYear()===y&&Math.floor(d.getMonth()/3)===Math.floor((mo-1)/3);if(p==='year')return d.getFullYear()===y;return true}
+function getDate(r){return r.date||r.createdAt||''}
+function loadLive(){
  try{
   let db=firebase.firestore();
-  // FIX: One read per collection, correct names only, no 25 reads
-  let [v,n,a,nm,o,e]=await Promise.all([
-   db.collection('violations').get(),
-   db.collection('ncr').get(),
-   db.collection('accidents').get(),
-   db.collection('nearMiss').get(),
-   db.collection('safetyObservations').get(),
-   db.collection('contractorEval').get()
-  ]);
-  DB.violations=v.docs.map(d=>({id:d.id,...d.data()}));
-  DB.ncr=n.docs.map(d=>({id:d.id,...d.data()}));
-  DB.accidents=a.docs.map(d=>({id:d.id,...d.data()}));
-  DB.nearMiss=nm.docs.map(d=>({id:d.id,...d.data()}));
-  DB.observations=o.docs.map(d=>({id:d.id,...d.data()}));
-  DB.evals=e.docs.map(d=>({id:d.id,...d.data()}));
- }catch(err){ console.log(err); }
- document.getElementById('periodInfo').textContent='الفترة: '+document.getElementById('f-period').value+' | الشهر: '+(document.getElementById('f-month').value||'الكل');
- buildCompanyList(); renderAutoEvals(); renderTable(); loadNotifications();
+  [['violations','violations'],['ncr','ncr'],['accidents','accidents'],['nearMiss','nearMiss'],['safetyObservations','observations'],['contractorEval','evals']].forEach(([coll,key])=>{
+   db.collection(coll).onSnapshot(snap=>{let old=DB[key].length;DB[key]=snap.docs.map(d=>({id:d.id,...d.data()}));if(DB[key].length>old&&old>0) playBeep();renderAll();});
+  });
+ }catch(e){console.log(e)}
 }
-
 function calcDeduction(company){
- let key=company.toLowerCase();
- let by=x=>getCompany(x).toLowerCase()===key && inPeriod(getDate(x));
- let v=DB.violations.filter(by);
- let n=DB.ncr.filter(x=>by(x)&&!isClosed(x));
- let a=DB.accidents.filter(by);
- let nm=DB.nearMiss.filter(x=>by(x)&&!isClosed(x));
- let o=DB.observations.filter(x=>by(x)&&!isClosed(x));
- let dV=v.length*3, dN=n.length*2, dA=a.length*10, dNM=nm.length*1, dO=o.length*0.5;
- let total=dV+dN+dA+dNM+dO, capped=Math.min(60,total);
+ let key=company.toLowerCase();let by=x=>getCompany(x).toLowerCase()===key&&inPeriod(getDate(x));
+ let v=DB.violations.filter(by),n=DB.ncr.filter(x=>by(x)&&!isClosed(x)),a=DB.accidents.filter(by),nm=DB.nearMiss.filter(x=>by(x)&&!isClosed(x)),o=DB.observations.filter(x=>by(x)&&!isClosed(x));
+ let dV=v.length*3,dN=n.length*2,dA=a.length*10,dNM=nm.length*1,dO=o.length*0.5,total=dV+dN+dA+dNM+dO,capped=Math.min(60,total);
  return {v:v.length,n:n.length,a:a.length,nm:nm.length,o:o.length,dV,dN,dA,dNM,dO,total,capped};
 }
-function getAllCompanies(){
- let map=new Map();
- [...DB.violations,...DB.ncr,...DB.accidents,...DB.nearMiss,...DB.observations].forEach(r=>{let name=getCompany(r); if(name!=='Not Specified'&&!map.has(name.toLowerCase())) map.set(name.toLowerCase(),name)});
- return [...map.values()].sort();
-}
-function getStatus(final){if(final>=80)return '<span class="badge green">Acceptable ✅</span>'; if(final>=60)return '<span class="badge orange">Conditionally ⚠️</span>'; return '<span class="badge red">Not Accepted ❌</span>'}
-function renderAutoEvals(){
- let tb=document.getElementById('autoEvalBody'), companies=getAllCompanies();
- if(!companies.length){tb.innerHTML='<tr><td colspan="9">No companies in this period</td></tr>'; return}
- let sum=0;
- tb.innerHTML=companies.map(c=>{let d=calcDeduction(c); let final=Math.max(0,100-d.capped); sum+=final; return `<tr><td><b>${escapeHtml(c)}</b></td><td>${d.v} (-${d.dV})</td><td>${d.n} (-${d.dN})</td><td>${d.a} (-${d.dA})</td><td>${d.nm} (-${d.dNM})</td><td>${d.o} (-${d.dO})</td><td><b style="color:#E53935">-${d.capped}</b></td><td><b>${final}</b></td><td>${getStatus(final)}</td></tr>`}).join('');
- document.getElementById('k-avgScore').textContent=companies.length?Math.round(sum/companies.length):0;
-}
-function buildCompanyList(){
+function getAllCompanies(){let map=new Map();[...DB.violations,...DB.ncr,...DB.accidents,...DB.nearMiss,...DB.observations].forEach(r=>{let name=getCompany(r);if(name!=='Not Specified'&&!map.has(name.toLowerCase()))map.set(name.toLowerCase(),name)});return [...map.values()].sort()}
+function getStatus(f){if(f>=80)return '<span class="badge green">Acceptable ✅</span>';if(f>=60)return '<span class="badge orange">Conditionally ⚠️</span>';return '<span class="badge red">Not Accepted ❌</span>'}
+function scoreColor(f){return f>=80?'#2E7D32':f>=60?'#FF9800':'#E53935'}
+function renderAll(){
+ document.getElementById('periodInfo').textContent='الفترة: '+document.getElementById('f-period').value+' | الشهر: '+(document.getElementById('f-month').value||'الكل')+' • Live';
  let companies=getAllCompanies();
+ animateNum('k-companies',companies.length); animateNum('k-evals',DB.evals.length);
+ let sum=0,low=false;
+ document.getElementById('autoEvalBody').innerHTML=companies.length?companies.map(c=>{let d=calcDeduction(c);let final=Math.max(0,100-d.capped);sum+=final;if(final<60)low=true;let icon=final>=80?'🏆':final>=60?'⚠️':'🚨';
+  return `<tr><td><b>${escapeHtml(c)}</b> ${icon}<div class="score-bar"><i style="width:${final}%;background:${scoreColor(final)}"></i></div></td><td>${d.v} (-${d.dV})</td><td>${d.n} (-${d.dN})</td><td>${d.a} (-${d.dA})</td><td>${d.nm} (-${d.dNM})</td><td>${d.o} (-${d.dO})</td><td><b style="color:#E53935">-${d.capped}</b></td><td><b style="color:${scoreColor(final)}">${final}</b></td><td>${getStatus(final)}</td></tr>`}).join(''):'<tr><td colspan="9">No companies in this period</td></tr>';
+ animateNum('k-avgScore',companies.length?Math.round(sum/companies.length):0);
+ document.getElementById('deductIcon').classList.toggle('shake',low); if(low) playBeep();
  document.getElementById('e-company').innerHTML='<option value="">-- Select --</option>'+companies.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
- document.getElementById('k-companies').textContent=companies.length;
- document.getElementById('k-evals').textContent=DB.evals.length;
- let total=DB.violations.length*3+DB.ncr.filter(x=>!isClosed(x)).length*2+DB.accidents.length*10;
- document.getElementById('k-totalDeduct').textContent=Math.round(Math.min(60,total));
+ let totalDeduct=DB.violations.length*3+DB.ncr.filter(x=>!isClosed(x)).length*2+DB.accidents.length*10;
+ animateNum('k-totalDeduct',Math.round(Math.min(60,totalDeduct)));
+ // Notifications - شركات تحت 60
+ let notifs=companies.map(c=>{let d=calcDeduction(c);let f=Math.max(0,100-d.capped);return f<60?{text:`🚨 شركة ${c} نزلت تحت 60 - Score: ${f}`,crit:true}:null}).filter(Boolean);
+ document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
+ document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n.text)}</div>`).join('')||'لا توجد إشعارات';
+ // Saved
+ document.getElementById('evalTableBody').innerHTML=DB.evals.length?DB.evals.map(e=>`<tr><td>${escapeHtml(getCompany(e))}</td><td>${escapeHtml(e.period||'')+' '+(e.month||'')}</td><td>${e.manualScore||0}</td><td>${e.deduct||0}</td><td><b>${e.finalScore||0}</b></td><td>${escapeHtml(e.recommend||'')}</td></tr>`).join(''):'<tr><td colspan="6">No saved evaluations</td></tr>';
 }
-function onCompanyChange(){
- let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();
- if(!company) return;
- let d=calcDeduction(company);
- document.getElementById('autoBox').style.display='block';
- document.getElementById('autoText').innerHTML=`Violations: <b>${d.v}</b> x3 = -${d.dV} | Open NCR: <b>${d.n}</b> x2 = -${d.dN} | Accidents: <b>${d.a}</b> x10 = -${d.dA}<br>Near Miss: <b>${d.nm}</b> | Observations: <b>${d.o}</b> | <b>Total Deduction: ${d.capped} / 60</b>`;
- document.getElementById('calc-deduct').textContent=d.capped; calcFinal();
-}
-function calcFinal(){
- let manual=0; document.querySelectorAll('.crit-range').forEach(r=>manual+=Number(r.value));
- let manual100=Math.round(manual/60*100);
- document.getElementById('calc-manual').textContent=manual100;
- let deduct=Number(document.getElementById('calc-deduct').textContent||0);
- let final=Math.max(0,manual100-deduct);
- document.getElementById('calc-final').textContent=final; return final;
-}
-function renderTable(){
- let tb=document.getElementById('evalTableBody');
- if(!DB.evals.length){tb.innerHTML='<tr><td colspan="6">No saved evaluations</td></tr>'; return}
- tb.innerHTML=DB.evals.map(e=>`<tr><td>${escapeHtml(getCompany(e))}</td><td>${escapeHtml(e.period||'')+' '+(e.month||'')}</td><td>${e.manualScore||0}</td><td>${e.deduct||0}</td><td><b>${e.finalScore||0}</b></td><td>${escapeHtml(e.recommend||'')}</td></tr>`).join('');
-}
-async function saveAllAuto(){
- if(!confirm('Save for all companies?')) return;
- for(let c of getAllCompanies()){let d=calcDeduction(c); let final=Math.max(0,100-d.capped); await firebase.firestore().collection('contractorEval').add({company:c,period:document.getElementById('f-period').value,month:document.getElementById('f-month').value,manualScore:100,deduct:d.capped,finalScore:final,recommend:final>=80?'Acceptable':final>=60?'Conditionally Accepted':'Not Accepted',breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},auto:true,createdAt:new Date().toISOString()})}
- alert('✅ Saved'); loadAll();
-}
-async function saveEval(){
- let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();
- if(!company) return alert('Select company');
- let manual=Number(document.getElementById('calc-manual').textContent||0), deduct=Number(document.getElementById('calc-deduct').textContent||0), final=calcFinal(), d=calcDeduction(company);
- await firebase.firestore().collection('contractorEval').add({company,period:document.getElementById('f-period').value,month:document.getElementById('f-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},createdAt:new Date().toISOString()});
- alert('✅ Saved'); loadAll();
-}
-function exportEval(){
- let rows=[['Company','Violations','NCR Open','Accidents','NearMiss','Observations','Deduction','Score']];
- getAllCompanies().forEach(c=>{let d=calcDeduction(c); rows.push([c,d.v,d.n,d.a,d.nm,d.o,d.capped,Math.max(0,100-d.capped)])});
- let csv=rows.map(r=>r.map(x=>`"${x}"`).join(',')).join('\n');
- let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download='contractor-eval.csv'; a.click();
-}
+function onCompanyChange(){let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();if(!company)return;let d=calcDeduction(company);document.getElementById('autoBox').style.display='block';document.getElementById('autoText').innerHTML=`Violations: <b>${d.v}</b> x3 = -${d.dV} | Open NCR: <b>${d.n}</b> x2 = -${d.dN} | Accidents: <b>${d.a}</b> x10 = -${d.dA}<br>Near Miss: <b>${d.nm}</b> | Observations: <b>${d.o}</b> | <b>Total Deduction: ${d.capped} / 60</b>`;document.getElementById('calc-deduct').textContent=d.capped;calcFinal();}
+function calcFinal(){let manual=0;document.querySelectorAll('.crit-range').forEach(r=>manual+=Number(r.value));let manual100=Math.round(manual/60*100);document.getElementById('calc-manual').textContent=manual100;let deduct=Number(document.getElementById('calc-deduct').textContent||0);let final=Math.max(0,manual100-deduct);document.getElementById('calc-final').textContent=final;return final}
+async function saveAllAuto(){if(!confirm('Save for all companies?'))return;for(let c of getAllCompanies()){let d=calcDeduction(c);let final=Math.max(0,100-d.capped);await firebase.firestore().collection('contractorEval').add({company:c,period:document.getElementById('f-period').value,month:document.getElementById('f-month').value,manualScore:100,deduct:d.capped,finalScore:final,recommend:final>=80?'Acceptable':final>=60?'Conditionally Accepted':'Not Accepted',breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},auto:true,createdAt:new Date().toISOString()})}alert('✅ Saved');}
+async function saveEval(){let company=document.getElementById('e-company').value||document.getElementById('e-company-new').value.trim();if(!company)return alert('Select company');let manual=Number(document.getElementById('calc-manual').textContent||0),deduct=Number(document.getElementById('calc-deduct').textContent||0),final=calcFinal(),d=calcDeduction(company);await firebase.firestore().collection('contractorEval').add({company,period:document.getElementById('f-period').value,month:document.getElementById('f-month').value,manualScore:manual,deduct,finalScore:final,notes:document.getElementById('e-notes').value,recommend:document.getElementById('e-recommend').value,breakdown:{violations:d.v,ncrOpen:d.n,accidents:d.a,nearMissOpen:d.nm,observationsOpen:d.o},createdAt:new Date().toISOString()});alert('✅ Saved');}
+function exportEval(){let rows=[['Company','Violations','NCR Open','Accidents','NearMiss','Observations','Deduction','Score']];getAllCompanies().forEach(c=>{let d=calcDeduction(c);rows.push([c,d.v,d.n,d.a,d.nm,d.o,d.capped,Math.max(0,100-d.capped)])});let csv=rows.map(r=>r.map(x=>`"${x}"`).join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='contractor-eval.csv';a.click();}
 let criteria=['Safety Instructions','Work Quality','Schedule','Site Cleanliness','Cooperation','PPE Availability'];
 document.getElementById('criteriaBox').innerHTML=criteria.map(c=>`<div><label>${c}</label><div class="range-row"><input type="range" class="crit-range" min="0" max="10" value="10" oninput="this.nextElementSibling.textContent=this.value;calcFinal()"><b>10</b></div></div>`).join('');
 document.getElementById('f-month').value=new Date().toISOString().slice(0,7);
-loadAll();
+loadLive();
 </script>
 </body>
 </html>
