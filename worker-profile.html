@@ -37,6 +37,7 @@ body{margin:0;background:#F6F7F9;color:#111}
 .search-box{display:flex;gap:8px;margin-top:14px}
 .search-box input{flex:1;padding:12px;border:1.5px solid #ddd;border-radius:12px;outline:none}
 .search-box button{background:#FF6B00;color:#fff;border:none;padding:12px 16px;border-radius:12px;font-weight:900;cursor:pointer}
+.debug{background:#FFF3E0;border:1px solid #FFB300;border-radius:12px;padding:10px;font-size:12px;margin-top:14px;display:none;white-space:pre-wrap;word-break:break-all}
 .footer{text-align:center;color:#888;font-size:12px;margin-top:18px}
 @media(max-width:520px){.grid{grid-template-columns:1fr}.profile-head h1{font-size:22px}}
 </style>
@@ -46,12 +47,16 @@ body{margin:0;background:#F6F7F9;color:#111}
 <div class="wrap">
   <div class="top"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small><br><span class="live">● LIVE - ملف العامل</span></div>
 
-  <div id="loading" class="loading">⏳ جاري تحميل ملف العامل...</div>
+  <div id="loading" class="loading">⏳ جاري تحميل ملف العامل...<br><small id="loadingDetail" style="color:#999"></small></div>
 
   <div id="notFound" class="notfound" style="display:none">
     <b>⚠️ العامل غير موجود</b><p style="color:#666">اتأكد من الكود، أو اعمل سكان تاني للكارنيه.</p>
+    <p style="font-size:12px;color:#888">الكود اللي بندور عليه: <b id="searchedCode">-</b></p>
     <div class="search-box"><input id="manualCode" placeholder="اكتب كود العامل مثلا RM-9751"><button onclick="openByCode()">بحث</button></div>
+    <div class="search-box"><input id="manualNational" placeholder="أو اكتب الرقم القومي"><button onclick="openByNational()">بحث بالرقم القومي</button></div>
   </div>
+
+  <div id="debug" class="debug"></div>
 
   <div id="profile" style="display:none">
     <div class="card">
@@ -78,7 +83,7 @@ body{margin:0;background:#F6F7F9;color:#111}
         <div class="field"><b>الحالة الصحية / Health</b><span id="p-health">-</span></div>
       </div>
       <div id="p-notes-box" class="field" style="margin-top:10px;display:none"><b>ملاحظات / Notes</b><span id="p-notes">-</span></div>
-      <p style="font-size:11px;color:#999;margin:10px 0 0">آخر تحديث: <span id="p-updated">-</span> • الصفحة دي بتتحدث لوحدها من غير Refresh</p>
+      <p style="font-size:11px;color:#999;margin:10px 0 0">آخر تحديث: <span id="p-updated">-</span> • الصفحة دي بتتحدث لوحدها من غير Refresh • المصدر: <span id="p-source">-</span></p>
     </div>
 
     <div class="card"><h3 class="sec-title">🎓 التدريبات <span class="count" id="c-train">0</span></h3><div id="list-train"></div></div>
@@ -101,8 +106,31 @@ const HEALTH_MAP={'سليم':'Healthy','سكر':'Diabetes','ضغط':'Blood Press
 const KIN_MAP={'أب':'Father','أم':'Mother','أخ':'Brother','أخت':'Sister','زوجة':'Wife','زوج':'Husband'};
 const JOB_MAP={'عامل':'Laborer','كهربائي':'Electrician','سباك':'Plumber','نجار':'Carpenter','حداد':'Steel Fixer','مشرف':'Supervisor','مهندس':'Engineer','سائق':'Driver'};
 function T(v,map){return map[String(v||'').trim()]||v||'-'}
-function normWorker(raw){return{name:pick(raw,['name','fullName','employeeName']),code:String(pick(raw,['code','employeeCode','empCode'])||''),nationalId:String(pick(raw,['nationalId','nid','idNumber','nationalID','identity'])||''),job:pick(raw,['job','profession','position']),company:pick(raw,['company','companyName','contractor']),hire:normDate(pick(raw,['hire','hireDate','startDate','date','createdAt'])),health:pick(raw,['health','healthStatus','medical']),phone:pick(raw,['phone','phoneNumber','mobile']),emergency:pick(raw,['emergency','emergencyNumber','emergencyPhone']),kin:pick(raw,['kin','relationship','relation']),status:pick(raw,['status','state']),notes:pick(raw,['notes','note','remarks']),isRehab:!!raw.isRehab,img:pick(raw,['img','photo','image']),updated:raw.updatedAt||raw.createdAt||''}}
+// تنظيف الكود - عشان القديم والجديد يتقارنوا صح
+function cleanCode(s){return String(s||'').trim().toLowerCase().replace(/[\s\-_]/g,'').replace(/rm/g,'')}
+function normWorker(raw, coll){
+  // كل أسماء الحقول القديمة والجديدة
+  return {
+    _coll: coll||'',
+    name: pick(raw,['name','fullName','employeeName','workerName','Name']),
+    code: String(pick(raw,['code','employeeCode','empCode','workerCode','id','ID','employeeId','userCode'])||''),
+    nationalId: String(pick(raw,['nationalId','nid','idNumber','nationalID','identity','NationalID','national_number'])||''),
+    job: pick(raw,['job','profession','position','Job','jobTitle']),
+    company: pick(raw,['company','companyName','contractor','Company']),
+    hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt','joinDate'])),
+    health: pick(raw,['health','healthStatus','medical','Health']),
+    phone: pick(raw,['phone','phoneNumber','mobile','Phone']),
+    emergency: pick(raw,['emergency','emergencyNumber','emergencyPhone','Emergency']),
+    kin: pick(raw,['kin','relationship','relation','Relation']),
+    status: pick(raw,['status','state','Status']),
+    notes: pick(raw,['notes','note','remarks','Notes']),
+    isRehab: !!raw.isRehab,
+    img: pick(raw,['img','photo','image','avatar','photoURL','Photo']),
+    updated: raw.updatedAt||raw.createdAt||''
+  }
+}
 function openByCode(){let c=document.getElementById('manualCode').value.trim();if(!c)return;location.href='worker-profile.html?code='+encodeURIComponent(c)}
+function openByNational(){let c=document.getElementById('manualNational').value.trim();if(!c)return;location.href='worker-profile.html?code='+encodeURIComponent(c)+'&by=national'}
 let params=new URLSearchParams(location.search);
 let CODE=(params.get('code')||params.get('id')||'').trim();
 let currentWorker=null;
@@ -110,10 +138,14 @@ let allData={train:[],inc:[],ppe:[]};
 
 function matchDoc(doc,x){
   let hay=JSON.stringify(doc||{}).toLowerCase();
-  // استبعد الأدوية تماما
   if(hay.includes('دواء')||hay.includes('medicine')||hay.includes('clinic')||hay.includes('عيادة')) return false;
+  // قارن بكل الاحتمالات: اسم، كود منظف، رقم قومي
   let keys=[x.name,x.code,x.nationalId].filter(Boolean).map(s=>String(s).toLowerCase());
-  return keys.some(k=>k&&k.length>2&&hay.includes(k));
+  // كمان قارن بالكود من غير RM ومن غير -
+  let cleanKeys=[cleanCode(x.code), cleanCode(x.nationalId)].filter(Boolean);
+  if(keys.some(k=>k&&k.length>2&&hay.includes(k))) return true;
+  if(cleanKeys.some(k=>k&&k.length>3&&hay.includes(k))) return true;
+  return false;
 }
 function renderWorker(){
   if(!currentWorker) return;
@@ -132,6 +164,7 @@ function renderWorker(){
   document.getElementById('p-emergency').textContent=x.emergency||'-';
   document.getElementById('p-kin').textContent=T(x.kin,KIN_MAP);
   document.getElementById('p-health').textContent=T(x.health,HEALTH_MAP);
+  document.getElementById('p-source').textContent=x._coll||'-';
   let st=T(x.status,STATUS_MAP);
   let stEl=document.getElementById('p-status'); stEl.textContent=st; stEl.className='pill '+(st==='Active'?'green':'red');
   let isRehab=x.isRehab||String(x.notes||'').includes('Rehabilitation')||String(x.notes||'').includes('إعادة تأهيل');
@@ -158,41 +191,59 @@ function renderLists(){
 }
 async function init(){
   if(!CODE){document.getElementById('loading').style.display='none';document.getElementById('notFound').style.display='block';return}
+  document.getElementById('searchedCode').textContent=CODE;
   try{
     let db=firebase.firestore();
-    // 1. دور على العامل بالكود في كل الكولكشنز
     let found=null;
-    for(let coll of ['workers','users','employees','induction']){
+    let debugLines=['بندور على: '+CODE, 'الكود بعد التنظيف: '+cleanCode(CODE)];
+    // ===== FIX الداتا القديمة: جيب الكل ودور بنفسك، مش where =====
+    let colls=['workers','users','employees','induction'];
+    for(let coll of colls){
       try{
-        let snap=await db.collection(coll).where('code','==',CODE).limit(1).get();
-        if(!snap.empty){found=normWorker(snap.docs[0].data());break}
-        // لو الكود مش موجود، جرب الرقم القومي
-        let snap2=await db.collection(coll).where('nationalId','==',CODE).limit(1).get();
-        if(!snap2.empty){found=normWorker(snap2.docs[0].data());break}
-      }catch(e){}
+        document.getElementById('loadingDetail').textContent='جاري فحص '+coll+'...';
+        let snap=await db.collection(coll).limit(500).get();
+        debugLines.push(coll+': '+snap.size+' مستند');
+        for(let doc of snap.docs){
+          let raw=doc.data();
+          let w=normWorker(raw, coll);
+          // قارن بالكود بكل الطرق
+          let isMatch = false;
+          if(w.code && cleanCode(w.code)===cleanCode(CODE)) isMatch=true;
+          if(w.nationalId && String(w.nationalId).trim()===String(CODE).trim()) isMatch=true;
+          if(w.code && String(w.code).trim().toLowerCase()===String(CODE).trim().toLowerCase()) isMatch=true;
+          if(w.name && String(w.name).trim().toLowerCase()===String(CODE).trim().toLowerCase()) isMatch=true;
+          // لو الـ doc id نفسه هو الكود (داتا قديمة كتير كده)
+          if(doc.id && cleanCode(doc.id)===cleanCode(CODE)) { isMatch=true; if(!w.code) w.code=doc.id; }
+          if(isMatch){ found=w; debugLines.push('✅ لقيناه في '+coll+' - '+w.name); break; }
+        }
+        if(found) break;
+      }catch(e){ debugLines.push('❌ '+coll+': '+e.message); }
     }
-    // fallback: لو مفيش where شغال، جيب الكل ودور
     if(!found){
-      for(let coll of ['workers','induction']){
-        try{
-          let snap=await db.collection(coll).limit(300).get();
-          for(let doc of snap.docs){let w=normWorker(doc.data());if(w.code===CODE||w.nationalId===CODE){found=w;break}}
-          if(found) break;
-        }catch(e){}
-      }
+      document.getElementById('loading').style.display='none';
+      document.getElementById('notFound').style.display='block';
+      let dbg=document.getElementById('debug'); dbg.style.display='block'; dbg.textContent=debugLines.join('\n')+'\n\nلو مش لاقي العامل، ابعت سكرين شوت للجزء ده';
+      return;
     }
-    if(!found){document.getElementById('loading').style.display='none';document.getElementById('notFound').style.display='block';return}
     currentWorker=found; renderWorker();
-    // 2. Live للعامل ده بس - لو اتعدل في employee-file هيتحدث هنا لوحده
-    ['workers','induction'].forEach(coll=>{
-      try{db.collection(coll).where('code','==',found.code).onSnapshot(snap=>{if(!snap.empty){let nw=normWorker(snap.docs[0].data()); // حافظ على القديم لو الجديد فاضي
-        Object.keys(nw).forEach(k=>{if(nw[k]) currentWorker[k]=nw[k]}); renderWorker();}})}catch(e){}
-    });
-    // 3. جيب التدريبات والحوادث و PPE - Live برضو
-    let mapColl={train:'train',inc:['accidents','near-miss','violations','employee-violations'],ppe:['store-stock']};
-    db.collection('train').limit(200).onSnapshot(s=>{allData.train=s.docs.map(d=>d.data());renderLists()});
-    ['accidents','near-miss','violations','employee-violations'].forEach(c=>{try{db.collection(c).limit(200).onSnapshot(s=>{allData.inc=allData.inc.filter(d=>d._c!==c);s.docs.forEach(d=>allData.inc.push({...d.data(),_c:c}));renderLists()})}catch(e){}});
-    db.collection('store-stock').limit(200).onSnapshot(s=>{allData.ppe=s.docs.map(d=>d.data());renderLists()});
+    // Live - لو اتعدل في employee-file هيتحدث هنا
+    // بنسمع على الكولكشن اللي لقيناه فيه
+    try{
+      db.collection(found._coll).limit(500).onSnapshot(snap=>{
+        snap.docs.forEach(doc=>{
+          let w=normWorker(doc.data(), found._coll);
+          if(cleanCode(w.code)===cleanCode(found.code) || String(w.nationalId).trim()===String(found.nationalId).trim()){
+            Object.keys(w).forEach(k=>{if(w[k]) currentWorker[k]=w[k]}); renderWorker();
+          }
+        });
+      });
+    }catch(e){}
+    // التدريبات والحوادث و PPE - Live برضو
+    db.collection('train').limit(300).onSnapshot(s=>{allData.train=s.docs.map(d=>d.data());renderLists()});
+    ['accidents','near-miss','violations','employee-violations'].forEach(c=>{try{db.collection(c).limit(300).onSnapshot(s=>{allData.inc=allData.inc.filter(d=>d._c!==c);s.docs.forEach(d=>allData.inc.push({...d.data(),_c:c}));renderLists()})}catch(e){}});
+    db.collection('store-stock').limit(300).onSnapshot(s=>{allData.ppe=s.docs.map(d=>d.data());renderLists()});
+    // كمان دور في train و weekly و minutes عشان التدريبات القديمة
+    ['trainings','training','weekly','minutes'].forEach(c=>{try{db.collection(c).limit(200).get().then(s=>{s.docs.forEach(d=>allData.train.push(d.data()));renderLists()})}catch(e){}});
   }catch(e){
     document.getElementById('loading').textContent='خطأ في التحميل: '+e.message;
   }
