@@ -47,14 +47,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html" class="active">⚡ <span data-i18n="nearMiss">Near Miss</span></a><a href="ncr.html">📄 NCR</a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ <span data-i18n="nearMiss">Near Miss</span></a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -71,6 +90,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">حادث وشيك</span> <span style="color:#FF6B00">• Near Miss</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="user-bar"><span style="font-weight:800;color:#FF6B00">🦺 Safety Officer Reporting:</span><input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUserName',this.value);document.getElementById('nm-reporter').value=this.value;renderNM()"><span style="font-size:12px;color:#2E7D32">Will appear automatically in every report</span></div>
 <div class="mail-box"><b>📧 Notification Emails - Once you save it will send automatically:</b><div class="grid2"><div><label>📧 Manager Email</label><input id="mgrEmail" placeholder="manager@rmed.com" oninput="localStorage.setItem('mgrEmail',this.value)"></div><div><label>📧 Supervisor Email</label><input id="supEmail" placeholder="supervisor@rmed.com" oninput="localStorage.setItem('supEmail',this.value)"></div></div><small style="color:#FF9800">Note: Site will open your mail program ready with details, press Send and it will be sent.</small></div>
@@ -118,18 +138,58 @@ function getReporter(){try{let u=JSON.parse(localStorage.getItem('currentUser')|
 let nearMiss=[];
 const STATUS_MAP={'مفتوح':'Open','مغلق':'Closed'};
 function TStatus(v){return STATUS_MAP[String(v||'').trim()]||v||'Open'}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normNM(raw){
+  let st=String(pick(raw,['status','state'])||'Open');
+  if(st.toLowerCase().includes('close')||st.includes('مغلق')) st='Closed'; else st='Open';
+  return {
+    id: raw.id, _coll: raw._coll||'nearMiss',
+    date: normDate(pick(raw,['date','createdAt'])),
+    time: pick(raw,['time','incidentTime'])||'',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    reporter: pick(raw,['reporter','reporterName','createdBy','author'])||'',
+    place: pick(raw,['place','location','workLocation','site'])||'',
+    desc: pick(raw,['desc','description','details','incident'])||'',
+    direct: pick(raw,['direct','directCause','cause'])||'',
+    root: pick(raw,['root','rootCause','rootCauseDesc'])||'',
+    corrective: pick(raw,['corrective','correctiveAction','correctiveActions'])||'',
+    preventive: pick(raw,['preventive','preventiveAction','preventiveActions'])||'',
+    status: st,
+    incidentImgs: raw.incidentImgs||raw.images||raw.photos||[],
+    actionImgs: raw.actionImgs||raw.correctiveImgs||[],
+    createdAt: raw.createdAt||''
+  };
+}
 function val(id){return document.getElementById(id).value.trim()}
 function setVal(id,v){document.getElementById(id).value=v||''}
 let tempIncidentImgs=[],tempActionImgs=[];
 function previewImgs(input,prevId){let files=[...input.files];let target=prevId==='prev-incident'?'incident':'action';let container=document.getElementById(prevId);container.innerHTML='';let arr=target==='incident'?tempIncidentImgs:tempActionImgs;arr.length=0;files.forEach(f=>{let r=new FileReader();r.onload=e=>{arr.push(e.target.result);let img=document.createElement('img');img.src=e.target.result;img.onclick=()=>window.open(e.target.result,'_blank');container.appendChild(img)};r.readAsDataURL(f)})}
 function loadLive(){
  try{
-  firebase.firestore().collection('nearMiss').onSnapshot(snap=>{let old=nearMiss.length;nearMiss=snap.docs.map(d=>({id:d.id,...d.data()}));nearMiss.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(nearMiss.length>old&&old>0)playBeep();renderNM()});
+  let db=firebase.firestore();
+  ['nearMiss','near-miss','near_miss','nearMisses'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normNM);
+      let merged=[...nearMiss].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=nearMiss.length; nearMiss=merged;
+      nearMiss.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(nearMiss.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي Near Miss: '+nearMiss.length;
+      renderNM();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){console.log(e)}
 }
 async function addNM(){
  if(!val('nm-date'))return alert('Select date');if(!val('nm-time'))return alert('Select time');if(!val('nm-company'))return alert('Write company');let rep=val('nm-reporter')||getReporter();if(!rep)return alert('Write reporter name');if(!val('nm-place'))return alert('Write place');if(!val('nm-desc'))return alert('Write incident description');if(!val('nm-direct'))return alert('Write direct cause');if(!val('nm-root'))return alert('Write root cause');if(!val('nm-corrective'))return alert('Write corrective action');if(!val('nm-preventive'))return alert('Write preventive action');
- let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),reporter:rep,reporterName:rep,place:val('nm-place'),desc:val('nm-desc'),direct:val('nm-direct'),root:val('nm-root'),corrective:val('nm-corrective'),preventive:val('nm-preventive'),status:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
+ let rec={date:val('nm-date'),time:val('nm-time'),company:val('nm-company'),companyName:val('nm-company'),reporter:rep,reporterName:rep,place:val('nm-place'),location:val('nm-place'),desc:val('nm-desc'),description:val('nm-desc'),direct:val('nm-direct'),directCause:val('nm-direct'),root:val('nm-root'),rootCause:val('nm-root'),corrective:val('nm-corrective'),correctiveAction:val('nm-corrective'),preventive:val('nm-preventive'),preventiveAction:val('nm-preventive'),status:val('nm-status'),state:val('nm-status'),incidentImgs:[...tempIncidentImgs],actionImgs:[...tempActionImgs],createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('nearMiss').add(rec);playBeep()}catch(e){return alert('Save problem: '+e.message)}
  renderNM();sendEmailNotify(rec);alert('✅ Saved Near Miss\nMail will open now to send notification');
  ['nm-company','nm-place','nm-desc','nm-direct','nm-root','nm-corrective','nm-preventive'].forEach(id=>setVal(id,''));setVal('nm-status','Open');document.getElementById('prev-incident').innerHTML='';document.getElementById('prev-action').innerHTML='';tempIncidentImgs=[];tempActionImgs=[];
@@ -139,31 +199,30 @@ function topOf(arr,key){let m={};arr.forEach(x=>{let k=x[key];if(!k)return;m[k]=
 function drawDonut(closed,open){let c=document.getElementById('nmChart');if(!c)return;let ctx=c.getContext('2d');ctx.clearRect(0,0,150,150);let total=closed+open;if(!total){ctx.fillStyle='#EEE';ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.fill();return}let aClosed=(closed/total)*Math.PI*2;ctx.strokeStyle='#FFD54F';ctx.lineWidth=10;ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#2E7D32';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2,-Math.PI/2+aClosed);ctx.closePath();ctx.fill();ctx.fillStyle='#FF9800';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2);ctx.closePath();ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(75,75,40,0,Math.PI*2);ctx.fill()}
 function renderNM(){
  let q=(document.getElementById('searchNM').value||'').toLowerCase();let fs=document.getElementById('filterStatus').value;let fc=document.getElementById('filterCompany').value;let all=nearMiss||[];
- let comps=[...new Set(all.map(x=>x.company))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
- let places=[...new Set(all.map(x=>x.place))];document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');
+ let comps=[...new Set(all.map(x=>x.company).filter(Boolean))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
+ let places=[...new Set(all.map(x=>x.place).filter(Boolean))];document.getElementById('placesList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');
  let total=all.length,open=all.filter(x=>TStatus(x.status)==='Open').length,closed=all.filter(x=>TStatus(x.status)==='Closed').length,closeP=total?Math.round(closed/total*100):0,openP=total?Math.round(open/total*100):0;
  animateNum('k-total',total);animateNum('k-open',open);animateNum('k-closed',closed);document.getElementById('k-close-p').textContent=closeP+'%';document.getElementById('k-open-p').textContent=openP+'%';document.getElementById('donut-p').textContent=closeP+'%';document.getElementById('leg-closed').textContent=closed;document.getElementById('leg-closed-p').textContent=closeP+'%';document.getElementById('leg-open').textContent=open;document.getElementById('leg-open-p').textContent=openP+'%';document.getElementById('bar-closed').style.width=closeP+'%';document.getElementById('bar-open').style.width=openP+'%';drawDonut(closed,open);document.getElementById('openIcon').classList.toggle('shake',open>0);
  let tPlace=topOf(all,'place');document.getElementById('k-top-place').textContent=tPlace?tPlace.name+' ('+tPlace.count+')':'-';document.getElementById('leg-top-place').textContent=tPlace?tPlace.name+' ('+tPlace.count+')':'-';document.getElementById('leg-low-place').textContent=tPlace?tPlace.low.name+' ('+tPlace.low.count+')':'-';
  let tPerson=topOf(all,'reporter');document.getElementById('k-top-person').textContent=tPerson?tPerson.name+' ('+tPerson.count+')':'-';
  let tComp=topOf(all,'company');document.getElementById('k-top-comp').textContent=tComp?tComp.name+' ('+tComp.count+')':'-';
- let byComp={};all.forEach(x=>{if(!byComp[x.company])byComp[x.company]={total:0,closed:0,open:0};byComp[x.company].total++;if(TStatus(x.status)==='Closed')byComp[x.company].closed++;else byComp[x.company].open++});
+ let byComp={};all.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={total:0,closed:0,open:0};byComp[c].total++;if(TStatus(x.status)==='Closed')byComp[c].closed++;else byComp[c].open++});
  let compArr=Object.entries(byComp).map(([name,v])=>({name,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0,total:v.total,closed:v.closed,open:v.open}));
  let bestSorted=[...compArr].sort((a,b)=>b.closeP-a.closeP||b.total-a.total).slice(0,3);
  document.getElementById('bestList').innerHTML=bestSorted.length?bestSorted.map((v,i)=>{let cls=i===0?'gold':i===1?'silver':'bronze';let txt=i===0?'🥇':i===1?'🥈':'🥉';return `<div class="best-row"><span class="medal ${cls}">${txt}</span><div style="flex:1"><b style="font-size:13px">${escapeHtml(v.name)}</b><br><small style="color:#999">${v.total} reports • ${v.closed} closed</small></div><b style="color:#2E7D32">${v.closeP}%</b><small style="color:#999"> Closed</small></div>`}).join(''):'<p style="text-align:center;color:#999">No companies yet</p>';
  compArr.sort((a,b)=>b.closeP-a.closeP);document.getElementById('k-top-close-comp').textContent=compArr.length?compArr[0].name+' ('+compArr[0].closeP+'% closed)':'-';compArr.sort((a,b)=>b.openP-a.openP);document.getElementById('k-top-open-comp').textContent=compArr.length?'Highest Open: '+compArr[0].name+' ('+compArr[0].openP+'% open)':'-';
  let list=all.filter(x=>((x.company||'')+(x.place||'')+(x.desc||'')+(x.reporter||'')).toLowerCase().includes(q)&&(!fs||TStatus(x.status)===fs)&&(!fc||x.company===fc));
- if(!list.length){document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#888">No Near Miss reports yet</p>';return}
+ if(!list.length){document.getElementById('nmTable').innerHTML='<p style="text-align:center;color:#888">No Near Miss reports yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  document.getElementById('nmTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Reporter</th><th>Place</th><th>Description</th><th>Direct Cause</th><th>Status</th><th>Photos</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{let idx=nearMiss.indexOf(x);let imgs='';if(x.incidentImgs&&x.incidentImgs.length)imgs+='<br>📸 Incident: '+x.incidentImgs.length;if(x.actionImgs&&x.actionImgs.length)imgs+='<br>📸 Actions: '+x.actionImgs.length;return `<tr><td>${escapeHtml(x.date)}<br>${escapeHtml(x.time)}</td><td><b>${escapeHtml(x.company)}</b></td><td>${escapeHtml(x.reporter)}</td><td>${escapeHtml(x.place)}</td><td style="text-align:left;max-width:220px">${escapeHtml(x.desc)}<br><small style="color:#666">Root: ${escapeHtml(x.root)}</small><br><small style="color:#2E7D32">Corrective: ${escapeHtml(x.corrective)}</small><br><small style="color:#FF9800">Preventive: ${escapeHtml(x.preventive)}</small></td><td style="max-width:150px">${escapeHtml(x.direct)}</td><td><span class="badge ${TStatus(x.status)==='Open'?'open':'closed'}">${escapeHtml(TStatus(x.status))}</span></td><td style="font-size:11px">${imgs||'-'}<br>${x.incidentImgs&&x.incidentImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'incident')">👁️ Incident</button>`:''} ${x.actionImgs&&x.actionImgs.length?`<button class="btn2" onclick="viewImgs(${idx},'action')">👁️ Actions</button>`:''}</td><td><button class="btn2" onclick="toggleStatus(${idx})">${TStatus(x.status)==='Open'?'✅ Close It':'🔓 Open It'}</button></td><td><button class="btn2" style="background:#D32F2F" onclick="delNM(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
- let notifs=all.filter(x=>TStatus(x.status)==='Open').slice(0,3).map(x=>`⚡ Near Miss مفتوح: ${x.company} - ${x.place} - ${(x.desc||'').slice(0,40)}`);
+ let notifs=all.filter(x=>TStatus(x.status)==='Open').slice(0,3).map(x=>`⚡ Near Miss مفتوح: ${x.company} - ${x.place} - ${String(x.desc||'').slice(0,40)}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
 function viewImgs(idx,type){let x=nearMiss[idx];let arr=type==='incident'?x.incidentImgs:x.actionImgs;let w=window.open('','_blank');w.document.write('<div style="display:flex;gap:10px;flex-wrap:wrap;padding:20px;font-family:Arial"><h2 style="width:100%">'+(type==='incident'?'📸 Incident Photos':'📸 Actions Photos')+' - '+escapeHtml(x.company)+' - '+escapeHtml(x.date)+'</h2>'+arr.map(src=>'<img src="'+src+'" style="width:300px;border-radius:12px">').join('')+'</div>')}
-async function toggleStatus(i){let rec=nearMiss[i];let newStatus=TStatus(rec.status)==='Open'?'Closed':'Open';try{await firebase.firestore().collection('nearMiss').doc(rec.id).update({status:newStatus})}catch(e){}rec.status=newStatus;renderNM()}
-async function delNM(i){if(!confirm('Delete this report?'))return;let rec=nearMiss[i];try{await firebase.firestore().collection('nearMiss').doc(rec.id).delete()}catch(e){}nearMiss.splice(i,1);renderNM()}
-async function clearNM(){if(!confirm('Delete all Near Miss reports from Firebase?'))return;try{let snap=await firebase.firestore().collection('nearMiss').get();for(let d of snap.docs){await firebase.firestore().collection('nearMiss').doc(d.id).delete()}}catch(e){}nearMiss=[];renderNM()}
-function exportNM(){if(!nearMiss.length)return alert('No data');let csv='Date,Time,Company,Reporter Name,Place,Near Miss Description,Direct Cause,Root Cause,Corrective Action,Preventive Action,Status,Incident Photos Count,Actions Photos Count\n'+nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.direct||'').replace(/"/g,'""')+'"','"'+(x.root||'').replace(/"/g,'""')+'"','"'+(x.corrective||'').replace(/"/g,'""')+'"','"'+(x.preventive||'').replace(/"/g,'""')+'"',TStatus(x.status),(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='near-miss-reports.csv';a.click()}
+async function toggleStatus(i){let rec=nearMiss[i];let newStatus=TStatus(rec.status)==='Open'?'Closed':'Open';try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'nearMiss'; await firebase.firestore().collection(coll).doc(realId).update({status:newStatus,state:newStatus})}catch(e){}rec.status=newStatus;renderNM()}
+async function delNM(i){if(!confirm('Delete this report?'))return;let rec=nearMiss[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'nearMiss'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}nearMiss.splice(i,1);renderNM()}
+async function clearNM(){if(!confirm('Delete all Near Miss reports from Firebase?'))return;try{for(let coll of ['nearMiss','near-miss','near_miss','nearMisses']){let snap=await firebase.firestore().collection(coll).get();for(let d of snap.docs){await firebase.firestore().collection(coll).doc(d.id).delete()}}}catch(e){}nearMiss=[];renderNM()}
+function exportNM(){if(!nearMiss.length)return alert('No data');let csv='Date,Time,Company,Reporter Name,Place,Near Miss Description,Direct Cause,Root Cause,Corrective Action,Preventive Action,Status,Incident Photos Count,Actions Photos Count\n'+nearMiss.map(x=>[x.date,x.time,x.company,x.reporter,x.place,'"'+String(x.desc||'').replace(/"/g,'""')+'"','"'+String(x.direct||'').replace(/"/g,'""')+'"','"'+String(x.root||'').replace(/"/g,'""')+'"','"'+String(x.corrective||'').replace(/"/g,'""')+'"','"'+String(x.preventive||'').replace(/"/g,'""')+'"',TStatus(x.status),(x.incidentImgs||[]).length,(x.actionImgs||[]).length].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='near-miss-reports.csv';a.click()}
 let savedUser=getReporter();document.getElementById('currentUser').value=savedUser;document.getElementById('nm-reporter').value=savedUser;document.getElementById('mgrEmail').value=localStorage.getItem('mgrEmail')||'';document.getElementById('supEmail').value=localStorage.getItem('supEmail')||'';document.getElementById('nm-date').value=new Date().toISOString().slice(0,10);document.getElementById('nm-time').value=new Date().toTimeString().slice(0,5);loadLive();
 </script>
 </body>
