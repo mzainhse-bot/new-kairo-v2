@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Induction V4 Final - RMED</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
@@ -53,7 +54,8 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 .id-photo{width:100%;height:100%;object-fit:cover;display:block}
 .id-photo-ph{color:#FFE082;font-weight:800;font-size:13px;line-height:1.6;text-align:center}
 .id-qr-box{background:#fff;border-radius:12px;padding:10px 8px 8px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.2);min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.id-qr-img{width:140px;height:140px;display:block;object-fit:contain;background:#fff}
+#c-qr{width:140px;height:140px;display:flex;align-items:center;justify-content:center;background:#fff}
+#c-qr img,#c-qr canvas{display:block;width:140px!important;height:140px!important}
 .id-qr-code{display:block;color:#0A1F44;font-weight:900;font-size:14px;letter-spacing:1px;margin-top:6px}
 .id-qr-label{display:block;color:#8a6d00;font-size:10px;font-weight:800;letter-spacing:1px}
 .id-front-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
@@ -126,10 +128,10 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <p id="debugCounts" style="font-size:12px;color:#0F2A4D;background:#E3F2FD;padding:8px 10px;border-radius:10px;margin:8px 0 0">🔍 جاري فحص الكولكشنز...</p>
 <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin-bottom:14px;margin-top:12px"><div><b style="font-size:15px">🪪 <span data-i18n="idCard">ID Card Issue - التصميم المعتمد كحلي / ذهبي</span></b></div><button class="btn2" style="background:#D32F2F" onclick="openIssueCard()">🪪 Issue ID Card</button></div>
 <div class="kpi-row">
-<div class="kpi"><div class="kpi-top"><span class="icon3d blue">📅</span><div><b id="k-total">0</b><small data-i18n="total">Total Attendance</small></div></div></div>
-<div class="kpi"><div class="kpi-top"><span class="icon3d teal">🕐</span><div><b><span id="k-hours">0.00</span>h</b><small>Total Hours</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d blue">📅</span><div><b id="k-total">0</b><small data-i18n="total">Total Attendance - سجل المحاضرات</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d teal">🕐</span><div><b><span id="k-hours">0.00</span>h</b><small>Total Induction Hours</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold" id="rehabIcon">🛡️</span><div><b id="k-rehab">0</b><small>Rehabilitation - active</small></div></div></div>
-<div class="kpi"><div class="kpi-top"><span class="icon3d green">👤</span><div><b id="k-today">0</b><small>Today Attendance</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d green">👤</span><div><b id="k-today">0</b><small>Today Induction</small></div></div></div>
 </div>
 <div class="panel"><h2 style="margin:0;text-align:center" data-i18n="newEmp">New Employee Registration</h2><p style="text-align:center;color:#666;font-size:13px" data-i18n="newEmpSub">تسجيل موظف جديد</p>
 <div class="grid2"><div><label>Code (Automatic) • الكود</label><input id="f-code" placeholder="RM-1001"></div><div><label>National ID (14 digits) • الرقم القومي</label><input id="f-national" placeholder="14 digits" maxlength="14" inputmode="numeric" oninput="checkNational()"></div></div>
@@ -139,12 +141,12 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <label>Notes • ملاحظات</label><textarea id="f-notes" placeholder="Add any medical notes..."></textarea>
 <div id="rehabAlert" class="note-box">⚠️ <b>Alert:</b> This national ID is registered before with name <b id="rehabName"></b>, it will be saved as: <b>Rehabilitation</b></div>
 <div class="btn-row"><button class="btn-orange" onclick="saveInductionWorker()">💾 <span data-i18n="save">Save Employee + Induction</span></button><button class="btn-red" onclick="openLastCard()">🪪 Issue ID Card</button></div></div>
-<div class="panel"><h2 style="margin:0;text-align:left">📋 <span data-i18n="records">Induction Record</span></h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchInd" placeholder="Search by name, code, national ID or company..." oninput="renderIndDebounced()" style="flex:2"><span style="font-size:12px;color:#2E7D32;font-weight:800;align-self:center">● Live - <span id="loadStatus">متصل</span></span><button class="btn-ghost" onclick="showAll=!showAll;renderInd()">👁️ عرض الكل / أول 50</button></div><div id="indTable"><p style="text-align:center">⏳ Loading...</p></div></div>
+<div class="panel"><h2 style="margin:0;text-align:left">📋 <span data-i18n="records">Induction Record - سجل المحاضرات</span> <span style="font-size:12px;color:#666" id="indCountLabel"></span></h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchInd" placeholder="Search by name, code, national ID or company..." oninput="renderIndDebounced()" style="flex:2"><span style="font-size:12px;color:#2E7D32;font-weight:800;align-self:center">● Live - <span id="loadStatus">متصل</span></span><button class="btn-ghost" onclick="showAll=!showAll;renderInd()">👁️ عرض الكل / أول 50</button></div><div id="indTable"><p style="text-align:center">⏳ Loading...</p></div></div>
 </div></div>
 <div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:997;overflow:auto;padding:16px"><div style="max-width:560px;margin:auto;background:#fff;border-radius:16px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">✏️ تعديل بيانات العامل</h3><button class="btn2" onclick="closeEditModal()">✕</button></div><p style="font-size:12px;color:#666">عدل أي بيانات اتحفظت غلط - التعديل هيتطبق في كل السجلات والكارنيه</p><div class="grid2"><div><label>Code</label><input id="e-code"></div><div><label>National ID</label><input id="e-national" maxlength="14"></div><div style="grid-column:1/-1"><label>Full Name</label><input id="e-name"></div><div><label>Job</label><input id="e-job" list="jobList"></div><div><label>Company</label><input id="e-company" list="companyList"></div><div><label>Start Date</label><input type="date" id="e-date"></div><div><label>Health</label><input id="e-health" list="healthList"></div><div><label>Phone</label><input id="e-phone"></div><div><label>Emergency</label><input id="e-emergency"></div><div><label>relationship</label><input id="e-kin" list="kinList"></div><div><label>Status</label><select id="e-status"><option>Active</option><option>Resigned</option><option>Excluded</option></select></div><div style="grid-column:1/-1"><label>Notes</label><textarea id="e-notes"></textarea></div></div><label>تغيير الصورة (اختياري)</label><input type="file" accept="image/*" onchange="previewEditPhoto(event)"><img id="e-photoPrev" class="photo-preview"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><button class="btn-orange" onclick="saveEditWorker()" style="width:100%;padding:14px">💾 حفظ التعديل</button><button class="btn2" onclick="closeEditModal()" style="padding:14px">إلغاء</button></div></div></div>
 <div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px"><div style="max-width:560px;margin:auto;background:#fff;border-radius:16px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🪪 Issue ID Card</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div><label>Select registered employee</label><select id="issue-select" onchange="fillIssueFromWorker()"></select><p style="text-align:center;color:#888;font-size:13px">— Or write data manually —</p><div class="grid2"><div><label>Name</label><input id="issue-name"></div><div><label>Code</label><input id="issue-code"></div><div><label>National ID</label><input id="issue-national"></div><div><label>Job</label><input id="issue-job"></div><div><label>Company</label><input id="issue-company"></div><div><label>Health</label><input id="issue-health"></div><div><label>Phone</label><input id="issue-phone"></div><div><label>Emergency</label><input id="issue-emergency"></div><div><label>relationship</label><input id="issue-kin"></div><div><label>Start Date</label><input type="date" id="issue-date"></div><div><label>Status</label><select id="issue-status"><option>Active</option><option>Resigned</option><option>Excluded</option></select></div><div><label>Notes</label><input id="issue-notes"></div></div><label>Photo (Optional)</label><input type="file" accept="image/*" onchange="previewIssuePhoto(event)"><button class="btn-red" style="width:100%" onclick="showCardFromIssue()">👁️ Show ID Card Front & Back</button></div></div>
 <div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;overflow:auto;padding:16px"><div style="max-width:940px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;color:#0A1F44"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h3 style="margin:0">🪪 Employee ID Card - التصميم المعتمد + QR</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div><p id="qrInfo" style="font-size:12px;color:#666;margin:8px 0 0">📱 اعمل Scan للـ QR بالموبايل هيفتح ملف العامل كله Live من Firebase</p><div style="overflow-x:auto;padding:8px"><div style="display:flex;flex-direction:column;gap:16px;align-items:center;width:100%">
-<div id="cardFront" class="id-card"><div class="id-card-in"></div><div class="id-card-body"><div class="id-head"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small></div><div class="id-head-line"></div><div class="id-front-top"><div class="id-photo-col"><div class="id-photo-frame"><div class="id-photo-frame-in"><img id="c-photo" class="id-photo" src="" style="display:none"><div id="c-photo-ph" class="id-photo-ph">PHOTO<br>150×180</div></div></div><div class="id-qr-box"><img id="c-qr-img" class="id-qr-img" src="" alt="QR Code"><span class="id-qr-code" id="c-qr-code">-</span><span class="id-qr-label">SCAN FOR FULL FILE</span></div></div><div class="id-front-info"><div class="id-name" id="c-name">-</div><div class="id-name-en" id="c-name-en">-</div><div class="id-job-badge" id="c-job">-</div><div class="id-mini-row"><div class="id-field"><b>Start Date</b><span id="c-date">-</span></div><div class="id-field"><b>Phone</b><span id="c-phone">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Employee Code</b><span id="c-code">-</span></div><div class="id-field"><b>National ID</b><span id="c-national">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Company</b><span id="c-company">-</span></div><div class="id-field"><b>Emergency</b><span id="c-emergency">-</span></div></div></div></div><div class="id-grid2"><div class="id-field"><b>Health</b><span class="id-health-row"><span class="id-pill-green" id="c-health-pill">Healthy</span></span></div><div class="id-field"><b>Relationship</b><span id="c-kin">-</span></div><div class="id-field"><b>Status</b><span class="id-health-row"><span class="id-pill-green" id="c-status-pill">Active</span></span></div></div></div><div class="id-foot">RMED &nbsp;•&nbsp; HSE MANAGEMENT SYSTEM &nbsp;•&nbsp; IF FOUND PLEASE RETURN TO RMED</div></div>
+<div id="cardFront" class="id-card"><div class="id-card-in"></div><div class="id-card-body"><div class="id-head"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small></div><div class="id-head-line"></div><div class="id-front-top"><div class="id-photo-col"><div class="id-photo-frame"><div class="id-photo-frame-in"><img id="c-photo" class="id-photo" src="" style="display:none"><div id="c-photo-ph" class="id-photo-ph">PHOTO<br>150×180</div></div></div><div class="id-qr-box"><div id="c-qr"></div><span class="id-qr-code" id="c-qr-code">-</span><span class="id-qr-label">SCAN FOR FULL FILE</span></div></div><div class="id-front-info"><div class="id-name" id="c-name">-</div><div class="id-name-en" id="c-name-en">-</div><div class="id-job-badge" id="c-job">-</div><div class="id-mini-row"><div class="id-field"><b>Start Date</b><span id="c-date">-</span></div><div class="id-field"><b>Phone</b><span id="c-phone">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Employee Code</b><span id="c-code">-</span></div><div class="id-field"><b>National ID</b><span id="c-national">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Company</b><span id="c-company">-</span></div><div class="id-field"><b>Emergency</b><span id="c-emergency">-</span></div></div></div></div><div class="id-grid2"><div class="id-field"><b>Health</b><span class="id-health-row"><span class="id-pill-green" id="c-health-pill">Healthy</span></span></div><div class="id-field"><b>Relationship</b><span id="c-kin">-</span></div><div class="id-field"><b>Status</b><span class="id-health-row"><span class="id-pill-green" id="c-status-pill">Active</span></span></div></div></div><div class="id-foot">RMED &nbsp;•&nbsp; HSE MANAGEMENT SYSTEM &nbsp;•&nbsp; IF FOUND PLEASE RETURN TO RMED</div></div>
 <div id="cardBack" class="id-card"><div class="id-card-in"></div><div class="id-back-body"><div class="id-back-title">تعليمات إدارة السلامة /</div><div class="id-back-sub">HSE Management Instructions</div><div class="id-head-line"></div><div class="id-back-list"><div class="id-back-item"><i>1.</i><div><b>ارتدِ معدات الحماية الشخصية دائمًا</b><small>Wear PPE at all times (helmet, gloves, safety boots, vest)</small></div></div><div class="id-back-item"><i>5.</i><div><b>لا تستخدم المعدات دون تدريب أو تصريح</b><small>Do not operate equipment without training or permit</small></div></div><div class="id-back-item"><i>2.</i><div><b>التزم بإجراءات السلامة قبل بدء العمل</b><small>Follow safety procedures before starting work</small></div></div><div class="id-back-item"><i>6.</i><div><b>استخدم الأدوات والمعدات بالطريقة الصحيحة</b><small>Use tools and equipment properly</small></div></div><div class="id-back-item"><i>3.</i><div><b>الإبلاغ الفوري عن أي خطر أو حادث</b><small>Report any hazard or incident immediately</small></div></div><div class="id-back-item"><i>7.</i><div><b>حافظ على منطقة العمل نظيفة ومنظمة</b><small>Keep the work area clean and organized</small></div></div><div class="id-back-item"><i>4.</i><div><b>التأكد من العزل وقفل مصادر الطاقة عند الصيانة</b><small>Lockout/Tagout energy sources during maintenance</small></div></div><div class="id-back-item"><i>8.</i><div><b>تجنب الجري والتدافع في موقع العمل</b><small>Avoid running or horseplay on site</small></div></div><div class="id-back-item"><i>9.</i><div><b>تعرف على مخارج الطوارئ وخطط الإخلاء</b><small>Know emergency exits and evacuation plans</small></div></div><div class="id-back-item"><i>10.</i><div><b>الالتزام بالسلامة البيئية وإدارة النفايات</b><small>Follow environmental safety and waste management</small></div></div></div><div class="id-back-foot">RMED • Safety • Compliance • Excellence</div></div><div class="id-foot">RMED • HSE MANAGEMENT SYSTEM • THIS CARD IS PROPERTY OF RMED • IF FOUND PLEASE RETURN</div></div>
 </div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><button class="btn-red" onclick="downloadCard()">📥 Download Front & Back</button><button class="btn-orange" onclick="downloadCard('front')">📥 Download Front Only</button></div></div></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -176,20 +178,15 @@ function setVal(id,v){document.getElementById(id).value=v||''}
 function safe(v){let s=String(v||'').trim();return s?s:'-'}
 function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
 function normDate(v){ if(!v) return ''; if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} } let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-'); let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0]; return s; }
-/* ===== FIX الداتا القديمة - بيفهم كل أسماء الحقول ===== */
 function normWorker(raw){
   let docId = String(raw.id||'').includes(':') ? String(raw.id).split(':').slice(1).join(':') : String(raw.id||'');
-  // الكود: جرب كل الاحتمالات القديمة والجديدة، ولو مفيش خد الـ doc id
   let code = String(pick(raw,['code','employeeCode','empCode','workerCode','employeeId','userCode','ID','idCode','empID'])||'');
-  // لو الكود لسه فاضي والـ doc id شكله كود زي RM-9751 خد منه
   if(!code && docId && /RM-|^\d{3,}/i.test(docId)) code = docId;
   let nationalId = String(pick(raw,['nationalId','nid','idNumber','nationalID','identity','NationalID','national_number','nationalnumber'])||'');
-  // لو الرقم القومي متسجل جوه الـ id وكان 14 رقم
   if(!nationalId && docId && /^\d{14}$/.test(docId)) nationalId = docId;
   return { id: raw.id, _coll: raw._coll||'workers', _docId: docId,
     name: pick(raw,['name','fullName','employeeName','workerName','Name','fullname','empName']),
-    code: code,
-    nationalId: nationalId,
+    code: code, nationalId: nationalId,
     job: pick(raw,['job','profession','position','Job','jobTitle','work']),
     company: pick(raw,['company','companyName','contractor','Company','comp']),
     hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt','joinDate','start'])),
@@ -203,30 +200,39 @@ function normWorker(raw){
     isRehab: !!raw.isRehab,
     img: pick(raw,['img','photo','image','avatar','photoURL','Photo']),
     photo: pick(raw,['photo','img','image']),
-    createdAt: raw.createdAt||raw.date||'' };
+    createdAt: raw.createdAt||raw.date||'',
+    hoursPer: parseFloat(pick(raw,['hoursPer','hours','totalHours','duration']))||0.25 };
 }
 document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
+/* ===== FIX سجل المحاضرات: نفصل العمال عن المحاضرات ===== */
 function getDisplayList(){
   let map=new Map();
   let all=[...(DB.workers||[]),...(DB.induction||[])].map(r=>normWorker(r));
   all.forEach(w=>{
-    // FIX: مترميش أي عامل حتى لو اسمه فاضي - استخدم أي حاجة موجودة كمفتاح
     let key = w.nationalId || w.code || w.name || w._docId || w.id;
     if(!key) return;
-    // لو المفتاح هو الـ doc id والكود فاضي، حط الكود = الـ doc id عشان يظهر في الجدول
     if(!w.code && w._docId) w.code = w._docId;
     if(!w.name && w.code) w.name = 'عامل - ' + w.code;
-    if(!map.has(key)){
-      map.set(key,{...w, _ids:[{id:w.id,_coll:w._coll}]});
-    } else {
-      let ex=map.get(key);
-      ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{ if(!ex[k] && w[k]) ex[k]=w[k]; });
-      if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true;
-      if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt;
-      ex._ids.push({id:w.id,_coll:w._coll});
-    }
+    if(!map.has(key)){ map.set(key,{...w, _ids:[{id:w.id,_coll:w._coll}]}); }
+    else { let ex=map.get(key); ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{ if(!ex[k] && w[k]) ex[k]=w[k]; }); if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true; if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt; ex._ids.push({id:w.id,_coll:w._coll}); }
   });
   return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+}
+/* سجل المحاضرات لوحده - كل مستند = محاضرة، من غير دمج */
+function getInductionList(){
+  let rawInd = (DB.induction||[]).map(r=>normWorker(r));
+  // لو كولكشن induction فاضي، استخدم العمال كـ fallback عشان الجدول ميبقاش فاضي
+  if(!rawInd.length) return getDisplayList().map(w=>({...w, _isFallback:true}));
+  // لو فيه سجلات induction بس من غير اسم، كمل الاسم من العمال
+  let workersMap=new Map();
+  (DB.workers||[]).map(r=>normWorker(r)).forEach(w=>{ let k=w.nationalId||w.code; if(k) workersMap.set(k,w); });
+  return rawInd.map(rec=>{
+    let k=rec.nationalId||rec.code;
+    let w=workersMap.get(k);
+    if(w){ ['name','job','company','phone','emergency','kin','health','status','img','photo'].forEach(f=>{ if(!rec[f] && w[f]) rec[f]=w[f]; }); }
+    if(!rec.name && rec.code) rec.name='عامل - '+rec.code;
+    return rec;
+  }).sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
 }
 let renderTimer=null;
 function renderIndDebounced(){ clearTimeout(renderTimer); renderTimer=setTimeout(()=>renderInd(),250); }
@@ -236,9 +242,11 @@ function getProfileLink(x){
   return base + 'worker-profile.html?code=' + encodeURIComponent(key);
 }
 function makeQR(x){
-  let img=document.getElementById('c-qr-img');
+  let box=document.getElementById('c-qr');
+  if(!box) return;
+  box.innerHTML='';
   let link=getProfileLink(x);
-  img.src='https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&data='+encodeURIComponent(link);
+  try{ new QRCode(box,{text:link,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); }catch(e){ box.textContent='QR Error'; }
   let codeEl=document.getElementById('c-qr-code'); if(codeEl) codeEl.textContent=x.code||'-';
   let info=document.getElementById('qrInfo'); if(info) info.textContent='📱 اعمل Scan للـ QR - هيفتح ملف '+(x.name||'')+' كله Live - اللينك: '+link;
   window._lastProfileLink = link;
@@ -246,12 +254,12 @@ function makeQR(x){
 function updateDebugCounts(){
   let el=document.getElementById('debugCounts'); if(!el) return;
   let parts=Object.entries(collCounts).map(([k,v])=>k+': '+v).join(' | ');
-  el.textContent='🔍 اللي وصل من Firebase: '+(parts||'لسه...')+' | بعد الدمج وإزالة التكرار: '+getDisplayList().length+' عامل | لو رقم 0 هنا يبقى المشكلة في Firebase Rules مش في الصفحة';
+  el.textContent='🔍 اللي وصل من Firebase: '+(parts||'لسه...')+' | عمال مدمجين: '+getDisplayList().length+' | سجل محاضرات: '+getInductionList().length;
 }
 function loadLive(){
   try{
     let db=firebase.firestore();
-    ['workers','induction','users','employees'].forEach(coll=>{
+    ['workers','induction','users','employees','train'].forEach(coll=>{
       db.collection(coll).limit(500).onSnapshot(snap=>{
         collCounts[coll]=snap.size;
         caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()}));
@@ -259,16 +267,13 @@ function loadLive(){
         Object.entries(caches).forEach(([c,arr])=>{
           if(c==='workers'||c==='users'||c==='employees') DB.workers.push(...arr);
           else if(c==='induction') DB.induction.push(...arr);
+          else if(c==='train'){ /* بنقراه عشان الديباج بس، مش بنحسبه مع induction عشان ميتضاعفش */ }
         });
         document.getElementById('loadStatus').textContent='متصل Live ✅';
-        document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | إجمالي بعد الدمج: '+getDisplayList().length;
+        document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | سجل محاضرات: '+getInductionList().length;
         updateDebugCounts();
         renderIndDebounced(); refreshCode();
-      }, err=>{
-        collCounts[coll]='خطأ: '+err.message;
-        updateDebugCounts();
-        console.log('skip',coll,err.message);
-      });
+      }, err=>{ collCounts[coll]='خطأ: '+err.message; updateDebugCounts(); });
     });
   }catch(e){ document.getElementById('loadStatus').textContent='خطأ: '+e.message; }
 }
@@ -281,13 +286,52 @@ function previewIssuePhoto(e){let f=e.target.files[0];if(!f)return;let r=new Fil
 function checkNational(){let nat=val('f-national');let box=document.getElementById('rehabAlert');if(nat.length<14){box.style.display='none';return null}let old=getDisplayList().find(w=>String(w.nationalId)===nat);if(old){box.style.display='block';document.getElementById('rehabName').textContent=old.name+' - Code '+old.code;playBeep();let notes=val('f-notes');if(!isRehabNotes(notes))setVal('f-notes',(notes?notes+' - ':'')+'Rehabilitation');return old}else{box.style.display='none';return null}}
 function readFile(id,cb){let f=document.getElementById(id)?.files[0];if(!f)return cb('');let r=new FileReader();r.onload=e=>cb(e.target.result);r.readAsDataURL(f)}
 function getMeName(){try{let u=JSON.parse(localStorage.getItem('currentUser')||'{}');return u.name||''}catch(e){return ''}}
-async function saveInductionWorker(){ if(!val('f-name'))return alert('Write full name');if(!val('f-national'))return alert('Write national ID');if(val('f-national').length!==14)return alert('National ID must be 14 digits'); let code=val('f-code')||nextCode(); let old=checkNational();let isRehab=!!old;let notes=val('f-notes');if(isRehab&&!isRehabNotes(notes))notes=(notes?notes+' - ':'')+'Rehabilitation'; readFile('f-img',async img=>{ let w={name:val('f-name'),code:String(code),nationalId:val('f-national'),nid:val('f-national'),job:val('f-job'),profession:val('f-job'),company:val('f-company')||'',hire:val('f-date'),hireDate:val('f-date'),date:val('f-date'),health:val('f-health'),phone:val('f-phone'),phoneNumber:val('f-phone'),emergency:val('f-emergency'),emergencyPhone:val('f-emergency'),kin:val('f-kin'),relationship:val('f-kin'),status:val('f-status'),notes:notes,isRehab:isRehab,img:img,photo:img,reporter:getMeName(),createdAt:new Date().toISOString()}; try{await firebase.firestore().collection('workers').add(w);await firebase.firestore().collection('induction').add({...w,hoursPer:0.25,totalHours:0.25,type:'induction',title:'Induction - '+w.name});playBeep();}catch(e){alert('Save problem: '+e.message);return} try{let params=new URLSearchParams({action:'add',name:w.name,id:w.code,job:w.job,company:w.company,hireDate:w.hire,phone:w.phone,emergencyPhone:w.emergency,relation:w.kin,health:w.health,status:w.status,photo:'',nationalId:w.nationalId,notes:w.notes});fetch(SHEET_URL+'?'+params.toString())}catch(e){} alert('✅ Saved '+w.name+' - Induction 0.25 hour'+(isRehab?' - Rehabilitation':'')+''); setVal('f-name','');setVal('f-national','');setVal('f-job','');setVal('f-phone','');setVal('f-emergency','');setVal('f-notes','');setVal('f-code',nextCode());document.getElementById('photoPrev').style.display='none';document.getElementById('rehabAlert').style.display='none';document.getElementById('f-img').value=''; }); }
+async function saveInductionWorker(){
+  if(!val('f-name'))return alert('Write full name');if(!val('f-national'))return alert('Write national ID');if(val('f-national').length!==14)return alert('National ID must be 14 digits');
+  let code=val('f-code')||nextCode(); let old=checkNational();let isRehab=!!old;let notes=val('f-notes');if(isRehab&&!isRehabNotes(notes))notes=(notes?notes+' - ':'')+'Rehabilitation';
+  readFile('f-img',async img=>{
+    let w={name:val('f-name'),code:String(code),nationalId:val('f-national'),nid:val('f-national'),job:val('f-job'),profession:val('f-job'),company:val('f-company')||'',hire:val('f-date'),hireDate:val('f-date'),date:val('f-date'),health:val('f-health'),phone:val('f-phone'),phoneNumber:val('f-phone'),emergency:val('f-emergency'),emergencyPhone:val('f-emergency'),kin:val('f-kin'),relationship:val('f-kin'),status:val('f-status'),notes:notes,isRehab:isRehab,img:img,photo:img,reporter:getMeName(),createdAt:new Date().toISOString()};
+    /* FIX الإحصائيات: سجل المحاضرة بحقول واضحة عشان أي صفحة تقراها */
+    let inductionRec={...w, hoursPer:0.25, totalHours:0.25, hours:0.25, type:'induction', title:'Induction - '+w.name, topic:'Induction', course:'Induction', trainingType:'Induction', date:val('f-date'), createdAt:new Date().toISOString()};
+    try{
+      let db=firebase.firestore();
+      await db.collection('workers').add(w);
+      await db.collection('induction').add(inductionRec);
+      /* دي اللي بتخلي stats.html تشوف المحاضرة */
+      try{ await db.collection('train').add({...inductionRec, source:'induction', workerCode:String(code), workerName:val('f-name')}); }catch(e){ console.log('train skip',e.message); }
+      playBeep();
+    }catch(e){alert('Save problem: '+e.message);return}
+    try{let params=new URLSearchParams({action:'add',name:w.name,id:w.code,job:w.job,company:w.company,hireDate:w.hire,phone:w.phone,emergencyPhone:w.emergency,relation:w.kin,health:w.health,status:w.status,photo:'',nationalId:w.nationalId,notes:w.notes});fetch(SHEET_URL+'?'+params.toString())}catch(e){}
+    alert('✅ Saved '+w.name+' - Induction 0.25 hour'+(isRehab?' - Rehabilitation':'')+' - اتسجلت في Workers + Induction + Train (الإحصائيات)');
+    setVal('f-name','');setVal('f-national','');setVal('f-job','');setVal('f-phone','');setVal('f-emergency','');setVal('f-notes','');setVal('f-code',nextCode());document.getElementById('photoPrev').style.display='none';document.getElementById('rehabAlert').style.display='none';document.getElementById('f-img').value='';
+  });
+}
 let editKey='', editPhotoData='';
 function openEditModal(key){ let x=getDisplayList().find(v=>String(v.nationalId||v.code)===String(key)); if(!x) return; editKey=String(x.nationalId||x.code); editPhotoData=x.img||x.photo||''; setVal('e-code',x.code); setVal('e-national',x.nationalId); setVal('e-name',x.name); setVal('e-job',TJob(x.job)||x.job); setVal('e-company',x.company); setVal('e-date',x.hire||x.date||''); setVal('e-health',THealth(x.health)||x.health); setVal('e-phone',x.phone); setVal('e-emergency',x.emergency); setVal('e-kin',TKin(x.kin)||x.kin); setVal('e-status',TStatus(x.status)); setVal('e-notes',x.notes); let p=document.getElementById('e-photoPrev'); if(editPhotoData){p.src=editPhotoData; p.style.display='block';} else p.style.display='none'; document.getElementById('editModal').style.display='block'; }
 function closeEditModal(){ document.getElementById('editModal').style.display='none'; editKey=''; }
 function previewEditPhoto(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=ev=>{ editPhotoData=ev.target.result; let p=document.getElementById('e-photoPrev'); p.src=editPhotoData; p.style.display='block'; }; r.readAsDataURL(f); }
 async function saveEditWorker(){ if(!editKey) return; if(!val('e-name')) return alert('Write name'); if(val('e-national') && val('e-national').length!==14) return alert('National ID must be 14 digits'); let x=getDisplayList().find(v=>String(v.nationalId||v.code)===String(editKey)); if(!x) return; let updated={ name:val('e-name'), code:val('e-code'), nationalId:val('e-national'), nid:val('e-national'), job:val('e-job'), profession:val('e-job'), company:val('e-company'), hire:val('e-date'), hireDate:val('e-date'), date:val('e-date'), health:val('e-health'), phone:val('e-phone'), phoneNumber:val('e-phone'), emergency:val('e-emergency'), emergencyPhone:val('e-emergency'), kin:val('e-kin'), relationship:val('e-kin'), status:val('e-status'), notes:val('e-notes'), updatedAt:new Date().toISOString() }; if(editPhotoData){ updated.img=editPhotoData; updated.photo=editPhotoData; } try{ let db=firebase.firestore(); for(let rec of (x._ids||[x])){ let coll=rec._coll||'workers'; let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; try{ await db.collection(coll).doc(realId).update(updated); }catch(e){ console.log('skip update',coll,e.message); } } playBeep(); }catch(e){ return alert('Update problem: '+e.message); } closeEditModal(); alert('✅ تم تعديل بيانات '+updated.name); renderInd(); }
-function renderInd(){ let q=(document.getElementById('searchInd').value||'').toLowerCase(); let allDisplay=getDisplayList(); let filtered=allDisplay.filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q)); let list=showAll? filtered : filtered.slice(0,50); let total=allDisplay.length,hours=total*0.25,rehab=allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).length,today=new Date().toISOString().slice(0,10),todayCount=allDisplay.filter(x=>x.date===today||(x.createdAt||'').slice(0,10)===today).length; document.getElementById('k-total').textContent=total;document.getElementById('k-hours').textContent=hours.toFixed(2);document.getElementById('k-rehab').textContent=rehab;document.getElementById('k-today').textContent=todayCount;document.getElementById('rehabIcon').classList.toggle('shake',rehab>0); document.getElementById('indTable').innerHTML=list.length?'<p style="font-size:12px;color:#666">عرض '+list.length+' من '+filtered.length+' عامل</p><table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Date</th><th>Status</th><th>Notes</th><th>ID Card</th><th>✏️ Edit</th></tr>'+list.map(x=>`<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td><span class="badge ${TStatus(x.status)==='Active'?'green':'red'}">${escapeHtml(TStatus(x.status))}</span></td><td>${x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':escapeHtml(x.notes||'-')}</td><td><button class="btn2" onclick="openCardByKey('${escapeHtml(x.nationalId||x.code)}')">🪪 ID Card</button></td><td><button class="btn2" style="background:#FF6B00" onclick="openEditModal('${escapeHtml(x.nationalId||x.code)}')">✏️ تعديل</button></td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No registered yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>'; let notifs=[...allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).slice(0,3).map(x=>`🔁 إعادة تأهيل: ${x.name} - ${x.code}`),...allDisplay.filter(x=>(x.date||'').slice(0,10)===today).slice(0,3).map(x=>`👤 موظف جديد اليوم: ${x.name}`)]; document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none'; document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات'; }
+function renderInd(){
+  let q=(document.getElementById('searchInd').value||'').toLowerCase();
+  let allWorkers=getDisplayList();
+  let allInd=getInductionList();
+  let filtered=allInd.filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q));
+  let list=showAll? filtered : filtered.slice(0,50);
+  let total=allInd.length;
+  let hours=allInd.reduce((s,x)=>s+(parseFloat(x.hoursPer)||0.25),0);
+  let rehab=allWorkers.filter(x=>x.isRehab||isRehabNotes(x.notes)).length;
+  let today=new Date().toISOString().slice(0,10);
+  let todayCount=allInd.filter(x=>(x.date||'').slice(0,10)===today||(x.createdAt||'').slice(0,10)===today).length;
+  document.getElementById('k-total').textContent=total;
+  document.getElementById('k-hours').textContent=hours.toFixed(2);
+  document.getElementById('k-rehab').textContent=rehab;
+  document.getElementById('k-today').textContent=todayCount;
+  document.getElementById('rehabIcon').classList.toggle('shake',rehab>0);
+  document.getElementById('indCountLabel').textContent='( '+filtered.length+' محاضرة )';
+  document.getElementById('indTable').innerHTML=list.length?'<p style="font-size:12px;color:#666">عرض '+list.length+' من '+filtered.length+' محاضرة - إجمالي الساعات: '+hours.toFixed(2)+'h</p><table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Date</th><th>Hours</th><th>Status</th><th>Notes</th><th>ID Card</th><th>✏️ Edit</th></tr>'+list.map(x=>`<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td>0.25h</td><td><span class="badge ${TStatus(x.status)==='Active'?'green':'red'}">${escapeHtml(TStatus(x.status))}</span></td><td>${x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':escapeHtml(x.notes||'-')}</td><td><button class="btn2" onclick="openCardByKey('${escapeHtml(x.nationalId||x.code)}')">🪪 ID Card</button></td><td><button class="btn2" style="background:#FF6B00" onclick="openEditModal('${escapeHtml(x.nationalId||x.code)}')">✏️ تعديل</button></td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No induction records yet - سجل أول محاضرة وهتظهر هنا وتتحسب في الإحصائيات</p>';
+  let notifs=[...allWorkers.filter(x=>x.isRehab||isRehabNotes(x.notes)).slice(0,3).map(x=>`🔁 إعادة تأهيل: ${x.name} - ${x.code}`),...allInd.filter(x=>(x.date||'').slice(0,10)===today).slice(0,3).map(x=>`👤 محاضرة جديدة اليوم: ${x.name}`)];
+  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none'; document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
+}
 let currentCardData=null;
 function setText(id,txt){let el=document.getElementById(id);if(el)el.textContent=txt}
 function fillCardData(x){ currentCardData=x; let photo=document.getElementById('c-photo'); let ph=document.getElementById('c-photo-ph'); let src=x.img||x.photo||issueImgData||''; if(src){ photo.src=src; photo.style.display='block'; ph.style.display='none'; } else { photo.style.display='none'; ph.style.display='block'; } let name=safe(x.name),code=safe(x.code),company=safe(x.company),job=safe(TJob(x.job)||x.job),nat=safe(x.nationalId),phone=safe(x.phone),emerg=safe(x.emergency),health=safe(THealth(x.health)||x.health),kin=safe(TKin(x.kin)||x.kin),status=TStatus(x.status),dateVal=safe(x.hire||x.date||(x.createdAt||'').slice(0,10)); let nameEl=document.getElementById('c-name');nameEl.textContent=name; setText('c-name-en',(x.nameEn||name).toUpperCase()); setText('c-job',job); setText('c-code',code); setText('c-company',company); setText('c-national',nat); setText('c-date',dateVal); setText('c-phone',phone); setText('c-emergency',emerg); setText('c-health-pill',health); setText('c-kin',kin); setText('c-status-pill',status); let pill=document.getElementById('c-status-pill'); if(pill){ pill.className = status==='Active' ? 'id-pill-green' : 'id-pill-red'; } document.getElementById('cardModal').style.display='block'; makeQR(x); }
