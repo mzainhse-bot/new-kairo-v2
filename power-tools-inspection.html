@@ -44,14 +44,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="power-tools-inspection.html" class="active">🔧 <span data-i18n="powerTools">Power Tools</span></a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 <span data-i18n="powerTools">Power Tools</span></a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -68,6 +87,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">الأدوات الكهربائية</span> <span style="color:#FF6B00">• Power Tools</span></h1>
 <p style="color:#666;font-size:13px">New Kairo Project • Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d blue">🔧</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي الأدوات</small></div></div></div>
@@ -110,6 +130,37 @@ function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||local
 (function(){let nm=getMe();if(nm)document.getElementById('pt-inspector').value=nm.name})();
 let tools=[],notifications=[];
 let tempEquip='',tempCheck='';
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normPT(raw){
+  let cond=String(pick(raw,['condition','status','state'])||'Good');
+  if(cond.toLowerCase().includes('unsafe')||cond.includes('غير آمن')) cond='Unsafe';
+  else if(cond.toLowerCase().includes('maint')||cond.includes('صيانة')) cond='Under Maintenance';
+  else cond='Good';
+  return {
+    id: raw.id, _coll: raw._coll||'powerTools',
+    project: pick(raw,['project','projectName'])||'New Kairo Project',
+    location: pick(raw,['location','workLocation','place','site'])||'',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    date: normDate(pick(raw,['date','inspectionDate','createdAt'])),
+    type: pick(raw,['type','toolType','category'])||'',
+    serial: pick(raw,['serial','serialNo','serialNumber','sn'])||'',
+    code: pick(raw,['code','toolCode','ptCode'])||'',
+    condition: cond,
+    colorCode: pick(raw,['colorCode','color','colour'])||'Green',
+    inspector: pick(raw,['inspector','inspectorName','checkedBy'])||'',
+    notes: pick(raw,['notes','note','remarks'])||'',
+    equipImg: pick(raw,['equipImg','equipImage','image','photo'])||'',
+    checkImg: pick(raw,['checkImg','checklistImg','checklistImage'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function val(id){return document.getElementById(id).value.trim()}
 function setVal(id,v){document.getElementById(id).value=v||''}
 function onConditionChange(){let c=val('pt-condition');let sel=document.getElementById('pt-color');if(c==='Unsafe'){sel.value='Red';sel.disabled=true}else if(c==='Under Maintenance'){sel.value='Yellow';sel.disabled=true}else{sel.disabled=false}}
@@ -118,8 +169,24 @@ function previewOne(input,prevId){let f=input.files[0];if(!f)return;let r=new Fi
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('powerTools').onSnapshot(snap=>{let old=tools.length;tools=snap.docs.map(d=>({id:d.id,...d.data()}));tools.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(tools.length>old&&old>0)playBeep();genCode();renderPT()});
-  db.collection('notifications').orderBy('createdAt','desc').limit(30).onSnapshot(snap=>{notifications=snap.docs.map(d=>({id:d.id,...d.data()}));renderNotif()});
+  ['powerTools','power-tools','power_tools','powerToolsInspection'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normPT);
+      let merged=[...tools].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=tools.length; tools=merged;
+      tools.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(tools.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي الأدوات: '+tools.length;
+      genCode();renderPT();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  // ===== FIX: شلت orderBy من notifications =====
+  db.collection('notifications').onSnapshot(snap=>{
+    notifications=snap.docs.map(d=>({id:d.id,...d.data()}));
+    notifications.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+    notifications=notifications.slice(0,30);
+    renderNotif();
+  }, ()=>{});
  }catch(e){console.log(e)}
 }
 function topOf(arr,key){let m={};arr.forEach(x=>{let k=x[key];if(!k)return;m[k]=(m[k]||0)+1});let keys=Object.keys(m);if(!keys.length)return null;keys.sort((a,b)=>m[b]-m[a]);return{name:keys[0],count:m[keys[0]]}}
@@ -133,27 +200,23 @@ function renderPT(){
  let types=[...new Set(all.map(x=>x.type).filter(Boolean))];let selT=document.getElementById('filterType');let curT=selT.value;selT.innerHTML='<option value="">All Types</option>'+types.map(t=>`<option ${t===curT?'selected':''}>${escapeHtml(t)}</option>`).join('');
  document.getElementById('k-comp').textContent=comps.length;let tComp=topOf(all,'company');let tLoc=topOf(all,'location');document.getElementById('k-loc').textContent=tLoc?tLoc.name:'-';let tType=topOf(all,'type');document.getElementById('k-type').textContent=tType?tType.name.split(' - ')[0]:'-';let tColor=topOf(all,'colorCode');document.getElementById('k-color').textContent=tColor?tColor.name:'-';
  let byType={};all.forEach(x=>{if(!byType[x.type])byType[x.type]=0;byType[x.type]++});let typeArr=Object.entries(byType).sort((a,b)=>b[1]-a[1]);document.getElementById('typeStats').innerHTML=typeArr.length?typeArr.map(([t,c])=>`<div class="type-chip"><span style="font-size:22px">🔧</span><div><small>${escapeHtml(t)}</small><b>${c}</b></div></div>`).join(''):'<p style="color:#999">No tools yet</p>';
- let byComp={};all.forEach(x=>{if(!byComp[x.company])byComp[x.company]={total:0,good:0,unsafe:0,maint:0};byComp[x.company].total++;if(x.condition==='Good')byComp[x.company].good++;if(x.condition==='Unsafe')byComp[x.company].unsafe++;if(x.condition==='Under Maintenance')byComp[x.company].maint++});
+ let byComp={};all.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={total:0,good:0,unsafe:0,maint:0};byComp[c].total++;if(x.condition==='Good')byComp[c].good++;if(x.condition==='Unsafe')byComp[c].unsafe++;if(x.condition==='Under Maintenance')byComp[c].maint++});
  let compArr=Object.entries(byComp).map(([name,v])=>({name,...v})).sort((a,b)=>b.total-a.total);document.getElementById('compStats').innerHTML=compArr.length?'<table><tr><th>Company</th><th>Total</th><th>✅ Good</th><th>🔴 Unsafe</th><th>🛠️ Under Maintenance</th></tr>'+compArr.map(v=>`<tr><td><b>${escapeHtml(v.name)}</b></td><td>${v.total}</td><td style="color:#2E7D32">${v.good}</td><td style="color:#D32F2F">${v.unsafe}</td><td style="color:#FF9800">${v.maint}</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#999">No companies yet</p>';
  let list=all.filter(x=>((x.code||'')+(x.serial||'')+(x.company||'')+(x.type||'')+(x.location||'')+(x.inspector||'')).toLowerCase().includes(q)&&(!fc||x.condition===fc)&&(!ft||x.type===ft)&&(!fcomp||x.company===fcomp));
- if(!list.length){document.getElementById('ptTable').innerHTML='<p style="text-align:center;color:#888">No power tools yet</p>';return}
+ if(!list.length){document.getElementById('ptTable').innerHTML='<p style="text-align:center;color:#888">No power tools yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  document.getElementById('ptTable').innerHTML='<table><tr><th>Code</th><th>Type</th><th>Company</th><th>Location</th><th>Serial</th><th>Condition</th><th>Color</th><th>Inspector</th><th>Date</th><th>Photos</th><th>Delete</th></tr>'+list.map(x=>{let idx=tools.indexOf(x);let badge=x.condition==='Good'?'green':x.condition==='Unsafe'?'red':'yellow';return `<tr><td><b>${escapeHtml(x.code)}</b></td><td style="text-align:left">${escapeHtml(x.type)}</td><td><b>${escapeHtml(x.company)}</b></td><td>${escapeHtml(x.location)}</td><td>${escapeHtml(x.serial)}</td><td><span class="badge ${badge}">${escapeHtml(x.condition)}</span></td><td><span class="color-dot" style="background:${colorHex(x.colorCode)}"></span> ${escapeHtml(x.colorCode)}</td><td>${escapeHtml(x.inspector)}</td><td>${escapeHtml(x.date)}</td><td>${x.equipImg?`<img src="${x.equipImg}" onclick="window.open('${x.equipImg}','_blank')">`:''} ${x.checkImg?`<img src="${x.checkImg}" onclick="window.open('${x.checkImg}','_blank')">`:''}</td><td><button class="btn2" style="background:#D32F2F" onclick="delPT(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
- let notifs=[...all.filter(x=>x.condition==='Unsafe').slice(0,3).map(x=>`🔴 أداة غير آمنة: ${x.code} - ${x.type} - ${x.company}`),...all.filter(x=>x.condition==='Under Maintenance').slice(0,2).map(x=>`🛠️ أداة تحت الصيانة: ${x.code} - ${x.type}`)];
- document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
- document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
 async function addPT(){
  if(!val('pt-location'))return alert('Write location');if(!val('pt-company'))return alert('Write company');if(!val('pt-date'))return alert('Select date');if(!val('pt-type'))return alert('Select type');if(!val('pt-serial'))return alert('Write serial');if(!val('pt-code'))return alert('Write code');if(!val('pt-inspector'))return alert('Write inspector');
  let cond=val('pt-condition');let color=cond==='Unsafe'?'Red':cond==='Under Maintenance'?'Yellow':val('pt-color');
- let rec={project:'New Kairo Project',location:val('pt-location'),company:val('pt-company'),date:val('pt-date'),type:val('pt-type'),serial:val('pt-serial'),code:val('pt-code'),condition:cond,colorCode:color,inspector:val('pt-inspector'),notes:val('pt-notes'),equipImg:tempEquip,checkImg:tempCheck,createdAt:new Date().toISOString()};
+ let rec={project:'New Kairo Project',location:val('pt-location'),workLocation:val('pt-location'),company:val('pt-company'),companyName:val('pt-company'),date:val('pt-date'),type:val('pt-type'),toolType:val('pt-type'),serial:val('pt-serial'),serialNo:val('pt-serial'),code:val('pt-code'),toolCode:val('pt-code'),condition:cond,status:cond,colorCode:color,color:color,inspector:val('pt-inspector'),notes:val('pt-notes'),equipImg:tempEquip,checkImg:tempCheck,createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('powerTools').add(rec);if(cond==='Unsafe')playBeep();}catch(e){return alert(e.message)}
  genCode();renderPT();alert('✅ Saved - '+rec.code+' - '+rec.type+' - '+rec.condition+' - '+rec.colorCode);setVal('pt-location','');setVal('pt-serial','');setVal('pt-notes','');setVal('pt-type','');setVal('pt-condition','Good');onConditionChange();document.getElementById('prev-equip').innerHTML='';document.getElementById('prev-check').innerHTML='';tempEquip='';tempCheck='';
 }
-async function delPT(i){if(!confirm('Delete this tool?'))return;let rec=tools[i];try{await firebase.firestore().collection('powerTools').doc(rec.id).delete()}catch(e){}tools.splice(i,1);genCode();renderPT()}
-async function clearPT(){if(!confirm('Delete all power tools from Firebase?'))return;try{let s=await firebase.firestore().collection('powerTools').get();for(let d of s.docs)await firebase.firestore().collection('powerTools').doc(d.id).delete()}catch(e){}tools=[];genCode();renderPT()}
-function exportPT(){if(!tools.length)return alert('No data');let csv='Project,Location,Company,Date,Type,Serial,Code,Condition,Color Code,Inspector,Notes\n'+tools.map(x=>[x.project,x.location,x.company,x.date,'"'+(x.type||'').replace(/"/g,'""')+'"',x.serial,x.code,x.condition,x.colorCode,x.inspector,'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='power-tools.csv';a.click()}
-function renderNotif(){let unread=notifications.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=notifications.length?notifications.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title)}</b><br><small>${escapeHtml(n.msg)}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
+async function delPT(i){if(!confirm('Delete this tool?'))return;let rec=tools[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'powerTools'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}tools.splice(i,1);genCode();renderPT()}
+async function clearPT(){if(!confirm('Delete all power tools from Firebase?'))return;try{for(let coll of ['powerTools','power-tools','power_tools','powerToolsInspection']){let s=await firebase.firestore().collection(coll).get();for(let d of s.docs)await firebase.firestore().collection(coll).doc(d.id).delete()}}catch(e){}tools=[];genCode();renderPT()}
+function exportPT(){if(!tools.length)return alert('No data');let csv='Project,Location,Company,Date,Type,Serial,Code,Condition,Color Code,Inspector,Notes\n'+tools.map(x=>[x.project,x.location,x.company,x.date,'"'+String(x.type||'').replace(/"/g,'""')+'"',x.serial,x.code,x.condition,x.colorCode,x.inspector,'"'+String(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='power-tools.csv';a.click()}
+function renderNotif(){let unread=notifications.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=notifications.length?notifications.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title||n.msg||'')}</b><br><small>${escapeHtml(n.msg||'')}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
 async function openNotif(id){try{await firebase.firestore().collection('notifications').doc(id).update({read:true})}catch(e){}let n=notifications.find(x=>x.id===id);if(n)n.read=true;renderNotif()}
 async function markAllRead(e){e.stopPropagation();for(let n of notifications){if(!n.read){try{await firebase.firestore().collection('notifications').doc(n.id).update({read:true})}catch(e){}n.read=true}}renderNotif()}
 document.getElementById('pt-date').value=new Date().toISOString().slice(0,10);onConditionChange();loadLive();
