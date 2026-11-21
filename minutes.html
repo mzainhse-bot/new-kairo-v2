@@ -47,14 +47,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="minutes.html" class="active">📝 <span data-i18n="minutes">Minutes</span></a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="weekly.html">📅 Weekly Meeting</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 <span data-i18n="minutes">Minutes</span></a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permits</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -71,6 +90,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">محضر الاجتماع</span> <span style="color:#FF6B00">• Minutes V4 Final</span></h1>
 <p style="color:#666;font-size:13px">Live • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold">📝</span><div><b id="k-meet">0</b><small data-i18n="meetings">عدد الاجتماعات</small></div></div></div>
@@ -112,17 +132,60 @@ function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||local
 function isManagerOrSup(){let m=getMe();let r=String(m?m.role||'':'').toLowerCase();return r==='manager'||r==='admin'||r==='supervisor'}
 (function(){let nm=getMe();if(nm){document.getElementById('m-chair').value=nm.name}})();
 let meetings=[],contractors=[],notifications=[];
-let editingId=null,editingOriginal=null;
+let editingId=null,editingOriginal=null,editingColl='minutes';
 let closeTarget={mid:null,idx:null};
 let customCompanies=[];
 const FIXED_COMPANIES=['التبارك','ماس جروب','جلوبال','المغربل','السلام','ماس كون','النور','ايوب','تيوكومبلكس'];
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normItem(it){
+  let status=String(pick(it,['status','state'])||'Open');
+  if(status.toLowerCase().includes('close')||status.includes('مغلق')||status.includes('مقفول')) status='Closed'; else status='Open';
+  return {
+    desc: pick(it,['desc','description','title','item'])||'',
+    responsible: pick(it,['responsible','owner','assignedTo'])||'',
+    company: pick(it,['company','companyName','contractor'])||'All Companies - كل الشركات',
+    priority: pick(it,['priority','prio'])||'Medium',
+    dueDate: normDate(pick(it,['dueDate','due','deadline'])),
+    status: status,
+    closeDate: normDate(pick(it,['closeDate','closedDate','closedAt'])),
+    closedBy: pick(it,['closedBy','closedByName','closer'])||'',
+    closedByCompany: pick(it,['closedByCompany','closedCompany','closerCompany'])||'',
+    closedCompany: pick(it,['closedCompany','closedByCompany'])||'',
+    comments: it.comments||it.notes||[]
+  };
+}
+function normMeeting(raw){
+  return {
+    id: raw.id, _coll: raw._coll||'minutes',
+    date: normDate(pick(raw,['date','meetingDate','createdAt'])),
+    time: pick(raw,['time','meetingTime'])||'',
+    chair: pick(raw,['chair','chairman','chairPerson'])||'',
+    purpose: pick(raw,['purpose','topic','title'])||'Weekly Meeting',
+    place: pick(raw,['place','location','venue'])||'',
+    number: pick(raw,['number','meetingNo','momNo','meetingNumber'])||'',
+    attendees: (raw.attendees||raw.participants||[]).map(a=>typeof a==='string'?{name:a}:a),
+    items: (raw.items||raw.actionItems||raw.actions||[]).map(normItem),
+    requiredCompanies: raw.requiredCompanies||raw.requiredToComment||[],
+    requiredToComment: raw.requiredToComment||raw.requiredCompanies||[],
+    reporter: pick(raw,['reporter','reporterName','createdBy']),
+    createdAt: raw.createdAt||'',
+    updatedAt: raw.updatedAt||''
+  };
+}
 function val(id){return document.getElementById(id).value.trim()}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function setDateOffset(id,days){let d=new Date();d.setDate(d.getDate()+days);document.getElementById(id).value=d.toISOString().slice(0,10)}
 function addDaysStr(days){let d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
 function diffDays(due){let t=new Date(todayStr());let d=new Date(due);return Math.round((d-t)/86400000)}
 function calcResult(item){if(item.status!=='Closed')return '-';if(!item.closeDate||!item.dueDate)return '-';let diff=Math.round((new Date(item.closeDate)-new Date(item.dueDate))/86400000);if(diff<0)return 'قبل المعاد بـ '+Math.abs(diff)+' يوم 🟢';if(diff===0)return 'في المعاد بالظبط 🟡';return 'متأخر '+diff+' يوم 🔴'}
-function allCompanyNames(){let fromContractors=[...new Set(contractors.map(c=>c.name||c.company).filter(Boolean))];let fromMeetings=[...new Set(meetings.flatMap(m=>(m.items||[]).map(i=>i.company)).filter(c=>c&&!String(c).includes('All')))];let fromAtt=[...new Set(meetings.flatMap(m=>(m.attendees||[]).map(a=>a.company)).filter(Boolean))];let fromClosed=[...new Set(meetings.flatMap(m=>(m.items||[]).map(i=>i.closedByCompany||i.closedCompany)).filter(Boolean))];let merged=[...FIXED_COMPANIES,...fromContractors,...fromMeetings,...fromAtt,...fromClosed,...customCompanies];return [...new Set(merged)].filter(c=>c!=='أخرى'&&c!=='Other')}
+function allCompanyNames(){let fromContractors=[...new Set(contractors.map(c=>pick(c,['name','company','companyName'])).filter(Boolean))];let fromMeetings=[...new Set(meetings.flatMap(m=>(m.items||[]).map(i=>i.company)).filter(c=>c&&!String(c).includes('All')))];let fromAtt=[...new Set(meetings.flatMap(m=>(m.attendees||[]).map(a=>a.company)).filter(Boolean))];let fromClosed=[...new Set(meetings.flatMap(m=>(m.items||[]).map(i=>i.closedByCompany||i.closedCompany)).filter(Boolean))];let merged=[...FIXED_COMPANIES,...fromContractors,...fromMeetings,...fromAtt,...fromClosed,...customCompanies];return [...new Set(merged)].filter(c=>c!=='أخرى'&&c!=='Other')}
 async function saveCustomCompany(name){name=(name||'').trim();if(!name)return null;if(allCompanyNames().includes(name))return name;customCompanies.push(name);try{await firebase.firestore().collection('customCompanies').add({name,createdAt:new Date().toISOString(),createdBy:getMe()?getMe().name:''})}catch(e){}renderReqCompanies();return name}
 async function addCustomCompanyFromReq(){let v=val('reqOtherInput');if(!v)return alert('اكتب اسم الشركة الأول');await saveCustomCompany(v);document.getElementById('reqOtherInput').value='';alert('✅ اتحفظت الشركة: '+v)}
 function renderReqCompanies(selected){let names=allCompanyNames();let box=document.getElementById('reqCompaniesBox');if(!names.length){box.innerHTML='<span style="color:#888;font-size:12px">مفيش شركات مسجلة لسه</span>';return}let sel=selected||names;box.innerHTML=names.map(n=>{let checked=sel.includes(n)?'checked':'';return `<label class="chip ${checked?'checked':''}"><input type="checkbox" class="req-comp" value="${escapeHtml(n)}" ${checked} onchange="this.parentElement.classList.toggle('checked',this.checked);updateReqCount()"> ${escapeHtml(n)}</label>`}).join('')+'<label class="chip" style="border-color:#FF9800"><input type="checkbox" class="req-comp" value="أخرى" onchange="document.getElementById(\'reqOtherBox\').style.display=this.checked?\'block\':\'none\';this.parentElement.classList.toggle(\'checked\',this.checked)"> ➕ أخرى - شركة جديدة</label>';updateReqCount()}
@@ -132,10 +195,27 @@ async function getReqCompanies(){let checked=[...document.querySelectorAll('.req
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('minutes').onSnapshot(snap=>{let old=meetings.length;meetings=snap.docs.map(d=>({id:d.id,...d.data()}));meetings.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(meetings.length>old&&old>0)playBeep();generateNumber();renderReqCompanies();renderMinutes();renderCompanyStats();});
-  db.collection('contractors').onSnapshot(snap=>{contractors=snap.docs.map(d=>({id:d.id,...d.data()}));renderReqCompanies()});
-  db.collection('customCompanies').onSnapshot(snap=>{customCompanies=snap.docs.map(d=>d.data().name).filter(Boolean);renderReqCompanies()});
-  db.collection('notifications').orderBy('createdAt','desc').limit(30).onSnapshot(snap=>{notifications=snap.docs.map(d=>({id:d.id,...d.data()}));renderNotif()});
+  // ===== FIX: minutes + meetingMinutes + mom، بدون orderBy =====
+  ['minutes','meetingMinutes','meeting-minutes','mom'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normMeeting);
+      let merged=[...meetings].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=meetings.length; meetings=merged;
+      meetings.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(meetings.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - عدد الاجتماعات: '+meetings.length;
+      generateNumber();renderReqCompanies();renderMinutes();renderCompanyStats();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  db.collection('contractors').onSnapshot(snap=>{contractors=snap.docs.map(d=>({id:d.id,...d.data()}));renderReqCompanies()}, ()=>{});
+  db.collection('customCompanies').onSnapshot(snap=>{customCompanies=snap.docs.map(d=>d.data().name).filter(Boolean);renderReqCompanies()}, ()=>{});
+  // ===== FIX: شلت orderBy من notifications =====
+  db.collection('notifications').onSnapshot(snap=>{
+    notifications=snap.docs.map(d=>({id:d.id,...d.data()}));
+    notifications.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+    notifications=notifications.slice(0,30);
+    renderNotif();
+  }, ()=>{});
  }catch(e){console.log(e)}
 }
 function generateNumber(){let y=new Date().getFullYear();let n=meetings.filter(m=>String(m.number||'').includes(String(y))).length+1;document.getElementById('m-number').value='MOM-'+y+'-'+String(n).padStart(3,'0')}
@@ -144,18 +224,23 @@ function onItemCompanyChange(sel){let wrap=sel.parentElement.querySelector('.ite
 function addAttRow(d){let tr=document.createElement('tr');tr.innerHTML=`<td><input class="a-name" placeholder="Name" value="${escapeHtml(d?d.name:'')}"></td><td><input class="a-job" placeholder="Job" value="${escapeHtml(d?d.job:'')}"></td><td><input class="a-proj" placeholder="Project" value="${escapeHtml(d?d.project:'')}"></td><td><input class="a-comp" placeholder="Company" value="${escapeHtml(d?d.company:'')}"></td><td><input type="checkbox" class="a-safety" ${d&&d.isSafety?'checked':''}></td><td><button class="btn2" onclick="this.closest('tr').remove()">🗑️</button></td>`;document.getElementById('attRows').appendChild(tr)}
 function addItemRow(d){let tr=document.createElement('tr');tr.innerHTML=`<td><input class="i-desc" placeholder="Description" value="${escapeHtml(d?d.desc:'')}"></td><td><input class="i-resp" placeholder="Responsible" value="${escapeHtml(d?d.responsible:'')}"></td><td><select class="i-comp" onchange="onItemCompanyChange(this)">${compOptions()}</select><input class="item-other other-input" placeholder="اكتب اسم الشركة الجديدة..."></td><td><select class="i-prio"><option>High</option><option>Medium</option><option>Low</option></select></td><td><input type="date" class="i-due" value="${escapeHtml(d?d.dueDate:'')}"><div class="date-quick"><button type="button" onclick="this.parentElement.previousElementSibling.value=addDaysStr(0)">اليوم</button><button type="button" onclick="this.parentElement.previousElementSibling.value=addDaysStr(3)">+3</button><button type="button" onclick="this.parentElement.previousElementSibling.value=addDaysStr(7)">+7</button></div></td><td><button class="btn2" onclick="this.closest('tr').remove()">🗑️</button></td>`;document.getElementById('itemRows').appendChild(tr);if(d){tr.querySelector('.i-comp').value=d.company||'All Companies - كل الشركات';if(d.company&&!allCompanyNames().includes(d.company)&&!d.company.includes('All')){tr.querySelector('.i-comp').value='أخرى - شركة جديدة';let inp=tr.querySelector('.item-other');inp.classList.add('show');inp.value=d.company}tr.querySelector('.i-prio').value=d.priority||'Medium'}}
 function collectAtt(){return [...document.querySelectorAll('#attRows tr')].map(tr=>({name:tr.querySelector('.a-name').value.trim(),job:tr.querySelector('.a-job').value.trim(),project:tr.querySelector('.a-proj').value.trim(),company:tr.querySelector('.a-comp').value.trim(),isSafety:tr.querySelector('.a-safety').checked})).filter(x=>x.name)}
-async function collectItems(){let out=[];for(let tr of document.querySelectorAll('#itemRows tr')){let comp=tr.querySelector('.i-comp').value;if(comp.includes('أخرى')){let other=tr.querySelector('.item-other').value.trim();if(other){await saveCustomCompany(other);comp=other}else comp='All Companies - كل الشركات'}let byDesc=editingOriginal?(editingOriginal.items||[]).find(o=>o.desc===tr.querySelector('.i-desc').value.trim()):null;let keep=byDesc;out.push({desc:tr.querySelector('.i-desc').value.trim(),responsible:tr.querySelector('.i-resp').value.trim(),company:comp,priority:tr.querySelector('.i-prio').value,dueDate:tr.querySelector('.i-due').value,status:keep?keep.status:'Open',closeDate:keep?keep.closeDate||'':'',closedBy:keep?keep.closedBy||'':'',closedByCompany:keep?keep.closedByCompany||keep.closedCompany||'':'',comments:keep?keep.comments||[]:[]})}return out.filter(x=>x.desc)}
-function resetForm(){editingId=null;editingOriginal=null;document.getElementById('editBanner').classList.remove('show');document.getElementById('saveBtn').textContent='💾 Save Minutes • حفظ المحضر';document.getElementById('attRows').innerHTML='';document.getElementById('itemRows').innerHTML='';addAttRow();addItemRow();renderReqCompanies();generateNumber();document.getElementById('m-date').value=todayStr()}
+async function collectItems(){let out=[];for(let tr of document.querySelectorAll('#itemRows tr')){let comp=tr.querySelector('.i-comp').value;if(comp.includes('أخرى')){let other=tr.querySelector('.item-other').value.trim();if(other){await saveCustomCompany(other);comp=other}else comp='All Companies - كل الشركات'}let byDesc=editingOriginal?(editingOriginal.items||[]).find(o=>o.desc===tr.querySelector('.i-desc').value.trim()):null;let keep=byDesc;out.push({desc:tr.querySelector('.i-desc').value.trim(),responsible:tr.querySelector('.i-resp').value.trim(),company:comp,priority:tr.querySelector('.i-prio').value,dueDate:tr.querySelector('.i-due').value,status:keep?keep.status:'Open',closeDate:keep?keep.closeDate||'':'',closedBy:keep?keep.closedBy||'':'',closedByCompany:keep?keep.closedByCompany||keep.closedCompany||'':'',closedCompany:keep?keep.closedByCompany||keep.closedCompany||'':'',comments:keep?keep.comments||[]:[]})}return out.filter(x=>x.desc)}
+function resetForm(){editingId=null;editingOriginal=null;editingColl='minutes';document.getElementById('editBanner').classList.remove('show');document.getElementById('saveBtn').textContent='💾 Save Minutes • حفظ المحضر';document.getElementById('attRows').innerHTML='';document.getElementById('itemRows').innerHTML='';addAttRow();addItemRow();renderReqCompanies();generateNumber();document.getElementById('m-date').value=todayStr()}
 function cancelEdit(){resetForm();window.scrollTo({top:0,behavior:'smooth'})}
-function editMeeting(id){if(!isManagerOrSup())return alert('التعديل للمدير والمشرف بس');let m=meetings.find(x=>x.id===id);if(!m)return;editingId=id;editingOriginal=JSON.parse(JSON.stringify(m));document.getElementById('m-date').value=m.date||todayStr();document.getElementById('m-time').value=m.time||'';document.getElementById('m-chair').value=m.chair||'';document.getElementById('m-purpose').value=m.purpose||'Weekly Meeting';document.getElementById('m-place').value=m.place||'';document.getElementById('m-number').value=m.number||'';document.getElementById('attRows').innerHTML='';(m.attendees||[]).forEach(a=>addAttRow(a));if(!(m.attendees||[]).length)addAttRow();document.getElementById('itemRows').innerHTML='';(m.items||[]).forEach(it=>addItemRow(it));if(!(m.items||[]).length)addItemRow();renderReqCompanies(m.requiredCompanies||m.requiredToComment||allCompanyNames());document.getElementById('editBanner').classList.add('show');document.getElementById('editBannerText').textContent='✏️ بتعدل محضر '+m.number;document.getElementById('saveBtn').textContent='💾 حفظ التعديلات • Update Minutes';window.scrollTo({top:0,behavior:'smooth'})}
+function editMeeting(id){if(!isManagerOrSup())return alert('التعديل للمدير والمشرف بس');let m=meetings.find(x=>x.id===id);if(!m)return;editingId=id;editingColl=m._coll||'minutes';editingOriginal=JSON.parse(JSON.stringify(m));document.getElementById('m-date').value=m.date||todayStr();document.getElementById('m-time').value=m.time||'';document.getElementById('m-chair').value=m.chair||'';document.getElementById('m-purpose').value=m.purpose||'Weekly Meeting';document.getElementById('m-place').value=m.place||'';document.getElementById('m-number').value=m.number||'';document.getElementById('attRows').innerHTML='';(m.attendees||[]).forEach(a=>addAttRow(a));if(!(m.attendees||[]).length)addAttRow();document.getElementById('itemRows').innerHTML='';(m.items||[]).forEach(it=>addItemRow(it));if(!(m.items||[]).length)addItemRow();renderReqCompanies(m.requiredCompanies||m.requiredToComment||allCompanyNames());document.getElementById('editBanner').classList.add('show');document.getElementById('editBannerText').textContent='✏️ بتعدل محضر '+m.number;document.getElementById('saveBtn').textContent='💾 حفظ التعديلات • Update Minutes';window.scrollTo({top:0,behavior:'smooth'})}
 async function saveMeeting(){
  if(!val('m-date'))return alert('Select date');if(!val('m-chair'))return alert('Write chair');if(!val('m-place'))return alert('Write place');
  let atts=collectAtt();let items=await collectItems();if(!items.length)return alert('Add at least one action item');
  let reqCompanies=await getReqCompanies();
  if(!editingId&&meetings.find(m=>m.number===val('m-number')))if(!confirm('رقم الاجتماع ده موجود قبل كده، تكمل؟'))return;
- let me=getMe();let rec={date:val('m-date'),time:val('m-time'),chair:val('m-chair'),purpose:val('m-purpose'),place:val('m-place'),number:val('m-number'),attendees:atts,items,requiredCompanies:reqCompanies,requiredToComment:reqCompanies,reporter:me?me.name:'',updatedAt:new Date().toISOString(),updatedBy:me?me.name:''};
+ let me=getMe();let rec={date:val('m-date'),time:val('m-time'),chair:val('m-chair'),purpose:val('m-purpose'),place:val('m-place'),number:val('m-number'),meetingNo:val('m-number'),attendees:atts,items,actionItems:items,requiredCompanies:reqCompanies,requiredToComment:reqCompanies,reporter:me?me.name:'',updatedAt:new Date().toISOString(),updatedBy:me?me.name:''};
  try{
-  if(editingId){rec.createdAt=editingOriginal.createdAt||new Date().toISOString();await firebase.firestore().collection('minutes').doc(editingId).update(rec);alert('✅ تم حفظ التعديلات - '+rec.number);resetForm()}
+  if(editingId){
+    rec.createdAt=editingOriginal.createdAt||new Date().toISOString();
+    let realId=String(editingId).includes(':')?String(editingId).split(':').slice(1).join(':'):editingId;
+    await firebase.firestore().collection(editingColl).doc(realId).update(rec);
+    alert('✅ تم حفظ التعديلات - '+rec.number);resetForm()
+  }
   else{rec.createdAt=new Date().toISOString();let ref=await firebase.firestore().collection('minutes').add(rec);await firebase.firestore().collection('notifications').add({title:'📝 محضر اجتماع جديد - '+rec.number,msg:'محضر جديد '+rec.number+' - '+rec.purpose+' - '+rec.date+' - مطلوب تعليق من: '+reqCompanies.join('، '),type:'minutes',link:'minutes.html',forRole:'all',forSafety:[],refId:'minutes_new_'+ref.id,createdAt:new Date().toISOString(),read:false});alert('✅ Saved - '+rec.number);resetForm()}
  }catch(e){alert(e.message)}
  renderMinutes();renderCompanyStats();
@@ -170,16 +255,16 @@ function renderMinutes(){
  let overdue=allItems.filter(i=>i.status!=='Closed'&&i.dueDate&&diffDays(i.dueDate)<0).length;
  animateNum('k-meet',meetings.length);animateNum('k-items',total);document.getElementById('k-close').textContent=pct+'%';document.getElementById('k-comments').textContent=comments;animateNum('k-overdue',overdue);document.getElementById('overdueIcon').classList.toggle('shake',overdue>0);
  let list=meetings.filter(m=>((m.number||'')+(m.chair||'')+(m.place||'')+JSON.stringify(m.items||[])).toLowerCase().includes(q));
- if(!list.length){document.getElementById('meetTable').innerHTML='<p style="text-align:center;color:#888">No meetings yet</p>';return}
- document.getElementById('meetTable').innerHTML=list.map(m=>{let mi=m.id;let its=m.items||[];let cl=its.filter(i=>i.status==='Closed').length;let pp=its.length?Math.round(cl/its.length*100):0;let req=m.requiredCompanies||m.requiredToComment||[];return `<div class="panel" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><div><b>${escapeHtml(m.number)}</b> • ${escapeHtml(m.date)} • ${escapeHtml(m.time)}<br><small style="color:#666">👨‍💼 ${escapeHtml(m.chair)} • 🎯 ${escapeHtml(m.purpose)} • 📍 ${escapeHtml(m.place)} • 👥 ${(m.attendees||[]).length} attendees • 💬 ${((m.comments||[]).length+its.reduce((s,i)=>s+((i.comments||[]).length),0))} comments</small><br><small style="color:#FF6B00">🏢 مطلوب تعليق من: ${req.length?escapeHtml(req.join(' • ')):'كل الشركات'}</small></div><div style="text-align:left"><span class="badge ${pp===100?'green':pp>=50?'yellow':'red'}">${pp}% Closed</span><br>${isManagerOrSup()?`<button class="btn2" style="background:#FFD54F;color:#000" onclick="editMeeting('${mi}')">✏️ تعديل</button> `:''}<button class="btn2" onclick="exportOne('${mi}')">📄 PDF</button> <button class="btn2" style="background:#D32F2F" onclick="delMeeting('${mi}')">🗑️</button></div></div><table><tr><th>Description</th><th>Responsible</th><th>Company</th><th>Priority</th><th>Due Date</th><th>Status</th><th>قفلت بواسطة</th><th>Result</th><th>Comments</th><th>Action</th></tr>${its.map((it,idx)=>{let d=it.dueDate?diffDays(it.dueDate):999;let lvl=it.status==='Closed'?'':d<0?'🔴 متأخر '+Math.abs(d)+' يوم':d<=3?'🟡 فاضل '+d+' يوم':d===0?'🟠 اليوم':'🟢 '+d+' يوم';return `<tr><td style="text-align:right">${escapeHtml(it.desc)}<br><small style="color:#FF6B00">${lvl}</small></td><td>${escapeHtml(it.responsible)}</td><td>${escapeHtml(it.company)}</td><td><span class="badge ${it.priority==='High'?'red':it.priority==='Medium'?'yellow':'blue'}">${escapeHtml(it.priority)}</span></td><td>${escapeHtml(it.dueDate)}<br><small>${it.closeDate?'Closed: '+escapeHtml(it.closeDate):''}</small></td><td><span class="badge ${it.status==='Closed'?'green':'orange'}">${escapeHtml(it.status)}</span></td><td>${escapeHtml(it.closedByCompany||it.closedCompany||'-')}<br><small style="color:#888">${escapeHtml(it.closedBy||'')}</small></td><td>${escapeHtml(calcResult(it))}</td><td>${(it.comments||[]).length} 💬 <button class="btn2" onclick="addComment('${mi}',${idx})">+ Comment</button><div>${(it.comments||[]).map(c=>`<div class="comment-box"><b>${escapeHtml(c.by)}:</b> ${escapeHtml(c.text)}<br><small style="color:#888">${escapeHtml((c.at||'').slice(0,10))}</small></div>`).join('')}</div></td><td>${it.status!=='Closed'&&isManagerOrSup()?`<button class="btn2" style="background:#2E7D32" onclick="openCloseModal('${mi}',${idx})">✅ Close</button>`:'<span style="color:#999;font-size:11px">🔒 Manager/Sup.</span>'}</td></tr>`}).join('')}</table></div>`}).join('');
+ if(!list.length){document.getElementById('meetTable').innerHTML='<p style="text-align:center;color:#888">No meetings yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
+ document.getElementById('meetTable').innerHTML=list.map(m=>{let mi=m.id;let its=m.items||[];let cl=its.filter(i=>i.status==='Closed').length;let pp=its.length?Math.round(cl/its.length*100):0;let req=m.requiredCompanies||m.requiredToComment||[];return `<div class="panel" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><div><b>${escapeHtml(m.number)}</b> • ${escapeHtml(m.date)} • ${escapeHtml(m.time)}<br><small style="color:#666">👨‍💼 ${escapeHtml(m.chair)} • 🎯 ${escapeHtml(m.purpose)} • 📍 ${escapeHtml(m.place)} • 👥 ${(m.attendees||[]).length} attendees • 💬 ${((m.comments||[]).length+its.reduce((s,i)=>s+((i.comments||[]).length),0))} comments</small><br><small style="color:#FF6B00">🏢 مطلوب تعليق من: ${req.length?escapeHtml(req.join(' • ')):'كل الشركات'}</small></div><div style="text-align:left"><span class="badge ${pp===100?'green':pp>=50?'yellow':'red'}">${pp}% Closed</span><br>${isManagerOrSup()?`<button class="btn2" style="background:#FFD54F;color:#000" onclick="editMeeting('${mi}')">✏️ تعديل</button> `:''}<button class="btn2" onclick="exportOne('${mi}')">📄 PDF</button> <button class="btn2" style="background:#D32F2F" onclick="delMeeting('${mi}')">🗑️</button></div></div><table><tr><th>Description</th><th>Responsible</th><th>Company</th><th>Priority</th><th>Due Date</th><th>Status</th><th>قفلت بواسطة</th><th>Result</th><th>Comments</th><th>Action</th></tr>${its.map((it,idx)=>{let d=it.dueDate?diffDays(it.dueDate):999;let lvl=it.status==='Closed'?'':d<0?'🔴 متأخر '+Math.abs(d)+' يوم':d<=3?'🟡 فاضل '+d+' يوم':d===0?'🟠 اليوم':'🟢 '+d+' يوم';return `<tr><td style="text-align:right">${escapeHtml(it.desc)}<br><small style="color:#FF6B00">${lvl}</small></td><td>${escapeHtml(it.responsible)}</td><td>${escapeHtml(it.company)}</td><td><span class="badge ${it.priority==='High'?'red':it.priority==='Medium'?'yellow':'blue'}">${escapeHtml(it.priority)}</span></td><td>${escapeHtml(it.dueDate)}<br><small>${it.closeDate?'Closed: '+escapeHtml(it.closeDate):''}</small></td><td><span class="badge ${it.status==='Closed'?'green':'orange'}">${escapeHtml(it.status)}</span></td><td>${escapeHtml(it.closedByCompany||it.closedCompany||'-')}<br><small style="color:#888">${escapeHtml(it.closedBy||'')}</small></td><td>${escapeHtml(calcResult(it))}</td><td>${(it.comments||[]).length} 💬 <button class="btn2" onclick="addComment('${mi}',${idx})">+ Comment</button><div>${(it.comments||[]).map(c=>`<div class="comment-box"><b>${escapeHtml(c.by||c.author||'')}:</b> ${escapeHtml(c.text||c.comment||'')}<br><small style="color:#888">${escapeHtml((c.at||'').slice(0,10))}</small></div>`).join('')}</div></td><td>${it.status!=='Closed'&&isManagerOrSup()?`<button class="btn2" style="background:#2E7D32" onclick="openCloseModal('${mi}',${idx})">✅ Close</button>`:'<span style="color:#999;font-size:11px">🔒 Manager/Sup.</span>'}</td></tr>`}).join('')}</table></div>`}).join('');
 }
 function openCloseModal(mid,idx){if(!isManagerOrSup())return alert('Manager / Supervisor only');closeTarget={mid,idx};let m=meetings.find(x=>x.id===mid);let it=m.items[idx];document.getElementById('closeModalDesc').textContent='البند: '+it.desc+' | الشركة المسئولة: '+it.company+' | معاد التقفيل: '+it.dueDate;let sel=document.getElementById('closeCompanySelect');let names=allCompanyNames();sel.innerHTML='<option value="">-- اختار الشركة اللي قفلت --</option>'+names.map(n=>`<option value="${escapeHtml(n)}" ${n===it.company?'selected':''}>${escapeHtml(n)}</option>`).join('')+'<option value="__OTHER__">➕ أخرى - شركة جديدة</option>';document.getElementById('closeCompanyOther').value='';document.getElementById('closeCompanyOther').classList.remove('show');document.getElementById('closeDateInput').value=todayStr();document.getElementById('closeByInput').value=getMe()?getMe().name:'';document.getElementById('closeModal').classList.add('show')}
 function toggleCloseOther(v){document.getElementById('closeCompanyOther').classList.toggle('show',v==='__OTHER__')}
 function closeCloseModal(){document.getElementById('closeModal').classList.remove('show');closeTarget={mid:null,idx:null}}
-async function confirmCloseItem(){let sel=val('closeCompanySelect');let other=val('closeCompanyOther');let finalCompany='';if(sel==='__OTHER__'){if(!other)return alert('اكتب اسم الشركة الجديدة');finalCompany=await saveCustomCompany(other)}else if(sel){finalCompany=sel}else return alert('اختار الشركة اللي قفلت البند');let cd=val('closeDateInput')||todayStr();let m=meetings.find(x=>x.id===closeTarget.mid);let it=m.items[closeTarget.idx];it.status='Closed';it.closeDate=cd;it.closedByCompany=finalCompany;it.closedCompany=finalCompany;it.closedBy=val('closeByInput')||(getMe()?getMe().name:'');try{await firebase.firestore().collection('minutes').doc(closeTarget.mid).update({items:m.items})}catch(e){}closeCloseModal();renderMinutes();renderCompanyStats();playBeep();alert('✅ Closed - '+finalCompany+' - '+cd+' - '+calcResult(it))}
-async function addComment(mid,idx){let t=prompt('اكتب الكومنت:');if(!t)return;let m=meetings.find(x=>x.id===mid);if(!m.items[idx].comments)m.items[idx].comments=[];m.items[idx].comments.push({text:t,by:getMe()?getMe().name:'',at:new Date().toISOString()});try{await firebase.firestore().collection('minutes').doc(mid).update({items:m.items})}catch(e){}renderMinutes()}
-async function delMeeting(id){if(!confirm('Delete this meeting?'))return;try{await firebase.firestore().collection('minutes').doc(id).delete()}catch(e){}meetings=meetings.filter(m=>m.id!==id);renderMinutes();renderCompanyStats()}
-function renderNotif(){let list=notifications;let unread=list.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=list.length?list.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title)}</b><br><small>${escapeHtml(n.msg)}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
+async function confirmCloseItem(){let sel=val('closeCompanySelect');let other=val('closeCompanyOther');let finalCompany='';if(sel==='__OTHER__'){if(!other)return alert('اكتب اسم الشركة الجديدة');finalCompany=await saveCustomCompany(other)}else if(sel){finalCompany=sel}else return alert('اختار الشركة اللي قفلت البند');let cd=val('closeDateInput')||todayStr();let m=meetings.find(x=>x.id===closeTarget.mid);let it=m.items[closeTarget.idx];it.status='Closed';it.closeDate=cd;it.closedByCompany=finalCompany;it.closedCompany=finalCompany;it.closedBy=val('closeByInput')||(getMe()?getMe().name:'');try{let realId=String(closeTarget.mid).includes(':')?String(closeTarget.mid).split(':').slice(1).join(':'):closeTarget.mid; let coll=m._coll||'minutes'; await firebase.firestore().collection(coll).doc(realId).update({items:m.items})}catch(e){}closeCloseModal();renderMinutes();renderCompanyStats();playBeep();alert('✅ Closed - '+finalCompany+' - '+cd+' - '+calcResult(it))}
+async function addComment(mid,idx){let t=prompt('اكتب الكومنت:');if(!t)return;let m=meetings.find(x=>x.id===mid);if(!m.items[idx].comments)m.items[idx].comments=[];m.items[idx].comments.push({text:t,by:getMe()?getMe().name:'',at:new Date().toISOString()});try{let realId=String(mid).includes(':')?String(mid).split(':').slice(1).join(':'):mid; let coll=m._coll||'minutes'; await firebase.firestore().collection(coll).doc(realId).update({items:m.items})}catch(e){}renderMinutes()}
+async function delMeeting(id){if(!confirm('Delete this meeting?'))return;try{let m=meetings.find(x=>x.id===id); let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=m?m._coll||'minutes':'minutes'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}meetings=meetings.filter(m=>m.id!==id);renderMinutes();renderCompanyStats()}
+function renderNotif(){let list=notifications;let unread=list.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=list.length?list.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title||n.msg||'')}</b><br><small>${escapeHtml(n.msg||'')}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
 async function openNotif(id){try{await firebase.firestore().collection('notifications').doc(id).update({read:true})}catch(e){}let n=notifications.find(x=>x.id===id);if(n)n.read=true;renderNotif()}
 async function markAllRead(e){e.stopPropagation();for(let n of notifications){if(!n.read){try{await firebase.firestore().collection('notifications').doc(n.id).update({read:true})}catch(e){}n.read=true}}renderNotif()}
 function exportMinutes(){if(!meetings.length)return alert('No data');let rows=[];meetings.forEach(m=>(m.items||[]).forEach(it=>rows.push([m.number,m.date,m.chair,m.purpose,it.desc,it.responsible,it.company,it.dueDate,it.status,it.closeDate||'',it.closedByCompany||'',calcResult(it)])));let csv='MeetingNo,Date,Chair,Purpose,Description,Responsible,Company,DueDate,Status,CloseDate,ClosedByCompany,Result\n'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='minutes.csv';a.click()}
