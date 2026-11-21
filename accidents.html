@@ -1,207 +1,159 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Accidents V4 - RMED</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Accidents V4 Final - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
-:root{--orange:#FF6B00;--dark:#0F2A4D;--gold:#D4AF37}
-.sidebar{position:fixed;top:0;right:0;width:280px;height:100vh;background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+.icon3d{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;cursor:pointer;transition:.15s;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 18px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.15);background:linear-gradient(145deg,#fff,#e8e8e8)}
+.icon3d:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.icon3d.small{width:48px;height:48px;border-radius:14px;font-size:24px}.icon3d.mini{width:38px;height:38px;border-radius:11px;font-size:20px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.icon3d.blue{background:linear-gradient(145deg,#64B5F6,#1565C0);color:#fff}.icon3d.green{background:linear-gradient(145deg,#81C784,#2E7D32);color:#fff}.icon3d.red{background:linear-gradient(145deg,#E57373,#B71C1C);color:#fff}.icon3d.orange{background:linear-gradient(145deg,#FFB74D,#EF6C00);color:#fff}.icon3d.purple{background:linear-gradient(145deg,#BA68C8,#6A1B9A);color:#fff}.icon3d.gold{background:linear-gradient(145deg,#FFD54F,#FF8F00)}.icon3d.teal{background:linear-gradient(145deg,#4DB6AC,#00695C);color:#fff}.icon3d.grey{background:linear-gradient(145deg,#BDBDBD,#616161);color:#fff}
+.icon3d.shake{animation:shake .5s infinite}@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) scale(1.05)}75%{transform:rotate(8deg) scale(1.05)}}
+.icon3d.pulse{animation:pulse 1.5s infinite}@keyframes pulse{0%{box-shadow:0 6px 0 rgba(0,0,0,.2),0 0 0 0 rgba(229,57,53,.5)}100%{box-shadow:0 6px 0 rgba(0,0,0,.2),0 0 0 14px rgba(229,57,53,0)}}
+.sidebar{position:fixed;top:10px;right:0;width:280px;height:calc(100vh - 10px);background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
 html[dir="ltr"] .sidebar{right:auto;left:0}
-.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}
-.sidebar a:hover{background:rgba(255,255,255,.08);color:#fff}
-.sidebar a.active{background:var(--orange);color:#fff;font-weight:900}
-.logo-box{text-align:center;padding:10px 0 14px;border-bottom:1px solid rgba(255,255,255,.1)}
-.logo-box b{font-size:32px;color:#fff;letter-spacing:2px}
-.logo-box small{color:#FFB380;font-size:10px;letter-spacing:1px}
-.main{margin-right:280px;min-height:100vh}
-html[dir="ltr"] .main{margin-right:0;margin-left:280px}
-.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;position:sticky;top:0;z-index:90;background:#fff;border-bottom:3px solid #111;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.hazard{height:8px;background:repeating-linear-gradient(45deg,#FFD700 0 16px,#111 16px 32px)}
-.btn-orange{background:var(--orange);color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer;font-size:14px}
-.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
-.btn-ghost.active{background:#111;color:#fff}
+.logo-box{text-align:center;padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.12)}.logo-box b{font-size:32px;letter-spacing:3px}.logo-box small{color:#FFB380;font-size:10px}.logo-box em{color:#8AA0B8;font-size:9px;font-style:normal}
+.nav-group{margin:12px 0 4px}.nav-head{font-size:11px;font-weight:900;color:#FFB380;padding:0 10px;margin-bottom:6px}
+.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}.sidebar a:hover{background:rgba(255,255,255,.08);color:#fff}.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
+.user-card{margin-top:auto;background:rgba(255,255,255,.08);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center}.user-card img{width:44px;height:44px;border-radius:50%;border:2px solid #FF6B00}
+.logout{margin-top:10px;background:rgba(211,47,47,.25);border:1px solid #FF5252;color:#FFCDD2;text-align:center;padding:11px;border-radius:12px;font-weight:800;text-decoration:none;display:block}
+.main{margin-right:280px}html[dir="ltr"] .main{margin-right:0;margin-left:280px}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:90}
+.menu-btn{background:#FF6B00;border:none;width:38px;height:38px;border-radius:10px;font-size:18px;color:#fff;cursor:pointer}
+.search{flex:1;max-width:380px;display:flex;gap:8px;background:#F1F3F5;border-radius:99px;padding:9px 14px}.search input{border:none;outline:none;background:transparent;width:100%}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:#F1F3F5;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer}
+.badge-n{position:absolute;top:-6px;left:-6px;background:#E53935;color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pill{border:1px solid #ddd;background:#fff;padding:8px 16px;border-radius:99px;font-weight:700;cursor:pointer}.pill.active{background:#111;color:#fff}
+.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
 .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:14px 0}
-.kpi{background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.kpi b{font-size:26px;display:block}
-.kpi small{color:#666;font-size:12px}
+.kpi{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}.kpi b{font-size:26px;display:block}.kpi small{color:#666;font-size:12px}.kpi-top{display:flex;gap:12px;align-items:center}
 .panel{background:#fff;border:1px solid #eee;border-radius:18px;padding:18px;margin-bottom:14px}
-input,select,textarea{width:100%;padding:11px;background:#fff;border:1.5px solid #ddd;border-radius:12px;font-size:13px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--orange)}
-label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rec-card{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;margin-bottom:12px;border-right:4px solid var(--orange)}
+input,select,textarea{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px;outline:none}input:focus{border-color:#FF6B00}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rec-card{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;margin-bottom:12px;border-right:4px solid #FF6B00;transition:.2s}.rec-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
 .chip{display:inline-block;background:#FFF3E0;color:#E65100;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:800;margin:2px}
-.notif-panel{position:fixed;top:60px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:200;display:none;padding:14px}
-.notif-panel.show{display:block}
-.notif-item{padding:10px;border-bottom:1px solid #eee;font-size:13px;cursor:pointer}
-.notif-item.critical{border-right:4px solid #E53935;background:#FFF5F5}
-@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+.notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
+.notif-item{padding:10px;border-bottom:1px solid #eee;font-size:13px;cursor:pointer}.notif-item.critical{border-right:4px solid #E53935;background:#FFF5F5}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search{display:none}}
 </style>
 </head>
 <body>
 <div class="hazard"></div>
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small data-i18n="subtitle">HSE MANAGEMENT SYSTEM</small></div>
-<!-- WORKERS.HTML REMOVED - Data migrated to Induction / employees collection -->
-<a href="index.html">🏠 <span data-i18n="home">Home</span></a>
-<a href="dashboard.html">📊 <span data-i18n="dashboard">Dashboard</span></a>
-<a href="induction.html">📋 <span data-i18n="induction">Induction</span></a>
-<a href="accidents.html" class="active">🚑 <span data-i18n="accidents">Accidents</span></a>
-<a href="near-miss.html">⚡ Near Miss</a>
-<a href="ncr.html">📄 NCR</a>
-<a href="permits.html">📄 Permit to Work</a>
-<a href="fire-extinguishers.html">🧯 Fire Extinguishers</a>
-<a href="electric-panels.html">⚡ Electric Panels</a>
-<a href="violations.html">⚠️ Violations</a>
+<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
+<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
+<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html" class="active">🚑 <span data-i18n="accidents">Accidents</span></a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="permits.html">📄 Permits</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
+<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
+<a href="#" class="logout">↩ Logout</a>
 </aside>
-
 <div class="main">
 <div class="topbar">
-<button onclick="toggleSidebar()">☰</button>
-<b data-i18n="accidentsTitle">الحوادث • Accidents</b>
+<button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
+<b data-i18n="title">الحوادث • Accidents</b>
 <div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
-<!-- REAL NOTIFICATIONS -->
-<button class="btn-ghost" onclick="toggleNotif()" style="position:relative">🔔 <span id="notifCount" style="background:#E53935;color:#fff;border-radius:50%;padding:2px 7px;font-size:11px;display:none">0</span></button>
-<button class="btn-ghost" id="btnAr" onclick="setLang('ar')">عربي</button>
-<button class="btn-ghost" id="btnEn" onclick="setLang('en')">EN</button>
+<button class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+<button class="icon-btn" onclick="toggleNotif()">🔔<span class="badge-n" id="notifCount" style="display:none">0</span></button>
+<button class="pill" id="btnAr" onclick="setLang('ar')">عربي</button>
+<button class="pill" id="btnEn" onclick="setLang('en')">EN</button>
 <button class="btn-orange" onclick="document.getElementById('formPanel').scrollIntoView({behavior:'smooth'})">+ <span data-i18n="report">REPORT INCIDENT</span></button>
 </div>
 </div>
-
 <div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
 
 <div style="padding:16px 20px">
 <div class="kpi-row">
-<div class="kpi"><b id="k-total">0</b><small data-i18n="total">إجمالي الحوادث</small></div>
-<div class="kpi"><b id="k-medical">0</b><small>Medical</small></div>
-<div class="kpi"><b id="k-restricted">0</b><small>Restricted</small></div>
-<div class="kpi"><b id="k-lost">0</b><small>Lost Time</small></div>
-<div class="kpi" style="border-color:#E53935"><b id="k-open">0</b><small data-i18n="open">مفتوح - Open</small></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d red">🚑</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي الحوادث</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d orange">🩹</span><div><b id="k-medical">0</b><small>Medical</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d gold">⚠️</span><div><b id="k-restricted">0</b><small>Restricted</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d purple">⏰</span><div><b id="k-lost">0</b><small>Lost Time</small></div></div></div>
+<div class="kpi" style="border:2px solid #E53935"><div class="kpi-top"><span class="icon3d red pulse" id="openIcon">🔴</span><div><b id="k-open">0</b><small data-i18n="open">مفتوح - Open</small></div></div></div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="main-grid">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 <div class="panel" id="formPanel">
-<h2 data-i18n="addNew">إضافة حادث جديد</h2>
-<label>Company *</label><input id="ac-company" list="compList" placeholder="RMED..."><datalist id="compList"></datalist>
-<label>Place *</label><input id="ac-place" placeholder="Building A / Zone B">
-<label>Description *</label><textarea id="ac-desc"></textarea>
-<div class="grid2">
-<div><label>Direct Causes *</label><textarea id="ac-direct"></textarea></div>
-<div><label>Root Causes *</label><textarea id="ac-root"></textarea></div>
-</div>
-<label>Injured Person *</label><input id="ac-injured" list="empNames" placeholder="Type name..."><datalist id="empNames"></datalist>
-<div class="grid2">
-<div><label>Body Part</label><select id="ac-body"><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Other</option></select></div>
-<div><label>Nature</label><select id="ac-nature"><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Other</option></select></div>
-</div>
+<h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small red">🚑</span> <span data-i18n="addNew">إضافة حادث جديد</span></h2>
+<label data-i18n="company">Company *</label><input id="ac-company" list="compList" placeholder="RMED..."><datalist id="compList"></datalist>
+<label data-i18n="place">مكان العمل - Work Location *</label><input id="ac-place" list="placeList" placeholder="Plot 1 - الأساسات"><datalist id="placeList"></datalist>
+<small style="color:#888">نفس أسماء أماكن التصاريح عشان الربط يبقى صح</small>
+<label data-i18n="desc">Description *</label><textarea id="ac-desc"></textarea>
+<div class="grid2"><div><label>Direct Causes *</label><textarea id="ac-direct"></textarea></div><div><label>Root Causes *</label><textarea id="ac-root"></textarea></div></div>
+<label>Injured Person *</label><input id="ac-injured" placeholder="Name...">
+<div class="grid2"><div><label>Body Part</label><select id="ac-body"><option>Head</option><option>Arm</option><option>Hand</option><option>Foot</option><option>Leg</option><option>Other</option></select></div><div><label>Nature</label><select id="ac-nature"><option>Wounds</option><option>Fractures</option><option>Burns</option><option>Abrasions</option><option>Other</option></select></div></div>
+<div class="grid2"><div><label>Date</label><input type="date" id="ac-date"></div><div><label>Severity</label><select id="ac-sev"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div></div>
 <label>Photos (Max 5 - Compressed)</label><input type="file" id="ac-img" accept="image/*" multiple>
 <button class="btn-orange" style="width:100%;margin-top:14px" onclick="addAcc()">💾 <span data-i18n="save">Save Accident</span></button>
 </div>
-
-<div class="panel">
-<h2 data-i18n="records">سجل الحوادث</h2>
-<input id="searchAc" placeholder="🔍 Search..." oninput="renderAcc()" style="margin-bottom:12px">
+<div class="panel"><h2 style="margin:0" data-i18n="records">سجل الحوادث</h2>
+<input id="searchAc" placeholder="🔍 Search..." oninput="renderAcc()" style="margin:12px 0">
 <div id="acTable"></div>
-<button class="btn-ghost" onclick="loadMore()" id="loadMoreBtn" style="width:100%">Load More</button>
+<button class="btn-ghost" onclick="loadMore()" style="width:100%">Load More</button></div>
 </div>
-</div>
-</div>
-</div>
+</div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-// ===== 1. LANGUAGE - REAL TRANSLATION =====
-const I18N = {
-ar:{subtitle:"نظام إدارة السلامة",home:"الرئيسية",dashboard:"لوحة التحكم",induction:"التعريف - Induction",accidents:"الحوادث",accidentsTitle:"الحوادث • Accidents",report:"بلاغ حادث",notifications:"الإشعارات",total:"إجمالي الحوادث",open:"مفتوح",addNew:"إضافة حادث جديد",records:"سجل الحوادث",save:"حفظ الحادثة"},
-en:{subtitle:"HSE MANAGEMENT SYSTEM",home:"Home",dashboard:"Dashboard",induction:"Induction",accidents:"Accidents",accidentsTitle:"Accidents",report:"REPORT INCIDENT",notifications:"Notifications",total:"Total Accidents",open:"Open",addNew:"Add New Accident",records:"Accidents Record",save:"Save Accident"}
-};
-function setLang(l){
- localStorage.setItem('lang',l);
- document.documentElement.lang=l; document.documentElement.dir=l==='ar'?'rtl':'ltr';
- document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n; if(I18N[l][k]) el.textContent=I18N[l][k];});
- document.getElementById('btnAr').classList.toggle('active',l==='ar');
- document.getElementById('btnEn').classList.toggle('active',l==='en');
-}
+const I18N={ar:{home:'الرئيسية',accidents:'الحوادث',title:'الحوادث',report:'بلاغ حادث',notifications:'الإشعارات',total:'إجمالي الحوادث',open:'مفتوح',addNew:'إضافة حادث جديد',records:'سجل الحوادث',save:'حفظ الحادثة',company:'الشركة *',place:'مكان العمل *',desc:'الوصف *'},en:{home:'Home',accidents:'Accidents',title:'Accidents',report:'REPORT INCIDENT',notifications:'Notifications',total:'Total Accidents',open:'Open',addNew:'Add New Accident',records:'Accidents Record',save:'Save Accident',company:'Company *',place:'Work Location *',desc:'Description *'}};
+function setLang(l){localStorage.setItem('lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[l][k])el.textContent=I18N[l][k]});document.getElementById('btnAr').classList.toggle('active',l==='ar');document.getElementById('btnEn').classList.toggle('active',l==='en')}
 setLang(localStorage.getItem('lang')||'ar');
-
-// ===== 2. REAL NOTIFICATIONS - From Firebase, not fake =====
-let notifications=[];
-async function loadNotifications(){
- notifications=[];
- try{
-  let db=firebase.firestore();
-  // Accidents today
-  let accSnap=await db.collection('accidents').orderBy('createdAt','desc').limit(5).get();
-  accSnap.forEach(d=>{let a=d.data(); notifications.push({text:`🚑 حادث جديد: ${a.company||''} - ${a.place||''}`,type:'critical',link:'accidents.html'})});
-  // Permits expiring
-  let permSnap=await db.collection('permits').limit(5).get();
-  permSnap.forEach(d=>{let p=d.data(); if(p.expiry){let diff=(new Date(p.expiry)-new Date())/86400000; if(diff<2) notifications.push({text:`⚠️ تصريح ${p.number||''} هينتهي خلال ${Math.ceil(diff)} يوم`,type:'warning',link:'permits.html'})}});
-  // Extinguishers
-  let extSnap=await db.collection('fire-extinguishers').limit(10).get();
-  extSnap.forEach(d=>{let e=d.data(); if(e.expiry){let diff=(new Date(e.expiry)-new Date())/86400000; if(diff<7) notifications.push({text:`🧯 طفاية ${e.code||''} هتنتهي خلال ${Math.ceil(diff)} يوم`,type:'warning',link:'fire-extinguishers.html'})}});
- }catch(e){console.log(e)}
- renderNotif();
-}
-function renderNotif(){
- let c=document.getElementById('notifCount'); c.style.display=notifications.length?'inline-block':'none'; c.textContent=notifications.length;
- document.getElementById('notifList').innerHTML=notifications.length?notifications.map(n=>`<div class="notif-item ${n.type==='critical'?'critical':''}" onclick="location.href='${n.link}'">${escapeHtml(n.text)}</div>`).join(''):'<p>لا توجد إشعارات</p>';
-}
-function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
-function toggleSidebar(){document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'}
-
-// ===== 3. XSS FIX =====
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-
-// ===== 4. IMAGE COMPRESSION - Fix Base64 blow up =====
-async function compressImage(file){
- return new Promise(res=>{
-  let img=new Image(); img.onload=()=>{
-   let c=document.createElement('canvas'); let max=1024; let r=Math.min(1,max/img.width,max/img.height);
-   c.width=img.width*r; c.height=img.height*r; c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-   res(c.toDataURL('image/jpeg',0.7));
-  }; img.src=URL.createObjectURL(file);
- });
-}
-
-// ===== 5. ACCIDENTS - Same Collection, Same Fields =====
-let allAcc=[],pageSize=20,showing=20;
-async function loadAcc(){
- let db=firebase.firestore();
- let snap=await db.collection('accidents').orderBy('createdAt','desc').limit(50).get();
- allAcc=snap.docs.map(d=>({id:d.id,...d.data()}));
- renderAcc(); loadNotifications();
+let soundOn=localStorage.getItem('rmed_sound')!=='off';
+function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundOn?'on':'off');document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇'}
+document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
+function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.2)}catch(e){}}
+function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
+function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
+async function compressImage(file){return new Promise(res=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=1024,r=Math.min(1,max/img.width,max/img.height);c.width=img.width*r;c.height=img.height*r;c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',0.7))};img.src=URL.createObjectURL(file)})}
+let allAcc=[],permits=[],showing=20;
+function loadLive(){
+ try{
+  firebase.firestore().collection('accidents').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{
+   let old=allAcc.length; allAcc=snap.docs.map(d=>({id:d.id,...d.data()}));
+   if(allAcc.length>old && old>0){playBeep(); document.getElementById('openIcon').classList.add('shake')}
+   renderAcc(); loadNotif();
+  });
+  // أماكن التصاريح عشان الـ Datalist يبقى موحد
+  firebase.firestore().collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>p.location||p.workLocation).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');let comps=[...new Set([...allAcc.map(a=>a.company),...permits.map(p=>p.company)].filter(Boolean))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');});
+ }catch(e){console.log(e)}
 }
 function renderAcc(){
  let q=(document.getElementById('searchAc').value||'').toLowerCase();
- let list=allAcc.filter(a=>((a.company||'')+' '+(a.place||'')+' '+(a.desc||'')+' '+(a.injured||'')).toLowerCase().includes(q)).slice(0,showing);
- document.getElementById('k-total').textContent=allAcc.length;
- document.getElementById('k-medical').textContent=allAcc.filter(a=>(a.classes||[]).join(' ').includes('Medical')).length;
- document.getElementById('k-restricted').textContent=allAcc.filter(a=>(a.classes||[]).join(' ').includes('Restricted')).length;
- document.getElementById('k-lost').textContent=allAcc.filter(a=>(a.classes||[]).join(' ').includes('Lost')).length;
- document.getElementById('k-open').textContent=allAcc.filter(a=>!a.closed).length;
- document.getElementById('acTable').innerHTML=list.map(a=>`
-  <div class="rec-card"><h3 style="margin:0">${escapeHtml(a.company)} - ${escapeHtml(a.place)}</h3>
-  <small>${escapeHtml(a.date||'')} • ${escapeHtml(a.injured||'')}</small>
-  <p style="font-size:13px">${escapeHtml(a.desc)}</p>
-  <div><button class="btn-ghost" onclick="delAcc('${a.id}')">🗑️ Delete</button> <button class="btn-ghost" onclick="printAcc('${a.id}')">🖨️ Print</button></div></div>`).join('')||'<p>No accidents</p>';
+ let list=allAcc.filter(a=>((a.company||'')+' '+(a.place||a.location||'')+' '+(a.desc||'')+' '+(a.injured||'')).toLowerCase().includes(q)).slice(0,showing);
+ animateNum('k-total',allAcc.length);
+ animateNum('k-medical',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Medical')).length);
+ animateNum('k-restricted',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Restricted')).length);
+ animateNum('k-lost',allAcc.filter(a=>(a.classes||[]).join(' ').includes('Lost')).length);
+ let open=allAcc.filter(a=>!a.closed).length; animateNum('k-open',open);
+ document.getElementById('openIcon').classList.toggle('shake',open>0);
+ document.getElementById('acTable').innerHTML=list.map(a=>{
+  let hasPermit=permits.some(p=>p.location===a.place||p.workLocation===a.place);
+  return `<div class="rec-card"><h3 style="margin:0">${escapeHtml(a.company)} - 📍 ${escapeHtml(a.place||a.location||'')}</h3><small>${escapeHtml(a.date||a.createdAt||'')} • ${escapeHtml(a.injured||'')} • ${escapeHtml(a.severity||'')}</small><p style="font-size:13px">${escapeHtml(a.desc)}</p>${hasPermit?'<span class="chip">📄 كان فيه تصريح شغال في نفس المكان</span>':''}<div style="margin-top:8px;display:flex;gap:6px"><button class="btn-ghost" onclick="delAcc('${a.id}')">🗑️ Delete</button><button class="btn-ghost" onclick="printAcc('${a.id}')">🖨️ Print</button><button class="btn-ghost" onclick="closeAcc('${a.id}')">🔒 Close</button></div></div>`}).join('')||'<p>No accidents</p>';
+}
+async function loadNotif(){
+ let notifs=allAcc.filter(a=>!a.closed).slice(0,5).map(a=>({text:`🚑 حادث مفتوح: ${a.company} - ${a.place}`,crit:true}));
+ let pNotifs=permits.filter(p=>p.status==='Open'&&p.endDate&&(new Date(p.endDate)-new Date())/86400000<1).map(p=>({text:`⚠️ تصريح ${p.num} هينتهي قريب - ${p.location}`}));
+ let all=[...notifs,...pNotifs];
+ document.getElementById('notifCount').textContent=all.length; document.getElementById('notifCount').style.display=all.length?'flex':'none';
+ document.getElementById('notifList').innerHTML=all.map(n=>`<div class="notif-item ${n.crit?'critical':''}">${escapeHtml(n.text)}</div>`).join('')||'لا توجد إشعارات';
 }
 async function addAcc(){
  let company=document.getElementById('ac-company').value.trim(),place=document.getElementById('ac-place').value.trim(),desc=document.getElementById('ac-desc').value.trim();
- if(!company||!place||!desc){alert('املأ الحقول المطلوبة');return}
- let imgs=[]; let files=document.getElementById('ac-img').files;
- for(let f of files){ if(imgs.length>=5) break; imgs.push(await compressImage(f)); }
- await firebase.firestore().collection('accidents').add({company,place,desc,direct:document.getElementById('ac-direct').value,root:document.getElementById('ac-root').value,injured:document.getElementById('ac-injured').value,body:document.getElementById('ac-body').value,nature:document.getElementById('ac-nature').value,incidentImgs:imgs,createdAt:new Date().toISOString(),closed:false});
- alert('✅ تم الحفظ'); loadAcc();
+ if(!company||!place||!desc) return alert('املأ الحقول المطلوبة');
+ let imgs=[]; for(let f of document.getElementById('ac-img').files){if(imgs.length>=5)break; imgs.push(await compressImage(f))}
+ await firebase.firestore().collection('accidents').add({company,place,location:place,desc,direct:document.getElementById('ac-direct').value,root:document.getElementById('ac-root').value,injured:document.getElementById('ac-injured').value,body:document.getElementById('ac-body').value,nature:document.getElementById('ac-nature').value,severity:document.getElementById('ac-sev').value,date:document.getElementById('ac-date').value||new Date().toISOString().slice(0,10),incidentImgs:imgs,createdAt:new Date().toISOString(),closed:false});
+ playBeep(); alert('✅ تم الحفظ'); document.getElementById('ac-desc').value='';
 }
-async function delAcc(id){ if(!confirm('حذف؟')) return; await firebase.firestore().collection('accidents').doc(id).delete(); loadAcc(); }
-function printAcc(id){ let a=allAcc.find(x=>x.id==id); let w=window.open(''); w.document.write(`<h2>RMED - Accident Report</h2><p>${escapeHtml(a.company)} - ${escapeHtml(a.place)}</p><p>${escapeHtml(a.desc)}</p>`); w.print(); }
-function loadMore(){ showing+=20; renderAcc(); }
-loadAcc();
+async function delAcc(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('accidents').doc(id).delete();}
+async function closeAcc(id){await firebase.firestore().collection('accidents').doc(id).update({closed:true,closedAt:new Date().toISOString()});}
+function printAcc(id){let a=allAcc.find(x=>x.id==id);let w=window.open('');w.document.write(`<h2>RMED - Accident Report</h2><p>${escapeHtml(a.company)} - ${escapeHtml(a.place)}</p><p>${escapeHtml(a.desc)}</p>`);w.print();}
+function loadMore(){showing+=20;renderAcc();}
+document.getElementById('ac-date').value=new Date().toISOString().slice(0,10);
+loadLive();
 </script>
 </body>
 </html>
