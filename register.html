@@ -129,20 +129,50 @@ function checkPassStrength(){
  bar.style.width=score+'%';bar.style.background=score<40?'#E53935':score<70?'#FF9800':'#2E7D32';
  hint.textContent=score<40?'⚠️ باسورد ضعيف - طوله وكبره شوية':score<70?'🟡 باسورد متوسط':'✅ باسورد قوي - ممتاز';hint.style.color=score<40?'#E53935':score<70?'#FF9800':'#2E7D32';
 }
+function getDB(){
+  if(window.db) return window.db;
+  if(window.firebase && firebase.firestore) return firebase.firestore();
+  return null;
+}
 async function doRegister(){
  let name=document.getElementById('r-name').value.trim(),job=document.getElementById('r-job').value.trim(),email=document.getElementById('r-email').value.trim().toLowerCase(),pass=document.getElementById('r-pass').value;
  let wantedRole=document.getElementById('r-role').value;
  let msg=document.getElementById('msg');msg.style.color='#D32F2F';
  if(!name||!job||!email||!pass) return msg.innerText='Complete all data • كمل كل البيانات';
  if(pass.length<6) return msg.innerText='Password must be at least 6 characters • الباسورد لازم 6 حروف على الأقل';
- if(!window.db) return msg.innerText='Firebase not connected, refresh page';
+ if(!email.includes('@')) return msg.innerText='Write a valid email • اكتب إيميل صحيح';
+ let db=getDB();
+ if(!db) return msg.innerText='Firebase not connected, refresh page';
  msg.style.color='#FF6B00';msg.innerText='Registering... • جاري التسجيل...';
  try{
-  let check=await window.db.collection('users').where('email','==',email).get();
-  if(!check.empty) return msg.innerText='This email is already registered, login from Login page • الإيميل ده متسجل قبل كده، ادخل من صفحة الدخول';
-  let user={name,job,email,pass,photo:photoData,img:photoData,role:wantedRole,requestedRole:wantedRole,status:'pending',createdAt:new Date().toISOString()};
-  await window.db.collection('users').add(user);
-  await window.db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,time:new Date().toLocaleString('en-US'),createdAt:new Date().toISOString(),title:'👤 طلب حساب جديد - '+name,msg:'طلب حساب جديد: '+name+' - '+job+' - دور مطلوب: '+wantedRole+' - مستني موافقتك في صفحة Users'});
+  // ===== FIX: Check في users + employees + workers، و lowercase =====
+  let exists=false;
+  for(let coll of ['users','employees','workers']){
+    try{
+      let snap=await db.collection(coll).get();
+      for(let d of snap.docs){
+        let data=d.data();
+        let em=String(data.email||data.Email||data.userEmail||'').trim().toLowerCase();
+        if(em===email){ exists=true; break; }
+      }
+      if(exists) break;
+    }catch(e){}
+  }
+  if(exists) return msg.innerText='This email is already registered, login from Login page • الإيميل ده متسجل قبل كده، ادخل من صفحة الدخول';
+  // ===== FIX: حفظ كل أسماء الحقول - عشان الـ Login الجديد والقديم يلاقوه =====
+  let user={
+    name, fullName:name,
+    job, profession:job,
+    email, Email:email,
+    pass, password:pass, pwd:pass,
+    photo:photoData, img:photoData, image:photoData, avatar:photoData,
+    role:wantedRole, requestedRole:wantedRole,
+    status:'pending', state:'pending',
+    company:'', code:'',
+    createdAt:new Date().toISOString()
+  };
+  await db.collection('users').add(user);
+  await db.collection('notifications').add({name,job,email,role:wantedRole,type:'new_user',seen:false,read:false,time:new Date().toLocaleString('en-US'),createdAt:new Date().toISOString(),title:'👤 طلب حساب جديد - '+name,msg:'طلب حساب جديد: '+name+' - '+job+' - دور مطلوب: '+wantedRole+' - مستني موافقتك في صفحة Users'});
   let nb=document.getElementById('notifyBox');nb.style.display='block';nb.innerHTML='✅ <b>Registered! Your account is waiting for manager approval.</b><br><br>Manager will see your request in Users page and approve you.<br><br><a href="login.html">Go to Login page • روح لصفحة الدخول</a>';
   msg.innerText='';
   ['r-name','r-job','r-email','r-pass'].forEach(id=>document.getElementById(id).value='');
