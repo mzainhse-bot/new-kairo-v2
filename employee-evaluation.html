@@ -47,14 +47,33 @@ html[dir="ltr"] .sidebar{right:auto;left:0}
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="employee-evaluation.html" class="active">🏆 <span data-i18n="empEval">Employee Evaluation</span></a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 <span data-i18n="empEval">Employee Evaluation</span></a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -71,6 +90,7 @@ html[dir="ltr"] .sidebar{right:auto;left:0}
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">تقييم الموظفين</span> <span style="color:#FF6B00">• Employee Evaluation</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Employee Of The Month • Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="filter"><b>🗓️ <span data-i18n="selectMonth">Select Month:</span></b><label>Year:</label><select id="selYear" onchange="selYear=+this.value;render()"></select><label>Month:</label><select id="selMonth" onchange="selMonth=+this.value;render()"></select><span id="periodLabel" style="font-weight:700;color:#FF6B00"></span><span style="flex:1"></span><span id="totalEmp" style="font-weight:700"></span><button class="btn-red" onclick="exportPDF()">📄 Export PDF / Print</button></div>
 
@@ -106,37 +126,74 @@ function filterRanking(q){q=(q||'').toLowerCase();document.querySelectorAll('.li
 let nowD=new Date(),selYear=nowD.getFullYear(),selMonth=nowD.getMonth();
 let months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 let FB={users:[],observations:[],nearMiss:[],accidents:[]};
+let caches={};
 let lastTop='';
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
 function cleanName(s){return String(s||'').replace(/\s+/g,' ').trim()}
 function cleanPhoto(v){if(!v)return '';if(typeof v==='object')v=v.url||v.src||v.photo||v.img||'';v=String(v||'').trim();if(v.length<10||v==='null')return '';return v}
-function normUser(raw){if(!raw||typeof raw!=='object')return null;let name=cleanName(raw.name||raw.fullName||raw.displayName||raw.employeeName||'');if(!name)return null;return {...raw,name,photo:cleanPhoto(raw.photo||raw.img||raw.image||raw.avatar||raw.photoURL||''),code:String(raw.code||raw.employeeCode||'').trim(),email:String(raw.email||'').trim().toLowerCase(),job:raw.job||raw.position||raw.dept||'',role:raw.role||''}}
+function normUser(raw){if(!raw||typeof raw!=='object')return null;let name=cleanName(pick(raw,['name','fullName','displayName','employeeName']));if(!name)return null;return {...raw,name,photo:cleanPhoto(pick(raw,['photo','img','image','avatar','photoURL'])),code:String(pick(raw,['code','employeeCode','empCode'])||'').trim(),email:String(pick(raw,['email'])||'').trim().toLowerCase(),job:pick(raw,['job','position','dept','department','profession'])||'',role:raw.role||''}}
 function getPhoto(u){return cleanPhoto(u?.photo||u?.img||u?.image||u?.avatar||'')}
-function isClosed(x){let s=String(x.status||'').toLowerCase();return ['closed','done','مغلق','تم'].includes(s)||s.includes('غلق')||x.closed===true}
-function getReporter(x){return cleanName(x.reporter||x.reporterName||x.createdBy||x.author||x.reportedBy||x.name||'')}
-function getDate(x){return x.date||x.createdAt||''}
+function isClosed(x){let s=String(pick(x,['status','state'])||'').toLowerCase();return ['closed','done','مغلق','تم'].includes(s)||s.includes('غلق')||s.includes('closed')||s.includes('resolved')||x.closed===true||!!x.closedAt}
+function getReporter(x){return cleanName(pick(x,['reporter','reporterName','createdBy','createdByName','author','reportedBy','uploadedBy','inspector','inspectorName','supervisor','name']))}
+function getDate(x){return normDate(pick(x,['date','incidentDate','createdAt','timestamp']))}
 function inMonth(d){if(!d)return false;let dt=new Date(d);if(isNaN(dt))return false;return dt.getFullYear()===selYear&&dt.getMonth()===selMonth}
 function isManager(u){let r=String(u.role||'').toLowerCase();return r.includes('manager')||r.includes('admin')||r.includes('مدير')}
+function mergeCache(coll, arr){
+  caches[coll]=arr;
+  // إعادة بناء FB من كل الكاشات - دمج مش overwrite
+  FB.users=[]; FB.observations=[]; FB.nearMiss=[]; FB.accidents=[];
+  Object.entries(caches).forEach(([c,items])=>{
+    items.forEach(it=>{
+      if(c==='users' || c==='employees'){ if(!FB.users.find(x=>x.id===it.id)) FB.users.push(it); }
+      else if(c.includes('observation')){ if(!FB.observations.find(x=>x.id===it.id)) FB.observations.push(it); }
+      else if(c.includes('nearMiss') || c.includes('near-miss')){ if(!FB.nearMiss.find(x=>x.id===it.id)) FB.nearMiss.push(it); }
+      else if(c.includes('accident')){ if(!FB.accidents.find(x=>x.id===it.id)) FB.accidents.push(it); }
+    });
+  });
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('users').onSnapshot(s=>{FB.users=s.docs.map(d=>({id:d.id,...d.data()}));render();});
-  [['observations','observations'],['safetyObservations','observations'],['nearMiss','nearMiss'],['accidents','accidents']].forEach(([coll,key])=>{
-   db.collection(coll).onSnapshot(s=>{FB[key]=s.docs.map(d=>({id:d.id,...d.data()}));render();});
+  // Users من أكتر من كوليكشن - دمج
+  ['users','employees','workers'].forEach(coll=>{
+    db.collection(coll).onSnapshot(s=>{
+      mergeCache(coll, s.docs.map(d=>({id:coll+':'+d.id,...d.data()})));
+      updateLoadStatus(); render();
+    }, ()=>{});
+  });
+  // Reports - دمج مش overwrite
+  [['observations','observations'],['safetyObservations','observations'],['safety-observations','observations'],['nearMiss','nearMiss'],['near-miss','nearMiss'],['accidents','accidents']].forEach(([coll,key])=>{
+   db.collection(coll).onSnapshot(s=>{
+     mergeCache(coll, s.docs.map(d=>({id:coll+':'+d.id,...d.data()})));
+     updateLoadStatus(); render();
+   }, ()=>{});
   });
  }catch(e){console.log(e)}
 }
-function fillSelects(){let y=document.getElementById('selYear');y.innerHTML='';for(let yy=2026;yy<=2030;yy++){let o=document.createElement('option');o.value=yy;o.text=yy;if(yy===selYear)o.selected=true;y.appendChild(o)}let m=document.getElementById('selMonth');m.innerHTML='';months.forEach((mm,i)=>{let o=document.createElement('option');o.value=i;o.text=mm;if(i===selMonth)o.selected=true;m.appendChild(o)})}
+function updateLoadStatus(){
+  document.getElementById('loadStatus').textContent='✅ Live - Users: '+FB.users.length+' | Observations: '+FB.observations.length+' | Near Miss: '+FB.nearMiss.length+' | Accidents: '+FB.accidents.length;
+}
+function fillSelects(){let y=document.getElementById('selYear');y.innerHTML='';for(let yy=2024;yy<=2030;yy++){let o=document.createElement('option');o.value=yy;o.text=yy;if(yy===selYear)o.selected=true;y.appendChild(o)}let m=document.getElementById('selMonth');m.innerHTML='';months.forEach((mm,i)=>{let o=document.createElement('option');o.value=i;o.text=mm;if(i===selMonth)o.selected=true;m.appendChild(o)})}
 function exportPDF(){document.title='Employee Of The Month - '+months[selMonth]+' '+selYear+' - RMED';window.print()}
 function initials(u){let n=(u.name||'').trim().split(' ');return ((n[0]||'')[0]||'👷')+((n[1]||'')[0]||'')}
 function imgHTML(u,size,border){let src=getPhoto(u);if(src)return `<img src="${src}" onerror="this.style.display='none'" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:50%;border:3px solid ${border||'#FFD54F'}">`;return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#FFD54F;border:3px solid ${border||'#FFD54F'}">${initials(u)}</div>`}
 function render(){
  document.getElementById('periodLabel').textContent='1 '+months[selMonth]+' '+selYear+' - '+new Date(selYear,selMonth+1,0).getDate()+' '+months[selMonth]+' '+selYear+' • Live';
  let allUsers=(FB.users||[]).map(normUser).filter(Boolean);
+ // إزالة التكرار بالاسم
+ let seen=new Set(); allUsers=allUsers.filter(u=>{ let k=u.name.toLowerCase(); if(seen.has(k)) return false; seen.add(k); return true; });
  let employees=allUsers.filter(u=>!isManager(u));
  let obs=(FB.observations||[]).filter(x=>inMonth(getDate(x))),near=(FB.nearMiss||[]).filter(x=>inMonth(getDate(x))),acc=(FB.accidents||[]).filter(x=>inMonth(getDate(x)));
  let allReports=[...obs.map(x=>({...x,_type:'Observation'})),...near.map(x=>({...x,_type:'Near Miss'})),...acc.map(x=>({...x,_type:'Accident'}))];
  let map={};employees.forEach(u=>{let k=u.name.toLowerCase();if(!map[k])map[k]={user:u,total:0,closed:0,obs:0,near:0,acc:0}});
- allReports.forEach(r=>{let rep=getReporter(r);if(!rep)return;let low=cleanName(rep).toLowerCase();let k=Object.keys(map).find(k=>k===low);if(!k){if(low.includes('manager')||low.includes('admin'))return;k='extra-'+low;if(!map[k])map[k]={user:normUser({name:rep}),total:0,closed:0,obs:0,near:0,acc:0}}map[k].total++;if(isClosed(r))map[k].closed++;if(r._type==='Observation')map[k].obs++;if(r._type==='Near Miss')map[k].near++;if(r._type==='Accident')map[k].acc++;});
+ allReports.forEach(r=>{let rep=getReporter(r);if(!rep)return;let low=cleanName(rep).toLowerCase();let k=Object.keys(map).find(k=>k===low || low.includes(k) || k.includes(low));if(!k){if(low.includes('manager')||low.includes('admin'))return;k='extra-'+low;if(!map[k])map[k]={user:normUser({name:rep}),total:0,closed:0,obs:0,near:0,acc:0}}map[k].total++;if(isClosed(r))map[k].closed++;if(r._type==='Observation')map[k].obs++;if(r._type==='Near Miss')map[k].near++;if(r._type==='Accident')map[k].acc++;});
  let ranked=Object.values(map).sort((a,b)=>b.total!==a.total?b.total-a.total:b.closed-a.closed);
  document.getElementById('totalEmp').textContent='Total: '+ranked.length+' | Reports: '+allReports.length;
  let totalClosed=ranked.reduce((s,r)=>s+r.closed,0),totalOpen=allReports.length-totalClosed,rate=allReports.length?Math.round(totalClosed/allReports.length*100):0;
@@ -147,7 +204,7 @@ function render(){
  function statsHTML(r){let rate2=r.total?Math.round(r.closed/r.total*100):0;return `<div style="margin-top:10px"><span class="badge badge-blue">📝 Uploaded: ${r.total}</span><span class="badge badge-green">✅ Closed: ${r.closed}</span><span class="badge badge-red">🔓 Open: ${r.total-r.closed}</span><br><span class="badge">👀 Obs: ${r.obs}</span><span class="badge">⚡ Near: ${r.near}</span><span class="badge">🚨 Acc: ${r.acc}</span><br><span class="badge badge-green">Close Rate: ${rate2}%</span></div>`}
  let top1=document.getElementById('top1Box');
  if(ranked.length){let r=ranked[0];top1.innerHTML=`<div class="panel top1"><div class="champion-ribbon">👑 CHAMPION • البطل • موظف الشهر 👑</div><h2 style="margin:6px 0 0;color:#B8860B">🏆 Employee Of The Month - ${months[selMonth]} ${selYear}</h2><p style="color:#B8860B">1st Place • المركز الأول</p>${imgHTML(r.user,150,'#FFD54F')}<h2 style="margin:8px 0 0;font-size:28px">${escapeHtml(r.user.name)}</h2><p style="color:#666">${escapeHtml(r.user.job||'')} ${r.user.code?' - Code: '+escapeHtml(r.user.code):''}</p>${statsHTML(r)}<div class="podium"><div class="p2">2<br><small>${escapeHtml(ranked[1]?.user?.name||'-')}</small></div><div class="p1">1<br><small>${escapeHtml(r.user.name)}</small></div><div class="p3">3<br><small>${escapeHtml(ranked[2]?.user?.name||'-')}</small></div></div></div>`}
- else top1.innerHTML='<div class="panel"><h3>No employees yet</h3></div>';
+ else top1.innerHTML='<div class="panel"><h3>No employees yet - لو عندك داتا قديمة، شوف سطر Live فوق</h3></div>';
  let top23=document.getElementById('top23Box');let h='';
  if(ranked[1]){let r=ranked[1];h+=`<div class="panel rank2"><div style="font-size:40px">🥈</div><h3>2nd Place • المركز الثاني</h3>${imgHTML(r.user,120,'#C0C0C0')}<h3>${escapeHtml(r.user.name)}</h3><p style="color:#666">${escapeHtml(r.user.job||'')}</p>${statsHTML(r)}</div>`}
  if(ranked[2]){let r=ranked[2];h+=`<div class="panel rank3"><div style="font-size:40px">🥉</div><h3>3rd Place • المركز الثالث</h3>${imgHTML(r.user,120,'#CD7F32')}<h3>${escapeHtml(r.user.name)}</h3><p style="color:#666">${escapeHtml(r.user.job||'')}</p>${statsHTML(r)}</div>`}
