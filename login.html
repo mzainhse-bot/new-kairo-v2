@@ -113,29 +113,82 @@ showSlogan();setInterval(showSlogan,4000);
 function setLang(l){localStorage.setItem('lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.getElementById('btnAr').classList.toggle('active',l==='ar');document.getElementById('btnEn').classList.toggle('active',l==='en');document.getElementById('welcomeTitle').textContent=l==='ar'?'مرحباً بعودتك • Welcome Back':'Welcome Back • مرحباً بعودتك';showSlogan();}
 setLang(localStorage.getItem('lang')||'ar');
 function togglePass(){let p=document.getElementById('l-pass');p.type=p.type==='password'?'text':'password'}
-(function(){if(location.search.includes('logout'))return;let u=localStorage.getItem('safetyUser')||localStorage.getItem('currentUser');if(u){try{let o=JSON.parse(u);if(o&&o.name&&o.role!=='visitor')location.href='dashboard.html'}catch(e){}}})();
+// ===== FIX: مفيش redirect أوتوماتيك لو جاي من logout، ومفيش loop للـ visitor =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function getDB(){
+  if(window.db) return window.db;
+  if(window.firebase && firebase.firestore) return firebase.firestore();
+  return null;
+}
+(function(){
+  if(location.search.includes('logout')) return;
+  // لو فيه session قديم، متعملش redirect أوتوماتيك هنا - خلي المستخدم يدوس Login بنفسه عشان نتجنب الـ loop
+  // بنعرض الايميل بس لو موجود
+  try{
+    let u=JSON.parse(localStorage.getItem('safetyUser')||localStorage.getItem('currentUser')||'{}');
+    if(u && u.email && u.email!=='visitor@rmed.com') document.getElementById('l-email').value=u.email;
+  }catch(e){}
+})();
 async function doLogin(){
  let email=document.getElementById('l-email').value.trim().toLowerCase();
  let pass=document.getElementById('l-pass').value;
  let msg=document.getElementById('msg');msg.innerText='';msg.style.color='#D32F2F';
  if(!email) return msg.innerText='Write email • اكتب الإيميل';
  if(!pass) return msg.innerText='Write password • اكتب الباسورد';
- if(!window.db) return msg.innerText='Firebase not connected - Check firebase-config.js';
+ let db=getDB();
+ if(!db) return msg.innerText='Firebase not connected - Check firebase-config.js';
  msg.innerText='Checking... • جاري التحقق...';
  try{
-  let snap=await window.db.collection('users').where('email','==',email).get();
-  if(snap.empty){msg.innerText='This email is not registered • الإيميل ده مش مسجل، اعمل حساب جديد';return}
-  let user=snap.docs[0].data();user.id=snap.docs[0].id;
-  let saved=user.pass||user.password||user.pwd||'';
+  // ===== FIX: دور في users + employees + workers، وبالإيميل من غير حساسية لحالة الحروف =====
+  let user=null;
+  // 1) جرب where بالظبط في users
+  try{
+    let snap=await db.collection('users').where('email','==',email).get();
+    if(!snap.empty){ user=snap.docs[0].data(); user.id=snap.docs[0].id; }
+  }catch(e){}
+  // 2) لو ملقاش، جيب الكل وقارن lowercase - عشان القديم ممكن يكون Email كابيتال أو فيه مسافة
+  if(!user){
+    for(let coll of ['users','employees','workers']){
+      try{
+        let snap=await db.collection(coll).get();
+        for(let d of snap.docs){
+          let data=d.data();
+          let em=String(pick(data,['email','Email','EMAIL','userEmail'])||'').trim().toLowerCase();
+          if(em===email){ user={...data,id:d.id,_coll:coll}; break; }
+        }
+        if(user) break;
+      }catch(e){}
+    }
+  }
+  if(!user){msg.innerText='This email is not registered • الإيميل ده مش مسجل، اعمل حساب جديد';return}
+  // ===== FIX: الباسورد بكل أسمائه =====
+  let saved=pick(user,['pass','password','pwd','passWord','userPass']);
   if(String(saved)!==String(pass)){msg.innerText='Wrong password • الباسورد غلط، دوس Show وشوفه';return}
-  let statusMap={'معلق':'pending','مرفوض':'rejected','محظور':'blocked','مقبول':'approved','موافق عليه':'approved','pending':'pending','rejected':'rejected','blocked':'blocked','approved':'approved'};
-  let status=statusMap[String(user.status||'approved').trim().toLowerCase()]||statusMap[String(user.status||'approved').trim()]||'approved';
+  let statusMap={'معلق':'pending','مرفوض':'rejected','محظور':'blocked','مقبول':'approved','موافق عليه':'approved','pending':'pending','rejected':'rejected','blocked':'blocked','approved':'approved','active':'approved','نشط':'approved'};
+  let rawStatus=String(pick(user,['status','state'])||'approved').trim();
+  let status=statusMap[rawStatus]||statusMap[rawStatus.toLowerCase()]||'approved';
   if(status==='pending') return msg.innerText='⏳ حسابك لسه مستني موافقة المدير';
   if(status==='rejected'||status==='blocked') return msg.innerText='❌ حسابك مرفوض من المدير';
-  let roleMap={'مدير':'manager','مشرف':'supervisor','موظف':'employee','زائر':'visitor'};
-  let raw=String(user.role||'employee').trim();let norm=roleMap[raw]||roleMap[raw.toLowerCase()]||raw.toLowerCase();
-  let session={id:user.id,email:user.email,name:user.name||user.fullName||email,job:user.job||norm||'',role:norm||'employee',photo:user.photo||user.img||'',img:user.photo||user.img||'',code:user.code||user.id||''};
-  localStorage.setItem('safetyUser',JSON.stringify(session));localStorage.setItem('currentUser',JSON.stringify(session));localStorage.setItem('safetyUserName',session.name);
+  let roleMap={'مدير':'manager','مشرف':'supervisor','موظف':'employee','زائر':'visitor','manager':'manager','admin':'manager','supervisor':'supervisor','employee':'employee','visitor':'visitor'};
+  let rawRole=String(pick(user,['role','jobTitle','position'])||'employee').trim();
+  let norm=roleMap[rawRole]||roleMap[rawRole.toLowerCase()]||rawRole.toLowerCase()||'employee';
+  if(norm==='admin') norm='manager';
+  // لو الـ job هو المدير بس الـ role فاضي، خده من الـ job
+  let jobVal=String(pick(user,['job','profession'])||'');
+  let session={
+    id:user.id,email:email,
+    name:pick(user,['name','fullName','employeeName'])||email,
+    job:jobVal||norm||'',
+    role:norm||'employee',
+    photo:pick(user,['photo','img','image','avatar','photoURL'])||'',
+    img:pick(user,['photo','img','image'])||'',
+    code:pick(user,['code','employeeCode','empCode'])||user.id||'',
+    company:pick(user,['company','companyName'])||''
+  };
+  localStorage.setItem('safetyUser',JSON.stringify(session));
+  localStorage.setItem('currentUser',JSON.stringify(session));
+  localStorage.setItem('safetyUserName',session.name);
+  localStorage.setItem('rmed_last_login', new Date().toISOString());
   msg.style.color='#2E7D32';msg.innerText='✅ أهلاً بيك يا '+session.name+' ... بيحولك للوحة التحكم';
   setTimeout(()=>location.href='dashboard.html',600);
  }catch(err){msg.innerText='Connection error - '+err.message}
