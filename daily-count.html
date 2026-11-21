@@ -2,78 +2,106 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Daily Count V4 - RMED</title>
+<title>Daily Count V4 Final - RMED</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
-body{margin:0;background:#F6F7F9;color:#111}
-.sidebar{position:fixed;top:0;right:0;width:280px;height:100vh;background:#0F2A4D;color:#fff;padding:16px 14px;display:flex;flex-direction:column}
+body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+/* 3D ICONS - نفس التصاريح بالظبط */
+.icon3d{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;cursor:pointer;transition:.15s;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 18px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.15);background:linear-gradient(145deg,#fff,#e8e8e8)}
+.icon3d:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.icon3d.small{width:48px;height:48px;border-radius:14px;font-size:24px}.icon3d.mini{width:38px;height:38px;border-radius:11px;font-size:20px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.icon3d.blue{background:linear-gradient(145deg,#64B5F6,#1565C0);color:#fff}.icon3d.green{background:linear-gradient(145deg,#81C784,#2E7D32);color:#fff}.icon3d.red{background:linear-gradient(145deg,#E57373,#B71C1C);color:#fff}.icon3d.orange{background:linear-gradient(145deg,#FFB74D,#EF6C00);color:#fff}.icon3d.purple{background:linear-gradient(145deg,#BA68C8,#6A1B9A);color:#fff}.icon3d.gold{background:linear-gradient(145deg,#FFD54F,#FF8F00)}.icon3d.teal{background:linear-gradient(145deg,#4DB6AC,#00695C);color:#fff}
+.icon3d.shake{animation:shake .5s infinite}@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) scale(1.05)}75%{transform:rotate(8deg) scale(1.05)}}
+.sidebar{position:fixed;top:10px;right:0;width:280px;height:calc(100vh - 10px);background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
 html[dir="ltr"] .sidebar{right:auto;left:0}
-.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}
-.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
-.main{margin-right:280px}.hazard{height:8px;background:repeating-linear-gradient(45deg,#FFD700 0 16px,#111 16px 32px)}
-html[dir="ltr"] .main{margin-right:0;margin-left:280px}
-.topbar{display:flex;gap:12px;padding:14px 20px;background:#fff;border-bottom:3px solid #111;position:sticky;top:0;z-index:90}
-.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}
-.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
-.btn-ghost.active{background:#111;color:#fff}
+.logo-box{text-align:center;padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.12)}.logo-box b{font-size:32px;letter-spacing:3px}.logo-box small{color:#FFB380;font-size:10px}.logo-box em{color:#8AA0B8;font-size:9px;font-style:normal}
+.nav-group{margin:12px 0 4px}.nav-head{font-size:11px;font-weight:900;color:#FFB380;padding:0 10px;margin-bottom:6px}
+.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600}.sidebar a:hover{background:rgba(255,255,255,.08);color:#fff}.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
+.user-card{margin-top:auto;background:rgba(255,255,255,.08);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center}.user-card img{width:44px;height:44px;border-radius:50%;border:2px solid #FF6B00}
+.logout{margin-top:10px;background:rgba(211,47,47,.25);border:1px solid #FF5252;color:#FFCDD2;text-align:center;padding:11px;border-radius:12px;font-weight:800;text-decoration:none;display:block}
+.main{margin-right:280px}html[dir="ltr"] .main{margin-right:0;margin-left:280px}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:90}
+.menu-btn{background:#FF6B00;border:none;width:38px;height:38px;border-radius:10px;font-size:18px;color:#fff;cursor:pointer}
+.search{flex:1;max-width:380px;display:flex;gap:8px;background:#F1F3F5;border-radius:99px;padding:9px 14px}.search input{border:none;outline:none;background:transparent;width:100%}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:#F1F3F5;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer}
+.badge-n{position:absolute;top:-6px;left:-6px;background:#E53935;color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pill{border:1px solid #ddd;background:#fff;padding:8px 16px;border-radius:99px;font-weight:700;cursor:pointer}.pill.active{background:#111;color:#fff}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
-.kpi{background:#fff;border:1px solid #eee;border-radius:16px;padding:16px}
-.kpi b{font-size:26px;display:block}.kpi small{color:#666}
+.kpi{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.kpi-top{display:flex;gap:12px;align-items:center}.kpi b{font-size:26px;display:block}.kpi small{color:#666;font-size:12px}
 .panel{background:#fff;border:1px solid #eee;border-radius:18px;padding:18px;margin-bottom:14px}
-input,select{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px}
-label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input,select{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px;outline:none}input:focus{border-color:#FF6B00}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F2A4D;color:#fff;padding:11px}table td{padding:10px;border-bottom:1px solid #eee;text-align:center}
 .total-box{background:#FFF8E1;border-radius:14px;padding:14px;text-align:center;margin-top:12px}
-.notif-panel{position:fixed;top:60px;left:20px;width:360px;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
-@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+.notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
+.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
+.permit-row{display:flex;gap:10px;align-items:center;padding:12px;border-bottom:1px solid #eee}
+.permit-row:last-child{border-bottom:none}
+.alert-box{background:#FFF3E0;border:1px solid #FF9800;border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#E65100;display:flex;gap:8px;align-items:center}
+.alert-box.ok{background:#E8F5E9;border-color:#4CAF50;color:#2E7D32}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search{display:none}}
 </style>
 </head>
 <body>
 <div class="hazard"></div>
-<aside class="sidebar">
-<div style="text-align:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1)"><b style="font-size:32px">RMED</b></div>
-<a href="index.html">🏠 <span data-i18n="home">Home</span></a>
-<a href="dashboard.html">📊 Dashboard</a>
-<a href="induction.html">📋 Induction</a>
-<a href="accidents.html">🚑 Accidents</a>
-<a href="daily-count.html" class="active">🔢 <span data-i18n="daily">Daily Count</span></a>
-<a href="ncr.html">📄 NCR</a>
-<a href="violations.html">⚠️ Violations</a>
+<aside class="sidebar" id="sidebar">
+<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
+<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="daily-count.html" class="active">🔢 <span data-i18n="daily">Daily Count</span></a><a href="train.html">🎓 Training</a><a href="induction.html">📋 Induction</a></div>
+<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
+<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
+<a href="#" class="logout">↩ Logout</a>
 </aside>
 <div class="main">
-<div class="topbar"><b data-i18n="title">عدد عمال اليوم • Daily Count</b><div style="margin-inline-start:auto;display:flex;gap:8px">
-<button class="btn-ghost" onclick="toggleNotif()">🔔 <span id="notifCount" style="background:#E53935;color:#fff;border-radius:50%;padding:2px 7px;display:none">0</span></button>
-<button class="btn-ghost" id="btnAr" onclick="setLang('ar')">عربي</button>
-<button class="btn-ghost" id="btnEn" onclick="setLang('en')">EN</button></div></div>
-<div id="notifPanel" class="notif-panel"><b>الإشعارات</b><div id="notifList"></div></div>
+<div class="topbar">
+<button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
+<div class="search">🔍 <input id="topSearch" placeholder="Search..." oninput="document.getElementById('searchD').value=this.value;renderDaily()"></div>
+<div style="margin-inline-start:auto;display:flex;gap:10px;align-items:center">
+<button class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+<button class="icon-btn" onclick="toggleNotif()">🔔<span class="badge-n" id="notifCount" style="display:none">0</span></button>
+<button class="pill" id="btnAr" onclick="setLang('ar')">عربي</button>
+<button class="pill" id="btnEn" onclick="setLang('en')">EN</button>
+</div>
+</div>
+<div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
+
 <div style="padding:16px 20px">
+<h1 style="margin:0;font-size:26px"><span data-i18n="title">عدد عمال اليوم</span> <span style="color:#FF6B00">• Daily Count</span></h1>
+<p style="color:#666;font-size:13px" data-i18n="subtitle">Live - مربوط بالتصاريح • V4 Final</p>
+
 <div class="panel" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-<div style="flex:1"><label>📅 اليوم</label><input type="date" id="filterDate" onchange="loadDaily()"></div>
-<div style="flex:1"><label>🏢 الشركة</label><select id="filterCompany" onchange="renderDaily()"><option value="">كل الشركات</option></select></div>
-<button class="btn-orange" onclick="loadDaily()">🔄 تحديث</button>
+<div style="flex:1"><label>📅 <span data-i18n="day">اليوم</span></label><input type="date" id="filterDate" onchange="loadLive()"></div>
+<div style="flex:1"><label>🏢 <span data-i18n="companyFilter">الشركة</span></label><select id="filterCompany" onchange="renderDaily()"><option value="">كل الشركات</option></select></div>
+<button class="btn-orange" onclick="loadLive()">🔄 تحديث</button>
+<span id="liveDot" style="font-size:12px;color:#2E7D32;font-weight:800">● Live</span>
 </div>
 
 <div class="kpi-row">
-<div class="kpi"><b id="k-total-day">0</b><small data-i18n="total">إجمالي عمال اليوم</small></div>
-<div class="kpi"><b id="k-safety-day">0</b><small>قسم السلامة</small></div>
-<div class="kpi"><b id="k-companies">0</b><small>عدد الشركات</small></div>
-<div class="kpi"><b id="k-max" style="font-size:16px">-</b><small>الأعلى</small></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d blue">👷</span><div><b id="k-total-day">0</b><small data-i18n="total">إجمالي عمال اليوم</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d teal">🦺</span><div><b id="k-safety-day">0</b><small data-i18n="safety">قسم السلامة</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d orange">🏢</span><div><b id="k-companies">0</b><small data-i18n="companies">عدد الشركات</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><span class="icon3d purple">📄</span><div><b id="k-permits-workers">0</b><small data-i18n="permitsWorkers">عمال في التصاريح</small></div></div></div>
 </div>
 
-<div class="panel"><h2>🏢 إجمالي كل شركة</h2><div id="companyTotals"></div></div>
+<!-- ACTIVE PERMITS - أماكن العمل النهارده -->
+<div class="panel" style="border:2px solid #2E7D32">
+<h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small green">🟢</span> <span data-i18n="workPlaces">أماكن العمل النهارده - من التصاريح</span> <span id="activePermitCount" style="background:#2E7D32;color:#fff;padding:2px 10px;border-radius:99px;font-size:12px">0</span></h2>
+<p style="font-size:12px;color:#666">لو التصريح اتقفل أو اتلغى بيتشال من هنا أوتوماتيك • Live</p>
+<div id="activePermits"></div>
+<div id="matchAlert" style="margin-top:12px"></div>
+</div>
 
-<div class="panel">
-<h2 data-i18n="add">تسجيل عدد يومي جديد</h2>
-<div class="grid2"><div><label>Company *</label><input id="d-company" list="compList" placeholder="RMED..."><datalist id="compList"></datalist></div>
-<div><label>Date *</label><input type="date" id="d-date"></div></div>
-<div class="grid2"><div><label>Safety *</label><input type="number" min="0" id="d-safety" oninput="calcLive()"></div>
-<div><label>Total Company *</label><input type="number" min="0" id="d-total" oninput="calcLive()"></div></div>
+<div class="panel"><h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small gold">🏢</span> <span data-i18n="perCompany">إجمالي كل شركة</span></h2><div id="companyTotals" style="margin-top:12px"></div></div>
+
+<div class="panel"><h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small blue">📝</span> <span data-i18n="add">تسجيل عدد يومي جديد</span></h2>
+<div class="grid2"><div><label data-i18n="company">Company *</label><input id="d-company" list="compList" placeholder="RMED..."><datalist id="compList"></datalist></div><div><label data-i18n="date">Date *</label><input type="date" id="d-date"></div></div>
+<div class="grid2"><div><label data-i18n="safetyLabel">Safety *</label><input type="number" min="0" id="d-safety" oninput="calcLive()"></div><div><label data-i18n="totalLabel">Total Company *</label><input type="number" min="0" id="d-total" oninput="calcLive()"></div></div>
 <div class="total-box">Safety: <b id="liveSafety">0</b> / Total: <b id="liveTotal">0</b><br><small id="liveDetail"></small></div>
-<button class="btn-orange" style="width:100%;margin-top:12px" onclick="addDaily()">💾 Save Daily Count</button>
-</div>
+<button class="btn-orange" style="width:100%;margin-top:12px" onclick="addDaily()">💾 <span data-i18n="save">Save Daily Count</span></button></div>
 
-<div class="panel"><h2>سجلات اليوم</h2><input id="searchD" placeholder="🔍 Search..." oninput="renderDaily()" style="margin-bottom:10px"><div id="dailyTable"></div>
+<div class="panel"><h2 style="margin:0" data-i18n="records">سجلات اليوم</h2><input id="searchD" placeholder="🔍 Search..." oninput="renderDaily()" style="margin:10px 0"><div id="dailyTable"></div>
 <button class="btn-ghost" onclick="exportDaily()" style="margin-top:10px">📥 Export Excel</button></div>
 </div></div>
 
@@ -81,67 +109,73 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-const I18N={ar:{home:"الرئيسية",daily:"عدد عمال اليوم",title:"عدد عمال اليوم",total:"إجمالي عمال اليوم",add:"تسجيل عدد يومي جديد"},en:{home:"Home",daily:"Daily Count",title:"Daily Count",total:"Total Workers Today",add:"Add Daily Count"}};
+const I18N={ar:{home:'الرئيسية',daily:'عدد عمال اليوم',notifications:'الإشعارات',title:'عدد عمال اليوم',subtitle:'مباشر - مربوط بالتصاريح • نسخة نهائية',day:'اليوم',companyFilter:'الشركة',total:'إجمالي عمال اليوم',safety:'قسم السلامة',companies:'عدد الشركات',permitsWorkers:'عمال في التصاريح',workPlaces:'أماكن العمل النهارده - من التصاريح',perCompany:'إجمالي كل شركة',add:'تسجيل عدد يومي جديد',company:'الشركة *',date:'التاريخ *',safetyLabel:'السلامة *',totalLabel:'إجمالي الشركة *',save:'حفظ العدد اليومي',records:'سجلات اليوم'},en:{home:'Home',daily:'Daily Count',notifications:'Notifications',title:'Daily Workers Count',subtitle:'Live - Linked to Permits • V4 Final',day:'Day',companyFilter:'Company',total:'Total Workers Today',safety:'Safety Dept',companies:'Companies',permitsWorkers:'Workers in Permits',workPlaces:'Work Places Today - From Permits',perCompany:'Total Per Company',add:'Add Daily Count',company:'Company *',date:'Date *',safetyLabel:'Safety *',totalLabel:'Total Company *',save:'Save Daily Count',records:'Today Records'}};
 function setLang(l){localStorage.setItem('lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[l][k])el.textContent=I18N[l][k]});document.getElementById('btnAr').classList.toggle('active',l==='ar');document.getElementById('btnEn').classList.toggle('active',l==='en')}
 setLang(localStorage.getItem('lang')||'ar');
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+let soundOn=localStorage.getItem('rmed_sound')!=='off';
+function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundOn?'on':'off');document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇'}
+document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
+function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.15)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
-let dailyCount=[];
-function makeId(company,date){return company.trim().toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g,'_')+'_'+date}
-async function loadDaily(){
+function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
+let dailyCount=[], permits=[];
+function makeId(c,d){return c.trim().toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g,'_')+'_'+d}
+// ===== LIVE - onSnapshot للاتنين =====
+function loadLive(){
  let date=document.getElementById('filterDate').value;
  try{
-  // FIX: Query by date only, one collection, no 3 collections merge
-  let snap=await firebase.firestore().collection('dailyCount').where('date','==',date).get();
-  dailyCount=snap.docs.map(d=>({id:d.id,...d.data()}));
- }catch(e){ console.log(e); dailyCount=[]; }
- renderDaily(); loadNotif();
+  firebase.firestore().collection('dailyCount').where('date','==',date).onSnapshot(snap=>{dailyCount=snap.docs.map(d=>({id:d.id,...d.data()}));renderDaily();});
+  firebase.firestore().collection('permits').onSnapshot(snap=>{let old=permits.length;permits=snap.docs.map(d=>({id:d.id,...d.data()}));if(permits.length!==old) playBeep();renderDaily();});
+ }catch(e){console.log(e)}
 }
 function renderDaily(){
- let comp=document.getElementById('filterCompany').value, q=(document.getElementById('searchD').value||'').toLowerCase();
- let comps=[...new Set(dailyCount.map(x=>x.company))];
+ let comp=document.getElementById('filterCompany').value, q=(document.getElementById('searchD').value||'').toLowerCase(), date=document.getElementById('filterDate').value;
+ let comps=[...new Set([...dailyCount.map(x=>x.company),...permits.map(x=>x.company)])].filter(Boolean);
  document.getElementById('filterCompany').innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===comp?'selected':''}>${escapeHtml(c)}</option>`).join('');
  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let list=dailyCount.filter(x=>(!comp||x.company===comp)&&(x.company||'').toLowerCase().includes(q));
- let total=list.reduce((s,x)=>s+(Number(x.total)||0),0);
- let safety=list.reduce((s,x)=>s+(Number(x.safety)||0),0);
- document.getElementById('k-total-day').textContent=total;
- document.getElementById('k-safety-day').textContent=safety;
- document.getElementById('k-companies').textContent=new Set(list.map(x=>x.company)).size;
- let maxRec=[...list].sort((a,b)=>b.total-a.total)[0];
- document.getElementById('k-max').textContent=maxRec?maxRec.total+' - '+maxRec.company:'-';
+ let total=list.reduce((s,x)=>s+(Number(x.total)||0),0), safety=list.reduce((s,x)=>s+(Number(x.safety)||0),0);
+ animateNum('k-total-day',total); animateNum('k-safety-day',safety); animateNum('k-companies',new Set(list.map(x=>x.company)).size);
+ // Active Permits - بس المفتوح وبتاع النهارده
+ let active=permits.filter(x=>(x.status==='Open'||x.status==='Delivered') && (x.startDate===date || (!x.endDate||x.endDate>=date)) && (!comp||x.company===comp));
+ let permitsWorkers=active.reduce((s,x)=>s+(Number(x.workersCount||x.workers||0)),0);
+ animateNum('k-permits-workers',permitsWorkers);
+ document.getElementById('activePermitCount').textContent=active.length;
+ document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div class="permit-row"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num||'')} • 📍 ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(x.type||'')} • ${escapeHtml(x.supervisor||'')}</small></div><span style="background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:900">${escapeHtml(x.status)}</span><a href="permits.html" style="font-size:12px;font-weight:800">فتح التصريح →</a></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد تصاريح شغالة النهارده - اتأكد من صفحة التصاريح</p>';
+ // Match Alert
+ let diff=total-permitsWorkers;
+ let alertEl=document.getElementById('matchAlert');
+ if(total>0){
+  if(diff===0) alertEl.innerHTML='<div class="alert-box ok">✅ مطابق - كل العمال متغطيين بتصاريح</div>';
+  else if(diff>0) alertEl.innerHTML=`<div class="alert-box">⚠️ فيه ${diff} عامل مش متغطيين بتصريح - إجمالي ${total} VS تصاريح ${permitsWorkers}</div>`;
+  else alertEl.innerHTML=`<div class="alert-box">⚠️ عمال التصاريح (${permitsWorkers}) أكتر من إجمالي المسجل (${total}) - راجع الأرقام</div>`;
+ } else alertEl.innerHTML='';
+ // Company totals
  let maxT=Math.max(...list.map(x=>x.total),1);
- document.getElementById('companyTotals').innerHTML=list.map(x=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>🏢 ${escapeHtml(x.company)} - Safety: ${x.safety||0}</span><b>${x.total} workers</b></div><div style="height:10px;background:#eee;border-radius:10px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px"></div></div>`).join('')||'لا توجد بيانات لليوم ده';
+ document.getElementById('companyTotals').innerHTML=list.map(x=>{let pWorkers=active.filter(p=>p.company===x.company).reduce((s,p)=>s+(Number(p.workersCount||p.workers||0)),0); return `<div style="display:flex;justify-content:space-between;font-size:13px"><span>🏢 ${escapeHtml(x.company)} - Safety: ${x.safety||0} • 📄 تصاريح: ${pWorkers}</span><b>${x.total} workers</b></div><div style="height:10px;background:#eee;border-radius:10px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px"></div></div>`}).join('')||'لا توجد بيانات لليوم ده';
  document.getElementById('dailyTable').innerHTML=list.length?`<table><tr><th>Date</th><th>Company</th><th>Safety</th><th>Total</th><th>Action</th></tr>${list.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.company)}</td><td>${x.safety||0}</td><td><b>${x.total}</b></td><td><button class="btn-ghost" onclick="delDaily('${x.id}')">🗑️</button></td></tr>`).join('')}</table>`:'<p>لا توجد سجلات</p>';
+ // Notifications
+ let notifs=[];
+ active.forEach(x=>{if(x.endDate && (new Date(x.endDate)-new Date())/86400000<1) notifs.push(`⚠️ تصريح ${x.num} هينتهي قريب - ${x.location}`)});
+ if(diff>0) notifs.push(`⚠️ ${diff} عامل بدون تصريح`);
+ document.getElementById('notifCount').textContent=notifs.length; document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
+ document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
 }
-function calcLive(){let s=parseInt(document.getElementById('d-safety').value)||0;let t=parseInt(document.getElementById('d-total').value)||0;document.getElementById('liveSafety').textContent=s;document.getElementById('liveTotal').textContent=t;document.getElementById('liveDetail').textContent=s>t?'⚠️ السلامة أكبر من الإجمالي - غلط':t>0?`Safety ${s} / ${t}`:''}
+function calcLive(){let s=parseInt(document.getElementById('d-safety').value)||0;let t=parseInt(document.getElementById('d-total').value)||0;document.getElementById('liveSafety').textContent=s;document.getElementById('liveTotal').textContent=t;document.getElementById('liveDetail').textContent=s>t?'⚠️ السلامة أكبر من الإجمالي':t>0?`Safety ${s} / ${t}`:''}
 async function addDaily(){
  let company=document.getElementById('d-company').value.trim(),date=document.getElementById('d-date').value,safety=parseInt(document.getElementById('d-safety').value)||0,total=parseInt(document.getElementById('d-total').value)||0;
- if(!company||!date) return alert('املأ الشركة والتاريخ');
- if(total===0) return alert('اكتب الإجمالي');
- if(safety>total) return alert('السلامة مينفعش تبقى أكبر من الإجمالي');
- let id=makeId(company,date);
- let exists=dailyCount.find(x=>x.id===id);
- if(exists && !confirm('موجود بالفعل - تحدثه؟')) return;
+ if(!company||!date) return alert('املأ الشركة والتاريخ'); if(total===0) return alert('اكتب الإجمالي'); if(safety>total) return alert('السلامة أكبر من الإجمالي');
+ let id=makeId(company,date); let exists=dailyCount.find(x=>x.id===id); if(exists && !confirm('موجود - تحدثه؟')) return;
  await firebase.firestore().collection('dailyCount').doc(id).set({company,date,safety,total,counts:{'Safety Department':safety},updatedAt:new Date().toISOString(),createdAt:exists?exists.createdAt:new Date().toISOString()},{merge:true});
- alert('✅ تم الحفظ'); loadDaily();
+ playBeep(); alert('✅ تم الحفظ');
 }
-async function delDaily(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('dailyCount').doc(id).delete(); loadDaily();}
-async function loadNotif(){
- let notifs=[];
- try{
-  let a=await firebase.firestore().collection('accidents').orderBy('createdAt','desc').limit(3).get();
-  a.forEach(d=>{let x=d.data(); notifs.push(`🚑 حادث: ${x.company||''}`)});
- }catch(e){}
- let c=document.getElementById('notifCount'); c.style.display=notifs.length?'inline-block':'none'; c.textContent=notifs.length;
- document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:8px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
-}
-function exportDaily(){
- let csv='Company,Date,Safety,Total\n'+dailyCount.map(x=>[x.company,x.date,x.safety,x.total].join(',')).join('\n');
- let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download='daily-'+document.getElementById('filterDate').value+'.csv'; a.click();
-}
-let today=new Date().toISOString().slice(0,10);
-document.getElementById('d-date').value=today; document.getElementById('filterDate').value=today;
-loadDaily();
+async function delDaily(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('dailyCount').doc(id).delete();}
+function exportDaily(){let date=document.getElementById('filterDate').value;let csv='Company,Date,Safety,Total,Permit,Location,PermitWorkers\n'+dailyCount.map(x=>{let p=permits.filter(pp=>pp.company===x.company);return [x.company,x.date,x.safety,x.total,p.map(pp=>pp.num).join(';'),p.map(pp=>pp.location||pp.workLocation).join(';'),p.reduce((s,pp)=>s+(Number(pp.workersCount||0)),0)].join(',')}).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='daily-'+date+'.csv';a.click();}
+// Pull to refresh
+let startY=0;document.addEventListener('touchstart',e=>{startY=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-startY>120 && window.scrollY===0){loadLive();}}, {passive:true});
+let today=new Date().toISOString().slice(0,10);document.getElementById('d-date').value=today;document.getElementById('filterDate').value=today;
+loadLive();
 </script>
-</body></html>
+</body>
+</html>
