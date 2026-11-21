@@ -40,14 +40,33 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="first-aid.html" class="active">🩹 <span data-i18n="firstAid">First Aid</span></a><a href="permits.html">📄 Permits</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 <span data-i18n="firstAid">First Aid</span></a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -64,6 +83,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">حالات الإسعافات</span> <span style="color:#FF6B00">• First Aid Cases</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">First Aid & Minor Injuries • Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d red">🩹</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي حالات الإسعاف</small></div></div></div>
@@ -94,13 +114,65 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 let DB={workers:[],firstAid:[]};
+// ===== FIX: توحيد الحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normFA(raw){
+  let action=String(pick(raw,['action','actionTaken','result'])||'Treated On Site');
+  if(action.toLowerCase().includes('hospital')||action.includes('مستشفى')) action='Sent To Hospital';
+  else if(action.toLowerCase().includes('rest')||action.includes('راحة')) action='Rest + Follow Up';
+  else action='Treated On Site';
+  return {
+    id: raw.id,
+    _coll: raw._coll||'firstAid',
+    date: normDate(pick(raw,['date','incidentDate','createdAt'])),
+    time: pick(raw,['time','incidentTime'])||'',
+    name: pick(raw,['name','injured','injuredName','employeeName','workerName','patientName','person']),
+    code: String(pick(raw,['code','employeeCode','empCode'])||''),
+    job: pick(raw,['job','profession','position']),
+    company: pick(raw,['company','companyName','contractor'])||'RMED',
+    type: pick(raw,['type','injuryType','injury','injuryKind']),
+    body: pick(raw,['body','bodyPart','affectedPart']),
+    desc: pick(raw,['desc','description','whatHappened','details']),
+    treatment: pick(raw,['treatment','treatmentGiven','firstAidGiven']),
+    action: action,
+    treatedBy: pick(raw,['treatedBy','treatedByName','nurse','doctor']),
+    reporter: pick(raw,['reporter','reporterName','createdBy']),
+    createdAt: raw.createdAt||''
+  };
+}
 function val(id){return document.getElementById(id).value.trim()}
 function setVal(id,v){document.getElementById(id).value=v||''}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('workers').onSnapshot(snap=>{DB.workers=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('workersList').innerHTML=DB.workers.map(w=>`<option value="${escapeHtml(w.name)}">`).join('');});
-  db.collection('firstAid').orderBy('createdAt','desc').onSnapshot(snap=>{let old=DB.firstAid.length;DB.firstAid=snap.docs.map(d=>({id:d.id,...d.data()}));if(DB.firstAid.length>old&&old>0){let last=DB.firstAid[0];if(last.action==='Sent To Hospital')playBeep();}renderFirstAid();});
+  // Workers من أكتر من كوليكشن
+  ['workers','induction','users','employees'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      snap.docs.forEach(d=>{ let x=d.data(); let name=pick(x,['name','fullName','employeeName']); if(!name) return; if(!DB.workers.find(w=>String(w.name).toLowerCase()===String(name).toLowerCase())) DB.workers.push({name,code:String(pick(x,['code','id','employeeCode'])||''),job:pick(x,['job','profession','position'])||'',company:pick(x,['company','companyName'])||'RMED'}); });
+      document.getElementById('workersList').innerHTML=DB.workers.map(w=>`<option value="${escapeHtml(w.name)}">`).join('');
+    }, ()=>{});
+  });
+  // بدون orderBy + بنجرب كل أسماء الكوليكشنز
+  ['firstAid','first-aid','first_aid'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normFA);
+      let merged=[...DB.firstAid].filter(x=>x._coll!==coll);
+      merged=[...merged,...arr];
+      let old=DB.firstAid.length; DB.firstAid=merged;
+      DB.firstAid.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(DB.firstAid.length>old&&old>0){let last=DB.firstAid[0];if(last.action==='Sent To Hospital')playBeep();}
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي حالات الإسعاف: '+DB.firstAid.length+' | Workers: '+DB.workers.length;
+      renderFirstAid();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  try{ let local=JSON.parse(localStorage.getItem('firstAid')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!DB.firstAid.find(x=>x.id==='local-'+i)) DB.firstAid.push(normFA({id:'local-'+i,_coll:'local',...l})); }); }catch(e){}
  }catch(e){console.log(e)}
 }
 function autoFromName(){let name=val('f-name');let w=DB.workers.find(x=>x.name===name||String(x.name||'').toLowerCase()===name.toLowerCase());if(w){setVal('f-code',w.code);setVal('f-job',w.job||'');setVal('f-company',w.company||'RMED')}}
@@ -108,7 +180,7 @@ function autoFromCode(){let code=val('f-code');let w=DB.workers.find(x=>String(x
 async function addFirstAid(){
  if(!val('f-date'))return alert('Select date');if(!val('f-time'))return alert('Select time');if(!val('f-name'))return alert('Write injured name');if(!val('f-type'))return alert('Select injury type');if(!val('f-desc'))return alert('Write what happened');if(!val('f-treat'))return alert('Write treatment');
  let me={};try{me=JSON.parse(localStorage.getItem('currentUser')||'{}')}catch(e){}
- let rec={date:val('f-date'),time:val('f-time'),name:val('f-name'),code:val('f-code'),job:val('f-job'),company:val('f-company')||'RMED',type:val('f-type'),body:val('f-body'),desc:val('f-desc'),treatment:val('f-treat'),action:val('f-action'),treatedBy:val('f-by')||(me.name||''),reporter:me.name||'',reporterName:me.name||'',createdAt:new Date().toISOString()};
+ let rec={date:val('f-date'),time:val('f-time'),name:val('f-name'),injured:val('f-name'),code:val('f-code'),job:val('f-job'),company:val('f-company')||'RMED',type:val('f-type'),injuryType:val('f-type'),body:val('f-body'),bodyPart:val('f-body'),desc:val('f-desc'),description:val('f-desc'),treatment:val('f-treat'),treatmentGiven:val('f-treat'),action:val('f-action'),actionTaken:val('f-action'),treatedBy:val('f-by')||(me.name||''),reporter:me.name||'',reporterName:me.name||'',createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('firstAid').add(rec);if(rec.action==='Sent To Hospital')playBeep();alert('✅ Saved - '+rec.name+' - '+rec.type);}catch(e){alert('Save problem: '+e.message);return}
  ['f-name','f-code','f-job','f-body','f-desc','f-treat','f-by'].forEach(id=>setVal(id,''));setVal('f-company','RMED');setVal('f-type','');
 }
@@ -116,15 +188,15 @@ function renderFirstAid(){
  let q=(document.getElementById('searchF').value||'').toLowerCase();
  let list=DB.firstAid.filter(x=>((x.name||'')+(x.code||'')+(x.company||'')+(x.type||'')+(x.desc||'')).toLowerCase().includes(q));
  let total=DB.firstAid.length,onSite=DB.firstAid.filter(x=>x.action==='Treated On Site').length,hosp=DB.firstAid.filter(x=>x.action==='Sent To Hospital').length;
- let now=new Date(),month=DB.firstAid.filter(x=>{let d=new Date(x.date||x.createdAt||'');return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()}).length;
+ let now=new Date(),month=DB.firstAid.filter(x=>{let d=new Date(x.date||'');return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()}).length;
  animateNum('k-total',total);animateNum('k-site',onSite);animateNum('k-hosp',hosp);animateNum('k-month',month);
  document.getElementById('hospIcon').classList.toggle('shake',hosp>0);
- document.getElementById('firstAidTable').innerHTML=list.length?'<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Injury</th><th>Treatment</th><th>Action</th><th>Delete</th></tr>'+list.map(x=>{let idx=DB.firstAid.indexOf(x);let cls=x.action==='Treated On Site'?'green':x.action==='Sent To Hospital'?'red':'orange';return `<tr><td>${escapeHtml(x.date)}<br>${escapeHtml(x.time)}</td><td><b>${escapeHtml(x.name)}</b><br><small style="color:#888">${escapeHtml(x.company||'')}</small></td><td>${escapeHtml(x.code||'-')}</td><td>${escapeHtml(x.type)}<br><small style="color:#888">${escapeHtml(x.body||'')}</small></td><td style="text-align:left;max-width:200px">${escapeHtml(x.treatment)}</td><td><span class="badge ${cls}">${escapeHtml(x.action)}</span></td><td><button class="btn2" style="color:#FF8A80" onclick="delFirstAid(${idx})">🗑️</button></td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#888">No first aid cases yet</p>';
+ document.getElementById('firstAidTable').innerHTML=list.length?'<table><tr><th>Date</th><th>Name</th><th>Code</th><th>Injury</th><th>Treatment</th><th>Action</th><th>Delete</th></tr>'+list.map(x=>{let idx=DB.firstAid.indexOf(x);let cls=x.action==='Treated On Site'?'green':x.action==='Sent To Hospital'?'red':'orange';return `<tr><td>${escapeHtml(x.date)}<br>${escapeHtml(x.time)}</td><td><b>${escapeHtml(x.name)}</b><br><small style="color:#888">${escapeHtml(x.company||'')}</small></td><td>${escapeHtml(x.code||'-')}</td><td>${escapeHtml(x.type)}<br><small style="color:#888">${escapeHtml(x.body||'')}</small></td><td style="text-align:left;max-width:200px">${escapeHtml(x.treatment)}</td><td><span class="badge ${cls}">${escapeHtml(x.action)}</span></td><td><button class="btn2" style="color:#FF8A80" onclick="delFirstAid(${idx})">🗑️</button></td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#888">No first aid cases yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  let notifs=DB.firstAid.filter(x=>x.action==='Sent To Hospital').slice(0,5).map(x=>`🏥 حالة اتبعتت مستشفى: ${x.name} - ${x.type}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
 }
-async function delFirstAid(i){if(!confirm('Delete this case?'))return;let rec=DB.firstAid[i];try{if(rec.id)await firebase.firestore().collection('firstAid').doc(rec.id).delete()}catch(e){}renderFirstAid()}
+async function delFirstAid(i){if(!confirm('Delete this case?'))return;let rec=DB.firstAid[i];try{if(rec.id && !String(rec.id).startsWith('local-')){ let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; await firebase.firestore().collection(rec._coll||'firstAid').doc(realId).delete(); }}catch(e){} DB.firstAid.splice(i,1); renderFirstAid();}
 async function clearFirstAid(){if(!confirm('Delete all first aid cases?'))return;try{let snap=await firebase.firestore().collection('firstAid').get();for(let d of snap.docs)await firebase.firestore().collection('firstAid').doc(d.id).delete()}catch(e){}renderFirstAid()}
 function exportFirstAid(){if(!DB.firstAid.length)return alert('No data');let csv='Date,Time,Name,Code,Job,Company,Injury Type,Body Part,What Happened,Treatment,Action,Treated By\n'+DB.firstAid.map(x=>[x.date,x.time,x.name,x.code,x.job,x.company,x.type,x.body,'"'+(x.desc||'').replace(/"/g,'""')+'"','"'+(x.treatment||'').replace(/"/g,'""')+'"',x.action,x.treatedBy].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='first-aid-cases.csv';a.click()}
 document.getElementById('f-date').value=new Date().toISOString().slice(0,10);document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);loadLive();
