@@ -43,14 +43,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="vehicles.html" class="active">🚐 <span data-i18n="vehicles">Vehicles</span></a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 <span data-i18n="vehicles">Vehicles</span></a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -67,6 +86,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">فحص السيارات</span> <span style="color:#FF6B00">• Vehicles</span></h1>
 <p style="color:#666;font-size:13px">New Kairo Project • Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d blue">🚐</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي الفحوصات</small></div></div></div>
@@ -116,6 +136,41 @@ let COLORS=[{name:'Red',ar:'أحمر',bg:'#D32F2F',fg:'#fff'},{name:'Green',ar:'
 let selColor='Green';
 function val(id){return document.getElementById(id).value.trim()}
 function setVal(id,v){document.getElementById(id).value=v||''}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normVE(raw){
+  let cond=String(pick(raw,['condition','status','state'])||'Accepted');
+  if(cond.toLowerCase().includes('reject')||cond.includes('مرفوض')) cond='Rejected'; else cond='Accepted';
+  return {
+    id: raw.id, _coll: raw._coll||'vehicles',
+    project: pick(raw,['project','projectName'])||'New Kairo Project',
+    code: pick(raw,['code','vehicleCode','plate'])||'',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    date: normDate(pick(raw,['date','inspectionDate','createdAt'])),
+    vehicleType: pick(raw,['vehicleType','type','category'])||'',
+    brand: pick(raw,['brand','make'])||'',
+    year: pick(raw,['year','manufactureYear','modelYear'])||'',
+    chassis: pick(raw,['chassis','chassisNo','chassisNumber'])||'',
+    license: pick(raw,['license','licenseNo','licenseNumber','plateNo'])||'',
+    licenseExpiry: normDate(pick(raw,['licenseExpiry','licenseExp','expiry'])),
+    driver: pick(raw,['driver','driverName'])||'',
+    driverLicense: pick(raw,['driverLicense','driverLicenseNo','driverLic'])||'',
+    inspector: pick(raw,['inspector','inspectorName','checkedBy'])||'',
+    condition: cond,
+    colorCode: pick(raw,['colorCode','color','colour'])||'',
+    notes: pick(raw,['notes','note','remarks'])||'',
+    vehicleImgs: raw.vehicleImgs||raw.vehicleImages||raw.images||[],
+    checkImgs: raw.checkImgs||raw.checklistImgs||raw.checklistImages||[],
+    licenseImgs: raw.licenseImgs||raw.licenseImages||[],
+    createdAt: raw.createdAt||''
+  };
+}
 function renderColorRow(){let cond=val('ve-condition');let isRej=cond==='Rejected';if(isRej)selColor='Red';document.getElementById('colorRow').innerHTML=COLORS.map(c=>{let dis=isRej&&c.name!=='Red';return `<div class="color-opt ${selColor===c.name?'sel':''} ${dis?'disabled':''}" style="background:${c.bg};color:${c.fg}" onclick="pickColor('${c.name}')">${c.name} • ${c.ar}</div>`}).join('');document.getElementById('colorHint').innerText=isRej?'مرفوض: أحمر أوتوماتيك ومقفول 🔴':'مقبول: اختار لون من الخمسة'}
 function pickColor(n){if(val('ve-condition')==='Rejected')return;selColor=n;renderColorRow()}
 function onConditionChange(){renderColorRow()}
@@ -127,8 +182,24 @@ function expLabel(exp){if(!exp)return '-';let today=new Date().toISOString().sli
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('vehicles').onSnapshot(snap=>{let old=items.length;items=snap.docs.map(d=>({id:d.id,...d.data()}));items.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(items.length>old&&old>0)playBeep();renderVE();refreshCode();renderColorRow()});
-  db.collection('notifications').orderBy('createdAt','desc').limit(30).onSnapshot(snap=>{notifications=snap.docs.map(d=>({id:d.id,...d.data()}));renderNotif()});
+  ['vehicles','vehicle','vehicleInspections','vehicle-inspections'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normVE);
+      let merged=[...items].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=items.length; items=merged;
+      items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(items.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي الفحوصات: '+items.length;
+      renderVE();refreshCode();renderColorRow();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  // ===== FIX: شلت orderBy من notifications =====
+  db.collection('notifications').onSnapshot(snap=>{
+    notifications=snap.docs.map(d=>({id:d.id,...d.data()}));
+    notifications.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+    notifications=notifications.slice(0,30);
+    renderNotif();
+  }, ()=>{});
  }catch(e){console.log(e)}
 }
 function topOf(arr,key){let m={};arr.forEach(x=>{let k=x[key];if(!k)return;m[k]=(m[k]||0)+1});let keys=Object.keys(m);if(!keys.length)return null;keys.sort((a,b)=>m[b]-m[a]);return{name:keys[0],count:m[keys[0]]}}
@@ -140,29 +211,25 @@ function renderVE(){
  let brands=[...new Set(all.map(x=>x.brand).filter(Boolean))];document.getElementById('brandList').innerHTML=brands.map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let drivers=[...new Set(all.map(x=>x.driver).filter(Boolean))];document.getElementById('driverList').innerHTML=drivers.map(c=>`<option value="${escapeHtml(c)}">`).join('');
  document.getElementById('k-comp').textContent=comps.length;let tDr=topOf(all,'driver');document.getElementById('k-driver').textContent=tDr?tDr.name:'-';let tTy=topOf(all,'vehicleType');document.getElementById('k-type').textContent=tTy?tTy.name:'-';let tBr=topOf(all,'brand');document.getElementById('k-brand').textContent=tBr?tBr.name:'-';let tIn=topOf(all,'inspector');document.getElementById('k-insp').textContent=tIn?tIn.name:'-';
- let byComp={};all.forEach(x=>{if(!byComp[x.company])byComp[x.company]={total:0,accepted:0,rejected:0};byComp[x.company].total++;if(x.condition==='Accepted')byComp[x.company].accepted++;if(x.condition==='Rejected')byComp[x.company].rejected++});
+ let byComp={};all.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={total:0,accepted:0,rejected:0};byComp[c].total++;if(x.condition==='Accepted')byComp[c].accepted++;if(x.condition==='Rejected')byComp[c].rejected++});
  let compArr=Object.entries(byComp).map(([name,v])=>({name,...v})).sort((a,b)=>b.total-a.total);document.getElementById('compStats').innerHTML=compArr.length?'<table><tr><th>Company</th><th>Total</th><th>✅ Accepted</th><th>❌ Rejected</th><th>Acceptance %</th></tr>'+compArr.map(v=>`<tr><td><b>${escapeHtml(v.name)}</b></td><td>${v.total}</td><td style="color:#2E7D32">${v.accepted}</td><td style="color:#D32F2F">${v.rejected}</td><td>${v.total?Math.round(v.accepted/v.total*100):0}%</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#999">No companies yet</p>';
  let byColor={};all.forEach(x=>{let c=x.colorCode||x.color||'-';if(!byColor[c])byColor[c]={total:0,accepted:0,rejected:0};byColor[c].total++;if(x.condition==='Accepted')byColor[c].accepted++;if(x.condition==='Rejected')byColor[c].rejected++});
  document.getElementById('colorStats').innerHTML=Object.keys(byColor).length?'<table><tr><th>Color Code</th><th>Total</th><th>✅ Accepted</th><th>❌ Rejected</th></tr>'+Object.entries(byColor).map(([name,v])=>{let col=COLORS.find(c=>c.name===name);return `<tr><td><span class="badge" style="background:${col?col.bg:'#9E9E9E'};color:${col?col.fg:'#fff'}">${escapeHtml(name)}</span></td><td>${v.total}</td><td style="color:#2E7D32">${v.accepted}</td><td style="color:#D32F2F">${v.rejected}</td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#999">No colors yet</p>';
  let list=all.filter(x=>((x.code||'')+(x.company||'')+(x.driver||'')+(x.chassis||'')+(x.license||'')+(x.brand||'')).toLowerCase().includes(q)&&(!fc||x.condition===fc)&&(!ft||x.vehicleType===ft)&&(!fcomp||x.company===fcomp));
- if(!list.length){document.getElementById('veTable').innerHTML='<p style="text-align:center;color:#888">No vehicle inspections yet</p>';return}
+ if(!list.length){document.getElementById('veTable').innerHTML='<p style="text-align:center;color:#888">No vehicle inspections yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  document.getElementById('veTable').innerHTML='<table><tr><th>Code</th><th>Company / Type</th><th>Brand / Year</th><th>Chassis / License</th><th>Driver</th><th>Condition / Color</th><th>Inspector / Date</th><th>Vehicle</th><th>Checklist</th><th>License</th><th>Delete</th></tr>'+list.map(x=>{let idx=items.indexOf(x);let badge=x.condition==='Accepted'?'green':'red';let col=COLORS.find(c=>c.name===(x.colorCode||x.color));let vImgs=(x.vehicleImgs||[]).map(u=>`<img src="${u}" onclick="window.open('${u}','_blank')">`).join(' ');let cImgs=(x.checkImgs||[]).map(u=>`<img src="${u}" onclick="window.open('${u}','_blank')">`).join(' ');let lImgs=(x.licenseImgs||[]).map(u=>`<img src="${u}" onclick="window.open('${u}','_blank')">`).join(' ');return `<tr><td><b style="color:#FF6B00">${escapeHtml(x.code)}</b></td><td><b>${escapeHtml(x.company)}</b><br><small>${escapeHtml(x.vehicleType)}</small></td><td><b>${escapeHtml(x.brand)}</b><br><small>${escapeHtml(x.year)}</small></td><td>Chassis: ${escapeHtml(x.chassis)}<br>License: ${escapeHtml(x.license)}<br><span class="${expClass(x.licenseExpiry)}">${expLabel(x.licenseExpiry)} • ${escapeHtml(x.licenseExpiry)}</span></td><td><b>${escapeHtml(x.driver)}</b><br><small>Driver Lic: ${escapeHtml(x.driverLicense)}</small></td><td><span class="badge ${badge}">${escapeHtml(x.condition)}</span><br><span class="badge" style="background:${col?col.bg:'#9E9E9E'};color:${col?col.fg:'#fff'}">${escapeHtml(x.colorCode||'-')}</span><br><small style="color:#666">${escapeHtml(x.notes||'')}</small></td><td>${escapeHtml(x.inspector)}<br><small>${escapeHtml(x.date)}</small></td><td>${vImgs||'-'}</td><td>${cImgs||'-'}</td><td>${lImgs||'-'}</td><td><button class="btn2" style="background:#D32F2F" onclick="delVE(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
- let notifs=all.filter(x=>x.condition==='Rejected').slice(0,3).map(x=>`❌ سيارة مرفوضة: ${x.code} - ${x.brand} - ${x.driver} - ${x.company}`);
- document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
- document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
 async function addVE(){
  if(!val('ve-company'))return alert('Write company');if(!val('ve-date'))return alert('Select date');if(!val('ve-brand'))return alert('Write brand');if(!val('ve-year'))return alert('Write manufacture year');if(!val('ve-chassis'))return alert('Write chassis number');if(!val('ve-license'))return alert('Write vehicle license number');if(!val('ve-license-exp'))return alert('Select license expiry date');if(!val('ve-driver'))return alert('Write driver name');if(!val('ve-driver-license'))return alert('Write driver license number');if(!val('ve-inspector'))return alert('Write inspector');
  let cond=val('ve-condition');let color=cond==='Rejected'?'Red':selColor;
- let rec={project:'New Kairo Project',code:val('ve-code')||genCode(),company:val('ve-company'),date:val('ve-date'),vehicleType:val('ve-type'),brand:val('ve-brand'),year:val('ve-year'),chassis:val('ve-chassis'),license:val('ve-license'),licenseExpiry:val('ve-license-exp'),driver:val('ve-driver'),driverLicense:val('ve-driver-license'),inspector:val('ve-inspector'),condition:cond,colorCode:color,color:color,notes:val('ve-notes'),vehicleImgs:tempVehicle.slice(0,4),checkImgs:tempCheck.slice(0,4),licenseImgs:tempLicense.slice(0,4),createdAt:new Date().toISOString()};
+ let rec={project:'New Kairo Project',code:val('ve-code')||genCode(),company:val('ve-company'),companyName:val('ve-company'),date:val('ve-date'),inspectionDate:val('ve-date'),vehicleType:val('ve-type'),type:val('ve-type'),brand:val('ve-brand'),year:val('ve-year'),chassis:val('ve-chassis'),chassisNumber:val('ve-chassis'),license:val('ve-license'),licenseNumber:val('ve-license'),licenseExpiry:val('ve-license-exp'),driver:val('ve-driver'),driverName:val('ve-driver'),driverLicense:val('ve-driver-license'),inspector:val('ve-inspector'),inspectorName:val('ve-inspector'),condition:cond,status:cond,colorCode:color,color:color,notes:val('ve-notes'),vehicleImgs:tempVehicle.slice(0,4),checkImgs:tempCheck.slice(0,4),licenseImgs:tempLicense.slice(0,4),createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('vehicles').add(rec);if(cond==='Rejected')playBeep()}catch(e){return alert(e.message)}
  renderVE();refreshCode();alert('✅ Saved - '+rec.code+' - '+rec.brand+' - '+rec.vehicleType+' - '+rec.condition+' - '+rec.colorCode);setVal('ve-chassis','');setVal('ve-license','');setVal('ve-driver','');setVal('ve-driver-license','');setVal('ve-notes','');document.getElementById('prev-vehicle').innerHTML='';document.getElementById('prev-check').innerHTML='';document.getElementById('prev-license').innerHTML='';tempVehicle=[];tempCheck=[];tempLicense=[];
 }
-async function delVE(i){if(!confirm('Delete this inspection?'))return;let rec=items[i];try{await firebase.firestore().collection('vehicles').doc(rec.id).delete()}catch(e){}items.splice(i,1);renderVE();refreshCode()}
-async function clearVE(){if(!confirm('Delete all vehicle inspections from Firebase?'))return;try{let s=await firebase.firestore().collection('vehicles').get();for(let d of s.docs)await firebase.firestore().collection('vehicles').doc(d.id).delete()}catch(e){}items=[];renderVE();refreshCode()}
-function exportVE(){if(!items.length)return alert('No data');let csv='Project,Code,Company,Date,Vehicle Type,Brand,Year,Chassis,Vehicle License,License Expiry,Driver,Driver License,Inspector,Condition,Color Code,Notes,Vehicle Photos,Checklist Photos,License Photos\n'+items.map(x=>[x.project,x.code,x.company,x.date,x.vehicleType,x.brand,x.year,x.chassis,x.license,x.licenseExpiry,x.driver,x.driverLicense,x.inspector,x.condition,x.colorCode,'"'+(x.notes||'').replace(/"/g,'""')+'"',(x.vehicleImgs||[]).length,(x.checkImgs||[]).length,(x.licenseImgs||[]).length].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='vehicle-inspection.csv';a.click()}
-function renderNotif(){let unread=notifications.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=notifications.length?notifications.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title)}</b><br><small>${escapeHtml(n.msg)}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
+async function delVE(i){if(!confirm('Delete this inspection?'))return;let rec=items[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'vehicles'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}items.splice(i,1);renderVE();refreshCode()}
+async function clearVE(){if(!confirm('Delete all vehicle inspections from Firebase?'))return;try{for(let coll of ['vehicles','vehicle','vehicleInspections','vehicle-inspections']){let s=await firebase.firestore().collection(coll).get();for(let d of s.docs)await firebase.firestore().collection(coll).doc(d.id).delete()}}catch(e){}items=[];renderVE();refreshCode()}
+function exportVE(){if(!items.length)return alert('No data');let csv='Project,Code,Company,Date,Vehicle Type,Brand,Year,Chassis,Vehicle License,License Expiry,Driver,Driver License,Inspector,Condition,Color Code,Notes,Vehicle Photos,Checklist Photos,License Photos\n'+items.map(x=>[x.project,x.code,x.company,x.date,x.vehicleType,x.brand,x.year,x.chassis,x.license,x.licenseExpiry,x.driver,x.driverLicense,x.inspector,x.condition,x.colorCode,'"'+String(x.notes||'').replace(/"/g,'""')+'"',(x.vehicleImgs||[]).length,(x.checkImgs||[]).length,(x.licenseImgs||[]).length].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='vehicle-inspection.csv';a.click()}
+function renderNotif(){let unread=notifications.filter(n=>!n.read).length;document.getElementById('notifCount').textContent=unread||'';document.getElementById('notifCount').style.display=unread?'flex':'none';document.getElementById('notifList').innerHTML=notifications.length?notifications.map(n=>`<div class="notif-item ${n.read?'':'unread'}" onclick="openNotif('${n.id}')"><b>${escapeHtml(n.title||n.msg||'')}</b><br><small>${escapeHtml(n.msg||'')}</small></div>`).join(''):'<div style="padding:14px;text-align:center;color:#888">مفيش إشعارات</div>'}
 async function openNotif(id){try{await firebase.firestore().collection('notifications').doc(id).update({read:true})}catch(e){}let n=notifications.find(x=>x.id===id);if(n)n.read=true;renderNotif()}
 async function markAllRead(e){e.stopPropagation();for(let n of notifications){if(!n.read){try{await firebase.firestore().collection('notifications').doc(n.id).update({read:true})}catch(e){}n.read=true}}renderNotif()}
 document.getElementById('ve-date').value=new Date().toISOString().slice(0,10);document.getElementById('ve-year').value=new Date().getFullYear();loadLive();renderColorRow();
