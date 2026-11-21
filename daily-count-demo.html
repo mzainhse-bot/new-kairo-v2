@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Count DEMO V4 - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+/* SIDEBAR - V4 EXACT */
+.sidebar{position:fixed;top:10px;right:0;width:280px;height:calc(100vh - 10px);background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
+html[dir="ltr"] .sidebar{right:auto;left:0}
+.logo-box{text-align:center;padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+.logo-shield{width:68px;height:76px;margin:0 auto 8px;position:relative}
+.logo-shield svg{width:100%;height:100%}
+.logo-box b{font-size:32px;letter-spacing:3px;display:block;line-height:1}
+.logo-box small{color:#FFB380;font-size:10px;letter-spacing:1px}
+.logo-box em{color:#8AA0B8;font-size:9px;font-style:normal}
+.nav-group{margin:14px 0 6px}
+.nav-head{font-size:11px;font-weight:900;color:#FFB380;letter-spacing:1px;padding:0 10px;margin-bottom:6px}
+.sidebar a{display:flex;gap:12px;color:#CBD5E1;text-decoration:none;padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:2px}
+.sidebar a:hover{background:rgba(255,255,255,.08);color:#fff}
+.sidebar a.active{background:#FF6B00;color:#fff;font-weight:900}
+.user-card{margin-top:auto;background:rgba(255,255,255,.08);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center}
+.user-card img{width:44px;height:44px;border-radius:50%;border:2px solid #FF6B00;object-fit:cover}
+.user-card b{display:block;font-size:13px}.user-card small{color:#8AA0B8;font-size:11px}
+.logout{margin-top:10px;background:rgba(211,47,47,.25);border:1px solid #FF5252;color:#FFCDD2;text-align:center;padding:11px;border-radius:12px;font-weight:800;text-decoration:none;font-size:13px;display:block}
+/* MAIN */
+.main{margin-right:280px;min-height:100vh}
+html[dir="ltr"] .main{margin-right:0;margin-left:280px}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:90}
+.menu-btn{background:#FF6B00;border:none;width:38px;height:38px;border-radius:10px;font-size:18px;color:#fff;cursor:pointer}
+.search{flex:1;max-width:380px;display:flex;gap:8px;background:#F1F3F5;border-radius:99px;padding:9px 14px;color:#666;font-size:13px}
+.search input{border:none;outline:none;background:transparent;width:100%}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:#F1F3F5;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer}
+.badge-n{position:absolute;top:-6px;left:-6px;background:#E53935;color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pill{border:1px solid #ddd;background:#fff;padding:8px 16px;border-radius:99px;font-weight:700;cursor:pointer}
+.pill.active{background:#111;color:#fff}
+.date-box{text-align:left;line-height:1.3}.date-box b{font-size:12px}.date-box small{color:#888;font-size:11px}
+.btn-orange{background:#FF6B00;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer}
+.btn-ghost{background:#fff;border:1px solid #ddd;padding:8px 14px;border-radius:99px;cursor:pointer;font-weight:700}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+.kpi{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:#FF6B00}
+.kpi-top{display:flex;gap:12px;align-items:center}
+.kpi-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.kpi b{font-size:26px;display:block}.kpi small{color:#666;font-size:12px}
+.panel{background:#fff;border:1px solid #eee;border-radius:18px;padding:18px;margin-bottom:14px}
+input,select{width:100%;padding:11px;border:1.5px solid #ddd;border-radius:12px;font-size:13px;outline:none}
+input:focus{border-color:#FF6B00}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F2A4D;color:#fff;padding:11px}table td{padding:10px;border-bottom:1px solid #eee;text-align:center}
+.total-box{background:#FFF8E1;border-radius:14px;padding:14px;text-align:center;margin-top:12px}
+.notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}
+.notif-panel.show{display:block}
+.notif-item{padding:10px;border-bottom:1px solid #eee;font-size:13px;cursor:pointer}
+.notif-item.critical{border-right:4px solid #E53935;background:#FFF5F5}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search,.date-box{display:none}}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<aside class="sidebar" id="sidebar">
+<div class="logo-box">
+<div class="logo-shield"><svg viewBox="0 0 86 94"><path d="M43 2 L80 14 V52 C80 74 62 86 43 92 C24 86 6 74 6 52 V14 Z" fill="#0A0E14" stroke="#FF6B00" stroke-width="3"/><path d="M28 48 L38 38 L48 58 L60 30" fill="none" stroke="#FF6B00" stroke-width="4" stroke-linecap="round"/></svg></div>
+<b>RMED</b><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="#">🏠 <span data-i18n="home">Home</span></a><a href="#">📊 <span data-i18n="dashboard">Dashboard</span></a></div>
+<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="#">📋 <span data-i18n="induction">Induction</span></a><a href="#" class="active">🔢 <span data-i18n="daily">Daily Count</span></a><a href="#">🎓 Training</a></div>
+<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="#">🚑 <span data-i18n="accidents">Accidents</span></a><a href="#">📄 NCR</a><a href="#">🧯 Fire Extinguishers</a></div>
+<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
+<a href="#" class="logout">↩ Logout</a>
+</aside>
+
+<div class="main">
+<div class="topbar">
+<button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
+<div class="search">🔍 <input id="topSearch" placeholder="Search..." oninput="document.getElementById('searchD').value=this.value;render()"></div>
+<div style="margin-inline-start:auto;display:flex;gap:10px;align-items:center">
+<button class="icon-btn" onclick="toggleNotif()">🔔<span class="badge-n" id="notifCount">3</span></button>
+<button class="pill" id="btnAr" onclick="setLang('ar')">عربي</button>
+<button class="pill" id="btnEn" onclick="setLang('en')">EN</button>
+<div class="date-box"><b id="todayDate">Sat, 21 Nov 2026</b><br><small id="todayTime">10:24 AM</small></div>
+</div>
+</div>
+
+<div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
+
+<div style="padding:16px 20px">
+<h1 style="margin:0;font-size:26px"><span data-i18n="title">عدد عمال اليوم</span> <span style="color:#FF6B00">• Daily Count</span></h1>
+<p style="color:#666;font-size:13px;margin:4px 0 0" data-i18n="subtitle">نسخة تجريبية - الداتا وهمية للتجربة فقط</p>
+
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#FF6B00">👷</div><div><b id="k-total">0</b><small data-i18n="total">إجمالي عمال اليوم</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#2196F3">🦺</div><div><b id="k-safety">0</b><small data-i18n="safety">قسم السلامة</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#2ECC71">🏢</div><div><b id="k-comp">0</b><small data-i18n="companies">عدد الشركات</small></div></div></div>
+<div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:#E53935">🥇</div><div><b id="k-max" style="font-size:16px">-</b><small data-i18n="highest">الأعلى</small></div></div></div>
+</div>
+
+<div class="panel"><h2 style="margin:0" data-i18n="perCompany">إجمالي كل شركة</h2><div id="companyTotals" style="margin-top:12px"></div></div>
+
+<div class="panel"><h2 style="margin:0" data-i18n="add">تسجيل عدد يومي جديد</h2>
+<div class="grid2"><div><label data-i18n="company">Company *</label><input id="d-company" placeholder="RMED..."></div><div><label data-i18n="date">Date *</label><input type="date" id="d-date"></div></div>
+<div class="grid2"><div><label data-i18n="safetyLabel">Safety *</label><input type="number" id="d-safety" oninput="calcLive()"></div><div><label data-i18n="totalLabel">Total Company *</label><input type="number" id="d-total" oninput="calcLive()"></div></div>
+<div class="total-box">Safety: <b id="liveS">0</b> / Total: <b id="liveT">0</b><br><small id="liveDetail"></small></div>
+<button class="btn-orange" style="width:100%;margin-top:12px" onclick="addDemo()">💾 <span data-i18n="save">Save - حفظ</span></button></div>
+
+<div class="panel"><h2 style="margin:0" data-i18n="records">السجلات</h2><input id="searchD" placeholder="🔍 Search..." oninput="render()" style="margin:10px 0"><div id="table"></div></div>
+</div></div>
+
+<script>
+// ===== DEMO DATA - وهمية =====
+let demo=[
+{company:'RMED',date:'2026-11-21',safety:8,total:121},
+{company:'المغربيل',date:'2026-11-21',safety:5,total:86},
+{company:'ABC Contracting',date:'2026-11-21',safety:3,total:45},
+{company:'RMED',date:'2026-11-20',safety:7,total:110},
+];
+let notifs=[
+{text:'🚑 حادث جديد: RMED - Plot 1',crit:true},
+{text:'⚠️ تصريح EXP-2211 هينتهي بعد ساعتين',crit:false},
+{text:'🧯 طفاية في Sector B هتنتهي بعد 5 أيام',crit:false},
+];
+// ===== LANGUAGE - كامل =====
+const I18N={
+ar:{home:'الرئيسية',dashboard:'لوحة التحكم',induction:'التعريف',daily:'عدد عمال اليوم',accidents:'الحوادث',notifications:'الإشعارات',title:'عدد عمال اليوم',subtitle:'نسخة تجريبية - الداتا وهمية للتجربة فقط',total:'إجمالي عمال اليوم',safety:'قسم السلامة',companies:'عدد الشركات',highest:'الأعلى',perCompany:'إجمالي كل شركة',add:'تسجيل عدد يومي جديد',company:'الشركة *',date:'التاريخ *',safetyLabel:'السلامة *',totalLabel:'إجمالي الشركة *',save:'حفظ',records:'السجلات'},
+en:{home:'Home',dashboard:'Dashboard',induction:'Induction',daily:'Daily Count',accidents:'Accidents',notifications:'Notifications',title:'Daily Workers Count',subtitle:'DEMO - Fake data for testing only',total:'Total Workers Today',safety:'Safety Dept',companies:'Companies',highest:'Highest',perCompany:'Total Per Company',add:'Add New Daily Count',company:'Company *',date:'Date *',safetyLabel:'Safety *',totalLabel:'Total Company *',save:'Save',records:'Records'}
+};
+function setLang(l){
+ localStorage.setItem('lang',l); document.documentElement.lang=l; document.documentElement.dir=l==='ar'?'rtl':'ltr';
+ document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n; if(I18N[l][k]) el.textContent=I18N[l][k]});
+ document.getElementById('btnAr').classList.toggle('active',l==='ar'); document.getElementById('btnEn').classList.toggle('active',l==='en');
+}
+setLang(localStorage.getItem('lang')||'ar');
+function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show'); renderNotif();}
+function renderNotif(){
+ document.getElementById('notifCount').textContent=notifs.length;
+ document.getElementById('notifList').innerHTML=notifs.map(n=>`<div class="notif-item ${n.crit?'critical':''}" onclick="alert('${n.text}')">${n.text}</div>`).join('');
+}
+renderNotif();
+function render(){
+ let q=(document.getElementById('searchD').value||'').toLowerCase();
+ let list=demo.filter(x=>x.company.toLowerCase().includes(q));
+ let today='2026-11-21'; let todayList=demo.filter(x=>x.date===today);
+ document.getElementById('k-total').textContent=todayList.reduce((s,x)=>s+x.total,0);
+ document.getElementById('k-safety').textContent=todayList.reduce((s,x)=>s+x.safety,0);
+ document.getElementById('k-comp').textContent=new Set(todayList.map(x=>x.company)).size;
+ let max=[...todayList].sort((a,b)=>b.total-a.total)[0];
+ document.getElementById('k-max').textContent=max?max.total+' - '+max.company:'-';
+ let maxT=Math.max(...todayList.map(x=>x.total),1);
+ document.getElementById('companyTotals').innerHTML=todayList.map(x=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>🏢 ${x.company} - Safety: ${x.safety}</span><b>${x.total} workers</b></div><div style="height:10px;background:#eee;border-radius:10px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px"></div></div>`).join('');
+ document.getElementById('table').innerHTML=`<table><tr><th>Date</th><th>Company</th><th>Safety</th><th>Total</th></tr>${list.map(x=>`<tr><td>${x.date}</td><td>${x.company}</td><td>${x.safety}</td><td><b>${x.total}</b></td></tr>`).join('')}</table>`;
+}
+function calcLive(){let s=parseInt(document.getElementById('d-safety').value)||0;let t=parseInt(document.getElementById('d-total').value)||0;document.getElementById('liveS').textContent=s;document.getElementById('liveT').textContent=t;document.getElementById('liveDetail').textContent=s>t?'⚠️ السلامة أكبر من الإجمالي - غلط':t>0?`Safety ${s} / ${t}`:''}
+function addDemo(){
+ let c=document.getElementById('d-company').value.trim(),d=document.getElementById('d-date').value,s=parseInt(document.getElementById('d-safety').value)||0,t=parseInt(document.getElementById('d-total').value)||0;
+ if(!c||!d) return alert('املأ الشركة والتاريخ');
+ if(s>t) return alert('السلامة أكبر من الإجمالي - غلط');
+ demo.unshift({company:c,date:d,safety:s,total:t}); render(); alert('✅ اتحفظ في الديمو (مش في Firebase)');
+}
+document.getElementById('d-date').value='2026-11-21';
+setInterval(()=>{let now=new Date();document.getElementById('todayTime').textContent=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})},10000);
+render();
+</script>
+</body></html>
