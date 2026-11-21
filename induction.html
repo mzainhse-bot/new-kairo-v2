@@ -76,14 +76,33 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html" class="active">📋 <span data-i18n="induction">Induction</span></a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 <span data-i18n="induction">Induction</span></a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -100,6 +119,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">تسجيل موظف جديد</span> <span style="color:#FF6B00">• Induction V4 Final</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Register New Employee • Live</p>
+<p id="loadStatus2" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin-bottom:14px"><div><b style="font-size:15px">🪪 <span data-i18n="idCard">ID Card Issue - V3 • الكارت بكل البيانات</span></b></div><button class="btn2" style="background:#D32F2F" onclick="openIssueCard()">🪪 Issue ID Card</button></div>
 
@@ -151,6 +171,7 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);if(!el)return;let cur=parseFloat(el.textContent)||0;let t=setInterval(()=>{cur+= (val-cur)/5;if(Math.abs(val-cur)<0.5){cur=val;clearInterval(t)}el.textContent=typeof val==='number'&&val%1!==0?cur.toFixed(2):Math.round(cur)},20)}
 let DB={workers:[],induction:[]};
+let caches={};
 let SHEET_URL="https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
 const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded'};
 const HEALTH_MAP={'سليم':'Healthy','سكر':'Diabetes','ضغط':'Blood Pressure','قلب':'Heart','حساسية':'Allergy','ربو':'Asthma'};
@@ -164,14 +185,74 @@ function isRehabNotes(n){return String(n||'').includes('إعادة تأهيل')|
 function val(id){return document.getElementById(id).value.trim()}
 function setVal(id,v){document.getElementById(id).value=v||''}
 function safe(v){let s=String(v||'').trim();return s?s:'-'}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normWorker(raw){
+  return {
+    id: raw.id, _coll: raw._coll||'workers', _source: raw._source||'workers',
+    name: pick(raw,['name','fullName','employeeName']),
+    code: String(pick(raw,['code','employeeCode','empCode'])||''),
+    nationalId: String(pick(raw,['nationalId','nid','idNumber','nationalID','identity'])||''),
+    job: pick(raw,['job','profession','position']),
+    company: pick(raw,['company','companyName','contractor']),
+    hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt'])),
+    date: normDate(pick(raw,['date','hire','hireDate','startDate','createdAt'])),
+    health: pick(raw,['health','healthStatus','medical']),
+    phone: pick(raw,['phone','phoneNumber','mobile']),
+    emergency: pick(raw,['emergency','emergencyNumber','emergencyPhone']),
+    kin: pick(raw,['kin','kinship','relation']),
+    status: pick(raw,['status','state']),
+    notes: pick(raw,['notes','note','remarks']),
+    isRehab: !!raw.isRehab,
+    img: pick(raw,['img','photo','image','avatar','photoURL']),
+    photo: pick(raw,['photo','img','image']),
+    createdAt: raw.createdAt||''
+  };
+}
 document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
-function getDisplayList(){let map=new Map();(DB.workers||[]).forEach(w=>{let key=String(w.nationalId||w.code||w.name);if(key)map.set(key,{...w,_source:'workers'})});(DB.induction||[]).forEach(x=>{let key=String(x.nationalId||x.code||x.name);if(key)map.set(key,{...x,_source:'induction'})});return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')))}
+function getDisplayList(){
+  // دمج بذكاء: نفس الرقم القومي = نفس الشخص، بنكمل بياناته من كل المصادر مش بنمسحها
+  let map=new Map();
+  let all=[...(DB.workers||[]),...(DB.induction||[])].map(normWorker);
+  all.forEach(w=>{
+    let key=w.nationalId || w.code || w.name;
+    if(!key) return;
+    if(!map.has(key)){ map.set(key,{...w}); }
+    else {
+      let ex=map.get(key);
+      // كمل الناقص من السجل التاني
+      ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{
+        if(!ex[k] && w[k]) ex[k]=w[k];
+      });
+      if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true;
+      if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt;
+    }
+  });
+  return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('workers').onSnapshot(snap=>{DB.workers=snap.docs.map(d=>({id:d.id,...d.data()}));renderInd();refreshCode();});
-  db.collection('induction').onSnapshot(snap=>{let old=DB.induction.length;DB.induction=snap.docs.map(d=>({id:d.id,...d.data()}));if(DB.induction.length>old&&old>0)playBeep();renderInd();refreshCode();});
-  document.getElementById('loadStatus').textContent='متصل Live ✅';
+  ['workers','induction','users','employees'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,_source:coll,...d.data()}));
+      // إعادة بناء DB من الكاشات
+      DB.workers=[]; DB.induction=[];
+      Object.entries(caches).forEach(([c,arr])=>{
+        if(c==='workers'||c==='users'||c==='employees') DB.workers.push(...arr);
+        else if(c==='induction') DB.induction.push(...arr);
+      });
+      document.getElementById('loadStatus').textContent='متصل Live ✅';
+      document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | إجمالي بعد الدمج: '+getDisplayList().length;
+      renderInd(); refreshCode();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){document.getElementById('loadStatus').textContent='خطأ: '+e.message}
 }
 function codeNum(c){let m=String(c||'').match(/(\d+)\s*$/);return m?parseInt(m[1],10):NaN}
@@ -188,7 +269,7 @@ async function saveInductionWorker(){
  let code=val('f-code')||nextCode();
  let old=checkNational();let isRehab=!!old;let notes=val('f-notes');if(isRehab&&!isRehabNotes(notes))notes=(notes?notes+' - ':'')+'Rehabilitation';
  readFile('f-img',async img=>{
-  let w={name:val('f-name'),code:String(code),nationalId:val('f-national'),job:val('f-job'),company:val('f-company')||'',hire:val('f-date'),date:val('f-date'),health:val('f-health'),phone:val('f-phone'),emergency:val('f-emergency'),kin:val('f-kin'),status:val('f-status'),notes:notes,isRehab:isRehab,img:img,photo:img,reporter:getMeName(),createdAt:new Date().toISOString()};
+  let w={name:val('f-name'),code:String(code),nationalId:val('f-national'),nid:val('f-national'),job:val('f-job'),profession:val('f-job'),company:val('f-company')||'',hire:val('f-date'),hireDate:val('f-date'),date:val('f-date'),health:val('f-health'),phone:val('f-phone'),phoneNumber:val('f-phone'),emergency:val('f-emergency'),emergencyPhone:val('f-emergency'),kin:val('f-kin'),kinship:val('f-kin'),status:val('f-status'),notes:notes,isRehab:isRehab,img:img,photo:img,reporter:getMeName(),createdAt:new Date().toISOString()};
   try{await firebase.firestore().collection('workers').add(w);await firebase.firestore().collection('induction').add({...w,hoursPer:0.25,totalHours:0.25,type:'induction',title:'Induction - '+w.name});playBeep();}catch(e){alert('Save problem: '+e.message);return}
   try{let params=new URLSearchParams({action:'add',name:w.name,id:w.code,job:w.job,company:w.company,hireDate:w.hire,phone:w.phone,emergencyPhone:w.emergency,relation:w.kin,health:w.health,status:w.status,photo:'',nationalId:w.nationalId,notes:w.notes});fetch(SHEET_URL+'?'+params.toString())}catch(e){}
   alert('✅ Saved '+w.name+' - Induction 0.25 hour'+(isRehab?' - Rehabilitation':''));
@@ -201,7 +282,7 @@ function renderInd(){
  let list=allDisplay.filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q));
  let total=allDisplay.length,hours=total*0.25,rehab=allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).length,today=new Date().toISOString().slice(0,10),todayCount=allDisplay.filter(x=>x.date===today||(x.createdAt||'').slice(0,10)===today).length;
  animateNum('k-total',total);document.getElementById('k-hours').textContent=hours.toFixed(2);animateNum('k-rehab',rehab);animateNum('k-today',todayCount);document.getElementById('rehabIcon').classList.toggle('shake',rehab>0);
- document.getElementById('indTable').innerHTML=list.length?'<table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Date</th><th>Status</th><th>Notes</th><th>ID Card</th></tr>'+list.map(x=>`<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td><span class="badge ${TStatus(x.status)==='Active'?'green':'red'}">${escapeHtml(TStatus(x.status))}</span></td><td>${x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':escapeHtml(x.notes||'-')}</td><td><button class="btn2" onclick="openCardByKey('${escapeHtml(x.nationalId||x.code)}')">🪪 ID Card</button></td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No registered yet</p>';
+ document.getElementById('indTable').innerHTML=list.length?'<table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Date</th><th>Status</th><th>Notes</th><th>ID Card</th></tr>'+list.map(x=>`<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td><span class="badge ${TStatus(x.status)==='Active'?'green':'red'}">${escapeHtml(TStatus(x.status))}</span></td><td>${x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':escapeHtml(x.notes||'-')}</td><td><button class="btn2" onclick="openCardByKey('${escapeHtml(x.nationalId||x.code)}')">🪪 ID Card</button></td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No registered yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  let notifs=[...allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).slice(0,3).map(x=>`🔁 إعادة تأهيل: ${x.name} - ${x.code}`),...allDisplay.filter(x=>(x.date||'').slice(0,10)===today).slice(0,3).map(x=>`👤 موظف جديد اليوم: ${x.name}`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
