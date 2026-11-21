@@ -40,14 +40,33 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html" class="active">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -64,6 +83,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">إنجازاتي</span> <span style="color:#FF6B00">• My Achievements</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Reports You Uploaded • Live</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="profile-bar"><img id="u-photo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div style="flex:1;min-width:220px"><h2 id="u-name" style="margin:0">-</h2><p id="u-info" style="margin:6px 0;color:#666;font-size:13px">-</p><p id="roleNote" style="margin:0;color:#FF6B00;font-size:13px;font-weight:800"></p></div><button class="btn-ghost" onclick="logout()">🚪 Logout</button></div>
 
@@ -103,26 +123,71 @@ let me=getMe();
 document.getElementById('u-photo').src=me.photo||me.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
 document.getElementById('u-name').textContent='Welcome, '+me.name;
 document.getElementById('u-info').textContent=(me.job||'')+' • '+(me.email||'')+' • Role: '+(me.role||'');
-document.getElementById('sideName').textContent=me.name; document.getElementById('sideRole').textContent=me.job||me.role||'';
+let _sn=document.getElementById('sideName'); if(_sn) _sn.textContent=me.name;
+let _sr=document.getElementById('sideRole'); if(_sr) _sr.textContent=me.job||me.role||'';
 let roleNote={visitor:'👁️ Visitor - View only',employee:'👷 Employee - Upload reports except NCR',supervisor:'🦺 Supervisor - All edit except Users',manager:'👑 Manager - Full permissions',admin:'👑 Manager - Full permissions'};
 document.getElementById('roleNote').textContent=roleNote[String(me.role||'').toLowerCase()]||'';
+// ===== FIX: توحيد اسم صاحب التقرير + التاريخ + أسماء الكوليكشنز =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim();
+  if(s.length>10) s=s.slice(0,10);
+  s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normName(s){ return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+function isMine(x){
+  let meName=normName(me.name), meEmail=String(me.email||'').toLowerCase();
+  let candidates=[
+    pick(x,['reporter','reporterName','createdBy','createdByName','user','userName','uploadedBy','uploadedByName','inspector','inspectorName','supervisor','supervisorName','trainer','trainerName','author','owner','addedBy']),
+    pick(x,['email','userEmail','reporterEmail'])
+  ];
+  // لو السجل مفيهوش اسم خالص، منعدوش - عشان منجيبش تقارير غيرنا
+  let nameCand=normName(candidates[0]);
+  let emailCand=String(candidates[1]||'').toLowerCase();
+  if(meEmail && emailCand && emailCand===meEmail) return true;
+  if(meName && nameCand && (nameCand===meName || nameCand.includes(meName) || meName.includes(nameCand))) return true;
+  return false;
+}
 let all=[];
-function collect(arr,label){(arr||[]).forEach(x=>{let rep=String(x.reporter||x.reporterName||x.createdBy||x.user||'').trim();if(rep===me.name||x.email===me.email||x.trainer===me.name){all.push({page:label,date:x.date||x.createdAt||'',desc:x.desc||x.topic||x.title||x.description||''})}})}
+function collect(arr,label){(arr||[]).forEach(x=>{
+  if(!isMine(x)) return;
+  all.push({
+    page:label,
+    date: normDate(pick(x,['date','incidentDate','createdAt','timestamp'])),
+    desc: pick(x,['desc','description','topic','title','details','whatHappened','place','location'])
+  });
+})}
 let caches={};
+function rebuildAll(){
+  all=[];
+  Object.entries(caches).forEach(([c,arr])=>{
+    let l=COLS.find(m=>m[0]===c)?.[1]||c;
+    collect(arr,l);
+  });
+  renderAchievements();
+}
+let COLS=[['scaffolds','Scaffold'],['accidents','Accidents'],['violations','Contractor Violations'],['employeeViolations','Employee Violations'],['ncr','NCR'],['nearMiss','Near Miss'],['safetyObservations','Safety Observations'],['observations','Safety Observations'],['permits','Permits'],['train','Trainings'],['weekly','Weekly Meeting'],['induction','Induction'],['firstAid','First Aid'],['dailyCount','Daily Count'],['first-aid','First Aid'],['safety-observations','Safety Observations']];
 function loadLive(){
  try{
-  let map=[['scaffolds','Scaffold'],['accidents','Accidents'],['violations','Contractor Violations'],['employeeViolations','Employee Violations'],['ncr','NCR'],['nearMiss','Near Miss'],['safetyObservations','Safety Observations'],['permits','Permits'],['train','Trainings'],['weekly','Weekly Meeting'],['induction','Induction'],['firstAid','First Aid'],['dailyCount','Daily Count']];
-  map.forEach(([coll,label])=>{
+  COLS.forEach(([coll,label])=>{
    firebase.firestore().collection(coll).onSnapshot(snap=>{
     let old=all.length;
-    // إعادة بناء من كل المجموعات المحفوظة
-    caches[coll]=snap.docs.map(d=>d.data());
-    all=[]; Object.entries(caches).forEach(([c,arr])=>{let l=map.find(m=>m[0]===c)?.[1]||c; collect(arr,l)});
+    caches[coll]=snap.docs.map(d=>({id:d.id,...d.data()}));
+    rebuildAll();
     if(all.length>old && old>0) playBeep();
-    renderAchievements(); loadNotif();
-   });
+    loadNotif();
+    updateLoadStatus();
+   }, err=>{ console.log('skip',coll,err.message); });
   });
  }catch(e){console.log(e)}
+}
+function updateLoadStatus(){
+  let totalCached=Object.values(caches).reduce((s,a)=>s+a.length,0);
+  document.getElementById('loadStatus').textContent='✅ Live - إجمالي السجلات المفحوصة: '+totalCached+' | تقاريرك: '+all.length+' | المستخدم: '+me.name;
 }
 function renderAchievements(){
  let now=new Date();let inDays=(d,days)=>{let dt=new Date(d);if(isNaN(dt))return false;return (now-dt)/(1000*60*60*24)<=days&&(now-dt)>=0};
@@ -134,15 +199,18 @@ function renderAchievements(){
  document.getElementById('a-top').textContent=top?top[0]+' ('+top[1]+')':'-';
  all.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
  document.getElementById('a-last').textContent=all.length?all[0].date+' - '+all[0].page:'No reports yet';
- document.getElementById('last5').innerHTML=all.length?'<table><tr><th>Date</th><th>Page</th><th>Description</th></tr>'+all.slice(0,5).map(x=>`<tr><td>${escapeHtml(x.date||'-')}</td><td>${escapeHtml(x.page)}</td><td>${escapeHtml((x.desc||'').slice(0,80))}</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">لسه مرفعتش تقارير - ابدأ من زرار روح للموقع</p>';
+ document.getElementById('last5').innerHTML=all.length?'<table><tr><th>Date</th><th>Page</th><th>Description</th></tr>'+all.slice(0,5).map(x=>`<tr><td>${escapeHtml(x.date||'-')}</td><td>${escapeHtml(x.page)}</td><td>${escapeHtml((x.desc||'').slice(0,80))}</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">لسه مرفعتش تقارير - ابدأ من زرار روح للموقع<br><small>لو عندك تقارير قديمة ومتظهرش، اتأكد إن اسمك في حقل reporter / createdBy مطابق لاسمك في Login</small></p>';
  let maxP=Math.max(...Object.values(byPage),1);
  document.getElementById('byPageList').innerHTML=Object.entries(byPage).sort((a,b)=>b[1]-a[1]).map(([p,c])=>`<div style="display:flex;justify-content:space-between;font-size:13px"><span>${escapeHtml(p)}</span><b>${c}</b></div><div style="height:8px;background:#eee;border-radius:99px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${c/maxP*100}%;border-radius:99px"></div></div>`).join('')||'لا توجد تقارير';
 }
 async function loadNotif(){
  let notifs=[];
  try{
-  let a=await firebase.firestore().collection('accidents').orderBy('createdAt','desc').limit(3).get();
-  a.forEach(d=>{let x=d.data();notifs.push(`🚑 حادث: ${x.company||''} - ${x.place||''}`)});
+  // بدون orderBy عشان القديم
+  let a=await firebase.firestore().collection('accidents').limit(10).get();
+  let arr=[]; a.forEach(d=>arr.push(d.data()));
+  arr.sort((x,y)=>String(y.date||y.createdAt||'').localeCompare(String(x.date||x.createdAt||'')));
+  arr.slice(0,3).forEach(x=>notifs.push(`🚑 حادث: ${pick(x,['company','companyName'])||''} - ${pick(x,['place','location'])||''}`));
  }catch(e){}
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
