@@ -86,6 +86,7 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div id="pageContent" style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px">أرصدة المخازن <span style="color:#FF6B00">• Store Stock</span></h1>
 <p style="color:#666;font-size:13px">مخازن إدارة السلامة • وارد / صادر • مهمات الوقاية PPE • تنبيه عند 10 قطع • Live</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold">🏬</span><div><b id="k-items">0</b><small>عدد الأصناف</small></div></div></div>
@@ -146,12 +147,75 @@ if(!canAccess){document.getElementById('pageContent').style.display='none';docum
 let items=[],outs=[],workers=[];
 const MIN_STOCK=10;
 function val(id){return document.getElementById(id).value.trim()}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normItem(raw){
+  return {
+    id: raw.id, _coll: raw._coll||'storeItems',
+    name: pick(raw,['name','itemName','item'])||'',
+    category: pick(raw,['category','cat','type'])||'PPE',
+    unit: pick(raw,['unit','uom'])||'قطعة',
+    qty: Number(pick(raw,['qty','quantity','stock','balance'])||0)||0,
+    minStock: Number(pick(raw,['minStock','min'])||10)||10,
+    lastInboundDate: normDate(pick(raw,['lastInboundDate','lastDate','date'])),
+    lastSupplier: pick(raw,['lastSupplier','supplier'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
+function normTx(raw){
+  let ty=String(pick(raw,['type','transactionType'])||'');
+  if(ty.toLowerCase().includes('out')||ty.includes('صادر')) ty='outbound'; else if(ty.toLowerCase().includes('in')||ty.includes('وارد')) ty='inbound'; else ty='outbound';
+  return {
+    id: raw.id, _coll: raw._coll||'storeTransactions',
+    type: ty,
+    date: normDate(pick(raw,['date','createdAt'])),
+    time: pick(raw,['time'])||'',
+    workerCode: pick(raw,['workerCode','code','empCode','employeeCode'])||'',
+    workerName: pick(raw,['workerName','name','worker','employeeName'])||'',
+    job: pick(raw,['job','profession','occupation','trade'])||'',
+    company: pick(raw,['company','contractor'])||'',
+    itemId: pick(raw,['itemId','item'])||'',
+    itemName: pick(raw,['itemName','name','item'])||'',
+    category: pick(raw,['category','cat'])||'',
+    unit: pick(raw,['unit'])||'',
+    qty: Number(pick(raw,['qty','quantity'])||0)||0,
+    reason: pick(raw,['reason','notes','note'])||'',
+    supplier: pick(raw,['supplier'])||'',
+    receiver: pick(raw,['receiver'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  db.collection('storeItems').onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));renderAll()});
-  db.collection('storeTransactions').orderBy('createdAt','desc').onSnapshot(s=>{outs=s.docs.map(d=>({id:d.id,...d.data()}));renderAll()});
-  ['inductions','induction','inductionRecords'].forEach(col=>{
+  // ===== FIX: بيجرب كل أسماء الأصناف =====
+  ['storeItems','store-stock','store_stock','storeStock','stock','inventory'].forEach(coll=>{
+    db.collection(coll).onSnapshot(s=>{
+      let arr=s.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normItem);
+      let merged=[...items].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      items=merged;
+      document.getElementById('loadStatus').textContent='✅ Live - الأصناف: '+items.length+' | الصادر: '+outs.length;
+      renderAll();
+    }, ()=>{});
+  });
+  // ===== FIX: شلت orderBy من storeTransactions =====
+  ['storeTransactions','store-transactions','storeTransactionsLog'].forEach(coll=>{
+    db.collection(coll).onSnapshot(s=>{
+      let arr=s.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normTx);
+      let merged=[...outs].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      outs=merged;
+      outs.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      document.getElementById('loadStatus').textContent='✅ Live - الأصناف: '+items.length+' | الصادر: '+outs.length;
+      renderAll();
+    }, ()=>{});
+  });
+  ['inductions','induction','inductionRecords','inductionRecordsList'].forEach(col=>{
     db.collection(col).onSnapshot(s=>{
       let arr=s.docs.map(d=>({id:d.id,...d.data()}));
       arr.forEach(w=>{
@@ -165,7 +229,7 @@ function loadLive(){
       workers.sort((a,b)=>a.name.localeCompare(b.name));
       document.getElementById('workerCodeList').innerHTML=workers.filter(w=>w.code).map(w=>`<option value="${escapeHtml(w.code)}">${escapeHtml(w.name)}</option>`).join('');
       document.getElementById('workerNameList').innerHTML=workers.map(w=>`<option value="${escapeHtml(w.name)}">${escapeHtml(w.code||'')}</option>`).join('');
-    });
+    }, ()=>{});
   });
  }catch(e){console.log(e)}
 }
@@ -199,7 +263,7 @@ function renderAll(){
  sel.innerHTML=items.map(x=>`<option value="${x.id}" ${x.id===cur?'selected':''}>${escapeHtml(x.name)} - ${escapeHtml(x.category)} - متاح ${x.qty}</option>`).join('');
  showAvail();
  let list=items.filter(x=>(x.name||'').toLowerCase().includes(q)&&(!fCat||x.category===fCat));
- document.getElementById('stockTable').innerHTML=!list.length?'<p style="text-align:center;color:#888">مفيش أصناف لسه - ضيف أول وارد فوق</p>':'<table><tr><th>الصنف</th><th>التصنيف</th><th>الوحدة</th><th>الرصيد</th><th>الحالة</th><th>تاريخ آخر وارد</th><th>آخر مورد</th><th>حذف</th></tr>'+list.map(x=>{
+ document.getElementById('stockTable').innerHTML=!list.length?'<p style="text-align:center;color:#888">مفيش أصناف لسه - ضيف أول وارد فوق - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>':'<table><tr><th>الصنف</th><th>التصنيف</th><th>الوحدة</th><th>الرصيد</th><th>الحالة</th><th>تاريخ آخر وارد</th><th>آخر مورد</th><th>حذف</th></tr>'+list.map(x=>{
    let isLow=(x.qty||0)<=MIN_STOCK;
    return `<tr class="${isLow?'low-row':''}"><td><b>${escapeHtml(x.name)}</b></td><td>${escapeHtml(x.category)}</td><td>${escapeHtml(x.unit)}</td><td><b>${x.qty}</b></td><td><span class="badge ${isLow?'red':'green'}">${isLow?'⚠️ قرب يخلص':'✅ متوفر'}</span></td><td>${escapeHtml(x.lastInboundDate||'-')}</td><td>${escapeHtml(x.lastSupplier||'-')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delItem('${x.id}')">🗑️</button></td></tr>`
  }).join('')+'</table>';
@@ -209,7 +273,6 @@ function renderAll(){
  let notifs=low.slice(0,5).map(x=>`⚠️ مخزون قرب يخلص: ${x.name} - المتبقي ${x.qty} ${x.unit} - آخر وارد ${x.lastInboundDate||'-'}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'مفيش إشعارات';
- if(notifs.length) playBeep();
 }
 async function addInbound(){
  if(!canAccess) return alert('غير مسموح');
@@ -219,15 +282,17 @@ async function addInbound(){
  let db=firebase.firestore();
  let qty=parseInt(val('in-qty'));
  let name=val('in-name'),cat=val('in-cat');
- let existing=items.find(x=>x.name.toLowerCase()===name.toLowerCase()&&x.category===cat);
+ let existing=items.find(x=>String(x.name||'').toLowerCase()===name.toLowerCase()&&x.category===cat);
  let inDate=val('in-date');
  try{
   if(existing){
-    await db.collection('storeItems').doc(existing.id).update({qty:(existing.qty||0)+qty,lastInboundDate:inDate,lastSupplier:val('in-supplier'),unit:val('in-unit'),updatedAt:new Date().toISOString()});
+    let realId=String(existing.id).includes(':')?String(existing.id).split(':').slice(1).join(':'):existing.id;
+    let coll=existing._coll||'storeItems';
+    await db.collection(coll).doc(realId).update({qty:(existing.qty||0)+qty,quantity:(existing.qty||0)+qty,lastInboundDate:inDate,lastSupplier:val('in-supplier'),unit:val('in-unit'),updatedAt:new Date().toISOString()});
   } else {
-    await db.collection('storeItems').add({name,category:cat,unit:val('in-unit'),qty, minStock:MIN_STOCK, lastInboundDate:inDate, lastSupplier:val('in-supplier'), createdAt:new Date().toISOString()});
+    await db.collection('storeItems').add({name,itemName:name,category:cat,unit:val('in-unit'),qty,quantity:qty,minStock:MIN_STOCK,lastInboundDate:inDate,lastSupplier:val('in-supplier'),createdAt:new Date().toISOString()});
   }
-  await db.collection('storeTransactions').add({type:'inbound',date:inDate,itemName:name,category:cat,unit:val('in-unit'),qty,supplier:val('in-supplier'),receiver:val('in-receiver'),notes:val('in-notes'),by:me?me.name:'',createdAt:new Date().toISOString()});
+  await db.collection('storeTransactions').add({type:'inbound',date:inDate,itemName:name,name:name,category:cat,unit:val('in-unit'),qty,quantity:qty,supplier:val('in-supplier'),receiver:val('in-receiver'),notes:val('in-notes'),by:me?me.name:'',createdAt:new Date().toISOString()});
  }catch(e){return alert(e.message)}
  alert('✅ تم إضافة الوارد - '+name+' +'+qty+' - تاريخ '+inDate);
  document.getElementById('in-qty').value='';document.getElementById('in-supplier').value='';document.getElementById('in-notes').value='';
@@ -244,10 +309,12 @@ async function addOutbound(){
  let qty=parseInt(val('out-qty'))||0;
  if(qty<=0) return alert('اكتب كمية صحيحة');
  if(qty>(it.qty||0)) return alert('الكمية أكبر من المتاح: '+it.qty);
- let rec={type:'outbound',date:val('out-date'),time:val('out-time'),workerCode:val('out-code'),workerName:val('out-name'),job:val('out-job'),company:val('out-company'),itemId:itemId,itemName:it.name,category:it.category,unit:it.unit,qty,reason:val('out-reason'),by:me?me.name:'',createdAt:new Date().toISOString()};
+ let rec={type:'outbound',date:val('out-date'),time:val('out-time'),workerCode:val('out-code'),workerName:val('out-name'),job:val('out-job'),company:val('out-company'),itemId:itemId,itemName:it.name,name:it.name,category:it.category,unit:it.unit,qty,quantity:qty,reason:val('out-reason'),notes:val('out-reason'),by:me?me.name:'',createdAt:new Date().toISOString()};
  try{
   await db.collection('storeTransactions').add(rec);
-  await db.collection('storeItems').doc(it.id).update({qty:(it.qty||0)-qty});
+  let realId=String(it.id).includes(':')?String(it.id).split(':').slice(1).join(':'):it.id;
+  let coll=it._coll||'storeItems';
+  await db.collection(coll).doc(realId).update({qty:(it.qty||0)-qty,quantity:(it.qty||0)-qty});
   if(rec.workerCode||rec.workerName){
     await db.collection('employeeFileExtras').add({workerCode:rec.workerCode,workerName:rec.workerName,job:rec.job,company:rec.company,kind:'PPE',title:rec.itemName,detail:rec.reason,qty:rec.qty,unit:rec.unit,date:rec.date,time:rec.time,createdAt:new Date().toISOString()});
   }
@@ -255,8 +322,8 @@ async function addOutbound(){
  alert('✅ تم الصرف وخصم من الرصيد - '+rec.itemName+' - '+qty);
  document.getElementById('out-qty').value='';document.getElementById('out-reason').value='';
 }
-async function delItem(id){if(!confirm('تحذف الصنف ده؟'))return;try{await firebase.firestore().collection('storeItems').doc(id).delete()}catch(e){}}
-async function delOut(id){if(!confirm('تحذف الصرفة دي؟ الرصيد مش هيرجع أوتوماتيك'))return;try{await firebase.firestore().collection('storeTransactions').doc(id).delete()}catch(e){}}
+async function delItem(id){if(!confirm('تحذف الصنف ده؟'))return;try{let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'storeItems'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}}
+async function delOut(id){if(!confirm('تحذف الصرفة دي؟ الرصيد مش هيرجع أوتوماتيك'))return;try{let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'storeTransactions'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}}
 function exportStockExcel(){
  let csv='Item,Category,Unit,Qty,Status,Last Inbound Date,Last Supplier\n'+items.map(x=>[x.name,x.category,x.unit,x.qty,(x.qty<=MIN_STOCK?'Low':'OK'),x.lastInboundDate||'',x.lastSupplier||''].join(',')).join('\n');
  let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-stock.csv';a.click();
@@ -266,7 +333,7 @@ function exportStockPDF(){
 }
 function exportOutExcel(){
  let outboundOnly=outs.filter(x=>x.type==='outbound');
- let csv='Date,Time,Worker Code,Worker Name,Job,Company,Item,Category,Qty,Reason\n'+outboundOnly.map(x=>[x.date,x.time,x.workerCode,x.workerName,x.job,x.company,x.itemName,x.category,x.qty,'"'+(x.reason||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
+ let csv='Date,Time,Worker Code,Worker Name,Job,Company,Item,Category,Qty,Reason\n'+outboundOnly.map(x=>[x.date,x.time,x.workerCode,x.workerName,x.job,x.company,x.itemName,x.category,x.qty,'"'+String(x.reason||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
  let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-outbound.csv';a.click();
 }
 function exportOutPDF(){
