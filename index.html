@@ -40,15 +40,33 @@ table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html" class="active">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a></div>
-<div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
-<div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager</small></div></div>
-<a href="#" class="logout" onclick="localStorage.clear();location.href='login.html'">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permits</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -65,6 +83,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">الرئيسية</span> <span style="color:#FF6B00">• Home</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="welcome"><div><b id="welcomeName">👋 Welcome To RMED</b><small id="welcomeSub">Safety Is Not An Option, It's A Value</small></div><div class="score"><b id="myScore">0</b><br><small data-i18n="points">Achievement Points</small></div></div>
 
@@ -107,43 +126,104 @@ function animateNum(id,val){let el=document.getElementById(id);if(!el)return;let
 function filterActivity(q){q=(q||'').toLowerCase();document.querySelectorAll('#myActivity tr').forEach(tr=>{if(tr.querySelector('th'))return;tr.style.display=tr.textContent.toLowerCase().includes(q)?'':'none'})}
 function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');if(typeof u==='object'&&u.name)return u}catch(e){}return null}
 (function(){let nm=getMe();if(nm){document.getElementById('sideName').textContent=nm.name;document.getElementById('sideRole').textContent=nm.role||nm.job||'HSE Manager';if(nm.img||nm.photo)document.getElementById('sideImg').src=nm.img||nm.photo;document.getElementById('welcomeName').textContent='👋 Welcome, '+nm.name;document.getElementById('welcomeSub').textContent='Your role: '+(nm.role||'')}})();
+// ===== FIX: توحيد reporter + التاريخ + دمج الكوليكشنز البديلة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normReporter(x){
+  let r=pick(x,['reporter','reporterName','createdBy','createdByName','trainer','trainerName','author','uploadedBy','inspector','inspectorName','supervisor','safety','safetyOfficer','by']);
+  return String(r||'').trim();
+}
+function isMine(x){
+  let me=getMe(); if(!me||!me.name) return true; // لو مفيش login، اعرض الكل
+  let meName=String(me.name).trim().toLowerCase(), meEmail=String(me.email||'').toLowerCase();
+  let rep=normReporter(x).toLowerCase();
+  let email=String(pick(x,['email','userEmail','reporterEmail'])||'').toLowerCase();
+  if(meEmail && email && email===meEmail) return true;
+  if(rep && (rep===meName || rep.includes(meName) || meName.includes(rep))) return true;
+  // لو السجل مفيهوش reporter خالص، اعتبره نشاط عام - هيظهر في الترتيب العام مش في أنشطتي
+  return false;
+}
 let DB={workers:[],induction:[],train:[],weeklyLect:[],violations:[],empViolations:[],observations:[],permits:[],accidents:[],nearMiss:[],ncr:[],firstAid:[]};
+let caches={};
+function rebuildDB(){
+  DB={workers:[],induction:[],train:[],weeklyLect:[],violations:[],empViolations:[],observations:[],permits:[],accidents:[],nearMiss:[],ncr:[],firstAid:[]};
+  Object.entries(caches).forEach(([coll,arr])=>{
+    arr.forEach(it=>{
+      let key=null;
+      if(coll==='workers'||coll==='users'||coll==='employees') key='workers';
+      else if(coll==='induction') key='induction';
+      else if(coll==='train'||coll==='trainings') key='train';
+      else if(coll==='weekly'||coll==='weeklyMeetings') key='weeklyLect';
+      else if(coll==='violations') key='violations';
+      else if(coll.includes('employeeViol')) key='empViolations';
+      else if(coll.includes('observation')||coll==='observations') key='observations';
+      else if(coll==='permits') key='permits';
+      else if(coll==='accidents') key='accidents';
+      else if(coll.includes('nearMiss')) key='nearMiss';
+      else if(coll==='ncr') key='ncr';
+      else if(coll.includes('firstAid')||coll.includes('first-aid')) key='firstAid';
+      if(key && !DB[key].find(x=>x.id===it.id)) DB[key].push(it);
+    });
+  });
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  [['workers','workers'],['induction','induction'],['train','train'],['weekly','weeklyLect'],['violations','violations'],['employeeViolations','empViolations'],['observations','observations'],['permits','permits'],['accidents','accidents'],['nearMiss','nearMiss'],['ncr','ncr'],['firstAid','firstAid']].forEach(([coll,key])=>{
-   db.collection(coll).onSnapshot(snap=>{let old=DB[key].length;DB[key]=snap.docs.map(d=>({id:d.id,...d.data()}));if(DB[key].length>old&&old>0){if(key==='accidents'||key==='firstAid')playBeep();}renderHome();});
+  let cols=['workers','users','employees','induction','train','trainings','weekly','weeklyMeetings','violations','employeeViolations','employee-violations','observations','safetyObservations','safety-observations','permits','accidents','nearMiss','near-miss','ncr','firstAid','first-aid'];
+  cols.forEach(coll=>{
+   db.collection(coll).onSnapshot(snap=>{
+     caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,...d.data()}));
+     let oldTotal=Object.values(DB).reduce((s,a)=>s+a.length,0);
+     rebuildDB();
+     let newTotal=Object.values(DB).reduce((s,a)=>s+a.length,0);
+     if(newTotal>oldTotal&&oldTotal>0){ /* new data */ }
+     updateLoadStatus();
+     renderHome();
+   }, err=>{ console.log('skip',coll,err.message); });
   });
  }catch(e){console.log(e)}
+}
+function updateLoadStatus(){
+  let total=Object.values(DB).reduce((s,a)=>s+a.length,0);
+  document.getElementById('loadStatus').textContent='✅ Live - إجمالي السجلات: '+total+' | Workers: '+DB.workers.length+' | Observations: '+DB.observations.length+' | Permits: '+DB.permits.length;
 }
 function renderHome(){
  animateNum('k-workers',DB.workers.length);animateNum('k-ind',DB.induction.length);animateNum('k-train',DB.train.length);animateNum('k-weekly',DB.weeklyLect.length);animateNum('k-obs',DB.observations.length);animateNum('k-viol',DB.violations.length);animateNum('k-empviol',DB.empViolations.length);animateNum('k-permits',DB.permits.length);
  document.getElementById('violIcon').classList.toggle('shake',DB.violations.length>0);
- let score=DB.induction.length*5+DB.train.length*5+DB.weeklyLect.length*10+DB.observations.length*3+DB.violations.length*2;
+ // Score بتاع اللي داخل بس
+ let me=getMe();
+ let myInd=DB.induction.filter(isMine).length, myTrain=DB.train.filter(isMine).length, myWeekly=DB.weeklyLect.filter(isMine).length, myObs=DB.observations.filter(isMine).length, myViol=DB.violations.filter(isMine).length;
+ let score=myInd*5+myTrain*5+myWeekly*10+myObs*3+myViol*2;
  animateNum('myScore',score);
  let acts=[];
- (DB.induction||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📘 Induction - '+(x.name||'')}));
- (DB.train||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🎓 Training - '+(x.title||x.topic||'')}));
- (DB.weeklyLect||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📅 Weekly - '+(x.title||x.company||'')}));
- (DB.observations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📋 Observation - '+String(x.desc||'').slice(0,40)}));
- (DB.violations||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'⚠️ Violation - '+(x.company||'')}));
- (DB.accidents||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🚑 Accident - '+(x.company||'')}));
- (DB.permits||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'📋 Permit - '+(x.company||'')}));
- (DB.firstAid||[]).forEach(x=>acts.push({d:x.date||x.createdAt,t:'🩹 First Aid - '+(x.name||'')}));
+ (DB.induction||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'📘 Induction - '+(pick(x,['name','employeeName'])||'')})});
+ (DB.train||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'🎓 Training - '+(pick(x,['title','topic'])||'')})});
+ (DB.weeklyLect||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'📅 Weekly - '+(pick(x,['title','company'])||'')})});
+ (DB.observations||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'📋 Observation - '+String(pick(x,['desc','description'])||'').slice(0,40)})});
+ (DB.violations||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'⚠️ Violation - '+(pick(x,['company','companyName'])||'')})});
+ (DB.accidents||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'🚑 Accident - '+(pick(x,['company','companyName'])||'')})});
+ (DB.permits||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt','startDate'])),t:'📋 Permit - '+(pick(x,['company','companyName'])||'')})});
+ (DB.firstAid||[]).forEach(x=>{ if(isMine(x)) acts.push({d:normDate(pick(x,['date','createdAt'])),t:'🩹 First Aid - '+(pick(x,['name','injured'])||'')})});
  acts.sort((a,b)=>String(b.d||'').localeCompare(String(a.d||'')));
- document.getElementById('myActivity').innerHTML=acts.length?'<table><tr><th>Date</th><th>Activity</th></tr>'+acts.slice(0,10).map(a=>`<tr><td>${escapeHtml(a.d||'')}</td><td style="text-align:left">${escapeHtml(a.t)}</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No activity yet</p>';
- let scores={};function addScore(n,p){if(!n)return;scores[n]=(scores[n]||0)+p}
- (DB.induction||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,5));
- (DB.train||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,5));
- (DB.weeklyLect||[]).forEach(x=>addScore(x.reporter||x.trainer||x.reporterName,10));
- (DB.observations||[]).forEach(x=>addScore(x.reporter||x.reporterName,3));
- (DB.violations||[]).forEach(x=>addScore(x.reporter||x.by||x.reporterName,2));
- (DB.accidents||[]).forEach(x=>addScore(x.reporter||x.reporterName,2));
+ document.getElementById('myActivity').innerHTML=acts.length?'<table><tr><th>Date</th><th>Activity</th></tr>'+acts.slice(0,10).map(a=>`<tr><td>${escapeHtml(a.d||'')}</td><td style="text-align:left">${escapeHtml(a.t)}</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No activity yet - لو عندك تقارير قديمة ومتظهرش، اتأكد إن اسمك في حقل reporter مطابق لاسمك في Login</p>';
+ let scores={};function addScore(x,p){let n=normReporter(x); if(!n) return; scores[n]=(scores[n]||0)+p}
+ (DB.induction||[]).forEach(x=>addScore(x,5));
+ (DB.train||[]).forEach(x=>addScore(x,5));
+ (DB.weeklyLect||[]).forEach(x=>addScore(x,10));
+ (DB.observations||[]).forEach(x=>addScore(x,3));
+ (DB.violations||[]).forEach(x=>addScore(x,2));
+ (DB.accidents||[]).forEach(x=>addScore(x,2));
  let top=Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,5);
  document.getElementById('topTable').innerHTML=top.length?'<table><tr><th>#</th><th>Name</th><th>Points</th></tr>'+top.map((e,i)=>{let cls=i===0?'gold':i===1?'silver':i===2?'bronze':'';let txt=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);return `<tr><td>${cls?'<span class="medal '+cls+'">'+txt+'</span>':txt}</td><td><b>${escapeHtml(e[0])}</b></td><td><b>${e[1]}</b></td></tr>`}).join('')+'</table>':'<p style="text-align:center;color:#888">No ranking yet</p>';
  let notifs=[];
- DB.accidents.slice(0,3).forEach(x=>notifs.push(`🚑 حادث جديد: ${x.company||''} - ${x.date||''}`));
- DB.firstAid.filter(x=>x.action==='Sent To Hospital').slice(0,2).forEach(x=>notifs.push(`🏥 حالة مستشفى: ${x.name}`));
+ DB.accidents.slice(0,3).forEach(x=>notifs.push(`🚑 حادث جديد: ${pick(x,['company','companyName'])||''} - ${normDate(pick(x,['date','createdAt']))}`));
+ DB.firstAid.filter(x=>x.action==='Sent To Hospital'||String(pick(x,['action'])||'').includes('Hospital')).slice(0,2).forEach(x=>notifs.push(`🏥 حالة مستشفى: ${pick(x,['name','injured'])}`));
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
 }
