@@ -45,14 +45,33 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="electric-panels.html" class="active">⚡ <span data-i18n="panels">Electric Panels</span></a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ <span data-i18n="panels">Electric Panels</span></a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -69,6 +88,7 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">لوحات الكهرباء</span> <span style="color:#FF6B00">• Electric Panels</span></h1>
 <p style="color:#666;font-size:13px">New Kairo Project • Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div id="notifyBox" class="notify-box"><b>🔔 <span data-i18n="monthlyReminder">تذكير بالفحص الشهري</span></b><br><span id="notifyText"></span><br><button class="btn2" onclick="dismissNotify()" style="margin-top:8px">✅ تمام - فهمت</button></div>
 <div id="overdueBox" class="alert-box"><b>⚠️ <span data-i18n="overdue">شركات متأخرة في الفحص</span></b><br><span id="overdueText"></span></div>
@@ -111,6 +131,41 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 let allPanels=[],checkImgs=[],panelImgs=[],permits=[];
+// ===== FIX: توحيد الحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normPanel(raw){
+  let type=String(pick(raw,['type','panelType','category'])||'');
+  if(type.toLowerCase().includes('main')||type.includes('رئيس')) type='Main'; else if(type) type='Services';
+  let status=String(pick(raw,['status','state','result'])||'Approved');
+  if(status.toLowerCase().includes('reject')||status.includes('مرفوض')) status='Rejected'; else status='Approved';
+  let color=pick(raw,['colorCode','color','colour']);
+  if(status==='Rejected' && !color) color='Red - أحمر 🔴';
+  return {
+    id: raw.id,
+    project: pick(raw,['project','projectName'])||'New Kairo Project',
+    date: normDate(pick(raw,['date','inspectionDate','createdAt'])),
+    company: pick(raw,['company','companyName','contractor']),
+    code: pick(raw,['code','panelCode','panelId','panelNo']),
+    location: pick(raw,['location','workLocation','place','site','building']),
+    type: type||'Services',
+    inspector: pick(raw,['inspector','inspectorName','checkedBy','reporter']),
+    status: status,
+    colorCode: color||'Green - أخضر',
+    colorHex: pick(raw,['colorHex','hex'])||(status==='Rejected'?'#E53935':'#2ECC71'),
+    notes: pick(raw,['notes','note','remarks','desc']),
+    checkImgs: raw.checkImgs||raw.checklistImgs||raw.checklist||[],
+    panelImgs: raw.panelImgs||raw.images||raw.photos||[],
+    createdAt: raw.createdAt||'',
+    _raw: raw
+  };
+}
 function genCode(){let L='ABCDEFGHIJKMNOPQRSTUVWXYZ';let c='EP-'+L[Math.floor(Math.random()*L.length)]+L[Math.floor(Math.random()*L.length)]+'-'+Math.floor(1000+Math.random()*9000);document.getElementById('ep-code').value=c;return c}
 function getColorHex(){let s=document.getElementById('ep-color');return s.options[s.selectedIndex]?.getAttribute('data-hex')||'#2ECC71'}
 function onColorChange(){document.getElementById('colorPreview').style.background=getColorHex()}
@@ -120,14 +175,33 @@ function checkNotify(){let today=new Date(),day=today.getDate();let key='ep_noti
 function dismissNotify(){let t=new Date();localStorage.setItem('ep_notify_'+t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate(),'done');document.getElementById('notifyBox').classList.remove('show')}
 function loadLive(){
  try{
-  firebase.firestore().collection('electricPanels').orderBy('createdAt','desc').onSnapshot(snap=>{let old=allPanels.length;allPanels=snap.docs.map(d=>({id:d.id,...d.data()}));if(allPanels.length>old&&old>0)playBeep();renderPanels();});
-  firebase.firestore().collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>p.location||p.workLocation).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');});
+  let db=firebase.firestore();
+  // بدون orderBy عشان القديم
+  let cols=['electricPanels','electric-panels','panels'];
+  cols.forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,...d.data()})).map(normPanel);
+      // دمج من غير تكرار
+      let merged=[...allPanels];
+      arr.forEach(n=>{ if(!merged.find(x=>x.id===n.id)) merged.push(n); });
+      // لو الكوليكشن ده هو الأساسي، نعيد بناء من الكل
+      if(coll==='electricPanels'){ /* keep merged */ }
+      let old=allPanels.length; allPanels=merged;
+      allPanels.sort((a,b)=>String(b.date||b.createdAt||'').localeCompare(String(a.date||a.createdAt||'')));
+      if(allPanels.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي اللوحات: '+allPanels.length;
+      renderPanels();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  // localStorage fallback
+  try{ let local=JSON.parse(localStorage.getItem('electricPanels')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!allPanels.find(x=>x.id==='local-'+i)) allPanels.push(normPanel({id:'local-'+i,...l})); }); }catch(e){}
+  db.collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>pick(p,['location','workLocation','place','site'])).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');}, ()=>{});
  }catch(e){console.log(e)}
 }
 async function addPanel(){
  let company=document.getElementById('ep-company').value.trim(),code=document.getElementById('ep-code').value.trim(),loc=document.getElementById('ep-location').value.trim(),ins=document.getElementById('ep-inspector').value.trim();
  if(!company||!code||!loc||!ins) return alert('املأ كل الحقول المطلوبة *');
- let data={project:'New Kairo Project',date:document.getElementById('ep-date').value||new Date().toISOString().slice(0,10),company,code,location:loc,workLocation:loc,type:document.getElementById('ep-type').value,inspector:ins,status:document.getElementById('ep-status').value,colorCode:document.getElementById('ep-color').value,colorHex:getColorHex(),notes:document.getElementById('ep-notes').value,checkImgs:checkImgs,panelImgs:panelImgs,createdAt:new Date().toISOString()};
+ let data={project:'New Kairo Project',date:document.getElementById('ep-date').value||new Date().toISOString().slice(0,10),company,code,panelCode:code,location:loc,workLocation:loc,type:document.getElementById('ep-type').value,inspector:ins,status:document.getElementById('ep-status').value,colorCode:document.getElementById('ep-color').value,colorHex:getColorHex(),notes:document.getElementById('ep-notes').value,checkImgs:checkImgs,panelImgs:panelImgs,createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('electricPanels').add(data);alert('✅ تم حفظ فحص اللوحة');if(data.status==='Rejected')playBeep();}catch(e){alert(e.message)}
  ['ep-company','ep-location','ep-notes'].forEach(id=>document.getElementById(id).value='');checkImgs=[];panelImgs=[];document.getElementById('prev-check').innerHTML='';document.getElementById('prev-panel').innerHTML='';genCode();onStatusChange();
 }
@@ -135,20 +209,19 @@ function renderPanels(){
  let q=((document.getElementById('searchEp').value||'')+' '+(document.getElementById('topSearch').value||'')).toLowerCase(),ft=document.getElementById('filterType').value||'',fs=document.getElementById('filterStatus').value||'';
  let list=allPanels.filter(p=>((p.company||'')+' '+(p.code||'')+' '+(p.location||'')+' '+(p.inspector||'')).toLowerCase().includes(q.trim())&&(!ft||p.type===ft)&&(!fs||p.status===fs));
  animateNum('k-total',allPanels.length);animateNum('k-main',allPanels.filter(p=>p.type==='Main').length);animateNum('k-services',allPanels.filter(p=>p.type==='Services').length);let rej=allPanels.filter(p=>p.status==='Rejected').length;animateNum('k-rejected',rej);document.getElementById('rejIcon').classList.toggle('shake',rej>0);
- let per={};allPanels.forEach(p=>{if(!per[p.company])per[p.company]={total:0,main:0,services:0};per[p.company].total++;if(p.type==='Main')per[p.company].main++;else per[p.company].services++});
- document.getElementById('perCompany').innerHTML=Object.keys(per).length?Object.entries(per).map(([c,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🏢 ${escapeHtml(c)}</span><span><b style="color:#FF6B00">${v.total}</b> لوحة | رئيسية: ${v.main} | فرعية: ${v.services}</span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد لوحات بعد</p>';
+ let per={};allPanels.forEach(p=>{let c=p.company||'Not Specified';if(!per[c])per[c]={total:0,main:0,services:0};per[c].total++;if(p.type==='Main')per[c].main++;else per[c].services++});
+ document.getElementById('perCompany').innerHTML=Object.keys(per).length?Object.entries(per).map(([c,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🏢 ${escapeHtml(c)}</span><span><b style="color:#FF6B00">${v.total}</b> لوحة | رئيسية: ${v.main} | فرعية: ${v.services}</span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد لوحات بعد - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  document.getElementById('compList').innerHTML=Object.keys(per).map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let now=new Date(),curMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
  let thisMonth=new Set(allPanels.filter(p=>(p.date||'').startsWith(curMonth)).map(p=>p.company)), allComp=new Set(allPanels.map(p=>p.company));
  let overdue=[...allComp].filter(c=>!thisMonth.has(c));
  if(overdue.length){document.getElementById('overdueBox').classList.add('show');document.getElementById('overdueText').textContent='الشركات دي عدى معاد فحصها: '+overdue.join(' ، ')}else document.getElementById('overdueBox').classList.remove('show');
- document.getElementById('epTable').innerHTML=list.length?list.map(p=>`<div class="rec-card"><h3 style="margin:0">⚡ ${escapeHtml(p.code)} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Inspector: ${escapeHtml(p.inspector)}</small><div style="margin:8px 0"><span class="chip ${p.type==='Main'?'blue':'gold'}">${escapeHtml(p.type)}</span><span class="chip ${p.status==='Approved'?'green':'red'}">${escapeHtml(p.status)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.panelImgs?.length?'<div class="photos">'+p.panelImgs.map(img=>`<div><img src="${img}"><br>Panel</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delPanel('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printPanel('${p.id}')">🖨️ Print</button></div></div>`).join(''):'<p style="text-align:center;color:#888">No panels yet</p>';
+ document.getElementById('epTable').innerHTML=list.length?list.map(p=>`<div class="rec-card"><h3 style="margin:0">⚡ ${escapeHtml(p.code||'-')} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Inspector: ${escapeHtml(p.inspector)}</small><div style="margin:8px 0"><span class="chip ${p.type==='Main'?'blue':'gold'}">${escapeHtml(p.type)}</span><span class="chip ${p.status==='Approved'?'green':'red'}">${escapeHtml(p.status)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.panelImgs?.length?'<div class="photos">'+p.panelImgs.map(img=>`<div><img src="${img}"><br>Panel</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delPanel('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printPanel('${p.id}')">🖨️ Print</button></div></div>`).join(''):'<p style="text-align:center;color:#888">No panels yet</p>';
  let notifs=[...allPanels.filter(p=>p.status==='Rejected').slice(0,5).map(p=>`❌ لوحة مرفوضة: ${p.code} - ${p.company}`),...overdue.map(c=>`⚠️ شركة ${c} متأخرة في فحص اللوحات`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function delPanel(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('electricPanels').doc(id).delete();}
+async function delPanel(id){if(!confirm('حذف؟'))return; if(String(id).startsWith('local-')){ allPanels=allPanels.filter(x=>x.id!==id); renderPanels(); return; } let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'electricPanels'; await firebase.firestore().collection(coll).doc(realId).delete();}
 function printPanel(id){let p=allPanels.find(x=>x.id==id);if(!p)return;let w=window.open('');w.document.write(`<h2>Electric Panel - New Kairo</h2><p>${escapeHtml(p.code)} | ${escapeHtml(p.company)} | ${escapeHtml(p.location)}</p><p>${escapeHtml(p.status)} | ${escapeHtml(p.colorCode)}</p>`);w.print();}
 function exportPanels(){let rows=[['Project','Date','Company','Code','Location','Type','Inspector','Status','Color','Notes']];allPanels.forEach(p=>rows.push([p.project,p.date,p.company,p.code,p.location,p.type,p.inspector,p.status,p.colorCode,p.notes]));let csv=rows.map(r=>r.map(c=>'"'+String(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='electric-panels.csv';a.click();}
 document.getElementById('ep-date').value=new Date().toISOString().slice(0,10);genCode();onStatusChange();checkNotify();loadLive();
