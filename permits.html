@@ -7,7 +7,6 @@
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
 .hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
-/* ===== 3D ICONS - CSS FAST ===== */
 .icon3d{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative;cursor:pointer;transition:.15s;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 18px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.15);background:linear-gradient(145deg,#fff,#e8e8e8)}
 .icon3d:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2),0 4px 8px rgba(0,0,0,.15)}
 .icon3d.small{width:48px;height:48px;border-radius:14px;font-size:24px}
@@ -24,7 +23,6 @@ body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
 @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) scale(1.05)}75%{transform:rotate(8deg) scale(1.05)}}
 .icon3d.pulse{animation:pulse 1.5s infinite}
 @keyframes pulse{0%{box-shadow:0 6px 0 rgba(0,0,0,.2),0 0 0 0 rgba(229,57,53,.5)}100%{box-shadow:0 6px 0 rgba(0,0,0,.2),0 0 0 14px rgba(229,57,53,0)}}
-/* ===== LAYOUT ===== */
 .sidebar{position:fixed;top:10px;right:0;width:280px;height:calc(100vh - 10px);background:#0F2A4D;color:#fff;padding:16px 14px;z-index:100;overflow-y:auto;display:flex;flex-direction:column}
 html[dir="ltr"] .sidebar{right:auto;left:0}
 .logo-box{text-align:center;padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.12)}
@@ -66,14 +64,33 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="daily-count.html">🔢 Daily Count</a><a href="train.html">🎓 Training</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="permits.html" class="active">📄 <span data-i18n="permits">Permits</span></a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 <span data-i18n="permits">Permits</span></a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -90,8 +107,8 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">التصاريح</span> <span style="color:#FF6B00">• Permits</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Work Permits • V4 Final - Live</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
-<!-- ACTIVE TODAY - اللي هيروح لـ Daily Count -->
 <div class="card" style="border:2px solid #2E7D32"><h3 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small green">🟢</span> <span data-i18n="activeToday">شغال النهارده - Active Today</span> <span id="activeCount" style="background:#2E7D32;color:#fff;padding:2px 10px;border-radius:99px;font-size:12px">0</span></h3>
 <p style="font-size:12px;color:#666">ده القسم اللي بيظهر في إحصائيات العمال - لو اتقفل أو اتلغى بيتشال أوتوماتيك</p>
 <div id="activePermits"></div></div>
@@ -121,7 +138,6 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 <div><label>Engineer *</label><input id="p-engineer" placeholder="Name"></div>
 <div><label>Safety Officer *</label><input id="p-safety" placeholder="Name"></div>
 <div><label data-i18n="location">مكان العمل - Work Location *</label><input id="p-location" value="Zone A" placeholder="Plot 1 - الأساسات"></div>
-<!-- NEW FIELD - عدد العمال -->
 <div><label data-i18n="workersCount">عدد العمال في التصريح - Workers Count *</label><input type="number" min="0" id="p-workers" value="0" placeholder="0"></div>
 <div><label>Status</label><select id="p-status"><option>Open</option><option>Delivered</option><option>Closed</option><option>Cancelled</option></select></div>
 <div><label>Notes</label><input id="p-notes" placeholder="..."></div>
@@ -139,67 +155,100 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-// ===== LANGUAGE FULL =====
 const I18N={ar:{home:'الرئيسية',permits:'التصاريح',notifications:'الإشعارات',title:'التصاريح',subtitle:'تصاريح العمل • نسخة نهائية حية',activeToday:'شغال النهارده',total:'إجمالي التصاريح',workersInPermits:'عمال في التصاريح',add:'تسجيل تصريح جديد',permitNum:'رقم التصريح',company:'الشركة *',date:'التاريخ *',endDate:'تاريخ الانتهاء *',type:'نوع التصريح *',location:'مكان العمل *',workersCount:'عدد العمال في التصريح *',save:'حفظ التصريح',records:'سجل التصاريح'},en:{home:'Home',permits:'Permits',notifications:'Notifications',title:'Permits',subtitle:'Work Permits • V4 Final Live',activeToday:'Active Today',total:'Total Permits',workersInPermits:'Workers in Permits',add:'Register New Permit',permitNum:'Permit Number',company:'Company *',date:'Date *',endDate:'End Date *',type:'Permit Type *',location:'Work Location *',workersCount:'Workers Count *',save:'Save Permit',records:'Permits Record'}};
 function setLang(l){localStorage.setItem('lang',l);document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;if(I18N[l][k])el.textContent=I18N[l][k]});document.getElementById('btnAr').classList.toggle('active',l==='ar');document.getElementById('btnEn').classList.toggle('active',l==='en')}
 setLang(localStorage.getItem('lang')||'ar');
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-// ===== SOUND - قابل للقفل =====
 let soundOn=localStorage.getItem('rmed_sound')!=='off';
 function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundOn?'on':'off');document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇'}
 document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
 function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.15;o.start();o.stop(ctx.currentTime+0.2)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
-// ===== LIVE DATA - onSnapshot =====
 let permits=[];
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normPermit(raw){
+  let st=String(pick(raw,['status','state'])||'Open');
+  if(st.toLowerCase().includes('cancel')) st='Cancelled';
+  else if(st.toLowerCase().includes('close')) st='Closed';
+  else if(st.toLowerCase().includes('deliver')) st='Delivered';
+  else st='Open';
+  let workers=Number(pick(raw,['workersCount','workers','workerCount','numWorkers'])||0)||0;
+  return {
+    id: raw.id, _coll: raw._coll||'permits',
+    num: pick(raw,['num','permitNumber','permitNo','number','permitNum'])||'',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    startDate: normDate(pick(raw,['startDate','date','fromDate','createdAt'])),
+    endDate: normDate(pick(raw,['endDate','toDate','expiry'])),
+    startTime: pick(raw,['startTime','fromTime'])||'08:00',
+    endTime: pick(raw,['endTime','toTime'])||'17:00',
+    type: pick(raw,['type','permitType','category'])||'Cold',
+    supervisor: pick(raw,['supervisor','supervisorName'])||'',
+    engineer: pick(raw,['engineer','engineerName'])||'',
+    safety: pick(raw,['safety','safetyOfficer','officer'])||'',
+    location: pick(raw,['location','workLocation','place','site'])||'',
+    workLocation: pick(raw,['workLocation','location','place'])||'',
+    workersCount: workers,
+    workers: workers,
+    status: st,
+    notes: pick(raw,['notes','note','remarks'])||'',
+    createdAt: raw.createdAt||'',
+    closedAt: raw.closedAt||''
+  };
+}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 function genNum(){let y=new Date().getFullYear();let max=permits.length;permits.forEach(p=>{let m=String(p.num||'').match(/(\d+)$/);if(m)max=Math.max(max,parseInt(m[1]))});let n='PRM-'+y+'-'+String(max+1).padStart(4,'0');document.getElementById('p-num').textContent=n;return n}
 function loadLive(){
  try{
-  firebase.firestore().collection('permits').onSnapshot(snap=>{
-   let oldCount=permits.length;
-   permits=snap.docs.map(d=>({id:d.id,...d.data()}));
-   permits.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
-   // صوت لو تصريح جديد اتضاف
-   if(permits.length>oldCount && oldCount>0) playBeep();
-   renderPermits(); genNum();
-  },e=>console.log(e));
+  let db=firebase.firestore();
+  ['permits','workPermits','work-permits','permit'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normPermit);
+      let merged=[...permits].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let oldCount=permits.length; permits=merged;
+      permits.sort((a,b)=>String(b.startDate||'').localeCompare(String(a.startDate||'')));
+      if(permits.length>oldCount && oldCount>0) playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي التصاريح: '+permits.length;
+      renderPermits(); genNum();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){console.log(e)}
 }
 function val(id){return document.getElementById(id).value.trim()}
 async function addPermit(force){
  if(!val('p-company')||!val('p-start-date')||!val('p-type')||!val('p-supervisor')) return alert('املأ الحقول المطلوبة *');
- let rec={num:document.getElementById('p-num').textContent,company:val('p-company'),startDate:val('p-start-date'),endDate:val('p-end-date')||val('p-start-date'),startTime:val('p-start-time')||'08:00',endTime:val('p-end-time')||'17:00',type:val('p-type'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:val('p-safety'),location:val('p-location')||'Zone A',workLocation:val('p-location')||'Zone A',workersCount:parseInt(document.getElementById('p-workers').value)||0,workers:parseInt(document.getElementById('p-workers').value)||0,status:force||val('p-status')||'Open',notes:val('p-notes'),createdAt:new Date().toISOString()};
+ let rec={num:document.getElementById('p-num').textContent,permitNumber:document.getElementById('p-num').textContent,company:val('p-company'),companyName:val('p-company'),startDate:val('p-start-date'),date:val('p-start-date'),endDate:val('p-end-date')||val('p-start-date'),startTime:val('p-start-time')||'08:00',endTime:val('p-end-time')||'17:00',type:val('p-type'),permitType:val('p-type'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:val('p-safety'),location:val('p-location')||'Zone A',workLocation:val('p-location')||'Zone A',workersCount:parseInt(document.getElementById('p-workers').value)||0,workers:parseInt(document.getElementById('p-workers').value)||0,status:force||val('p-status')||'Open',state:force||val('p-status')||'Open',notes:val('p-notes'),createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('permits').add(rec);document.getElementById('saveMsg').textContent='✅ Saved - '+rec.num;playBeep()}catch(e){alert('Save error: '+e.message)}
  ['p-supervisor','p-engineer','p-safety','p-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-workers').value='0';
 }
 function renderPermits(){
  let q=(document.getElementById('searchP').value||'').toLowerCase(), fs=document.getElementById('filterStatus').value||'';
  let list=permits.filter(x=>((x.num||'')+' '+(x.type||'')+' '+(x.company||'')+' '+(x.location||'')+' '+(x.supervisor||'')).toLowerCase().includes(q) && (!fs||x.status===fs));
- // KPIs with animation
  animateNum('k-total',permits.length); animateNum('k-open',permits.filter(x=>x.status==='Open').length); animateNum('k-delivered',permits.filter(x=>x.status==='Delivered').length); animateNum('k-closed',permits.filter(x=>x.status==='Closed').length); animateNum('k-cancel',permits.filter(x=>x.status==='Cancelled').length); animateNum('k-workers',permits.filter(x=>x.status==='Open'||x.status==='Delivered').reduce((s,x)=>s+(Number(x.workersCount||x.workers||0)),0));
- // Active Today - فقط المفتوح واللي تاريخه النهارده
  let today=new Date().toISOString().slice(0,10);
  let active=permits.filter(x=>(x.status==='Open'||x.status==='Delivered') && (x.startDate===today || (!x.endDate || x.endDate>=today)));
  document.getElementById('activeCount').textContent=active.length;
- document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(x.type)}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده</p>';
- // Type stats
+ document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(x.type)}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Excavation','Night Shift'];
  let icons={Cold:'🧊',Hot:'🔥','Work at Height':'🪜','Lifting Works':'🏗️','Confined Spaces':'🚪','Concrete Pouring':'🧱',Excavation:'⛏️','Night Shift':'🌙'};
  document.getElementById('typeStats').innerHTML=types.map(t=>`<div class="type-chip"><span class="icon3d mini blue">${icons[t]||'📄'}</span><div><small>${t}</small><br><b>${permits.filter(x=>x.type===t).length}</b></div></div>`).join('');
- // Table
  document.getElementById('permitsTable').innerHTML=list.length?list.map(x=>{let cls=x.status==='Open'?'open':x.status==='Closed'?'closed':x.status==='Delivered'?'delivered':'cancel';let shake=(x.status==='Open'&&x.endDate&& (new Date(x.endDate)-new Date())/3600000<2)?'shake pulse':'';
   return `<div class="permit-card ${cls.toLowerCase()}"><span class="icon3d small blue ${shake}">${icons[x.type]||'📄'}</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.type)}</b> <span class="badge ${cls}">${escapeHtml(x.status)}</span><br><small>📍 ${escapeHtml(x.location||x.workLocation||'')} • 🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل</small><br><small>${escapeHtml(x.startDate)} ${escapeHtml(x.startTime||'')} - ${escapeHtml(x.endDate)} ${escapeHtml(x.endTime||'')} • ${escapeHtml(x.supervisor)}</small></div><select onchange="changeStatus('${x.id}',this.value)" style="width:auto"><option ${x.status==='Open'?'selected':''}>Open</option><option ${x.status==='Delivered'?'selected':''}>Delivered</option><option ${x.status==='Closed'?'selected':''}>Closed</option><option ${x.status==='Cancelled'?'selected':''}>Cancelled</option></select><button class="btn2" style="color:#E53935" onclick="delPermit('${x.id}')">🗑️</button></div>`}).join(''):'<p style="text-align:center;color:#999">No permits yet</p>';
- // Notifications - تصريح هينتهي بعد ساعتين
  let notifs=permits.filter(x=>x.status==='Open'&&x.endDate&& (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())/3600000<2 && (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())>0).map(x=>`⚠️ تصريح ${x.num} هينتهي بعد ساعتين - ${x.location}`);
  document.getElementById('notifCount').textContent=notifs.length; document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function changeStatus(id,s){await firebase.firestore().collection('permits').doc(id).update({status:s});}
-async function closePermit(id){await firebase.firestore().collection('permits').doc(id).update({status:'Closed',closedAt:new Date().toISOString()});}
-async function cancelPermit(id){if(!confirm('إلغاء التصريح؟ هيتشال من إحصائيات العمال'))return; await firebase.firestore().collection('permits').doc(id).update({status:'Cancelled'});}
-async function delPermit(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('permits').doc(id).delete();}
+function getCollAndId(id){ let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'permits'; return {coll,realId}; }
+async function changeStatus(id,s){let {coll,realId}=getCollAndId(id); await firebase.firestore().collection(coll).doc(realId).update({status:s,state:s});}
+async function closePermit(id){let {coll,realId}=getCollAndId(id); await firebase.firestore().collection(coll).doc(realId).update({status:'Closed',state:'Closed',closedAt:new Date().toISOString()});}
+async function cancelPermit(id){if(!confirm('إلغاء التصريح؟ هيتشال من إحصائيات العمال'))return; let {coll,realId}=getCollAndId(id); await firebase.firestore().collection(coll).doc(realId).update({status:'Cancelled',state:'Cancelled'});}
+async function delPermit(id){if(!confirm('حذف؟'))return; let {coll,realId}=getCollAndId(id); await firebase.firestore().collection(coll).doc(realId).delete();}
 function exportPermits(){let csv='Permit,Company,Location,Workers,Type,Start,End,Status\n'+permits.map(x=>[x.num,x.company,x.location||x.workLocation,x.workersCount||0,x.type,x.startDate,x.endDate,x.status].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='permits.csv';a.click();}
 document.getElementById('p-start-date').value=new Date().toISOString().slice(0,10);document.getElementById('p-end-date').value=new Date().toISOString().slice(0,10);
 loadLive();
