@@ -43,14 +43,33 @@ canvas{max-width:260px;margin:auto;display:block}
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html" class="active">📈 <span data-i18n="reports">Reports</span></a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 <span data-i18n="reports">Reports</span></a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -68,7 +87,7 @@ canvas{max-width:260px;margin:auto;display:block}
 <div class="print-head"><h1>📊 Safety Statistics Report - RMED</h1><p id="printPeriod">-</p><p id="printDate">-</p></div>
 <div class="debug no-print" id="debugBox">⏳ Loading from Firebase...</div>
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">إحصائيات الموقع</span> <span style="color:#FF6B00">• Statistics</span></h1>
-<p style="color:#666;font-size:13px">Live • V4 Final • بتقرا كل الكوليكشنز</p>
+<p style="color:#666;font-size:13px">Live • V4 Final • بتقرا كل الكوليكشنز - الداتا القديمة بتتقرا عادي</p>
 <p style="color:#666;font-size:13px"><span id="hero-safe">Safe Hours: 0</span> • <span id="hero-workers">Workers: 0</span> • <span id="hero-ncr">NCR Closing: 0%</span></p>
 
 <div class="filter"><b>📅 Period Type:</b><button data-period="month" onclick="setPeriod('month',this)">Monthly</button><button data-period="quarter" onclick="setPeriod('quarter',this)">Quarterly</button><button data-period="half" onclick="setPeriod('half',this)">Half Yearly</button><button data-period="year" onclick="setPeriod('year',this)">Yearly</button><button data-period="all" onclick="setPeriod('all',this)" class="active">From Project Start</button><span style="flex:1"></span><button id="ramadanBtn" class="ramadan" onclick="toggleRamadan()">🌙 Ramadan: Off</button></div>
@@ -121,14 +140,49 @@ function toggleNotif(){document.getElementById('notifPanel').classList.toggle('s
 function animateNum(id,val){let el=document.getElementById(id);let cur=0;let target=parseFloat(String(val).replace(/[^0-9.-]/g,''))||0;let step=Math.max(1,Math.round(target/20));let suffix=String(val).includes('EGP')?' EGP':String(val).includes('%')?'%':'';let t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t)}el.textContent=Math.round(cur).toLocaleString('en-US')+suffix},20)}
 let DB={dailyWorkers:[],induction:[],weeklyLect:[],train:[],accidents:[],violations:[],empViolations:[],ncr:[],nearMiss:[],observations:[]};
 let loaded=false;
-function dedupe(arr){let seen=new Set();let out=[];for(let x of(arr||[])){let k=(x.id||'')+'|'+(x.date||x.createdAt||'')+'|'+(x.company||'')+'|'+(x.desc||x.title||'');if(x.id&&!String(x.id).startsWith('local-')){if(seen.has('id:'+x.id))continue;seen.add('id:'+x.id)}else if(seen.has(k))continue;else seen.add(k);out.push(x)}return out}
+// ===== FIX: dedupe بقى بيعتمد على الـ _coll + id الحقيقي، مش على التاريخ =====
+function dedupe(arr){
+  let seen=new Set(); let out=[];
+  for(let x of (arr||[])){
+    let key=(x._coll||'x')+':'+String(x.id||'').split(':').pop();
+    if(x.id && !String(x.id).startsWith('local-')){
+      if(seen.has(key)) continue; seen.add(key);
+    }
+    out.push(x);
+  }
+  return out;
+}
+function normDateStr(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  let cols=[['dailyWorkers',['dailyWorkers','daily-count','dailyCount']],['induction',['induction']],['weeklyLect',['weekly','weeklyLect']],['train',['train','trainings']],['accidents',['accidents']],['violations',['violations']],['empViolations',['employeeViolations','employee-violations','empViolations']],['ncr',['ncr']],['nearMiss',['nearMiss','near-miss']],['observations',['observations','safety-observations','safetyObs']]];
+  let cols=[
+    ['dailyWorkers',['dailyWorkers','daily-count','dailyCount','daily_count','dailyWorkersCount']],
+    ['induction',['induction','inductions']],
+    ['weeklyLect',['weekly','weeklyLect','weeklyMeetings','weeklyMeeting','weeklyLectures']],
+    ['train',['train','trainings','training']],
+    ['accidents',['accidents','accident']],
+    ['violations',['violations','contractorViolations','contractor-violations']],
+    ['empViolations',['employeeViolations','employee-violations','empViolations','employeeViolation']],
+    ['ncr',['ncr','NCR','ncrs']],
+    ['nearMiss',['nearMiss','near-miss','near_miss','nearMisses']],
+    ['observations',['observations','safetyObservations','safety-observations','safety_observations','safetyObs']]
+  ];
   cols.forEach(([key,names])=>{
    names.forEach(n=>{
-    db.collection(n).onSnapshot(snap=>{let arr=snap.docs.map(d=>({id:d.id,...d.data()}));DB[key]=dedupe([...DB[key].filter(x=>!arr.find(y=>y.id===x.id)),...arr]);loaded=true;render();});
+    db.collection(n).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:n+':'+d.id,_coll:n,...d.data()}));
+      // دمج: شيل القديم من نفس الكوليكشن بس، وسيب الباقي
+      let merged=[...DB[key].filter(x=>x._coll!==n),...arr];
+      DB[key]=dedupe(merged);
+      loaded=true; render();
+    }, ()=>{});
    });
   });
   setTimeout(()=>{if(!loaded){document.getElementById('debugBox').innerHTML='⚠️ مفيش داتا - اتأكد إن Firebase شغال';}},8000);
@@ -144,10 +198,19 @@ function getMonthName(m){return ['January','February','March','April','May','Jun
 function yearOptions(selected){let html='';for(let y=2026;y<=2030;y++){html+='<option value="'+y+'" '+(y==selected?'selected':'')+'>'+y+'</option>'}return html}
 function buildSelector(){let box=document.getElementById('selectorControls');let title=document.getElementById('selectorTitle');let selBox=document.getElementById('selectorBox');if(period==='all'){selBox.style.display='none';return}selBox.style.display='flex';if(period==='month'){title.innerText='🗓️ Select Month & Year:';box.innerHTML='<label>Year:</label><select id="inYear" onchange="selYear=+this.value;render()">'+yearOptions(selYear)+'</select><label>Month:</label><select id="inMonth" onchange="selMonth=+this.value;render()">'+[0,1,2,3,4,5,6,7,8,9,10,11].map(m=>'<option value="'+m+'" '+(m==selMonth?'selected':'')+'>'+getMonthName(m)+'</option>').join('')+'</select>'}if(period==='quarter'){title.innerText='🗓️ Select Quarter & Year:';box.innerHTML='<label>Year:</label><select id="inYear" onchange="selYear=+this.value;render()">'+yearOptions(selYear)+'</select><label>Quarter:</label><select id="inQuarter" onchange="selQuarter=+this.value;render()"><option value="1" '+(selQuarter==1?'selected':'')+'>First Quarter</option><option value="2" '+(selQuarter==2?'selected':'')+'>Second Quarter</option><option value="3" '+(selQuarter==3?'selected':'')+'>Third Quarter</option><option value="4" '+(selQuarter==4?'selected':'')+'>Fourth Quarter</option></select>'}if(period==='half'){title.innerText='🗓️ Select Half & Year:';box.innerHTML='<label>Year:</label><select id="inYear" onchange="selYear=+this.value;render()">'+yearOptions(selYear)+'</select><label>Half:</label><select id="inHalf" onchange="selHalf=+this.value;render()"><option value="1" '+(selHalf==1?'selected':'')+'>First Half</option><option value="2" '+(selHalf==2?'selected':'')+'>Second Half</option></select>'}if(period==='year'){title.innerText='🗓️ Select Year:';box.innerHTML='<label>Year:</label><select id="inYear" onchange="selYear=+this.value;render()">'+yearOptions(selYear)+'</select>'}}
 function getRange(){let now=new Date(),start,end;if(period==='month'){start=new Date(selYear,selMonth,1);end=new Date(selYear,selMonth+1,0,23,59,59);if(end>now)end=now}if(period==='quarter'){let sm=(selQuarter-1)*3;start=new Date(selYear,sm,1);end=new Date(selYear,sm+3,0,23,59,59);if(end>now)end=now}if(period==='half'){let sm=selHalf===1?0:6;start=new Date(selYear,sm,1);end=new Date(selYear,sm+6,0,23,59,59);if(end>now)end=now}if(period==='year'){start=new Date(selYear,0,1);end=new Date(selYear,11,31,23,59,59);if(end>now)end=now}if(period==='all'){start=new Date(PROJECT_START);end=now}return{start,end}}
-function parseDate(d){if(!d)return null;if(d&&d.toDate)return d.toDate();if(d&&d.seconds)return new Date(d.seconds*1000);let dt=new Date(d);return isNaN(dt)?null:dt}
+function parseDate(d){
+  if(!d) return null;
+  if(d && d.toDate) return d.toDate();
+  if(d && d.seconds) return new Date(d.seconds*1000);
+  let s=normDateStr(d);
+  if(!s) return null;
+  let dt=new Date(s+'T00:00:00');
+  return isNaN(dt)?null:dt;
+}
 function inRange(d,r){let dt=parseDate(d);if(!dt)return false;return dt>=r.start&&dt<=r.end}
-function getItemDate(x){return x.date||x.createdAt||x.day||''}
+function getItemDate(x){return x.date||x.createdAt||x.day||x.inspectionDate||''}
 function sum(arr,key){return(arr||[]).reduce((a,x)=>a+(parseFloat(x[key])||0),0)}
+function pickNum(x,keys){ for(let k of keys){ let v=parseFloat(x[k]); if(!isNaN(v) && v!==0) return v; } return 0; }
 function isClosed(x){let s=(x.status||x.state||'').toString().trim().toLowerCase();return ['closed','done','مغلق','تم','تم الغلق','مغلقة'].includes(s)||x.isClosed===true||x.closed===true}
 function drawPie(canvasId,closed,open){let c=document.getElementById(canvasId);if(!c)return;let ctx=c.getContext('2d');ctx.clearRect(0,0,260,260);let total=closed+open;if(total===0){ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('No Data',130,130);return}let a1=(closed/total)*Math.PI*2;ctx.strokeStyle='#FFD54F';ctx.lineWidth=10;ctx.beginPath();ctx.arc(130,130,122,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(130,130);ctx.arc(130,130,110,-Math.PI/2,-Math.PI/2+a1);ctx.closePath();ctx.fillStyle='#2E7D32';ctx.fill();ctx.beginPath();ctx.moveTo(130,130);ctx.arc(130,130,110,-Math.PI/2+a1,-Math.PI/2+Math.PI*2);ctx.closePath();ctx.fillStyle='#D32F2F';ctx.fill();ctx.beginPath();ctx.arc(130,130,55,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.fillStyle='#0A1F44';ctx.font='bold 20px Arial';ctx.textAlign='center';ctx.fillText(Math.round(closed/total*100)+'%',130,135);ctx.font='12px Arial';ctx.fillStyle='#2E7D32';ctx.fillText('■ Closed '+closed,130,200);ctx.fillStyle='#D32F2F';ctx.fillText('■ Open '+open,130,220)}
 function render(){
@@ -155,17 +218,24 @@ function render(){
  let r=getRange();let pName={month:'Monthly',quarter:'Quarterly',half:'Half Yearly',year:'Yearly',all:'From Project Start'}[period];let detail='';if(period==='month')detail=' - '+getMonthName(selMonth)+' '+selYear;if(period==='quarter')detail=' - Quarter '+selQuarter+' - '+selYear;if(period==='half')detail=' - '+(selHalf===1?'First':'Second')+' Half - '+selYear;if(period==='year')detail=' - Year '+selYear;
  let pl=document.getElementById('periodLabel');if(pl)pl.innerText='From '+r.start.toLocaleDateString('en-US')+' To '+r.end.toLocaleDateString('en-US');document.getElementById('summaryPeriod').innerText=pName+detail;
  let btn=document.getElementById('ramadanBtn');btn.innerText=ramadan?'🌙 Ramadan: On - Multiply by 6':'🌙 Ramadan: Off';btn.classList.toggle('on',ramadan);
- let daily=(DB.dailyWorkers||[]).filter(x=>inRange(getItemDate(x),r));let avgWorkers=daily.length?daily.reduce((a,x)=>a+((+x.workers||+x.count||+x.total||+x.num||0)),0)/daily.length:0;let workDays=new Set(daily.map(x=>getItemDate(x))).size;let safeHours=0;let map={};daily.forEach(x=>{let d=getItemDate(x);if(d)map[String(d).slice(0,10)]=+x.workers||+x.count||+x.total||+x.num||0});let lastWorkers=avgWorkers;let cur=new Date(r.start);let end=new Date(r.end);while(cur<=end){let key=cur.toISOString().slice(0,10);let w=map[key]||lastWorkers;if(map[key])lastWorkers=map[key];let day=cur.getDay();if(ramadan)safeHours+=w*6;else if(day===5)safeHours+=w*5;else safeHours+=w*12;cur.setDate(cur.getDate()+1)}
- let induction=(DB.induction||[]).filter(x=>inRange(getItemDate(x),r));let weekly=(DB.weeklyLect||[]).filter(x=>inRange(getItemDate(x),r));let weeklyAttend=weekly.reduce((a,x)=>a+((+x.attendance||+x.attendees||+x.present||+x.count||0)),0);if(weeklyAttend===0)weeklyAttend=weekly.reduce((a,x)=>a+((x.attendeesList||x.list||[]).length||0),0);
- let trains=(DB.train||[]).filter(x=>inRange(getItemDate(x),r));let trainPeople=trains.reduce((a,x)=>a+((+x.trainees||+x.count||0)),0);if(trainPeople===0)trainPeople=trains.reduce((a,x)=>a+((x.traineesList||[]).length||0),0);let trainHours=sum(trains,'hours')||sum(trains,'totalHours');
- let nm=(DB.nearMiss||[]).filter(x=>inRange(getItemDate(x),r));let nmClosed=nm.filter(isClosed).length;let obs=(DB.observations||[]).filter(x=>inRange(getItemDate(x),r));let obsClosed=obs.filter(isClosed).length;let ncr=(DB.ncr||[]).filter(x=>inRange(getItemDate(x),r));let ncrClosed=ncr.filter(isClosed).length;let ncrRate=ncr.length?Math.round(ncrClosed/ncr.length*100):0;let cViol=(DB.violations||[]).filter(x=>inRange(getItemDate(x),r));let cMoney=sum(cViol,'deduct')||sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value');let eViol=(DB.empViolations||[]).filter(x=>inRange(getItemDate(x),r));let acc=(DB.accidents||[]).filter(x=>inRange(getItemDate(x),r));let injuries=acc.filter(x=>x.hasInjury===true||x.injury==='نعم'||x.injury==='yes'||(+x.injuryCount||0)>0||x.injuries>0).length;
- document.getElementById('debugBox').innerHTML='🔍 <b>Total in Database (Before Date Filter):</b> Contractor Violations: <b>'+DB.violations.length+'</b> | Employee Violations: <b>'+DB.empViolations.length+'</b> | Accidents: <b>'+DB.accidents.length+'</b> | Near Miss: <b>'+DB.nearMiss.length+'</b> | Observations: <b>'+DB.observations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | Trainings: <b>'+DB.train.length+'</b>';
+ let daily=(DB.dailyWorkers||[]).filter(x=>inRange(getItemDate(x),r));
+ // ===== FIX: بيجمع workers من كل الأسماء =====
+ let getW=x=>pickNum(x,['workers','count','total','totalWorkers','num','workersCount','workersTotal'])||pickNum(x,['staff','manpower']);
+ let avgWorkers=daily.length?daily.reduce((a,x)=>a+getW(x),0)/daily.length:0;
+ let workDays=new Set(daily.map(x=>normDateStr(getItemDate(x)))).size;
+ let safeHours=0;let map={};daily.forEach(x=>{let d=normDateStr(getItemDate(x));if(d)map[d]=getW(x)});
+ let lastWorkers=avgWorkers;let cur=new Date(r.start);let end=new Date(r.end);
+ while(cur<=end){let key=cur.toISOString().slice(0,10);let w=map[key]||lastWorkers;if(map[key])lastWorkers=map[key];let day=cur.getDay();if(ramadan)safeHours+=w*6;else if(day===5)safeHours+=w*5;else safeHours+=w*12;cur.setDate(cur.getDate()+1)}
+ let induction=(DB.induction||[]).filter(x=>inRange(getItemDate(x),r));let weekly=(DB.weeklyLect||[]).filter(x=>inRange(getItemDate(x),r));let weeklyAttend=weekly.reduce((a,x)=>a+(pickNum(x,['attendance','attendees','present','count','attendeeCount'])),0);if(weeklyAttend===0)weeklyAttend=weekly.reduce((a,x)=>a+((x.attendeesList||x.list||[]).length||0),0);
+ let trains=(DB.train||[]).filter(x=>inRange(getItemDate(x),r));let trainPeople=trains.reduce((a,x)=>a+(pickNum(x,['trainees','count','traineeCount','people'])),0);if(trainPeople===0)trainPeople=trains.reduce((a,x)=>a+((x.traineesList||[]).length||0),0);let trainHours=sum(trains,'hours')||sum(trains,'totalHours')||sum(trains,'duration');
+ let nm=(DB.nearMiss||[]).filter(x=>inRange(getItemDate(x),r));let nmClosed=nm.filter(isClosed).length;let obs=(DB.observations||[]).filter(x=>inRange(getItemDate(x),r));let obsClosed=obs.filter(isClosed).length;let ncr=(DB.ncr||[]).filter(x=>inRange(getItemDate(x),r));let ncrClosed=ncr.filter(isClosed).length;let ncrRate=ncr.length?Math.round(ncrClosed/ncr.length*100):0;
+ let cViol=(DB.violations||[]).filter(x=>inRange(getItemDate(x),r));let cMoney=sum(cViol,'deduct')||sum(cViol,'amount')||sum(cViol,'fine')||sum(cViol,'value')||sum(cViol,'deduction');let eViol=(DB.empViolations||[]).filter(x=>inRange(getItemDate(x),r));let acc=(DB.accidents||[]).filter(x=>inRange(getItemDate(x),r));let injuries=acc.filter(x=>x.hasInjury===true||x.injury==='نعم'||x.injury==='yes'||(+x.injuryCount||0)>0||x.injuries>0).length;
+ document.getElementById('debugBox').innerHTML='🔍 <b>Total in Database (Before Date Filter):</b> Daily Workers: <b>'+DB.dailyWorkers.length+'</b> | Induction: <b>'+DB.induction.length+'</b> | Weekly: <b>'+DB.weeklyLect.length+'</b> | Contractor Violations: <b>'+DB.violations.length+'</b> | Employee Violations: <b>'+DB.empViolations.length+'</b> | Accidents: <b>'+DB.accidents.length+'</b> | Near Miss: <b>'+DB.nearMiss.length+'</b> | Observations: <b>'+DB.observations.length+'</b> | NCR: <b>'+DB.ncr.length+'</b> | Trainings: <b>'+DB.train.length+'</b>';
  document.getElementById('s-avgWorkers').textContent=Math.round(avgWorkers*10)/10;document.getElementById('s-workDays').textContent=workDays;document.getElementById('s-safeHours').textContent=Math.round(safeHours).toLocaleString('en-US');document.getElementById('hero-safe').textContent='Safe Hours: '+Math.round(safeHours).toLocaleString('en-US');document.getElementById('hero-workers').textContent='Workers: '+(Math.round(avgWorkers*10)/10);document.getElementById('hero-ncr').textContent='NCR Closing: '+ncrRate+'%';document.getElementById('s-inductionCount').textContent=induction.length;document.getElementById('s-inductionHours').textContent=(induction.length*0.25).toFixed(2)+' Hours';document.getElementById('s-weeklyCount').textContent=weekly.length;document.getElementById('s-weeklyAttend').textContent=weeklyAttend;document.getElementById('s-weeklyHours').textContent=(weeklyAttend*0.5).toFixed(1)+' Hours';document.getElementById('s-trainCount').textContent=trains.length;document.getElementById('s-trainPeople').textContent=trainPeople;document.getElementById('s-trainHours').textContent=trainHours.toFixed(1)+' Hours';document.getElementById('s-accidents').textContent=acc.length;document.getElementById('s-injuries').textContent=injuries;document.getElementById('s-contractViol').textContent=cViol.length;document.getElementById('s-contractMoney').textContent=cMoney.toLocaleString('en-US')+' EGP';document.getElementById('s-empViol').textContent=eViol.length;document.getElementById('s-ncrCount').textContent=ncr.length;document.getElementById('s-ncrRate').textContent=ncrRate+'%';document.getElementById('nm-count').textContent=nm.length;document.getElementById('nm-closed').textContent=nmClosed;document.getElementById('nm-open').textContent=nm.length-nmClosed;document.getElementById('nm-rate').textContent=nm.length?Math.round(nmClosed/nm.length*100)+'%':'0%';document.getElementById('obs-count').textContent=obs.length;document.getElementById('obs-closed').textContent=obsClosed;document.getElementById('obs-open').textContent=obs.length-obsClosed;document.getElementById('obs-rate').textContent=obs.length?Math.round(obsClosed/obs.length*100)+'%':'0%';document.getElementById('ncr-count2').textContent=ncr.length;document.getElementById('ncr-closed').textContent=ncrClosed;document.getElementById('ncr-open').textContent=ncr.length-ncrClosed;document.getElementById('ncr-rate2').textContent=ncrRate+'%';drawPie('nmChart',nmClosed,nm.length-nmClosed);drawPie('obsChart',obsClosed,obs.length-obsClosed);drawPie('ncrChart',ncrClosed,ncr.length-ncrClosed);
  document.getElementById('summary').innerHTML='<table><tr><th>Item</th><th>Value</th><th>Formula</th></tr><tr><td>Average Workers</td><td>'+(Math.round(avgWorkers*10)/10)+'</td><td>From Daily Workers Count</td></tr><tr><td>Safe Hours</td><td>'+Math.round(safeHours).toLocaleString('en-US')+'</td><td>Sat-Thu x12, Fri x5, Ramadan x6</td></tr><tr><td>Induction Hours</td><td>'+(induction.length*0.25).toFixed(2)+'</td><td>Lectures Count x 0.25</td></tr><tr><td>Weekly Hours</td><td>'+(weeklyAttend*0.5).toFixed(1)+'</td><td>Total Attendance x 0.5</td></tr><tr><td>Trainings Hours</td><td>'+trainHours.toFixed(1)+'</td><td>Sum of Recorded Hours</td></tr><tr><td>Near Miss Closing %</td><td>'+(nm.length?Math.round(nmClosed/nm.length*100):0)+'%</td><td>Closed / Total x100</td></tr><tr><td>Observations Closing %</td><td>'+(obs.length?Math.round(obsClosed/obs.length*100):0)+'%</td><td>Closed / Total x100</td></tr><tr><td>NCR Closing %</td><td>'+ncrRate+'%</td><td>Closed / Total x100</td></tr></table>';
- let notifs=[...nm.filter(x=>!isClosed(x)).slice(0,2).map(x=>`⚡ Near Miss مفتوح: ${x.company||''} - ${(x.desc||'').slice(0,30)}`),...ncr.filter(x=>!isClosed(x)).slice(0,2).map(x=>`📄 NCR مفتوح: ${x.company||''} - ${(x.desc||'').slice(0,30)}`)];
+ let notifs=[...nm.filter(x=>!isClosed(x)).slice(0,2).map(x=>`⚡ Near Miss مفتوح: ${x.company||''} - ${String(x.desc||x.description||'').slice(0,30)}`),...ncr.filter(x=>!isClosed(x)).slice(0,2).map(x=>`📄 NCR مفتوح: ${x.company||''} - ${String(x.desc||x.description||'').slice(0,30)}`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
 buildSelector();loadLive();
 </script>
