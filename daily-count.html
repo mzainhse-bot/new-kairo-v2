@@ -7,7 +7,6 @@
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
 .hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
-/* 3D ICONS - نفس التصاريح بالظبط */
 .icon3d{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;cursor:pointer;transition:.15s;box-shadow:0 6px 0 rgba(0,0,0,.2),0 10px 18px rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.15);background:linear-gradient(145deg,#fff,#e8e8e8)}
 .icon3d:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
 .icon3d.small{width:48px;height:48px;border-radius:14px;font-size:24px}.icon3d.mini{width:38px;height:38px;border-radius:11px;font-size:20px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
@@ -46,14 +45,33 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="employee-file.html">📁 Employee Files</a><a href="daily-count.html" class="active">🔢 <span data-i18n="daily">Daily Count</span></a><a href="train.html">🎓 Training</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="ncr.html">📄 NCR</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 <span data-i18n="daily">Daily Count</span></a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -70,9 +88,10 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">عدد عمال اليوم</span> <span style="color:#FF6B00">• Daily Count</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Live - مربوط بالتصاريح • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="panel" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
-<div style="flex:1"><label>📅 <span data-i18n="day">اليوم</span></label><input type="date" id="filterDate" onchange="loadLive()"></div>
+<div style="flex:1"><label>📅 <span data-i18n="day">اليوم</span></label><input type="date" id="filterDate" onchange="renderDaily()"></div>
 <div style="flex:1"><label>🏢 <span data-i18n="companyFilter">الشركة</span></label><select id="filterCompany" onchange="renderDaily()"><option value="">كل الشركات</option></select></div>
 <button class="btn-orange" onclick="loadLive()">🔄 تحديث</button>
 <span id="liveDot" style="font-size:12px;color:#2E7D32;font-weight:800">● Live</span>
@@ -85,7 +104,6 @@ table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F
 <div class="kpi"><div class="kpi-top"><span class="icon3d purple">📄</span><div><b id="k-permits-workers">0</b><small data-i18n="permitsWorkers">عمال في التصاريح</small></div></div></div>
 </div>
 
-<!-- ACTIVE PERMITS - أماكن العمل النهارده -->
 <div class="panel" style="border:2px solid #2E7D32">
 <h2 style="margin:0;display:flex;gap:10px;align-items:center"><span class="icon3d small green">🟢</span> <span data-i18n="workPlaces">أماكن العمل النهارده - من التصاريح</span> <span id="activePermitCount" style="background:#2E7D32;color:#fff;padding:2px 10px;border-radius:99px;font-size:12px">0</span></h2>
 <p style="font-size:12px;color:#666">لو التصريح اتقفل أو اتلغى بيتشال من هنا أوتوماتيك • Live</p>
@@ -119,31 +137,98 @@ document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
 function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.15)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
-let dailyCount=[], permits=[];
+let dailyCount=[], permits=[], allDaily=[];
 function makeId(c,d){return c.trim().toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g,'_')+'_'+d}
-// ===== LIVE - onSnapshot للاتنين =====
+// ===== FIX: توحيد التاريخ والحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate) { try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim();
+  if(s.length>10) s=s.slice(0,10);
+  s=s.replace(/\//g,'-');
+  // لو 20-11-2024 -> 2024-11-20
+  let parts=s.split('-');
+  if(parts.length===3 && parts[0].length===2) s=parts[2]+'-'+parts[1]+'-'+parts[0];
+  return s;
+}
+function normDaily(raw){
+  return {
+    id: raw.id,
+    company: pick(raw,['company','companyName','contractor']),
+    date: normDate(pick(raw,['date','day','createdAt'])),
+    safety: Number(pick(raw,['safety','safetyCount','safetyDept','safetyDepartment','counts.Safety Department']))||0,
+    total: Number(pick(raw,['total','totalCount','totalWorkers','workers','workersCount']))||0,
+    _raw: raw
+  };
+}
+function normPermit(raw){
+  let status=String(pick(raw,['status','state'])||'').trim();
+  let workers=Number(pick(raw,['workersCount','workers','totalWorkers','workersNumber']))||0;
+  return {
+    id: raw.id,
+    company: pick(raw,['company','companyName','contractor']),
+    num: pick(raw,['num','number','permitNo','permitNumber']),
+    location: pick(raw,['location','workLocation','place','site']),
+    type: pick(raw,['type','workType']),
+    supervisor: pick(raw,['supervisor','supervisorName']),
+    status: status,
+    startDate: normDate(pick(raw,['startDate','fromDate','date','start'])),
+    endDate: normDate(pick(raw,['endDate','toDate','end','expiry'])),
+    workersCount: workers,
+    _raw: raw
+  };
+}
+function isPermitActive(p, date){
+  let s=p.status.toLowerCase();
+  let isOpen = s.includes('open')||s.includes('delivered')||s.includes('active')||s.includes('approved')||s.includes('issued')||s===''||s.includes('مفتوح');
+  let isClosed = s.includes('closed')||s.includes('cancel')||s.includes('expired')||s.includes('مغلق')||s.includes('ملغي');
+  if(isClosed) return false;
+  if(!isOpen) return false;
+  if(p.startDate && p.startDate!==date && p.startDate>date) return false;
+  if(p.endDate && p.endDate<date) return false;
+  return true;
+}
 function loadLive(){
- let date=document.getElementById('filterDate').value;
  try{
-  firebase.firestore().collection('dailyCount').where('date','==',date).onSnapshot(snap=>{dailyCount=snap.docs.map(d=>({id:d.id,...d.data()}));renderDaily();});
-  firebase.firestore().collection('permits').onSnapshot(snap=>{let old=permits.length;permits=snap.docs.map(d=>({id:d.id,...d.data()}));if(permits.length!==old) playBeep();renderDaily();});
+  let db=firebase.firestore();
+  // بنجيب الكل ونفلتر في المتصفح - مش where - عشان القديم ميضيعش
+  db.collection('dailyCount').onSnapshot(snap=>{
+    allDaily=snap.docs.map(d=>({id:d.id,...d.data()})).map(normDaily);
+    // + localStorage fallback
+    try{ let local=JSON.parse(localStorage.getItem('dailyCount')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!allDaily.find(x=>x.id==='local-'+i)) allDaily.push(normDaily({id:'local-'+i,...l})); }); }catch(e){}
+    document.getElementById('loadStatus').textContent='✅ Live - إجمالي السجلات: '+allDaily.length+' | اليوم المختار: '+(document.getElementById('filterDate').value||'');
+    renderDaily();
+  }, err=>{ document.getElementById('loadStatus').textContent='⚠️ '+err.message; });
+  db.collection('permits').onSnapshot(snap=>{
+    let old=permits.length;
+    permits=snap.docs.map(d=>({id:d.id,...d.data()})).map(normPermit);
+    if(permits.length!==old) playBeep();
+    renderDaily();
+  });
+  // أسماء بديلة للكوليكشن
+  ['dailyCounts','daily-count'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      snap.docs.map(d=>({id:coll+':'+d.id,...d.data()})).map(normDaily).forEach(n=>{ if(!allDaily.find(x=>x.id===n.id)) allDaily.push(n); });
+      renderDaily();
+    }, ()=>{});
+  });
  }catch(e){console.log(e)}
 }
 function renderDaily(){
  let comp=document.getElementById('filterCompany').value, q=(document.getElementById('searchD').value||'').toLowerCase(), date=document.getElementById('filterDate').value;
- let comps=[...new Set([...dailyCount.map(x=>x.company),...permits.map(x=>x.company)])].filter(Boolean);
+ let dailyForDay = allDaily.filter(x=>x.date===date);
+ let comps=[...new Set([...allDaily.map(x=>x.company),...permits.map(x=>x.company)])].filter(Boolean);
  document.getElementById('filterCompany').innerHTML='<option value="">كل الشركات</option>'+comps.map(c=>`<option ${c===comp?'selected':''}>${escapeHtml(c)}</option>`).join('');
  document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');
- let list=dailyCount.filter(x=>(!comp||x.company===comp)&&(x.company||'').toLowerCase().includes(q));
+ let list=dailyForDay.filter(x=>(!comp||x.company===comp)&&(x.company||'').toLowerCase().includes(q));
  let total=list.reduce((s,x)=>s+(Number(x.total)||0),0), safety=list.reduce((s,x)=>s+(Number(x.safety)||0),0);
  animateNum('k-total-day',total); animateNum('k-safety-day',safety); animateNum('k-companies',new Set(list.map(x=>x.company)).size);
- // Active Permits - بس المفتوح وبتاع النهارده
- let active=permits.filter(x=>(x.status==='Open'||x.status==='Delivered') && (x.startDate===date || (!x.endDate||x.endDate>=date)) && (!comp||x.company===comp));
- let permitsWorkers=active.reduce((s,x)=>s+(Number(x.workersCount||x.workers||0)),0);
+ let active=permits.filter(x=>isPermitActive(x,date) && (!comp||x.company===comp));
+ let permitsWorkers=active.reduce((s,x)=>s+(Number(x.workersCount||0)),0);
  animateNum('k-permits-workers',permitsWorkers);
  document.getElementById('activePermitCount').textContent=active.length;
- document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div class="permit-row"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num||'')} • 📍 ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(x.type||'')} • ${escapeHtml(x.supervisor||'')}</small></div><span style="background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:900">${escapeHtml(x.status)}</span><a href="permits.html" style="font-size:12px;font-weight:800">فتح التصريح →</a></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد تصاريح شغالة النهارده - اتأكد من صفحة التصاريح</p>';
- // Match Alert
+ document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div class="permit-row"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num||'')} • 📍 ${escapeHtml(x.location||'')}</b><br><small>🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||0} عامل • ${escapeHtml(x.type||'')} • ${escapeHtml(x.supervisor||'')}</small></div><span style="background:#E8F5E9;color:#2E7D32;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:900">${escapeHtml(x.status||'Open')}</span><a href="permits.html" style="font-size:12px;font-weight:800">فتح التصريح →</a></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد تصاريح شغالة النهارده - اتأكد من صفحة التصاريح</p>';
  let diff=total-permitsWorkers;
  let alertEl=document.getElementById('matchAlert');
  if(total>0){
@@ -151,11 +236,9 @@ function renderDaily(){
   else if(diff>0) alertEl.innerHTML=`<div class="alert-box">⚠️ فيه ${diff} عامل مش متغطيين بتصريح - إجمالي ${total} VS تصاريح ${permitsWorkers}</div>`;
   else alertEl.innerHTML=`<div class="alert-box">⚠️ عمال التصاريح (${permitsWorkers}) أكتر من إجمالي المسجل (${total}) - راجع الأرقام</div>`;
  } else alertEl.innerHTML='';
- // Company totals
  let maxT=Math.max(...list.map(x=>x.total),1);
- document.getElementById('companyTotals').innerHTML=list.map(x=>{let pWorkers=active.filter(p=>p.company===x.company).reduce((s,p)=>s+(Number(p.workersCount||p.workers||0)),0); return `<div style="display:flex;justify-content:space-between;font-size:13px"><span>🏢 ${escapeHtml(x.company)} - Safety: ${x.safety||0} • 📄 تصاريح: ${pWorkers}</span><b>${x.total} workers</b></div><div style="height:10px;background:#eee;border-radius:10px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px"></div></div>`}).join('')||'لا توجد بيانات لليوم ده';
- document.getElementById('dailyTable').innerHTML=list.length?`<table><tr><th>Date</th><th>Company</th><th>Safety</th><th>Total</th><th>Action</th></tr>${list.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.company)}</td><td>${x.safety||0}</td><td><b>${x.total}</b></td><td><button class="btn-ghost" onclick="delDaily('${x.id}')">🗑️</button></td></tr>`).join('')}</table>`:'<p>لا توجد سجلات</p>';
- // Notifications
+ document.getElementById('companyTotals').innerHTML=list.map(x=>{let pWorkers=active.filter(p=>p.company===x.company).reduce((s,p)=>s+(Number(p.workersCount||0)),0); return `<div style="display:flex;justify-content:space-between;font-size:13px"><span>🏢 ${escapeHtml(x.company)} - Safety: ${x.safety||0} • 📄 تصاريح: ${pWorkers}</span><b>${x.total} workers</b></div><div style="height:10px;background:#eee;border-radius:10px;margin:6px 0"><div style="height:100%;background:#FF6B00;width:${(x.total/maxT*100).toFixed(0)}%;border-radius:10px"></div></div>`}).join('')||'لا توجد بيانات لليوم ده - جرب تغير التاريخ، أو شوف سطر Live فوق';
+ document.getElementById('dailyTable').innerHTML=list.length?`<table><tr><th>Date</th><th>Company</th><th>Safety</th><th>Total</th><th>Action</th></tr>${list.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.company)}</td><td>${x.safety||0}</td><td><b>${x.total}</b></td><td><button class="btn-ghost" onclick="delDaily('${x.id}')">🗑️</button></td></tr>`).join('')}</table>`:'<p>لا توجد سجلات لليوم ده</p>';
  let notifs=[];
  active.forEach(x=>{if(x.endDate && (new Date(x.endDate)-new Date())/86400000<1) notifs.push(`⚠️ تصريح ${x.num} هينتهي قريب - ${x.location}`)});
  if(diff>0) notifs.push(`⚠️ ${diff} عامل بدون تصريح`);
@@ -166,13 +249,12 @@ function calcLive(){let s=parseInt(document.getElementById('d-safety').value)||0
 async function addDaily(){
  let company=document.getElementById('d-company').value.trim(),date=document.getElementById('d-date').value,safety=parseInt(document.getElementById('d-safety').value)||0,total=parseInt(document.getElementById('d-total').value)||0;
  if(!company||!date) return alert('املأ الشركة والتاريخ'); if(total===0) return alert('اكتب الإجمالي'); if(safety>total) return alert('السلامة أكبر من الإجمالي');
- let id=makeId(company,date); let exists=dailyCount.find(x=>x.id===id); if(exists && !confirm('موجود - تحدثه؟')) return;
+ let id=makeId(company,date); let exists=allDaily.find(x=>x.id===id); if(exists && !confirm('موجود - تحدثه؟')) return;
  await firebase.firestore().collection('dailyCount').doc(id).set({company,date,safety,total,counts:{'Safety Department':safety},updatedAt:new Date().toISOString(),createdAt:exists?exists.createdAt:new Date().toISOString()},{merge:true});
  playBeep(); alert('✅ تم الحفظ');
 }
-async function delDaily(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('dailyCount').doc(id).delete();}
-function exportDaily(){let date=document.getElementById('filterDate').value;let csv='Company,Date,Safety,Total,Permit,Location,PermitWorkers\n'+dailyCount.map(x=>{let p=permits.filter(pp=>pp.company===x.company);return [x.company,x.date,x.safety,x.total,p.map(pp=>pp.num).join(';'),p.map(pp=>pp.location||pp.workLocation).join(';'),p.reduce((s,pp)=>s+(Number(pp.workersCount||0)),0)].join(',')}).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='daily-'+date+'.csv';a.click();}
-// Pull to refresh
+async function delDaily(id){if(!confirm('حذف؟'))return; if(String(id).startsWith('local-')){ allDaily=allDaily.filter(x=>x.id!==id); renderDaily(); return; } await firebase.firestore().collection('dailyCount').doc(id).delete();}
+function exportDaily(){let date=document.getElementById('filterDate').value;let csv='Company,Date,Safety,Total,Permit,Location,PermitWorkers\n'+allDaily.filter(x=>x.date===date).map(x=>{let p=permits.filter(pp=>pp.company===x.company);return [x.company,x.date,x.safety,x.total,p.map(pp=>pp.num).join(';'),p.map(pp=>pp.location).join(';'),p.reduce((s,pp)=>s+(Number(pp.workersCount||0)),0)].join(',')}).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='daily-'+date+'.csv';a.click();}
 let startY=0;document.addEventListener('touchstart',e=>{startY=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-startY>120 && window.scrollY===0){loadLive();}}, {passive:true});
 let today=new Date().toISOString().slice(0,10);document.getElementById('d-date').value=today;document.getElementById('filterDate').value=today;
 loadLive();
