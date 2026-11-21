@@ -44,14 +44,33 @@ table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html" class="active">👥 <span data-i18n="users">Users</span></a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="safety-observations.html">👁️ Observations</a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 <span data-i18n="users">Users</span></a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -68,6 +87,7 @@ table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">الموظفين</span> <span style="color:#FF6B00">• Users</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 <div id="loadMsg" style="display:none;margin-bottom:14px"></div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"><button class="btn2" style="padding:12px 18px;background:#FF6B00;color:#fff" onclick="openMyProfile()">👤 My Profile • بروفايلي</button><button class="btn2" style="padding:12px 18px" onclick="exportBackup()">📥 Export Backup</button><button class="btn2" style="padding:12px 18px" onclick="loadLive()">🔄 Reload</button></div>
@@ -113,15 +133,49 @@ function val(id){return document.getElementById(id).value.trim()}
 function showMsg(html,ok){let d=document.getElementById('loadMsg');d.style.display='block';d.innerHTML=html;d.className=ok?'alert green':'alert';if(ok)setTimeout(()=>{d.style.display='none'},4000)}
 function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');if(typeof u==='object'&&u.name)return u}catch(e){}return null}
 let usersList=[];let editIdx=-1;let editPhotoData='';
+function normUser(raw){
+  return {
+    id: raw.id, _coll: raw._coll||'users',
+    name: raw.name||raw.fullName||raw.workerName||raw.employeeName||'',
+    email: raw.email||'',
+    job: raw.job||raw.title||raw.profession||raw.occupation||'',
+    company: raw.company||raw.companyName||raw.contractor||'RMED',
+    phone: raw.phone||raw.phoneNumber||'',
+    role: normRole(raw.role||raw.requestedRole),
+    requestedRole: normRole(raw.requestedRole||raw.role),
+    status: String(raw.status||'approved').toLowerCase(),
+    img: raw.img||raw.photo||raw.photoURL||raw.avatar||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
-  firebase.firestore().collection('users').onSnapshot(snap=>{
-   let oldPending=usersList.filter(u=>u.status==='pending').length;
-   let seen=new Set();usersList=[];
-   snap.forEach(d=>{let data=d.data();let email=String(data.email||'').toLowerCase().trim();if(email&&seen.has(email))return;if(email)seen.add(email);usersList.push({id:d.id,_col:'users',name:data.name||data.fullName||'',email:data.email||'',job:data.job||data.title||'',company:data.company||'RMED',phone:data.phone||'',role:normRole(data.role||data.requestedRole),requestedRole:normRole(data.requestedRole||data.role),status:(data.status||'approved').toLowerCase(),img:data.img||data.photo||data.photoURL||'',createdAt:data.createdAt||''})});
-   let me=getMe();if(me&&me.email&&!seen.has(String(me.email).toLowerCase().trim())){usersList.push({id:me.id||'me',_col:'local',name:me.name||'',email:me.email||'',job:me.job||'',company:me.company||'RMED',phone:me.phone||'',role:normRole(me.role),status:'approved',img:me.img||me.photo||''})}
-   let newPending=usersList.filter(u=>u.status==='pending').length;if(newPending>oldPending&&oldPending>=0&&usersList.length>0)playBeep();
-   renderUsers();
+  let db=firebase.firestore();
+  ['users','employees','workers','accounts'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let oldPending=usersList.filter(u=>u.status==='pending').length;
+      let arr=snap.docs.map(d=>normUser({id:coll+':'+d.id,_coll:coll,...d.data()}));
+      let merged=[...usersList].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      // دمج التكرار بالإيميل: خد الأكمل
+      let byEmail={}; let noEmail=[];
+      merged.forEach(u=>{
+        let em=String(u.email||'').toLowerCase().trim();
+        if(!em){ noEmail.push(u); return; }
+        if(!byEmail[em]) byEmail[em]=u;
+        else {
+          let cur=byEmail[em];
+          // دمج: لو القديم ناقصه حاجة خدها من الجديد
+          ['name','job','company','phone','img'].forEach(k=>{ if(!cur[k] && u[k]) cur[k]=u[k]; });
+          if(u.status==='pending') cur.status='pending';
+          if(cur.role==='Visitor' && u.role!=='Visitor') cur.role=u.role;
+        }
+      });
+      usersList=[...Object.values(byEmail),...noEmail];
+      let me=getMe();if(me&&me.email&&!usersList.find(u=>String(u.email||'').toLowerCase()===String(me.email).toLowerCase())){usersList.push({id:'me',_coll:'local',name:me.name||'',email:me.email||'',job:me.job||'',company:me.company||'RMED',phone:me.phone||'',role:normRole(me.role),requestedRole:normRole(me.role),status:'approved',img:me.img||me.photo||''})}
+      let newPending=usersList.filter(u=>u.status==='pending').length;if(newPending>oldPending&&oldPending>=0&&usersList.length>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي المستخدمين: '+usersList.length;
+      renderUsers();
+    }, err=>{ console.log('skip',coll,err.message); });
   });
  }catch(e){console.log(e)}
 }
@@ -133,22 +187,21 @@ function renderUsers(){
  document.getElementById('pendingIcon').classList.toggle('shake',pending.length>0);
  document.getElementById('pendingPanel').style.display=pending.length?'block':'none';
  document.getElementById('pendingList').innerHTML=pending.map(x=>{let idx=usersList.indexOf(x);return `<div class="pending-card"><img class="avatar" src="${x.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"><div style="flex:1"><b>${escapeHtml(x.name)}</b> • ${escapeHtml(x.email)}<br><small>${escapeHtml(x.job)} • ${escapeHtml(x.company)} • طلب دور: <b>${escapeHtml(x.requestedRole||x.role)}</b> • ${escapeHtml(x.createdAt||'')}</small></div><select id="approveRole-${idx}" style="width:130px"><option ${x.requestedRole==='Employee'?'selected':''}>Employee</option><option ${x.requestedRole==='Supervisor'?'selected':''}>Supervisor</option><option ${x.requestedRole==='Manager'?'selected':''}>Manager</option><option ${x.requestedRole==='Visitor'?'selected':''}>Visitor</option></select><button class="btn2" style="background:#2E7D32" onclick="approveUser(${idx})">✅ Approve</button><button class="btn2" style="background:#D32F2F" onclick="rejectUser(${idx})">❌ Reject</button></div>`}).join('');
- if(!list.length){document.getElementById('usersTable').innerHTML='<p style="text-align:center;color:#888">No users found</p>';return}
+ if(!list.length){document.getElementById('usersTable').innerHTML='<p style="text-align:center;color:#888">No users found - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  let me=getMe();let meEmail=me?me.email:'';
  document.getElementById('usersTable').innerHTML='<table><tr><th>Photo</th><th>Name</th><th>Email</th><th>Job</th><th>Company</th><th>Role</th><th>Status</th><th>Actions</th></tr>'+list.map(x=>{let idx=usersList.indexOf(x);let isMe=x.email===meEmail;let canEdit=isManager()||isMe;let stBadge=x.status==='pending'?'yellow':x.status==='approved'?'green':x.status==='rejected'?'red':'grey';return `<tr><td><img class="avatar" src="${x.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"></td><td><b>${escapeHtml(x.name||'-')}</b>${isMe?' <span class="badge green">You</span>':''}</td><td>${escapeHtml(x.email||'-')}</td><td>${escapeHtml(x.job||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td><span class="badge blue">${escapeHtml(x.role)}</span></td><td><span class="badge ${stBadge}">${escapeHtml(x.status)}</span></td><td>${canEdit?`<button class="btn2" onclick="openEdit(${idx})">✏️ Edit</button>`:`<span style="color:#999;font-size:12px">🔒 Manager Only</span>`} ${isManager()&&!isMe?`<button class="btn2" style="background:#D32F2F" onclick="delUser(${idx})">🗑️</button>`:''}</td></tr>`}).join('')+'</table>';
  let notifs=pending.slice(0,3).map(x=>`⏳ طلب حساب جديد: ${x.name} - ${x.job} - طلب دور: ${x.requestedRole}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function approveUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];let role=document.getElementById('approveRole-'+idx).value;if(!confirm('Approve '+u.name+' as '+role+'?'))return;try{await firebase.firestore().collection('users').doc(u.id).update({role:role,requestedRole:role,status:'approved'});playBeep()}catch(e){return alert(e.message)}u.role=role;u.status='approved';renderUsers();showMsg('✅ Approved - '+u.name+' as '+role,true)}
-async function rejectUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];if(!confirm('Reject '+u.name+'?'))return;try{await firebase.firestore().collection('users').doc(u.id).update({status:'rejected'})}catch(e){return alert(e.message)}u.status='rejected';renderUsers();showMsg('❌ Rejected - '+u.name,false)}
+async function approveUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];let role=document.getElementById('approveRole-'+idx).value;if(!confirm('Approve '+u.name+' as '+role+'?'))return;try{let realId=String(u.id).includes(':')?String(u.id).split(':').slice(1).join(':'):u.id; let coll=u._coll||'users'; await firebase.firestore().collection(coll).doc(realId).update({role:role,requestedRole:role,status:'approved'});playBeep()}catch(e){return alert(e.message)}u.role=role;u.status='approved';renderUsers();showMsg('✅ Approved - '+u.name+' as '+role,true)}
+async function rejectUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];if(!confirm('Reject '+u.name+'?'))return;try{let realId=String(u.id).includes(':')?String(u.id).split(':').slice(1).join(':'):u.id; let coll=u._coll||'users'; await firebase.firestore().collection(coll).doc(realId).update({status:'rejected'})}catch(e){return alert(e.message)}u.status='rejected';renderUsers();showMsg('❌ Rejected - '+u.name,false)}
 function openMyProfile(){let me=getMe();if(!me||!me.email)return alert('Login first');let idx=usersList.findIndex(u=>u.email===me.email);if(idx===-1)return alert('Your account not found');openEdit(idx)}
 function openEdit(idx){let me=getMe();let meEmail=me?me.email:'';let u=usersList[idx];if(!u)return;if(!isManager()&&u.email!==meEmail)return alert('🔒 You can only edit your own profile.');editIdx=idx;editPhotoData=u.img||'';document.getElementById('e-name').value=u.name||'';document.getElementById('e-email').value=u.email||'';document.getElementById('e-job').value=u.job||'';document.getElementById('e-company').value=u.company||'RMED';document.getElementById('e-phone').value=u.phone||'';document.getElementById('e-role').value=u.role||'Visitor';document.getElementById('e-role').disabled=!isManager();document.getElementById('roleLockMsg').style.display=isManager()?'none':'block';document.getElementById('e-photoPreview').src=u.img||'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';document.getElementById('editHint').innerText=isManager()?'You are Manager - You can edit everything including Role.':'You can edit your name, job, company, phone and photo. Role cannot be changed except by Manager.';document.getElementById('editModal').classList.add('open')}
 function closeEdit(){document.getElementById('editModal').classList.remove('open');editIdx=-1}
 function previewEditPhoto(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=400;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max}if(h>max){w=w*max/h;h=max}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);editPhotoData=c.toDataURL('image/jpeg',0.8);document.getElementById('e-photoPreview').src=editPhotoData};img.src=ev.target.result};r.readAsDataURL(f)}
-async function saveProfile(){if(editIdx<0)return;if(!val('e-name'))return alert('Write name');let u=usersList[editIdx];let newRole=isManager()?val('e-role'):u.role;let updated={name:val('e-name'),job:val('e-job'),company:val('e-company')||'RMED',phone:val('e-phone'),role:newRole,img:editPhotoData,photo:editPhotoData};try{await firebase.firestore().collection('users').doc(u.id).update(updated)}catch(e){return alert('Save problem: '+e.message)}Object.assign(u,updated);let me=getMe();if(me&&me.email===u.email){let merged={...me,...updated};localStorage.setItem('currentUser',JSON.stringify(merged));localStorage.setItem('safetyUser',JSON.stringify(merged))}renderUsers();closeEdit();showMsg('✅ Profile updated - '+updated.name+' - Role: '+updated.role,true)}
-async function delUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];if(!confirm('Delete '+u.name+' ?'))return;try{await firebase.firestore().collection('users').doc(u.id).delete()}catch(e){}usersList.splice(idx,1);renderUsers()}
+async function saveProfile(){if(editIdx<0)return;if(!val('e-name'))return alert('Write name');let u=usersList[editIdx];let newRole=isManager()?val('e-role'):u.role;let updated={name:val('e-name'),fullName:val('e-name'),job:val('e-job'),title:val('e-job'),company:val('e-company')||'RMED',phone:val('e-phone'),role:newRole,requestedRole:newRole,img:editPhotoData,photo:editPhotoData};try{let realId=String(u.id).includes(':')?String(u.id).split(':').slice(1).join(':'):u.id; let coll=u._coll||'users'; await firebase.firestore().collection(coll).doc(realId).update(updated)}catch(e){return alert('Save problem: '+e.message)}Object.assign(u,updated);let me=getMe();if(me&&me.email===u.email){let merged={...me,...updated};localStorage.setItem('currentUser',JSON.stringify(merged));localStorage.setItem('safetyUser',JSON.stringify(merged))}renderUsers();closeEdit();showMsg('✅ Profile updated - '+updated.name+' - Role: '+updated.role,true)}
+async function delUser(idx){if(!isManager())return alert('Manager only');let u=usersList[idx];if(!confirm('Delete '+u.name+' ?'))return;try{let realId=String(u.id).includes(':')?String(u.id).split(':').slice(1).join(':'):u.id; let coll=u._coll||'users'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}usersList.splice(idx,1);renderUsers()}
 function exportBackup(){if(!usersList.length)return alert('No data');let csv='Name,Email,Job,Company,Phone,Role,Status\n'+usersList.map(x=>[x.name,x.email,x.job,x.company,x.phone,x.role,x.status].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='users-backup.csv';a.click()}
 loadLive();
 </script>
