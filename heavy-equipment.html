@@ -46,14 +46,33 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="permits.html">📄 Permits</a><a href="heavy-equipment.html" class="active">🚜 <span data-i18n="heavy">Heavy Equipment</span></a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 <span data-i18n="heavy">Heavy Equipment</span></a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -70,6 +89,7 @@ label{display:block;font-size:12px;font-weight:800;margin:11px 0 6px}input,selec
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">المعدات الثقيلة</span> <span style="color:#FF6B00">• Heavy Equipment</span></h1>
 <p style="color:#666;font-size:13px">New Kairo Project • Live • V4 Final</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div id="notifyBox" class="notify-box"><b>🔔 <span data-i18n="monthlyReminder">تذكير بالفحص الشهري</span></b><br><span id="notifyText"></span><br><button class="btn2" onclick="dismissNotify()" style="margin-top:8px">✅ تمام - فهمت</button></div>
 <div id="overdueBox" class="alert-box"><b>⚠️ <span data-i18n="overdue">شركات متأخرة في الفحص</span></b><br><span id="overdueText"></span></div>
@@ -117,6 +137,49 @@ function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||w
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 let allEq=[],checkImgs=[],eqImgs=[],licImgs=[],calImgs=[],permits=[];
+// ===== FIX: توحيد الحقول القديمة والجديدة =====
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normEq(raw){
+  let cond=String(pick(raw,['condition','status','state'])||'Good');
+  if(cond.toLowerCase().includes('unsafe')||cond.includes('غير آمن')) cond='Unsafe';
+  else if(cond.toLowerCase().includes('maint')||cond.includes('صيانة')) cond='Under Maintenance';
+  else cond='Good';
+  let color=pick(raw,['colorCode','color','colour']);
+  if(cond==='Unsafe' && !color) color='Red - أحمر 🔴';
+  return {
+    id: raw.id, _coll: raw._coll||'heavyEquipment',
+    project: pick(raw,['project','projectName'])||'New Kairo Project',
+    date: normDate(pick(raw,['date','inspectionDate','createdAt'])),
+    company: pick(raw,['company','companyName','contractor']),
+    location: pick(raw,['location','workLocation','place','site','building']),
+    type: pick(raw,['type','equipmentType','category'])||'Loader',
+    serial: pick(raw,['serial','serialNo','serialNumber','sn']),
+    code: pick(raw,['code','equipmentCode','eqCode','heCode']),
+    condition: cond,
+    colorCode: color||'Green - أخضر',
+    colorHex: pick(raw,['colorHex','hex'])||(cond==='Unsafe'?'#E53935':'#2ECC71'),
+    operator: pick(raw,['operator','operatorName','driver','driverName']),
+    license: pick(raw,['license','licenseNo','operatorLicense','licenseNumber']),
+    licenseExpiry: normDate(pick(raw,['licenseExpiry','licenseExpire','licenseExp','expiry'])),
+    calCert: pick(raw,['calCert','calibrationCert','calibrationCertificate','cert']),
+    calDate: normDate(pick(raw,['calDate','calibrationDate'])),
+    calExpiry: normDate(pick(raw,['calExpiry','calibrationExpiry','calibrationExpire'])),
+    inspector: pick(raw,['inspector','inspectorName','checkedBy','reporter']),
+    notes: pick(raw,['notes','note','remarks','desc']),
+    checkImgs: raw.checkImgs||raw.checklistImgs||[],
+    eqImgs: raw.eqImgs||raw.images||raw.photos||[],
+    licImgs: raw.licImgs||raw.licenseImgs||[],
+    calImgs: raw.calImgs||raw.calibrationImgs||[],
+    createdAt: raw.createdAt||''
+  };
+}
 function genCode(){let L='ABCDEFGHIJKMNOPQRSTUVWXYZ';let c='HE-'+L[Math.floor(Math.random()*L.length)]+L[Math.floor(Math.random()*L.length)]+'-'+Math.floor(1000+Math.random()*9000);document.getElementById('he-code').value=c;return c}
 function getColorHex(){let s=document.getElementById('he-color');return s.options[s.selectedIndex]?.getAttribute('data-hex')||'#2ECC71'}
 function onColorChange(){document.getElementById('colorPreview').style.background=getColorHex()}
@@ -127,14 +190,26 @@ function dismissNotify(){let t=new Date();localStorage.setItem('he_notify_'+t.ge
 function daysLeft(dateStr){if(!dateStr)return 9999;let d=new Date(dateStr),n=new Date();d.setHours(0,0,0,0);n.setHours(0,0,0,0);return Math.round((d-n)/86400000)}
 function loadLive(){
  try{
-  firebase.firestore().collection('heavyEquipment').orderBy('createdAt','desc').onSnapshot(snap=>{let old=allEq.length;allEq=snap.docs.map(d=>({id:d.id,...d.data()}));if(allEq.length>old&&old>0)playBeep();renderEq();});
-  firebase.firestore().collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>p.location||p.workLocation).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');});
+  let db=firebase.firestore();
+  ['heavyEquipment','heavy-equipment','heavy_equipment'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normEq);
+      let merged=[...allEq].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=allEq.length; allEq=merged;
+      allEq.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(allEq.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي المعدات: '+allEq.length;
+      renderEq();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
+  try{ let local=JSON.parse(localStorage.getItem('heavyEquipment')||'[]'); if(Array.isArray(local)) local.forEach((l,i)=>{ if(!allEq.find(x=>x.id==='local-'+i)) allEq.push(normEq({id:'local-'+i,_coll:'local',...l})); }); }catch(e){}
+  db.collection('permits').onSnapshot(snap=>{permits=snap.docs.map(d=>({id:d.id,...d.data()}));let places=[...new Set(permits.map(p=>pick(p,['location','workLocation','place','site'])).filter(Boolean))];document.getElementById('placeList').innerHTML=places.map(p=>`<option value="${escapeHtml(p)}">`).join('');}, ()=>{});
  }catch(e){console.log(e)}
 }
 async function addEq(){
  let company=document.getElementById('he-company').value.trim(),code=document.getElementById('he-code').value.trim(),loc=document.getElementById('he-location').value.trim(),serial=document.getElementById('he-serial').value.trim(),op=document.getElementById('he-operator').value.trim(),lic=document.getElementById('he-license').value.trim(),cert=document.getElementById('he-cal-cert').value.trim(),ins=document.getElementById('he-inspector').value.trim();
  if(!company||!code||!loc||!serial||!op||!lic||!cert||!ins) return alert('املأ كل الحقول المطلوبة *');
- let data={project:'New Kairo Project',date:document.getElementById('he-date').value||new Date().toISOString().slice(0,10),company,location:loc,workLocation:loc,type:document.getElementById('he-type').value,serial,code,condition:document.getElementById('he-condition').value,colorCode:document.getElementById('he-color').value,colorHex:getColorHex(),operator:op,license:lic,licenseExpiry:document.getElementById('he-license-expiry').value,calCert:cert,calDate:document.getElementById('he-cal-date').value,calExpiry:document.getElementById('he-cal-expiry').value,inspector:ins,notes:document.getElementById('he-notes').value,checkImgs,eqImgs,licImgs,calImgs,createdAt:new Date().toISOString()};
+ let data={project:'New Kairo Project',date:document.getElementById('he-date').value||new Date().toISOString().slice(0,10),company,location:loc,workLocation:loc,type:document.getElementById('he-type').value,serial,serialNo:serial,code,equipmentCode:code,condition:document.getElementById('he-condition').value,status:document.getElementById('he-condition').value,colorCode:document.getElementById('he-color').value,colorHex:getColorHex(),operator:op,operatorName:op,driver:op,license:lic,licenseNo:lic,licenseExpiry:document.getElementById('he-license-expiry').value,calCert:cert,calibrationCert:cert,calDate:document.getElementById('he-cal-date').value,calibrationDate:document.getElementById('he-cal-date').value,calExpiry:document.getElementById('he-cal-expiry').value,calibrationExpiry:document.getElementById('he-cal-expiry').value,inspector:ins,notes:document.getElementById('he-notes').value,checkImgs,eqImgs,licImgs,calImgs,createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('heavyEquipment').add(data);alert('✅ تم حفظ المعدة');if(data.condition==='Unsafe')playBeep();}catch(e){alert(e.message)}
  ['he-company','he-location','he-serial','he-operator','he-license','he-cal-cert','he-notes'].forEach(id=>document.getElementById(id).value='');['he-license-expiry','he-cal-date','he-cal-expiry'].forEach(id=>document.getElementById(id).value='');checkImgs=[];eqImgs=[];licImgs=[];calImgs=[];['prev-check','prev-eq','prev-lic','prev-cal'].forEach(id=>document.getElementById(id).innerHTML='');genCode();onConditionChange();
 }
@@ -143,8 +218,8 @@ function renderEq(){
  let list=allEq.filter(p=>((p.company||'')+' '+(p.code||'')+' '+(p.location||'')+' '+(p.serial||'')+' '+(p.operator||'')+' '+(p.inspector||'')).toLowerCase().includes(q.trim())&&(!ft||p.type===ft)&&(!fc||p.condition===fc));
  animateNum('k-total',allEq.length);animateNum('k-good',allEq.filter(p=>p.condition==='Good').length);let un=allEq.filter(p=>p.condition==='Unsafe').length;animateNum('k-unsafe',un);animateNum('k-maint',allEq.filter(p=>p.condition==='Under Maintenance').length);document.getElementById('unsafeIcon').classList.toggle('shake',un>0);
  let perType={};allEq.forEach(p=>perType[p.type]=(perType[p.type]||0)+1);
- document.getElementById('perType').innerHTML=Object.keys(perType).length?Object.entries(perType).map(([t,c])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🚜 ${escapeHtml(t)}</span><span><b style="color:#FF6B00">${c}</b></span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد معدات بعد</p>';
- let per={};allEq.forEach(p=>{if(!per[p.company])per[p.company]={total:0,good:0,unsafe:0};per[p.company].total++;if(p.condition==='Good')per[p.company].good++;if(p.condition==='Unsafe')per[p.company].unsafe++});
+ document.getElementById('perType').innerHTML=Object.keys(perType).length?Object.entries(perType).map(([t,c])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🚜 ${escapeHtml(t)}</span><span><b style="color:#FF6B00">${c}</b></span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد معدات بعد - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
+ let per={};allEq.forEach(p=>{let c=p.company||'Not Specified';if(!per[c])per[c]={total:0,good:0,unsafe:0};per[c].total++;if(p.condition==='Good')per[c].good++;if(p.condition==='Unsafe')per[c].unsafe++});
  document.getElementById('perCompany').innerHTML=Object.keys(per).length?Object.entries(per).map(([c,v])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:13px"><span>🏢 ${escapeHtml(c)}</span><span><b style="color:#FF6B00">${v.total}</b> معدة | جيدة: ${v.good} | غير آمنة: ${v.unsafe}</span></div>`).join(''):'<p style="text-align:center;color:#888">لا توجد معدات بعد</p>';
  document.getElementById('compList').innerHTML=Object.keys(per).map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let now=new Date(),curMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
@@ -158,13 +233,12 @@ function renderEq(){
   if(cd>=0&&cd<=30)expiring.push(`📜 معايرة ${p.code} تنتهي بعد ${cd} يوم - ${p.calExpiry}`);
  });
  if(expiring.length){document.getElementById('expiryBox').classList.add('show');document.getElementById('expiryText').textContent=expiring.join(' | ')}else document.getElementById('expiryBox').classList.remove('show');
- document.getElementById('heTable').innerHTML=list.length?list.map(p=>{let ld=daysLeft(p.licenseExpiry),cd=daysLeft(p.calExpiry);let warn=(ld>=0&&ld<=30)||(cd>=0&&cd<=30)?`<div style="background:#FFF3E0;padding:8px;border-radius:8px;font-size:12px;margin-top:8px">⏰ ${ld<=30?'رخصة تنتهي بعد '+ld+' يوم | ':''}${cd<=30?'معايرة تنتهي بعد '+cd+' يوم':''}</div>`:'';return `<div class="rec-card"><h3 style="margin:0">🚜 ${escapeHtml(p.code)} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Type: ${escapeHtml(p.type)} • Serial: ${escapeHtml(p.serial)} • Inspector: ${escapeHtml(p.inspector)}</small><br><small>Operator: ${escapeHtml(p.operator)} • License: ${escapeHtml(p.license)} • Expiry: ${escapeHtml(p.licenseExpiry||'-')}</small><br><small>Cal Cert: ${escapeHtml(p.calCert)} • Cal Date: ${escapeHtml(p.calDate||'-')} • Cal Expiry: ${escapeHtml(p.calExpiry||'-')}</small><div style="margin:8px 0"><span class="chip gold">${escapeHtml(p.type)}</span><span class="chip ${p.condition==='Good'?'green':p.condition==='Unsafe'?'red':'orange'}">${escapeHtml(p.condition)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${warn}${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.eqImgs?.length?'<div class="photos">'+p.eqImgs.map(img=>`<div><img src="${img}"><br>Equipment</div>`).join('')+'</div>':''}${p.licImgs?.length?'<div class="photos">'+p.licImgs.map(img=>`<div><img src="${img}"><br>License</div>`).join('')+'</div>':''}${p.calImgs?.length?'<div class="photos">'+p.calImgs.map(img=>`<div><img src="${img}"><br>Calibration</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delEq('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printEq('${p.id}')">🖨️ Print</button></div></div>`}).join(''):'<p style="text-align:center;color:#888">No equipment yet</p>';
+ document.getElementById('heTable').innerHTML=list.length?list.map(p=>{let ld=daysLeft(p.licenseExpiry),cd=daysLeft(p.calExpiry);let warn=(ld>=0&&ld<=30)||(cd>=0&&cd<=30)?`<div style="background:#FFF3E0;padding:8px;border-radius:8px;font-size:12px;margin-top:8px">⏰ ${ld<=30?'رخصة تنتهي بعد '+ld+' يوم | ':''}${cd<=30?'معايرة تنتهي بعد '+cd+' يوم':''}</div>`:'';return `<div class="rec-card"><h3 style="margin:0">🚜 ${escapeHtml(p.code||'-')} - ${escapeHtml(p.company)} - 📍 ${escapeHtml(p.location)}</h3><small>${escapeHtml(p.date)} • Type: ${escapeHtml(p.type)} • Serial: ${escapeHtml(p.serial)} • Inspector: ${escapeHtml(p.inspector)}</small><br><small>Operator: ${escapeHtml(p.operator)} • License: ${escapeHtml(p.license)} • Expiry: ${escapeHtml(p.licenseExpiry||'-')}</small><br><small>Cal Cert: ${escapeHtml(p.calCert)} • Cal Date: ${escapeHtml(p.calDate||'-')} • Cal Expiry: ${escapeHtml(p.calExpiry||'-')}</small><div style="margin:8px 0"><span class="chip gold">${escapeHtml(p.type)}</span><span class="chip ${p.condition==='Good'?'green':p.condition==='Unsafe'?'red':'orange'}">${escapeHtml(p.condition)}</span><span class="chip" style="background:${escapeHtml(p.colorHex)};color:#fff">${escapeHtml(p.colorCode)}</span></div><div style="font-size:12px;color:#666">${p.notes?escapeHtml(p.notes):''}</div>${warn}${p.checkImgs?.length?'<div class="photos">'+p.checkImgs.map(img=>`<div><img src="${img}"><br>Checklist</div>`).join('')+'</div>':''}${p.eqImgs?.length?'<div class="photos">'+p.eqImgs.map(img=>`<div><img src="${img}"><br>Equipment</div>`).join('')+'</div>':''}${p.licImgs?.length?'<div class="photos">'+p.licImgs.map(img=>`<div><img src="${img}"><br>License</div>`).join('')+'</div>':''}${p.calImgs?.length?'<div class="photos">'+p.calImgs.map(img=>`<div><img src="${img}"><br>Calibration</div>`).join('')+'</div>':''}<div style="display:flex;gap:6px;margin-top:8px"><button class="btn2" style="background:#D32F2F" onclick="delEq('${p.id}')">🗑️ Delete</button><button class="btn2" onclick="printEq('${p.id}')">🖨️ Print</button></div></div>`}).join(''):'<p style="text-align:center;color:#888">No equipment yet</p>';
  let notifs=[...allEq.filter(p=>p.condition==='Unsafe').slice(0,3).map(p=>`❌ معدة غير آمنة: ${p.code} - ${p.company}`),...expiring.slice(0,3),...overdue.map(c=>`⚠️ شركة ${c} متأخرة`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function delEq(id){if(!confirm('حذف؟'))return; await firebase.firestore().collection('heavyEquipment').doc(id).delete();}
+async function delEq(id){if(!confirm('حذف؟'))return; if(String(id).startsWith('local-')){ allEq=allEq.filter(x=>x.id!==id); renderEq(); return; } let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'heavyEquipment'; await firebase.firestore().collection(coll).doc(realId).delete();}
 function printEq(id){let p=allEq.find(x=>x.id==id);if(!p)return;let w=window.open('');w.document.write(`<h2>Heavy Equipment - New Kairo</h2><p>${escapeHtml(p.code)} | ${escapeHtml(p.company)} | ${escapeHtml(p.type)}</p><p>Operator: ${escapeHtml(p.operator)} | License: ${escapeHtml(p.license)}</p>`);w.print();}
 function exportEq(){let rows=[['Project','Date','Company','Location','Type','Serial','Code','Condition','Color','Operator','License','License Expiry','Cal Cert','Cal Date','Cal Expiry','Inspector','Notes']];allEq.forEach(p=>rows.push([p.project,p.date,p.company,p.location,p.type,p.serial,p.code,p.condition,p.colorCode,p.operator,p.license,p.licenseExpiry,p.calCert,p.calDate,p.calExpiry,p.inspector,p.notes]));let csv=rows.map(r=>r.map(c=>'"'+String(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='heavy-equipment.csv';a.click();}
 document.getElementById('he-date').value=new Date().toISOString().slice(0,10);genCode();onConditionChange();checkNotify();loadLive();
