@@ -43,14 +43,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="scaffolds.html" class="active">🪜 <span data-i18n="scaffolds">Scaffolds</span></a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 <span data-i18n="scaffolds">Scaffolds</span></a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -67,6 +86,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">فحص السقالات</span> <span style="color:#FF6B00">• Scaffolds</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="user-bar"><span style="font-weight:800;color:#FF6B00">🦺 Inspector Name:</span><input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUserName',this.value);document.getElementById('sc-inspector').value=this.value;renderSc()"><span style="font-size:12px;color:#2E7D32">Will appear automatically in every inspection</span></div>
 
@@ -107,9 +127,47 @@ const STATUS_MAP={'قائمة':'Erected','تم الفك':'Dismantled'};
 const LOAD_MAP={'خفيفة الحمولة':'Light Duty','متوسطة الحمولة':'Medium Duty','عالية الأحمال':'Heavy Duty'};
 function TStatus(v){return STATUS_MAP[String(v||'').trim()]||v||'Erected'}
 function TLoad(v){return LOAD_MAP[String(v||'').trim()]||v||''}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normSc(raw){
+  let st=String(pick(raw,['status','state'])||'Erected');
+  if(st.toLowerCase().includes('dismant')||st.includes('تم الفك')) st='Dismantled'; else st='Erected';
+  return {
+    id: raw.id, _coll: raw._coll||'scaffolds',
+    num: pick(raw,['num','scaffoldNo','scaffoldNumber','number','code'])||'',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    type: pick(raw,['type','scaffoldType','category'])||'',
+    load: pick(raw,['load','loadType','capacity'])||'',
+    building: pick(raw,['building','buildingNo','buildingNumber'])||'',
+    floor: pick(raw,['floor','floorNo','floorNumber'])||'',
+    cluster: pick(raw,['cluster','clusterNo','clusterNumber'])||'',
+    date: normDate(pick(raw,['date','erectionDate','inspectionDate','createdAt'])),
+    inspector: pick(raw,['inspector','inspectorName','reporter','reporterName'])||'',
+    status: st,
+    notes: pick(raw,['notes','note','remarks'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
-  firebase.firestore().collection('scaffolds').onSnapshot(snap=>{let old=scaffolds.length;scaffolds=snap.docs.map(d=>({id:d.id,...d.data()}));scaffolds.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(scaffolds.length>old&&old>0)playBeep();renderSc();refreshNum()});
+  let db=firebase.firestore();
+  ['scaffolds','scaffold','scaffoldInspections','scaffold-inspections'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normSc);
+      let merged=[...scaffolds].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=scaffolds.length; scaffolds=merged;
+      scaffolds.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(scaffolds.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي السقالات: '+scaffolds.length;
+      renderSc();refreshNum();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){console.log(e)}
 }
 function val(id){return document.getElementById(id).value.trim()}
@@ -119,30 +177,29 @@ function refreshNum(){document.getElementById('sc-num').value=genScNum()}
 async function addSc(){
  if(!val('sc-company'))return alert('Write company name');if(!val('sc-type'))return alert('Select scaffold type');if(!val('sc-load'))return alert('Select load');if(!val('sc-building'))return alert('Write building number');if(!val('sc-floor'))return alert('Write floor number');if(!val('sc-cluster'))return alert('Write cluster number');if(!val('sc-date'))return alert('Select erection date');
  let insp=val('sc-inspector')||getReporter();if(!insp)return alert('Write inspector name');if(!val('sc-status'))return alert('Select status');
- let rec={num:val('sc-num')||genScNum(),company:val('sc-company'),type:val('sc-type'),load:val('sc-load'),building:val('sc-building'),floor:val('sc-floor'),cluster:val('sc-cluster'),date:val('sc-date'),inspector:insp,reporter:insp,reporterName:insp,status:val('sc-status'),notes:val('sc-notes'),createdAt:new Date().toISOString()};
+ let rec={num:val('sc-num')||genScNum(),scaffoldNo:val('sc-num')||genScNum(),company:val('sc-company'),companyName:val('sc-company'),type:val('sc-type'),scaffoldType:val('sc-type'),load:val('sc-load'),building:val('sc-building'),floor:val('sc-floor'),cluster:val('sc-cluster'),date:val('sc-date'),erectionDate:val('sc-date'),inspector:insp,reporter:insp,reporterName:insp,status:val('sc-status'),state:val('sc-status'),notes:val('sc-notes'),createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('scaffolds').add(rec);playBeep()}catch(e){return alert('Save problem: '+e.message)}
  renderSc();refreshNum();alert('✅ Saved scaffold '+rec.num+' - '+rec.company+' - '+rec.status);['sc-company','sc-building','sc-floor','sc-cluster','sc-notes'].forEach(id=>setVal(id,''));setVal('sc-type','');setVal('sc-load','');setVal('sc-status','Erected');
 }
 function renderSc(){
- let all=scaffolds||[];let comps=[...new Set(all.map(x=>x.company))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
+ let all=scaffolds||[];let comps=[...new Set(all.map(x=>x.company).filter(Boolean))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
  let total=all.length,on=all.filter(x=>TStatus(x.status)==='Erected').length,off=all.filter(x=>TStatus(x.status)==='Dismantled').length;
  animateNum('k-total',total);animateNum('k-on',on);animateNum('k-off',off);document.getElementById('k-on-p').textContent=total?Math.round(on/total*100)+'%':'0%';document.getElementById('offIcon').classList.toggle('shake',off>0);
- let byComp={};all.forEach(x=>{if(!byComp[x.company])byComp[x.company]={total:0,on:0,off:0};byComp[x.company].total++;if(TStatus(x.status)==='Erected')byComp[x.company].on++;else byComp[x.company].off++});
+ let byComp={};all.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={total:0,on:0,off:0};byComp[c].total++;if(TStatus(x.status)==='Erected')byComp[c].on++;else byComp[c].off++});
  let compArr=Object.entries(byComp).sort((a,b)=>b[1].total-a[1].total);
  document.getElementById('compTable').innerHTML=compArr.length?'<table><tr><th>Company</th><th>Total</th><th>🟢 Erected</th><th>🔴 Dismantled</th><th>Erected %</th></tr>'+compArr.map(([name,v])=>`<tr><td><b>${escapeHtml(name)}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:800">${v.on}</td><td style="color:#D32F2F;font-weight:800">${v.off}</td><td>${v.total?Math.round(v.on/v.total*100):0}%</td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#999">No scaffolds yet</p>';
  let q=(document.getElementById('searchSc').value||'').toLowerCase();let fs=document.getElementById('filterStatus').value;let ft=document.getElementById('filterType').value;let fc=document.getElementById('filterCompany').value;
  let list=all.filter(x=>((x.num||'')+(x.company||'')+(x.building||'')+(x.floor||'')+(x.cluster||'')+(x.type||'')).toLowerCase().includes(q)&&(!fs||TStatus(x.status)===fs)&&(!ft||x.type===ft)&&(!fc||x.company===fc));
- if(!list.length){document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#888">No scaffolds registered yet</p>';return}
+ if(!list.length){document.getElementById('scTable').innerHTML='<p style="text-align:center;color:#888">No scaffolds registered yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  document.getElementById('scTable').innerHTML='<table><tr><th>Scaffold Number</th><th>Company</th><th>Type</th><th>Load</th><th>Building / Floor / Cluster</th><th>Erection Date</th><th>Inspector</th><th>Status</th><th>QR</th><th>Change Status</th><th>Delete</th></tr>'+list.map(x=>{let idx=scaffolds.indexOf(x);let qr='https://api.qrserver.com/v1/create-qr-code/?size=60x60&data='+encodeURIComponent(x.num+' | '+x.company+' | '+TStatus(x.status));return `<tr><td><b style="color:#FF6B00">${escapeHtml(x.num)}</b></td><td><b>${escapeHtml(x.company)}</b></td><td>${escapeHtml(x.type)}</td><td>${escapeHtml(TLoad(x.load))}</td><td>Building ${escapeHtml(x.building)}<br>Floor ${escapeHtml(x.floor)}<br>Cluster ${escapeHtml(x.cluster)}</td><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.inspector)}</td><td><span class="badge ${TStatus(x.status)==='Erected'?'on':'off'}">${escapeHtml(TStatus(x.status))}</span><br><small style="color:#666">${escapeHtml(x.notes||'')}</small></td><td><span class="qr-box"><img src="${qr}"></span></td><td><button class="btn2" onclick="toggleSc(${idx})">${TStatus(x.status)==='Erected'?'🔴 Dismantle':'🟢 Return To Erected'}</button></td><td><button class="btn2" style="background:#D32F2F" onclick="delSc(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
  let notifs=all.filter(x=>TStatus(x.status)==='Erected').slice(0,3).map(x=>`🪜 سقالة مركبة: ${x.num} - ${x.company} - Building ${x.building} - Floor ${x.floor}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function toggleSc(i){let rec=scaffolds[i];let newStatus=TStatus(rec.status)==='Erected'?'Dismantled':'Erected';try{await firebase.firestore().collection('scaffolds').doc(rec.id).update({status:newStatus})}catch(e){}rec.status=newStatus;renderSc()}
-async function delSc(i){if(!confirm('Delete this scaffold?'))return;let rec=scaffolds[i];try{await firebase.firestore().collection('scaffolds').doc(rec.id).delete()}catch(e){}scaffolds.splice(i,1);renderSc();refreshNum()}
-async function clearSc(){if(!confirm('Delete all scaffolds record from Firebase?'))return;try{let snap=await firebase.firestore().collection('scaffolds').get();for(let d of snap.docs)await firebase.firestore().collection('scaffolds').doc(d.id).delete()}catch(e){}scaffolds=[];renderSc();refreshNum()}
-function exportSc(){if(!scaffolds.length)return alert('No data');let csv='Scaffold Number,Company Name,Scaffold Type,Load,Building Number,Floor Number,Cluster Number,Erection Date,Inspector Name,Status,Notes\n'+scaffolds.map(x=>[x.num,x.company,x.type,TLoad(x.load),x.building,x.floor,x.cluster,x.date,x.inspector,TStatus(x.status),'"'+(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='scaffolds.csv';a.click()}
+async function toggleSc(i){let rec=scaffolds[i];let newStatus=TStatus(rec.status)==='Erected'?'Dismantled':'Erected';try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'scaffolds'; await firebase.firestore().collection(coll).doc(realId).update({status:newStatus,state:newStatus})}catch(e){}rec.status=newStatus;renderSc()}
+async function delSc(i){if(!confirm('Delete this scaffold?'))return;let rec=scaffolds[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'scaffolds'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}scaffolds.splice(i,1);renderSc();refreshNum()}
+async function clearSc(){if(!confirm('Delete all scaffolds record from Firebase?'))return;try{for(let coll of ['scaffolds','scaffold','scaffoldInspections','scaffold-inspections']){let snap=await firebase.firestore().collection(coll).get();for(let d of snap.docs)await firebase.firestore().collection(coll).doc(d.id).delete()}}catch(e){}scaffolds=[];renderSc();refreshNum()}
+function exportSc(){if(!scaffolds.length)return alert('No data');let csv='Scaffold Number,Company Name,Scaffold Type,Load,Building Number,Floor Number,Cluster Number,Erection Date,Inspector Name,Status,Notes\n'+scaffolds.map(x=>[x.num,x.company,x.type,TLoad(x.load),x.building,x.floor,x.cluster,x.date,x.inspector,TStatus(x.status),'"'+String(x.notes||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='scaffolds.csv';a.click()}
 let savedUser=getReporter();document.getElementById('currentUser').value=savedUser;document.getElementById('sc-inspector').value=savedUser;document.getElementById('sc-date').value=new Date().toISOString().slice(0,10);loadLive();
 </script>
 </body>
