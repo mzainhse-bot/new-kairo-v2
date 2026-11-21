@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Worker Profile - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#F6F7F9;color:#111}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+.wrap{max-width:720px;margin:auto;padding:14px 14px 40px}
+.top{background:#0F2A4D;color:#fff;border-radius:18px;padding:18px;text-align:center;position:relative;overflow:hidden}
+.top b{font-size:34px;letter-spacing:2px;color:#D4AF37}
+.top small{display:block;color:#D4AF37;font-size:11px;letter-spacing:1px}
+.live{display:inline-flex;gap:6px;align-items:center;background:#1E7A3A;color:#fff;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:800;margin-top:10px}
+.card{background:#fff;border:1px solid #eee;border-radius:18px;padding:16px;margin-top:14px}
+.profile-head{display:flex;gap:14px;align-items:flex-start}
+.profile-head img{width:110px;height:135px;object-fit:cover;border-radius:12px;border:2px solid #D4AF37;background:#eee}
+.profile-head .ph{width:110px;height:135px;border-radius:12px;border:2px dashed #D4AF37;background:#0F2A4D;color:#D4AF37;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:13px}
+.profile-head h1{margin:0;font-size:26px;line-height:1.2;color:#0F2A4D}
+.profile-head p{margin:4px 0 0;color:#666;font-size:13px}
+.job-badge{display:inline-block;background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44;padding:7px 14px;border-radius:99px;font-weight:900;font-size:14px;margin-top:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.field{border:1px solid #eee;background:#F9FAFB;border-radius:12px;padding:10px}
+.field b{display:block;font-size:11px;color:#888}
+.field span{display:block;font-size:15px;font-weight:800;margin-top:3px;word-break:break-word}
+.pill{display:inline-block;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:900}
+.pill.green{background:#E8F5E9;color:#2E7D32}.pill.red{background:#FFEBEE;color:#D32F2F}.pill.gold{background:#FFF3E0;color:#8a6d00}
+.sec-title{margin:0 0 10px;font-size:17px;display:flex;justify-content:space-between;align-items:center}
+.count{background:#0F2A4D;color:#fff;min-width:28px;height:28px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:13px;padding:0 8px}
+.item{border:1px solid #eee;border-radius:12px;padding:11px;margin-bottom:8px;background:#fff}
+.item b{font-size:14px;display:block}
+.item small{color:#666;font-size:12px;display:block;margin-top:3px;line-height:1.5}
+.empty{color:#888;text-align:center;padding:14px;font-size:13px}
+.loading{text-align:center;padding:30px;color:#666}
+.notfound{text-align:center;padding:30px}
+.notfound b{font-size:20px;color:#B71C1C}
+.search-box{display:flex;gap:8px;margin-top:14px}
+.search-box input{flex:1;padding:12px;border:1.5px solid #ddd;border-radius:12px;outline:none}
+.search-box button{background:#FF6B00;color:#fff;border:none;padding:12px 16px;border-radius:12px;font-weight:900;cursor:pointer}
+.footer{text-align:center;color:#888;font-size:12px;margin-top:18px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.profile-head h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="wrap">
+  <div class="top"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small><br><span class="live">● LIVE - ملف العامل</span></div>
+
+  <div id="loading" class="loading">⏳ جاري تحميل ملف العامل...</div>
+
+  <div id="notFound" class="notfound" style="display:none">
+    <b>⚠️ العامل غير موجود</b><p style="color:#666">اتأكد من الكود، أو اعمل سكان تاني للكارنيه.</p>
+    <div class="search-box"><input id="manualCode" placeholder="اكتب كود العامل مثلا RM-9751"><button onclick="openByCode()">بحث</button></div>
+  </div>
+
+  <div id="profile" style="display:none">
+    <div class="card">
+      <div class="profile-head">
+        <div><img id="p-photo" style="display:none"><div id="p-photo-ph" class="ph">NO<br>PHOTO</div></div>
+        <div style="flex:1">
+          <h1 id="p-name">-</h1>
+          <p id="p-name-en">-</p>
+          <span class="job-badge" id="p-job">-</span><br>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+            <span class="pill green" id="p-status">Active</span>
+            <span class="pill gold" id="p-rehab" style="display:none">🔁 Rehabilitation</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="field"><b>كود العامل / Code</b><span id="p-code">-</span></div>
+        <div class="field"><b>الرقم القومي / National ID</b><span id="p-national">-</span></div>
+        <div class="field"><b>الشركة / Company</b><span id="p-company">-</span></div>
+        <div class="field"><b>تاريخ المباشرة / Start Date</b><span id="p-date">-</span></div>
+        <div class="field"><b>التليفون / Phone</b><span id="p-phone">-</span></div>
+        <div class="field"><b>رقم الطوارئ / Emergency</b><span id="p-emergency">-</span></div>
+        <div class="field"><b>صلة القرابة / Relationship</b><span id="p-kin">-</span></div>
+        <div class="field"><b>الحالة الصحية / Health</b><span id="p-health">-</span></div>
+      </div>
+      <div id="p-notes-box" class="field" style="margin-top:10px;display:none"><b>ملاحظات / Notes</b><span id="p-notes">-</span></div>
+      <p style="font-size:11px;color:#999;margin:10px 0 0">آخر تحديث: <span id="p-updated">-</span> • الصفحة دي بتتحدث لوحدها من غير Refresh</p>
+    </div>
+
+    <div class="card"><h3 class="sec-title">🎓 التدريبات <span class="count" id="c-train">0</span></h3><div id="list-train"></div></div>
+    <div class="card"><h3 class="sec-title">🚑 الحوادث / الإصابات / المخالفات <span class="count" id="c-inc">0</span></h3><div id="list-inc"></div></div>
+    <div class="card"><h3 class="sec-title">🦺 مهمات الوقاية PPE من المخزن <span class="count" id="c-ppe">0</span></h3><div id="list-ppe"></div></div>
+
+    <p class="footer">RMED • HSE MANAGEMENT SYSTEM • صفحة عرض فقط - لا يمكن التعديل من هنا</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function pick(o,keys){for(let k of keys){if(o[k]!==undefined&&o[k]!==null&&o[k]!=='')return o[k]}return''}
+function normDate(v){if(!v)return'';if(v.toDate){try{return v.toDate().toISOString().slice(0,10)}catch(e){}}let s=String(v).trim();if(s.length>10)s=s.slice(0,10);return s.replace(/\//g,'-')}
+const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded'};
+const HEALTH_MAP={'سليم':'Healthy','سكر':'Diabetes','ضغط':'Blood Pressure','قلب':'Heart','حساسية':'Allergy','ربو':'Asthma'};
+const KIN_MAP={'أب':'Father','أم':'Mother','أخ':'Brother','أخت':'Sister','زوجة':'Wife','زوج':'Husband'};
+const JOB_MAP={'عامل':'Laborer','كهربائي':'Electrician','سباك':'Plumber','نجار':'Carpenter','حداد':'Steel Fixer','مشرف':'Supervisor','مهندس':'Engineer','سائق':'Driver'};
+function T(v,map){return map[String(v||'').trim()]||v||'-'}
+function normWorker(raw){return{name:pick(raw,['name','fullName','employeeName']),code:String(pick(raw,['code','employeeCode','empCode'])||''),nationalId:String(pick(raw,['nationalId','nid','idNumber','nationalID','identity'])||''),job:pick(raw,['job','profession','position']),company:pick(raw,['company','companyName','contractor']),hire:normDate(pick(raw,['hire','hireDate','startDate','date','createdAt'])),health:pick(raw,['health','healthStatus','medical']),phone:pick(raw,['phone','phoneNumber','mobile']),emergency:pick(raw,['emergency','emergencyNumber','emergencyPhone']),kin:pick(raw,['kin','relationship','relation']),status:pick(raw,['status','state']),notes:pick(raw,['notes','note','remarks']),isRehab:!!raw.isRehab,img:pick(raw,['img','photo','image']),updated:raw.updatedAt||raw.createdAt||''}}
+function openByCode(){let c=document.getElementById('manualCode').value.trim();if(!c)return;location.href='worker-profile.html?code='+encodeURIComponent(c)}
+let params=new URLSearchParams(location.search);
+let CODE=(params.get('code')||params.get('id')||'').trim();
+let currentWorker=null;
+let allData={train:[],inc:[],ppe:[]};
+
+function matchDoc(doc,x){
+  let hay=JSON.stringify(doc||{}).toLowerCase();
+  // استبعد الأدوية تماما
+  if(hay.includes('دواء')||hay.includes('medicine')||hay.includes('clinic')||hay.includes('عيادة')) return false;
+  let keys=[x.name,x.code,x.nationalId].filter(Boolean).map(s=>String(s).toLowerCase());
+  return keys.some(k=>k&&k.length>2&&hay.includes(k));
+}
+function renderWorker(){
+  if(!currentWorker) return;
+  let x=currentWorker;
+  document.getElementById('loading').style.display='none';
+  document.getElementById('notFound').style.display='none';
+  document.getElementById('profile').style.display='block';
+  document.getElementById('p-name').textContent=x.name||'-';
+  document.getElementById('p-name-en').textContent=(x.name||'-').toUpperCase();
+  document.getElementById('p-job').textContent=T(x.job,JOB_MAP);
+  document.getElementById('p-code').textContent=x.code||'-';
+  document.getElementById('p-national').textContent=x.nationalId||'-';
+  document.getElementById('p-company').textContent=x.company||'-';
+  document.getElementById('p-date').textContent=x.hire||'-';
+  document.getElementById('p-phone').textContent=x.phone||'-';
+  document.getElementById('p-emergency').textContent=x.emergency||'-';
+  document.getElementById('p-kin').textContent=T(x.kin,KIN_MAP);
+  document.getElementById('p-health').textContent=T(x.health,HEALTH_MAP);
+  let st=T(x.status,STATUS_MAP);
+  let stEl=document.getElementById('p-status'); stEl.textContent=st; stEl.className='pill '+(st==='Active'?'green':'red');
+  let isRehab=x.isRehab||String(x.notes||'').includes('Rehabilitation')||String(x.notes||'').includes('إعادة تأهيل');
+  document.getElementById('p-rehab').style.display=isRehab?'inline-block':'none';
+  if(x.notes){document.getElementById('p-notes-box').style.display='block';document.getElementById('p-notes').textContent=x.notes}
+  else document.getElementById('p-notes-box').style.display='none';
+  document.getElementById('p-updated').textContent=x.updated?String(x.updated).slice(0,16).replace('T',' '):'الآن';
+  let ph=document.getElementById('p-photo'), ph2=document.getElementById('p-photo-ph');
+  if(x.img){ph.src=x.img;ph.style.display='block';ph2.style.display='none'} else {ph.style.display='none';ph2.style.display='flex'}
+  document.title='Worker - '+(x.name||'')+' ('+(x.code||'')+')';
+  renderLists();
+}
+function renderLists(){
+  let x=currentWorker; if(!x) return;
+  let trains=allData.train.filter(d=>matchDoc(d,x));
+  let inc=allData.inc.filter(d=>matchDoc(d,x));
+  let ppe=allData.ppe.filter(d=>matchDoc(d,x));
+  document.getElementById('c-train').textContent=trains.length;
+  document.getElementById('c-inc').textContent=inc.length;
+  document.getElementById('c-ppe').textContent=ppe.length;
+  document.getElementById('list-train').innerHTML=trains.length?trains.map(d=>`<div class="item"><b>${esc(pick(d,['title','topic','course','type','name'])||'Training')}</b><small>${esc(pick(d,['date','createdAt'])||'')} • ${esc(pick(d,['description','details','notes'])||'')}</small></div>`).join(''):'<div class="empty">لا يوجد تدريبات مسجلة</div>';
+  document.getElementById('list-inc').innerHTML=inc.length?inc.map(d=>`<div class="item"><b>${esc(pick(d,['title','type','description'])||'Incident')}</b><small>${esc(pick(d,['date','createdAt'])||'')} • ${esc(pick(d,['location','description','details','notes'])||'')}</small></div>`).join(''):'<div class="empty">لا يوجد حوادث / مخالفات - سجل نظيف ✅</div>';
+  document.getElementById('list-ppe').innerHTML=ppe.length?ppe.map(d=>`<div class="item"><b>${esc(pick(d,['item','itemName','ppe','name'])||'PPE')}</b><small>كمية: ${esc(pick(d,['quantity','qty'])||'-')} • ${esc(pick(d,['date','createdAt'])||'')}</small></div>`).join(''):'<div class="empty">لا يوجد PPE مسجل من المخزن</div>';
+}
+async function init(){
+  if(!CODE){document.getElementById('loading').style.display='none';document.getElementById('notFound').style.display='block';return}
+  try{
+    let db=firebase.firestore();
+    // 1. دور على العامل بالكود في كل الكولكشنز
+    let found=null;
+    for(let coll of ['workers','users','employees','induction']){
+      try{
+        let snap=await db.collection(coll).where('code','==',CODE).limit(1).get();
+        if(!snap.empty){found=normWorker(snap.docs[0].data());break}
+        // لو الكود مش موجود، جرب الرقم القومي
+        let snap2=await db.collection(coll).where('nationalId','==',CODE).limit(1).get();
+        if(!snap2.empty){found=normWorker(snap2.docs[0].data());break}
+      }catch(e){}
+    }
+    // fallback: لو مفيش where شغال، جيب الكل ودور
+    if(!found){
+      for(let coll of ['workers','induction']){
+        try{
+          let snap=await db.collection(coll).limit(300).get();
+          for(let doc of snap.docs){let w=normWorker(doc.data());if(w.code===CODE||w.nationalId===CODE){found=w;break}}
+          if(found) break;
+        }catch(e){}
+      }
+    }
+    if(!found){document.getElementById('loading').style.display='none';document.getElementById('notFound').style.display='block';return}
+    currentWorker=found; renderWorker();
+    // 2. Live للعامل ده بس - لو اتعدل في employee-file هيتحدث هنا لوحده
+    ['workers','induction'].forEach(coll=>{
+      try{db.collection(coll).where('code','==',found.code).onSnapshot(snap=>{if(!snap.empty){let nw=normWorker(snap.docs[0].data()); // حافظ على القديم لو الجديد فاضي
+        Object.keys(nw).forEach(k=>{if(nw[k]) currentWorker[k]=nw[k]}); renderWorker();}})}catch(e){}
+    });
+    // 3. جيب التدريبات والحوادث و PPE - Live برضو
+    let mapColl={train:'train',inc:['accidents','near-miss','violations','employee-violations'],ppe:['store-stock']};
+    db.collection('train').limit(200).onSnapshot(s=>{allData.train=s.docs.map(d=>d.data());renderLists()});
+    ['accidents','near-miss','violations','employee-violations'].forEach(c=>{try{db.collection(c).limit(200).onSnapshot(s=>{allData.inc=allData.inc.filter(d=>d._c!==c);s.docs.forEach(d=>allData.inc.push({...d.data(),_c:c}));renderLists()})}catch(e){}});
+    db.collection('store-stock').limit(200).onSnapshot(s=>{allData.ppe=s.docs.map(d=>d.data());renderLists()});
+  }catch(e){
+    document.getElementById('loading').textContent='خطأ في التحميل: '+e.message;
+  }
+}
+init();
+</script>
+</body>
+</html>
