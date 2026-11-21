@@ -43,14 +43,33 @@ table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="weekly.html" class="active">📅 <span data-i18n="weekly">Weekly Meeting</span></a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="safety-observations.html">👁️ Observations</a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 <span data-i18n="weekly">Weekly Meeting</span></a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -68,6 +87,7 @@ table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}table t
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">المحاضرة الأسبوعية</span> <span style="color:#FF6B00">• Weekly</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
 <p style="color:#666;font-size:13px" id="hero-date">Today • اليوم</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold">📅</span><div><b id="k-lectures">0</b><small data-i18n="lectures">عدد المحاضرات</small></div></div></div>
@@ -89,7 +109,7 @@ table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}table t
 <div class="grid2"><div><label>📅 Date *</label><input type="date" id="d-date"></div><div><label>🏢 Company *</label><input id="d-company" list="compList" placeholder="Al Salam Construction"><datalist id="compList"></datalist></div><div style="grid-column:1/-1"><label>📖 Lecture Title *</label><input id="d-title" placeholder="Work at Height Safety"></div><div><label>👥 Attendance Count *</label><input type="number" id="d-attendance" placeholder="40" min="0" oninput="calcHours()"></div><div><label>⏰ Hours (أوتوماتيك)</label><input id="d-hours" readonly placeholder="0.0 - Attendance × 0.5"></div><div><label>👨‍🏫 Lecturer Name *</label><input id="d-lecturer" placeholder="Eng. Ahmed Ali"></div><div><label>📍 Lecture Place *</label><input id="d-place" placeholder="Site Office"></div></div>
 <div class="total-box"><small>Hours For This Lecture</small><b id="total-preview">0.0 Hour</b><small>Attendance × 0.5 Hour</small></div>
 <div style="display:flex;gap:8px"><button class="btn-red" onclick="addMeeting()" style="flex:2">💾 <span data-i18n="save">Save Meeting</span></button><button class="btn2" onclick="clearForm()" style="flex:1;padding:13px;margin-top:14px">Clear</button></div></div>
-<div class="panel"><h2 style="margin:0" data-i18n="records">سجلات المحاضرات</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchD" placeholder="Search by company / title / lecturer..." oninput="renderMeetings()" style="flex:2"><input type="month" id="filterMonth" onchange="renderMeetings()" style="flex:1"><select id="filterCompany" onchange="renderMeetings()" style="flex:1"><option value="">All Companies</option></select></div><div id="countTable"></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn2" onclick="exportMeetings()" style="flex:1;padding:12px">📥 Export Excel / CSV</button><button class="btn2" onclick="clearMeetings()" style="flex:1;padding:12px;background:#D32F2F">🗑️ Clear All</button></div></div>
+<div class="panel"><h2 style="margin:0" data-i18n="records">سجلات المحاضرات</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchD" placeholder="Search by company / title / lecturer..." oninput="renderMeetings()" style="flex:2"><input type="month" id="filterMonth" onchange="renderMeetings()" style="flex:1"><select id="filterCompany" onchange="renderMeetings()" style="flex:1"><option value="">All Companies</option></select><button class="btn2" onclick="clearMonthFilter()" style="padding:10px">Show All • كل الشهور</button></div><div id="countTable"></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn2" onclick="exportMeetings()" style="flex:1;padding:12px">📥 Export Excel / CSV</button><button class="btn2" onclick="clearMeetings()" style="flex:1;padding:12px;background:#D32F2F">🗑️ Clear All</button></div></div>
 </div>
 </div></div>
 
@@ -109,54 +129,84 @@ function toggleNotif(){document.getElementById('notifPanel').classList.toggle('s
 function animateNum(id,val){let el=document.getElementById(id);let cur=0,step=Math.max(1,Math.round(val/20));let t=setInterval(()=>{cur+=step;if(cur>=val){cur=val;clearInterval(t)}el.textContent=cur},20)}
 function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');if(typeof u==='object'&&u.name)return u}catch(e){}return null}
 let meetings=[];
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normM(raw){
+  let att=Number(pick(raw,['attendance','attendees','attendeeCount','count'])||0)||0;
+  let hrs=Number(pick(raw,['hours','totalHours'])||0)||0;
+  if(!hrs && att) hrs=att*0.5;
+  return {
+    id: raw.id, _coll: raw._coll||'weeklyMeetings',
+    date: normDate(pick(raw,['date','meetingDate','createdAt'])),
+    company: pick(raw,['company','companyName','contractor'])||'',
+    title: pick(raw,['title','lectureTitle','topic','subject'])||'',
+    attendance: att,
+    hours: hrs,
+    lecturer: pick(raw,['lecturer','lecturerName','trainer'])||'',
+    place: pick(raw,['place','location','venue'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
   let db=firebase.firestore();
-  ['weeklyMeetings','weekly','weeklyMeeting'].forEach(col=>{
+  ['weeklyMeetings','weekly','weeklyMeeting','weeklyLectures','weeklyLect'].forEach(col=>{
    db.collection(col).onSnapshot(snap=>{
-    let arr=snap.docs.map(d=>({id:d.id,_col:col,...d.data()}));
-    meetings=meetings.filter(m=>m._col!==col);meetings.push(...arr);meetings.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+    let arr=snap.docs.map(d=>({id:col+':'+d.id,_coll:col,...d.data()})).map(normM);
+    let merged=[...meetings].filter(m=>m._coll!==col); merged=[...merged,...arr];
+    meetings=merged;
+    meetings.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+    document.getElementById('loadStatus').textContent='✅ Live - عدد المحاضرات: '+meetings.length;
     renderMeetings();
-   });
+   }, err=>{ console.log('skip',col,err.message); });
   });
  }catch(e){console.log(e)}
 }
 function val(id){return document.getElementById(id).value.trim()}
 function getTodayStr(){return new Date().toISOString().slice(0,10)}
 function calcHours(){let att=parseInt(val('d-attendance'))||0;let hours=att*0.5;document.getElementById('d-hours').value=hours.toFixed(1);document.getElementById('total-preview').innerText=hours.toFixed(1)+' Hour'}
+function clearMonthFilter(){document.getElementById('filterMonth').value='';renderMeetings()}
 async function addMeeting(){
  if(!val('d-date'))return alert('Select date');if(!val('d-company'))return alert('Write company name');if(!val('d-title'))return alert('Write lecture title');if(!val('d-attendance'))return alert('Write attendance count');if(!val('d-lecturer'))return alert('Write lecturer name');if(!val('d-place'))return alert('Write lecture place');
  let _m=getMe();let att=parseInt(val('d-attendance'));let hours=att*0.5;
- let rec={date:val('d-date'),company:val('d-company'),title:val('d-title'),lectureTitle:val('d-title'),attendance:att,attendees:att,hours:hours,lecturer:val('d-lecturer'),lecturerName:val('d-lecturer'),place:val('d-place'),location:val('d-place'),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
+ let rec={date:val('d-date'),meetingDate:val('d-date'),company:val('d-company'),companyName:val('d-company'),title:val('d-title'),lectureTitle:val('d-title'),attendance:att,attendees:att,hours:hours,totalHours:hours,lecturer:val('d-lecturer'),lecturerName:val('d-lecturer'),place:val('d-place'),location:val('d-place'),reporter:_m?_m.name:'',reporterName:_m?_m.name:'',createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('weeklyMeetings').add(rec);playBeep()}catch(e){return alert('Save problem: '+e.message)}
  renderMeetings();alert('✅ Saved - '+rec.company+' - '+rec.title+' - '+rec.attendance+' attendees - '+rec.hours.toFixed(1)+'h');document.getElementById('d-company').value='';document.getElementById('d-title').value='';document.getElementById('d-attendance').value='';document.getElementById('d-hours').value='';document.getElementById('d-lecturer').value='';document.getElementById('d-place').value='';calcHours();
 }
 function clearForm(){document.getElementById('d-company').value='';document.getElementById('d-title').value='';document.getElementById('d-attendance').value='';document.getElementById('d-hours').value='';document.getElementById('d-lecturer').value='';document.getElementById('d-place').value='';calcHours()}
 function renderMeetings(){
- let q=(document.getElementById('searchD').value||'').toLowerCase();let fMonth=document.getElementById('filterMonth').value;let fComp=document.getElementById('filterCompany').value;let now=new Date();let curMonth=fMonth||(now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'));let curYear=parseInt(curMonth.split('-')[0]),curM=parseInt(curMonth.split('-')[1])-1;let prevDate=new Date(curYear,curM-1,1);let prevMonth=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0');
- let monthList=meetings.filter(x=>String(x.date||'').slice(0,7)===curMonth);let prevList=meetings.filter(x=>String(x.date||'').slice(0,7)===prevMonth);
- let totalLectures=monthList.length;let totalAttendance=monthList.reduce((s,x)=>s+(parseInt(x.attendance||x.attendees||0)||0),0);let totalHours=monthList.reduce((s,x)=>s+(parseFloat(x.hours||0)||0),0);if(!totalHours&&totalAttendance)totalHours=totalAttendance*0.5;
+ let q=(document.getElementById('searchD').value||'').toLowerCase();let fMonth=document.getElementById('filterMonth').value;let fComp=document.getElementById('filterCompany').value;
+ // ===== FIX: لو مفيش فلتر شهر، الـ KPIs على الكل مش على الشهر الحالي =====
+ let now=new Date();let curMonth=fMonth||(now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'));let curYear=parseInt(curMonth.split('-')[0]),curM=parseInt(curMonth.split('-')[1])-1;let prevDate=new Date(curYear,curM-1,1);let prevMonth=prevDate.getFullYear()+'-'+String(prevDate.getMonth()+1).padStart(2,'0');
+ let monthList=fMonth?meetings.filter(x=>String(x.date||'').slice(0,7)===fMonth):meetings;
+ let prevList=meetings.filter(x=>String(x.date||'').slice(0,7)===prevMonth);
+ let totalLectures=monthList.length;let totalAttendance=monthList.reduce((s,x)=>s+(parseInt(x.attendance||0)||0),0);let totalHours=monthList.reduce((s,x)=>s+(parseFloat(x.hours||0)||0),0);if(!totalHours&&totalAttendance)totalHours=totalAttendance*0.5;
  let prevHours=prevList.reduce((s,x)=>s+(parseFloat(x.hours||0)||0),0);if(!prevHours&&prevList.length)prevHours=prevList.reduce((s,x)=>s+(parseInt(x.attendance||0)||0),0)*0.5;
- let byComp={};monthList.forEach(x=>{if(!byComp[x.company])byComp[x.company]={lectures:0,attendance:0,hours:0};byComp[x.company].lectures++;byComp[x.company].attendance+=(parseInt(x.attendance||0)||0);byComp[x.company].hours+=(parseFloat(x.hours||0)||(parseInt(x.attendance||0)*0.5))});
+ let byComp={};monthList.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={lectures:0,attendance:0,hours:0};byComp[c].lectures++;byComp[c].attendance+=(parseInt(x.attendance||0)||0);byComp[c].hours+=(parseFloat(x.hours||0)||(parseInt(x.attendance||0)*0.5))});
  let compArr=Object.entries(byComp).map(([name,v])=>({name,...v}));let byLectures=[...compArr].sort((a,b)=>b.lectures-a.lectures);let byHours=[...compArr].sort((a,b)=>b.hours-a.hours);
  animateNum('k-lectures',totalLectures);animateNum('k-attendance',totalAttendance);document.getElementById('k-hours').textContent=totalHours.toFixed(1);animateNum('k-companies',compArr.length);
  document.getElementById('k-top-lect').innerText=byLectures.length?byLectures[0].name:'-';document.getElementById('k-low-lect').innerText=byLectures.length?byLectures[byLectures.length-1].name:'-';document.getElementById('k-top-hours').innerText=byHours.length?byHours[0].name:'-';document.getElementById('k-low-hours').innerText=byHours.length?byHours[byHours.length-1].name:'-';
  let diff=totalHours-prevHours;let pct=prevHours>0?Math.round(diff/prevHours*100):(totalHours>0?100:0);let pctEl=document.getElementById('compare-pct');pctEl.innerText=(pct>=0?'+':'')+pct+'%';pctEl.style.color=pct>=0?'#2E7D32':'#D32F2F';
  let txt=document.getElementById('compare-text');txt.innerText=pct>0?'▲ Increased by '+Math.abs(diff).toFixed(1)+'h vs last month':pct<0?'▼ Decreased by '+Math.abs(diff).toFixed(1)+'h vs last month':'No change';txt.style.color=pct>=0?'#2E7D32':'#D32F2F';
  document.getElementById('compare-this').innerText='This: '+totalHours.toFixed(1)+'h';document.getElementById('compare-last').innerText='Last: '+prevHours.toFixed(1)+'h';let maxH=Math.max(totalHours,prevHours,1);document.getElementById('compare-bar').style.width=Math.round(totalHours/maxH*100)+'%';
- let allComps=[...new Set(meetings.map(x=>x.company))];document.getElementById('compList').innerHTML=allComps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+allComps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
- let list=meetings.filter(x=>{let okQ=((x.company||'')+' '+(x.title||x.lectureTitle||'')+' '+(x.lecturer||'')).toLowerCase().includes(q);let okD=!fMonth||String(x.date||'').slice(0,7)===fMonth;let okC=!fComp||x.company===fComp;return okQ&&okD&&okC});
- if(!list.length){document.getElementById('countTable').innerHTML='<p style="text-align:center;color:#888">No meetings yet - Register first meeting above</p>';return}
+ let allComps=[...new Set(meetings.map(x=>x.company).filter(Boolean))];document.getElementById('compList').innerHTML=allComps.map(c=>`<option value="${escapeHtml(c)}">`).join('');let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+allComps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
+ let list=meetings.filter(x=>{let okQ=((x.company||'')+' '+(x.title||'')+' '+(x.lecturer||'')).toLowerCase().includes(q);let okD=!fMonth||String(x.date||'').slice(0,7)===fMonth;let okC=!fComp||x.company===fComp;return okQ&&okD&&okC});
+ if(!list.length){document.getElementById('countTable').innerHTML='<p style="text-align:center;color:#888">No meetings yet - Register first meeting above - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  let maxAtt=Math.max(...list.map(x=>parseInt(x.attendance||0)||0),1);
- document.getElementById('countTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Title</th><th>Attendance</th><th>Hours</th><th>Lecturer / Place</th><th>Delete</th></tr>'+list.slice(0,50).map(x=>{let idx=meetings.indexOf(x);let att=parseInt(x.attendance||x.attendees||0)||0;let hrs=parseFloat(x.hours||0)||att*0.5;let pct2=Math.round(att/maxAtt*100);let barColor=pct2>=70?'#2E7D32':pct2>=40?'#FFC107':pct2>=20?'#1565C0':'#D32F2F';return `<tr><td>${escapeHtml(x.date||'')}</td><td><b>${escapeHtml(x.company||'')}</b></td><td style="text-align:left"><b>${escapeHtml(x.title||x.lectureTitle||'')}</b></td><td><b>${att.toLocaleString()}</b><div class="bar"><div class="bar-fill" style="width:${pct2}%;background:${barColor}"></div></div></td><td><span class="pill2 blue">${hrs.toFixed(1)}h</span></td><td style="text-align:left">👨‍🏫 ${escapeHtml(x.lecturer||x.lecturerName||'-')}<br>📍 ${escapeHtml(x.place||x.location||'-')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delMeeting(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
+ document.getElementById('countTable').innerHTML='<table><tr><th>Date</th><th>Company</th><th>Title</th><th>Attendance</th><th>Hours</th><th>Lecturer / Place</th><th>Delete</th></tr>'+list.slice(0,50).map(x=>{let idx=meetings.indexOf(x);let att=parseInt(x.attendance||0)||0;let hrs=parseFloat(x.hours||0)||att*0.5;let pct2=Math.round(att/maxAtt*100);let barColor=pct2>=70?'#2E7D32':pct2>=40?'#FFC107':pct2>=20?'#1565C0':'#D32F2F';return `<tr><td>${escapeHtml(x.date||'')}</td><td><b>${escapeHtml(x.company||'')}</b></td><td style="text-align:left"><b>${escapeHtml(x.title||'')}</b></td><td><b>${att.toLocaleString()}</b><div class="bar"><div class="bar-fill" style="width:${pct2}%;background:${barColor}"></div></div></td><td><span class="pill2 blue">${hrs.toFixed(1)}h</span></td><td style="text-align:left">👨‍🏫 ${escapeHtml(x.lecturer||'-')}<br>📍 ${escapeHtml(x.place||'-')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delMeeting(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
  let notifs=list.slice(0,3).map(x=>`📅 محاضرة أسبوعية: ${x.company} - ${x.title} - ${x.attendance} حاضر - ${x.hours}h`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function delMeeting(i){if(!confirm('Delete this meeting?'))return;let rec=meetings[i];try{await firebase.firestore().collection(rec._col||'weeklyMeetings').doc(rec.id).delete()}catch(e){}meetings.splice(i,1);renderMeetings()}
-async function clearMeetings(){if(!confirm('Delete all weekly meetings from Firebase?'))return;try{let snap=await firebase.firestore().collection('weeklyMeetings').get();for(let d of snap.docs)await firebase.firestore().collection('weeklyMeetings').doc(d.id).delete()}catch(e){}meetings=[];renderMeetings()}
-function exportMeetings(){if(!meetings.length)return alert('No data');let csv='Date,Company,Lecture Title,Attendance,Hours,Lecturer,Place\n'+meetings.map(x=>[x.date,x.company,'"'+(x.title||x.lectureTitle||'').replace(/"/g,'""')+'"',(x.attendance||0),(parseFloat(x.hours||0)||0).toFixed(1),'"'+(x.lecturer||'').replace(/"/g,'""')+'"', '"'+(x.place||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='weekly-meetings.csv';a.click()}
+async function delMeeting(i){if(!confirm('Delete this meeting?'))return;let rec=meetings[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'weeklyMeetings'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}meetings.splice(i,1);renderMeetings()}
+async function clearMeetings(){if(!confirm('Delete all weekly meetings from Firebase?'))return;try{for(let coll of ['weeklyMeetings','weekly','weeklyMeeting','weeklyLectures','weeklyLect']){let snap=await firebase.firestore().collection(coll).get();for(let d of snap.docs)await firebase.firestore().collection(coll).doc(d.id).delete()}}catch(e){}meetings=[];renderMeetings()}
+function exportMeetings(){if(!meetings.length)return alert('No data');let csv='Date,Company,Lecture Title,Attendance,Hours,Lecturer,Place\n'+meetings.map(x=>[x.date,x.company,'"'+String(x.title||'').replace(/"/g,'""')+'"',(x.attendance||0),(parseFloat(x.hours||0)||0).toFixed(1),'"'+String(x.lecturer||'').replace(/"/g,'""')+'"', '"'+String(x.place||'').replace(/"/g,'""')+'"'].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='weekly-meetings.csv';a.click()}
 document.getElementById('d-date').value=getTodayStr();document.getElementById('hero-date').innerText='Today • اليوم • '+getTodayStr()+' • '+new Date().toTimeString().slice(0,5);loadLive();calcHours();
 </script>
 </body>
