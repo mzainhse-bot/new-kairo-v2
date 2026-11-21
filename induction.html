@@ -123,7 +123,8 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">تسجيل موظف جديد</span> <span style="color:#FF6B00">• Induction V4 Final</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Register New Employee • Live</p>
 <p id="loadStatus2" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
-<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin-bottom:14px"><div><b style="font-size:15px">🪪 <span data-i18n="idCard">ID Card Issue - التصميم المعتمد كحلي / ذهبي</span></b></div><button class="btn2" style="background:#D32F2F" onclick="openIssueCard()">🪪 Issue ID Card</button></div>
+<p id="debugCounts" style="font-size:12px;color:#0F2A4D;background:#E3F2FD;padding:8px 10px;border-radius:10px;margin:8px 0 0">🔍 جاري فحص الكولكشنز...</p>
+<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff;border:1px solid #eee;border-radius:14px;padding:12px 14px;margin-bottom:14px;margin-top:12px"><div><b style="font-size:15px">🪪 <span data-i18n="idCard">ID Card Issue - التصميم المعتمد كحلي / ذهبي</span></b></div><button class="btn2" style="background:#D32F2F" onclick="openIssueCard()">🪪 Issue ID Card</button></div>
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d blue">📅</span><div><b id="k-total">0</b><small data-i18n="total">Total Attendance</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d teal">🕐</span><div><b><span id="k-hours">0.00</span>h</b><small>Total Hours</small></div></div></div>
@@ -159,7 +160,7 @@ function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundO
 document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
 function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.15)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
-let DB={workers:[],induction:[]};let caches={};let showAll=false;
+let DB={workers:[],induction:[]};let caches={};let showAll=false;let collCounts={};
 let SHEET_URL="https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
 const STATUS_MAP={'نشط':'Active','استقال':'Resigned','استبعاد':'Excluded'};
 const HEALTH_MAP={'سليم':'Healthy','سكر':'Diabetes','ضغط':'Blood Pressure','قلب':'Heart','حساسية':'Allergy','ربو':'Asthma'};
@@ -175,12 +176,60 @@ function setVal(id,v){document.getElementById(id).value=v||''}
 function safe(v){let s=String(v||'').trim();return s?s:'-'}
 function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
 function normDate(v){ if(!v) return ''; if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} } let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-'); let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0]; return s; }
-function normWorker(raw){ return { id: raw.id, _coll: raw._coll||'workers', name: pick(raw,['name','fullName','employeeName']), code: String(pick(raw,['code','employeeCode','empCode'])||''), nationalId: String(pick(raw,['nationalId','nid','idNumber','nationalID','identity'])||''), job: pick(raw,['job','profession','position']), company: pick(raw,['company','companyName','contractor']), hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt'])), date: normDate(pick(raw,['date','hire','hireDate','startDate','createdAt'])), health: pick(raw,['health','healthStatus','medical']), phone: pick(raw,['phone','phoneNumber','mobile']), emergency: pick(raw,['emergency','emergencyNumber','emergencyPhone']), kin: pick(raw,['kin','relationship','relation']), status: pick(raw,['status','state']), notes: pick(raw,['notes','note','remarks']), isRehab: !!raw.isRehab, img: pick(raw,['img','photo','image','avatar','photoURL']), photo: pick(raw,['photo','img','image']), createdAt: raw.createdAt||'' }; }
+/* ===== FIX الداتا القديمة - بيفهم كل أسماء الحقول ===== */
+function normWorker(raw){
+  let docId = String(raw.id||'').includes(':') ? String(raw.id).split(':').slice(1).join(':') : String(raw.id||'');
+  // الكود: جرب كل الاحتمالات القديمة والجديدة، ولو مفيش خد الـ doc id
+  let code = String(pick(raw,['code','employeeCode','empCode','workerCode','employeeId','userCode','ID','idCode','empID'])||'');
+  // لو الكود لسه فاضي والـ doc id شكله كود زي RM-9751 خد منه
+  if(!code && docId && /RM-|^\d{3,}/i.test(docId)) code = docId;
+  let nationalId = String(pick(raw,['nationalId','nid','idNumber','nationalID','identity','NationalID','national_number','nationalnumber'])||'');
+  // لو الرقم القومي متسجل جوه الـ id وكان 14 رقم
+  if(!nationalId && docId && /^\d{14}$/.test(docId)) nationalId = docId;
+  return { id: raw.id, _coll: raw._coll||'workers', _docId: docId,
+    name: pick(raw,['name','fullName','employeeName','workerName','Name','fullname','empName']),
+    code: code,
+    nationalId: nationalId,
+    job: pick(raw,['job','profession','position','Job','jobTitle','work']),
+    company: pick(raw,['company','companyName','contractor','Company','comp']),
+    hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt','joinDate','start'])),
+    date: normDate(pick(raw,['date','hire','hireDate','startDate','createdAt','joinDate'])),
+    health: pick(raw,['health','healthStatus','medical','Health']),
+    phone: pick(raw,['phone','phoneNumber','mobile','Phone','tel']),
+    emergency: pick(raw,['emergency','emergencyNumber','emergencyPhone','Emergency','emergencyContact']),
+    kin: pick(raw,['kin','relationship','relation','Relation','kinship']),
+    status: pick(raw,['status','state','Status']) || 'Active',
+    notes: pick(raw,['notes','note','remarks','Notes','comment']),
+    isRehab: !!raw.isRehab,
+    img: pick(raw,['img','photo','image','avatar','photoURL','Photo']),
+    photo: pick(raw,['photo','img','image']),
+    createdAt: raw.createdAt||raw.date||'' };
+}
 document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
-function getDisplayList(){ let map=new Map(); let all=[...(DB.workers||[]),...(DB.induction||[])].map(r=>normWorker(r)); all.forEach(w=>{ let key=w.nationalId || w.code || w.name; if(!key) return; if(!map.has(key)){ map.set(key,{...w, _ids:[{...w, id:w.id, _coll:w._coll}]}); } else { let ex=map.get(key); ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{ if(!ex[k] && w[k]) ex[k]=w[k]; }); if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true; if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt; ex._ids.push({id:w.id,_coll:w._coll}); } }); return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||''))); }
+function getDisplayList(){
+  let map=new Map();
+  let all=[...(DB.workers||[]),...(DB.induction||[])].map(r=>normWorker(r));
+  all.forEach(w=>{
+    // FIX: مترميش أي عامل حتى لو اسمه فاضي - استخدم أي حاجة موجودة كمفتاح
+    let key = w.nationalId || w.code || w.name || w._docId || w.id;
+    if(!key) return;
+    // لو المفتاح هو الـ doc id والكود فاضي، حط الكود = الـ doc id عشان يظهر في الجدول
+    if(!w.code && w._docId) w.code = w._docId;
+    if(!w.name && w.code) w.name = 'عامل - ' + w.code;
+    if(!map.has(key)){
+      map.set(key,{...w, _ids:[{id:w.id,_coll:w._coll}]});
+    } else {
+      let ex=map.get(key);
+      ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{ if(!ex[k] && w[k]) ex[k]=w[k]; });
+      if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true;
+      if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt;
+      ex._ids.push({id:w.id,_coll:w._coll});
+    }
+  });
+  return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+}
 let renderTimer=null;
 function renderIndDebounced(){ clearTimeout(renderTimer); renderTimer=setTimeout(()=>renderInd(),250); }
-/* ===== QR = LINK مش داتا - الحل الجديد ===== */
 function getProfileLink(x){
   let base = location.href.substring(0, location.href.lastIndexOf('/')+1);
   let key = x.code || x.nationalId || x.name || '';
@@ -190,17 +239,21 @@ function makeQR(x){
   let img=document.getElementById('c-qr-img');
   let link=getProfileLink(x);
   img.src='https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&data='+encodeURIComponent(link);
-  img.onerror=()=>{ img.src='https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&data='+encodeURIComponent(link); };
   let codeEl=document.getElementById('c-qr-code'); if(codeEl) codeEl.textContent=x.code||'-';
   let info=document.getElementById('qrInfo'); if(info) info.textContent='📱 اعمل Scan للـ QR - هيفتح ملف '+(x.name||'')+' كله Live - اللينك: '+link;
-  // خزن اللينك عشان لو حبيت تنسخه
   window._lastProfileLink = link;
+}
+function updateDebugCounts(){
+  let el=document.getElementById('debugCounts'); if(!el) return;
+  let parts=Object.entries(collCounts).map(([k,v])=>k+': '+v).join(' | ');
+  el.textContent='🔍 اللي وصل من Firebase: '+(parts||'لسه...')+' | بعد الدمج وإزالة التكرار: '+getDisplayList().length+' عامل | لو رقم 0 هنا يبقى المشكلة في Firebase Rules مش في الصفحة';
 }
 function loadLive(){
   try{
     let db=firebase.firestore();
     ['workers','induction','users','employees'].forEach(coll=>{
-      db.collection(coll).limit(300).onSnapshot(snap=>{
+      db.collection(coll).limit(500).onSnapshot(snap=>{
+        collCounts[coll]=snap.size;
         caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()}));
         DB.workers=[]; DB.induction=[];
         Object.entries(caches).forEach(([c,arr])=>{
@@ -209,8 +262,13 @@ function loadLive(){
         });
         document.getElementById('loadStatus').textContent='متصل Live ✅';
         document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | إجمالي بعد الدمج: '+getDisplayList().length;
+        updateDebugCounts();
         renderIndDebounced(); refreshCode();
-      }, err=>{ console.log('skip',coll,err.message); });
+      }, err=>{
+        collCounts[coll]='خطأ: '+err.message;
+        updateDebugCounts();
+        console.log('skip',coll,err.message);
+      });
     });
   }catch(e){ document.getElementById('loadStatus').textContent='خطأ: '+e.message; }
 }
