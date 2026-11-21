@@ -47,14 +47,33 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="ncr.html" class="active">📄 <span data-i18n="ncr">NCR</span></a><a href="permits.html">📄 Permits</a><a href="safety-observations.html">👁️ Observations</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 <span data-i18n="ncr">NCR</span></a><a href="safety-observations.html">👁️ Safety Observations</a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -71,6 +90,7 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">تقرير عدم المطابقة</span> <span style="color:#FF6B00">• NCR</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="user-bar"><span style="font-weight:800;color:#FF6B00">🦺 Report Preparer Name:</span><input id="currentUser" placeholder="Write your name once - Will be saved" oninput="localStorage.setItem('safetyUserName',this.value);document.getElementById('ncr-reporter').value=this.value"><span style="font-size:12px;color:#2E7D32">Will appear automatically in every report</span></div>
 
@@ -115,10 +135,38 @@ let ncrList=[];let editDueIdx=null;
 const STATUS_MAP={'مفتوح':'Open','تم الغلق':'Closed'};const CLASS_MAP={'بسيط':'Simple','حرج':'Critical'};
 function TStatus(v){return STATUS_MAP[String(v||'').trim()]||v||'Open'}
 function TClass(v){return CLASS_MAP[String(v||'').trim()]||v||''}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normNcr(raw){
+  let st=String(pick(raw,['status','state'])||'Open');
+  if(st.toLowerCase().includes('close')||st.includes('مغلق')||st.includes('تم الغلق')) st='Closed'; else st='Open';
+  let cl=String(pick(raw,['class','classification','type','severity'])||'');
+  if(cl.toLowerCase().includes('crit')||cl.includes('حرج')) cl='Critical'; else if(cl.toLowerCase().includes('simple')||cl.includes('بسيط')) cl='Simple'; else cl=cl||'Simple';
+  return {
+    id: raw.id, _coll: raw._coll||'ncr',
+    company: pick(raw,['company','companyName','contractor'])||'',
+    date: normDate(pick(raw,['date','createdAt'])),
+    dueDate: normDate(pick(raw,['dueDate','due','deadline','targetDate'])),
+    due: normDate(pick(raw,['due','dueDate'])),
+    class: cl,
+    classification: cl,
+    desc: pick(raw,['desc','description','details','case'])||'',
+    reporter: pick(raw,['reporter','reporterName','createdBy','author'])||'',
+    status: st,
+    closeDate: normDate(pick(raw,['closeDate','closedDate','closedAt'])),
+    createdAt: raw.createdAt||''
+  };
+}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function addDaysStr(days){let d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
 function diffDays(due){if(!due)return 999;let t=new Date(todayStr());let d=new Date(due);return Math.round((d-t)/86400000)}
-function dueLabel(x){if(!x.dueDate&&!x.due)return '-';let due=x.dueDate||x.due;if(TStatus(x.status)==='Closed')return due+'<br><small style="color:#2E7D32">تم القفل</small>';let dd=diffDays(due);if(dd<0)return due+'<br><small style="color:#D32F2F">🔴 متأخر '+Math.abs(dd)+' يوم</small>';if(dd===0)return due+'<br><small style="color:#FF9800">🟠 النهاردة</small>';if(dd<=3)return due+'<br><small style="color:#FF9800">🟡 فاضل '+dd+' يوم</small>';return due+'<br><small style="color:#2E7D32">🟢 فاضل '+dd+' يوم</small>'}
+function dueLabel(x){let due=x.dueDate||x.due;if(!due)return '-';if(TStatus(x.status)==='Closed')return due+'<br><small style="color:#2E7D32">تم القفل</small>';let dd=diffDays(due);if(dd<0)return due+'<br><small style="color:#D32F2F">🔴 متأخر '+Math.abs(dd)+' يوم</small>';if(dd===0)return due+'<br><small style="color:#FF9800">🟠 النهاردة</small>';if(dd<=3)return due+'<br><small style="color:#FF9800">🟡 فاضل '+dd+' يوم</small>';return due+'<br><small style="color:#2E7D32">🟢 فاضل '+dd+' يوم</small>'}
 function setDueDays(days){document.getElementById('ncr-due').value=addDaysStr(days)}
 function setEditDueDays(days){document.getElementById('editDueInput').value=addDaysStr(days)}
 function val(id){return document.getElementById(id).value.trim()}
@@ -126,44 +174,54 @@ function setVal(id,v){document.getElementById(id).value=v||''}
 function toggleCloseDate(){let st=val('ncr-status');let inp=document.getElementById('ncr-close');if(st==='Closed'){inp.disabled=false;if(!inp.value)inp.value=todayStr()}else{inp.disabled=true;inp.value=''}}
 function loadLive(){
  try{
-  firebase.firestore().collection('ncr').onSnapshot(snap=>{let old=ncrList.length;ncrList=snap.docs.map(d=>({id:d.id,...d.data()}));ncrList.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(ncrList.length>old&&old>0)playBeep();renderNcr()});
+  let db=firebase.firestore();
+  ['ncr','ncrs','nonConformance','non-conformance'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normNcr);
+      let merged=[...ncrList].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=ncrList.length; ncrList=merged;
+      ncrList.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(ncrList.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي NCR: '+ncrList.length;
+      renderNcr();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){console.log(e)}
 }
 async function addNcr(){
  if(!val('ncr-company'))return alert('Write company name');if(!val('ncr-date'))return alert('Select date');if(!val('ncr-due'))return alert('⚠️ اختار ميعاد القفل المستهدف');if(!val('ncr-class'))return alert('Select case classification');if(!val('ncr-desc'))return alert('Write case description');
  let rep=val('ncr-reporter')||getReporter();if(!rep)return alert('Write report preparer name');
  if(val('ncr-status')==='Closed'&&!val('ncr-close'))return alert('Select closing date');
- let rec={company:val('ncr-company'),date:val('ncr-date'),dueDate:val('ncr-due'),due:val('ncr-due'),class:val('ncr-class'),desc:val('ncr-desc'),reporter:rep,reporterName:rep,status:val('ncr-status'),closeDate:val('ncr-close'),createdAt:new Date().toISOString()};
+ let rec={company:val('ncr-company'),companyName:val('ncr-company'),date:val('ncr-date'),dueDate:val('ncr-due'),due:val('ncr-due'),class:val('ncr-class'),classification:val('ncr-class'),desc:val('ncr-desc'),description:val('ncr-desc'),reporter:rep,reporterName:rep,status:val('ncr-status'),state:val('ncr-status'),closeDate:val('ncr-close'),createdAt:new Date().toISOString()};
  try{await firebase.firestore().collection('ncr').add(rec);if(rec.class==='Critical')playBeep();}catch(e){return alert('Save problem: '+e.message)}
  alert('✅ Saved NCR - '+rec.company+' - ميعاد القفل: '+rec.dueDate);setVal('ncr-company','');setVal('ncr-class','');setVal('ncr-desc','');setVal('ncr-status','Open');setVal('ncr-due',addDaysStr(7));toggleCloseDate();
 }
 function drawChart(closed,open){let c=document.getElementById('chart');let ctx=c.getContext('2d');ctx.clearRect(0,0,150,150);let total=closed+open;if(!total){ctx.fillStyle='#EEE';ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.fill();return}let aClosed=(closed/total)*Math.PI*2;ctx.strokeStyle='#FFD54F';ctx.lineWidth=10;ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#2E7D32';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2,-Math.PI/2+aClosed);ctx.closePath();ctx.fill();ctx.fillStyle='#FF9800';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2);ctx.closePath();ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(75,75,40,0,Math.PI*2);ctx.fill()}
 function renderNcr(){
  let all=ncrList||[];
- let comps=[...new Set(all.map(x=>x.company))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');
+ let comps=[...new Set(all.map(x=>x.company).filter(Boolean))];document.getElementById('compList').innerHTML=comps.map(c=>`<option value="${escapeHtml(c)}">`).join('');
  let sel=document.getElementById('filterCompany');let cur=sel.value;sel.innerHTML='<option value="">All Companies</option>'+comps.map(c=>`<option ${c===cur?'selected':''}>${escapeHtml(c)}</option>`).join('');
  let total=all.length,closed=all.filter(x=>TStatus(x.status)==='Closed').length,open=total-closed,crit=all.filter(x=>TClass(x.class)==='Critical').length,simple=total-crit,closeP=total?Math.round(closed/total*100):0,openP=total?Math.round(open/total*100):0,overdue=all.filter(x=>TStatus(x.status)==='Open'&&(x.dueDate||x.due)&&diffDays(x.dueDate||x.due)<0).length;
  animateNum('k-open',open);animateNum('k-critical',crit);animateNum('k-closed-count',closed);document.getElementById('k-close-p').textContent=closeP+'%';document.getElementById('leg-closed').textContent=closed;document.getElementById('leg-closed-p').textContent=closeP+'%';document.getElementById('leg-open').textContent=open;document.getElementById('leg-open-p').textContent=openP+'%';document.getElementById('leg-crit').textContent=crit;document.getElementById('leg-simple').textContent=simple;document.getElementById('leg-overdue').textContent=overdue;document.getElementById('leg-total').textContent=total;document.getElementById('bar-closed').style.width=closeP+'%';document.getElementById('bar-open').style.width=openP+'%';drawChart(closed,open);document.getElementById('critIcon').classList.toggle('shake',crit>0||overdue>0);
- let byComp={};all.forEach(x=>{if(!byComp[x.company])byComp[x.company]={total:0,closed:0,open:0,crit:0};byComp[x.company].total++;if(TStatus(x.status)==='Closed')byComp[x.company].closed++;else byComp[x.company].open++;if(TClass(x.class)==='Critical')byComp[x.company].crit++});
+ let byComp={};all.forEach(x=>{let c=x.company||'Not Specified';if(!byComp[c])byComp[c]={total:0,closed:0,open:0,crit:0};byComp[c].total++;if(TStatus(x.status)==='Closed')byComp[c].closed++;else byComp[c].open++;if(TClass(x.class)==='Critical')byComp[c].crit++});
  let arr=Object.entries(byComp).map(([name,v])=>({name,...v,closeP:v.total?Math.round(v.closed/v.total*100):0,openP:v.total?Math.round(v.open/v.total*100):0}));arr.sort((a,b)=>b.total-a.total);
  if(!arr.length){document.getElementById('top-count-name').textContent='-';document.getElementById('top-count-detail').textContent='0 reports';document.getElementById('top-count-name2').textContent='-';document.getElementById('top-count-detail2').textContent='0 reports';document.getElementById('top-close-name').textContent='-';document.getElementById('top-close-detail').textContent='0% closed';document.getElementById('top-open-name').textContent='-';document.getElementById('top-open-detail').textContent='0% open';document.getElementById('compTable').innerHTML='<p style="text-align:center;color:#999">No reports yet</p>';document.getElementById('bestList').innerHTML='<p style="text-align:center;color:#999">No companies yet</p>'}
  else{let topCount=[...arr].sort((a,b)=>b.total-a.total)[0];let topClose=[...arr].sort((a,b)=>b.closeP-a.closeP||b.total-a.total)[0];let topOpen=[...arr].sort((a,b)=>b.openP-a.openP||b.total-a.total)[0];document.getElementById('top-count-name').textContent=topCount.name;document.getElementById('top-count-detail').textContent=topCount.total+' total - '+topCount.closed+' closed - '+topCount.open+' open - Closing '+topCount.closeP+'%';document.getElementById('top-count-name2').textContent=topCount.name;document.getElementById('top-count-detail2').textContent=topCount.total+' total - '+topCount.closed+' closed - '+topCount.open+' open';document.getElementById('top-close-name').textContent=topClose.name;document.getElementById('top-close-detail').textContent=topClose.closeP+'% closed - Total '+topClose.total;document.getElementById('top-open-name').textContent=topOpen.name;document.getElementById('top-open-detail').textContent=topOpen.openP+'% open - Total '+topOpen.total;let bestSorted=[...arr].sort((a,b)=>b.closeP-a.closeP||b.total-a.total).slice(0,3);document.getElementById('bestList').innerHTML=bestSorted.map((v,i)=>{let cls=i===0?'gold':i===1?'silver':'bronze';let txt=i===0?'🥇':i===1?'🥈':'🥉';return `<div class="best-row"><span class="medal ${cls}">${txt}</span><div style="flex:1"><b style="font-size:13px">${escapeHtml(v.name)}</b><br><small style="color:#999">${v.total} reports • ${v.closed} closed</small></div><b style="color:#2E7D32">${v.closeP}%</b><small style="color:#999"> Closed</small></div>`}).join('');document.getElementById('compTable').innerHTML='<table><tr><th>Company</th><th>Total</th><th>🟢 Closed</th><th>🟠 Open</th><th>🔴 Critical</th><th>Closing %</th></tr>'+arr.map(v=>`<tr><td><b>${escapeHtml(v.name)}</b></td><td>${v.total}</td><td style="color:#2E7D32;font-weight:800">${v.closed}</td><td style="color:#FF9800;font-weight:800">${v.open}</td><td>${v.crit}</td><td>${v.closeP}%</td></tr>`).join('')+'</table>'}
  let q=(document.getElementById('searchNcr').value||'').toLowerCase();let fs=document.getElementById('filterStatus').value;let fc=document.getElementById('filterClass').value;let fcomp=document.getElementById('filterCompany').value;
  let list=all.filter(x=>((x.company||'')+(x.desc||'')+(x.reporter||'')).toLowerCase().includes(q)&&(!fs||TStatus(x.status)===fs)&&(!fc||TClass(x.class)===fc)&&(!fcomp||x.company===fcomp));
- if(!list.length){document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#888">No NCR cases yet</p>';return}
+ if(!list.length){document.getElementById('ncrTable').innerHTML='<p style="text-align:center;color:#888">No NCR cases yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';return}
  document.getElementById('ncrTable').innerHTML='<table><tr><th>Company</th><th>Date</th><th>Classification</th><th>Description</th><th>Reporter</th><th>Status</th><th>📅 ميعاد القفل</th><th>Closing Date</th><th>Change Status</th><th>✏️ تعديل الميعاد</th><th>Delete</th></tr>'+list.map(x=>{let idx=ncrList.indexOf(x);return `<tr><td><b>${escapeHtml(x.company)}</b></td><td>${escapeHtml(x.date)}</td><td><span class="badge ${TClass(x.class)==='Critical'?'critical':'simple'}">${escapeHtml(TClass(x.class))}</span></td><td style="text-align:left;max-width:220px">${escapeHtml(x.desc)}</td><td>${escapeHtml(x.reporter)}</td><td><span class="badge ${TStatus(x.status)==='Open'?'open':'closed'}">${escapeHtml(TStatus(x.status))}</span></td><td>${dueLabel(x)}</td><td>${escapeHtml(x.closeDate||'-')}</td><td><button class="btn2" onclick="toggleNcr(${idx})">${TStatus(x.status)==='Open'?'✅ Close It':'🔓 Open It'}</button></td><td><button class="btn2" style="background:#FFD54F;color:#000" onclick="openDueModal(${idx})">✏️ تعديل الميعاد</button></td><td><button class="btn2" style="background:#D32F2F" onclick="delNcr(${idx})">🗑️</button></td></tr>`}).join('')+'</table>';
- let notifs=[...all.filter(x=>TClass(x.class)==='Critical'&&TStatus(x.status)==='Open').slice(0,3).map(x=>`🔴 NCR حرج مفتوح: ${x.company} - ${x.desc.slice(0,40)}`),...all.filter(x=>TStatus(x.status)==='Open'&&(x.dueDate||x.due)&&diffDays(x.dueDate||x.due)<0).slice(0,3).map(x=>`⏰ NCR متأخر: ${x.company} - ميعاده ${x.dueDate||x.due}`)];
+ let notifs=[...all.filter(x=>TClass(x.class)==='Critical'&&TStatus(x.status)==='Open').slice(0,3).map(x=>`🔴 NCR حرج مفتوح: ${x.company} - ${String(x.desc||'').slice(0,40)}`),...all.filter(x=>TStatus(x.status)==='Open'&&(x.dueDate||x.due)&&diffDays(x.dueDate||x.due)<0).slice(0,3).map(x=>`⏰ NCR متأخر: ${x.company} - ميعاده ${x.dueDate||x.due}`)];
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-function openDueModal(i){editDueIdx=i;let rec=ncrList[i];document.getElementById('dueModalDesc').textContent='الشركة: '+rec.company+' | الوصف: '+(rec.desc||'').slice(0,60)+' | الميعاد الحالي: '+(rec.dueDate||rec.due||'-');document.getElementById('editDueInput').value=rec.dueDate||rec.due||todayStr();document.getElementById('editDueReason').value='';document.getElementById('dueModal').classList.add('show')}
+function openDueModal(i){editDueIdx=i;let rec=ncrList[i];document.getElementById('dueModalDesc').textContent='الشركة: '+rec.company+' | الوصف: '+String(rec.desc||'').slice(0,60)+' | الميعاد الحالي: '+(rec.dueDate||rec.due||'-');document.getElementById('editDueInput').value=rec.dueDate||rec.due||todayStr();document.getElementById('editDueReason').value='';document.getElementById('dueModal').classList.add('show')}
 function closeDueModal(){document.getElementById('dueModal').classList.remove('show');editDueIdx=null}
-async function confirmEditDue(){let newDue=val('editDueInput');if(!newDue)return alert('اختار ميعاد القفل الجديد');let rec=ncrList[editDueIdx];let oldDue=rec.dueDate||rec.due||'';rec.dueDate=newDue;rec.due=newDue;try{await firebase.firestore().collection('ncr').doc(rec.id).update({dueDate:newDue,due:newDue,dueUpdatedAt:new Date().toISOString(),dueUpdatedBy:getReporter(),dueReason:val('editDueReason')})}catch(e){}closeDueModal();renderNcr();alert('✅ تم تعديل ميعاد القفل من '+oldDue+' إلى '+newDue)}
-async function toggleNcr(i){let rec=ncrList[i];let newStatus=TStatus(rec.status)==='Open'?'Closed':'Open';let newClose=newStatus==='Closed'?todayStr():'';try{await firebase.firestore().collection('ncr').doc(rec.id).update({status:newStatus,closeDate:newClose})}catch(e){}rec.status=newStatus;rec.closeDate=newClose;renderNcr();if(newStatus==='Closed')playBeep()}
-async function delNcr(i){if(!confirm('Delete this case?'))return;let rec=ncrList[i];try{await firebase.firestore().collection('ncr').doc(rec.id).delete()}catch(e){}ncrList.splice(i,1);renderNcr()}
-async function clearNcr(){if(!confirm('Delete all NCR record from Firebase?'))return;try{let snap=await firebase.firestore().collection('ncr').get();for(let d of snap.docs){await firebase.firestore().collection('ncr').doc(d.id).delete()}}catch(e){}ncrList=[];renderNcr()}
-function exportNcr(){if(!ncrList.length)return alert('No data');let csv='Company Name,Date,DueDate,Case Classification,Case Description,Report Preparer Name,Status,Closing Date\n'+ncrList.map(x=>[x.company,x.date,x.dueDate||x.due||'',TClass(x.class),'"'+(x.desc||'').replace(/"/g,'""')+'"',x.reporter,TStatus(x.status),x.closeDate||''].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='ncr.csv';a.click()}
+async function confirmEditDue(){let newDue=val('editDueInput');if(!newDue)return alert('اختار ميعاد القفل الجديد');let rec=ncrList[editDueIdx];let oldDue=rec.dueDate||rec.due||'';rec.dueDate=newDue;rec.due=newDue;try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'ncr'; await firebase.firestore().collection(coll).doc(realId).update({dueDate:newDue,due:newDue,dueUpdatedAt:new Date().toISOString(),dueUpdatedBy:getReporter(),dueReason:val('editDueReason')})}catch(e){}closeDueModal();renderNcr();alert('✅ تم تعديل ميعاد القفل من '+oldDue+' إلى '+newDue)}
+async function toggleNcr(i){let rec=ncrList[i];let newStatus=TStatus(rec.status)==='Open'?'Closed':'Open';let newClose=newStatus==='Closed'?todayStr():'';try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'ncr'; await firebase.firestore().collection(coll).doc(realId).update({status:newStatus,state:newStatus,closeDate:newClose})}catch(e){}rec.status=newStatus;rec.closeDate=newClose;renderNcr();if(newStatus==='Closed')playBeep()}
+async function delNcr(i){if(!confirm('Delete this case?'))return;let rec=ncrList[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'ncr'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}ncrList.splice(i,1);renderNcr()}
+async function clearNcr(){if(!confirm('Delete all NCR record from Firebase?'))return;try{for(let coll of ['ncr','ncrs','nonConformance']){let snap=await firebase.firestore().collection(coll).get();for(let d of snap.docs){await firebase.firestore().collection(coll).doc(d.id).delete()}}}catch(e){}ncrList=[];renderNcr()}
+function exportNcr(){if(!ncrList.length)return alert('No data');let csv='Company Name,Date,DueDate,Case Classification,Case Description,Report Preparer Name,Status,Closing Date\n'+ncrList.map(x=>[x.company,x.date,x.dueDate||x.due||'',TClass(x.class),'"'+String(x.desc||'').replace(/"/g,'""')+'"',x.reporter,TStatus(x.status),x.closeDate||''].join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='ncr.csv';a.click()}
 let savedUser=getReporter();document.getElementById('currentUser').value=savedUser;document.getElementById('ncr-reporter').value=savedUser;document.getElementById('ncr-date').value=todayStr();document.getElementById('ncr-due').value=addDaysStr(7);loadLive();
 </script>
 </body>
