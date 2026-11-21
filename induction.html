@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Induction V4 Final - RMED</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
@@ -39,43 +40,49 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 table{width:100%;border-collapse:collapse;font-size:12px}table th{background:#0F2A4D;color:#fff;padding:9px}table td{padding:9px;border-bottom:1px solid #eee;text-align:center}
 .badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:800}.badge.red{background:#FFEBEE;color:#D32F2F}.badge.green{background:#E8F5E9;color:#2E7D32}
 .notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
-/* ===== ID CARD - التصميم المعتمد كحلي / ذهبي ===== */
-.id-card{width:900px;max-width:100%;min-height:620px;background:#122A4E;border-radius:18px;overflow:hidden;position:relative;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.35);flex-shrink:0;display:flex;flex-direction:column}
+/* ===== ID CARD - كحلي / ذهبي + QR تحت الصورة - بدون تاريخ انتهاء ===== */
+.id-card{width:900px;max-width:100%;background:#122A4E;border-radius:18px;overflow:hidden;position:relative;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.35);flex-shrink:0;display:flex;flex-direction:column}
 .id-card-in{position:absolute;inset:14px;border:1.5px solid #C9A227;border-radius:12px;pointer-events:none;z-index:1}
-.id-card-body{flex:1;padding:28px 36px 18px;position:relative;z-index:2}
+.id-card-body{flex:1;padding:26px 34px 16px;position:relative;z-index:2}
 .id-head{text-align:center}
-.id-head b{font-size:38px;color:#D4AF37;letter-spacing:1px;line-height:1}
-.id-head small{display:block;color:#D4AF37;font-size:14px;font-weight:700;letter-spacing:1px;margin-top:2px}
-.id-head-line{height:1px;background:linear-gradient(90deg,transparent,#C9A227,transparent);margin:14px auto 18px;width:60%}
-.id-front-top{display:flex;gap:22px;align-items:flex-start}
-.id-photo-box{width:210px;flex-shrink:0;text-align:center}
-.id-photo-frame{padding:7px;background:linear-gradient(135deg,#FFE082,#C9A227);border-radius:16px}
-.id-photo-frame-in{border:1.5px dashed #FFE082;border-radius:12px;overflow:hidden;background:#0A1B33;height:245px;display:flex;align-items:center;justify-content:center}
+.id-head b{font-size:36px;color:#D4AF37;letter-spacing:1px;line-height:1}
+.id-head small{display:block;color:#D4AF37;font-size:13px;font-weight:700;letter-spacing:1px;margin-top:2px}
+.id-head-line{height:1px;background:linear-gradient(90deg,transparent,#C9A227,transparent);margin:12px auto 16px;width:60%}
+.id-front-top{display:flex;gap:20px;align-items:flex-start}
+.id-photo-col{width:215px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.id-photo-frame{padding:6px;background:linear-gradient(135deg,#FFE082,#C9A227);border-radius:14px}
+.id-photo-frame-in{border:1.5px dashed #FFE082;border-radius:10px;overflow:hidden;background:#0A1B33;height:200px;display:flex;align-items:center;justify-content:center}
 .id-photo{width:100%;height:100%;object-fit:cover;display:block}
-.id-photo-ph{color:#FFE082;font-weight:800;font-size:14px;line-height:1.6}
-.id-front-info{flex:1;min-width:0}
-.id-name{font-size:42px;font-weight:900;color:#D4AF37;line-height:1.1;word-break:break-word;text-align:right}
-.id-name-en{font-size:22px;color:#fff;font-style:italic;font-weight:600;text-align:right;margin-top:2px;word-break:break-word}
-.id-job-badge{display:block;margin:14px 0 14px;text-align:center;background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44;padding:11px;border-radius:12px;font-weight:900;font-size:22px}
+.id-photo-ph{color:#FFE082;font-weight:800;font-size:13px;line-height:1.6;text-align:center}
+.id-qr-box{background:#fff;border-radius:12px;padding:10px 8px 8px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.id-qr-box #c-qr{display:flex;justify-content:center}
+.id-qr-box #c-qr img,.id-qr-box #c-qr canvas{display:block;margin:0 auto}
+.id-qr-code{display:block;color:#0A1F44;font-weight:900;font-size:13px;letter-spacing:1px;margin-top:6px}
+.id-qr-label{display:block;color:#8a6d00;font-size:10px;font-weight:800;letter-spacing:1px}
+.id-front-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.id-name{font-size:38px;font-weight:900;color:#D4AF37;line-height:1.15;word-break:break-word;overflow-wrap:anywhere;text-align:right}
+.id-name-en{font-size:20px;color:#fff;font-style:italic;font-weight:600;text-align:right;margin-top:-6px;word-break:break-word;overflow-wrap:anywhere}
+.id-job-badge{display:block;text-align:center;background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44;padding:10px;border-radius:12px;font-weight:900;font-size:21px;word-break:break-word}
 .id-mini-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.id-field{border:1.2px solid #C9A227;border-radius:10px;padding:9px 12px;text-align:center;background:rgba(255,255,255,.03)}
-.id-field b{display:block;color:#D4AF37;font-size:13px;font-weight:800}
-.id-field span{display:block;color:#fff;font-weight:800;font-size:18px;margin-top:2px;word-break:break-word}
-.id-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.id-field.l{text-align:center}
-.id-health-row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
-.id-pill-green{background:#1E7A3A;color:#fff;padding:4px 12px;border-radius:99px;font-weight:900;font-size:13px}
-.id-foot{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44;text-align:center;font-weight:900;font-size:13px;letter-spacing:.5px;padding:10px;position:relative;z-index:2}
-.id-back-body{flex:1;padding:28px 36px 10px;position:relative;z-index:2}
-.id-back-title{text-align:center;font-size:32px;font-weight:900;color:#D4AF37;line-height:1.2}
-.id-back-sub{text-align:center;font-size:24px;font-weight:900;color:#D4AF37;margin-top:2px}
-.id-back-list{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:22px;direction:rtl}
+.id-field{border:1.2px solid #C9A227;border-radius:10px;padding:9px 10px;text-align:center;background:rgba(255,255,255,.03);min-width:0}
+.id-field b{display:block;color:#D4AF37;font-size:12px;font-weight:800;letter-spacing:.3px}
+.id-field span{display:block;color:#fff;font-weight:800;font-size:17px;margin-top:3px;word-break:break-word;overflow-wrap:anywhere;line-height:1.3}
+.id-field small{display:block;color:#E8ECF3;font-size:12px;font-weight:600;margin-top:2px;word-break:break-word;overflow-wrap:anywhere}
+.id-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.id-health-row{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:4px}
+.id-pill-green{background:#1E7A3A;color:#fff;padding:4px 12px;border-radius:99px;font-weight:900;font-size:13px;white-space:nowrap}
+.id-pill-red{background:#B71C1C;color:#fff;padding:4px 12px;border-radius:99px;font-weight:900;font-size:13px;white-space:nowrap}
+.id-foot{background:linear-gradient(180deg,#FFE082,#D4AF37);color:#0A1F44;text-align:center;font-weight:900;font-size:13px;letter-spacing:.4px;padding:11px 10px;position:relative;z-index:2;line-height:1.4}
+.id-back-body{flex:1;padding:26px 34px 10px;position:relative;z-index:2}
+.id-back-title{text-align:center;font-size:30px;font-weight:900;color:#D4AF37;line-height:1.2}
+.id-back-sub{text-align:center;font-size:22px;font-weight:900;color:#D4AF37;margin-top:2px}
+.id-back-list{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:20px;direction:rtl}
 .id-back-item{display:flex;gap:10px;align-items:flex-start;text-align:right}
-.id-back-item i{font-style:normal;color:#D4AF37;font-weight:900;font-size:22px;flex-shrink:0;line-height:1.2}
-.id-back-item b{display:block;font-size:16px;line-height:1.4}
-.id-back-item small{display:block;color:#E8ECF3;font-size:13px;line-height:1.4}
-.id-back-foot{margin-top:18px;text-align:center;color:#B8C6D6;font-size:12px;border-top:1px solid rgba(201,162,39,.4);padding-top:10px}
-@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search{display:none}.btn-row{grid-template-columns:1fr}.id-front-top{flex-direction:column}.id-photo-box{width:100%}.id-back-list{grid-template-columns:1fr}}
+.id-back-item i{font-style:normal;color:#D4AF37;font-weight:900;font-size:20px;flex-shrink:0;line-height:1.2}
+.id-back-item b{display:block;font-size:15px;line-height:1.4}
+.id-back-item small{display:block;color:#E8ECF3;font-size:12px;line-height:1.4}
+.id-back-foot{margin-top:16px;text-align:center;color:#B8C6D6;font-size:12px;border-top:1px solid rgba(201,162,39,.4);padding-top:10px}
+@media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.search{display:none}.btn-row{grid-template-columns:1fr}.id-front-top{flex-direction:column}.id-photo-col{width:100%}.id-back-list{grid-template-columns:1fr}.id-name{font-size:30px}}
 </style>
 </head>
 <body>
@@ -138,8 +145,8 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 </div></div>
 <div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:997;overflow:auto;padding:16px"><div style="max-width:560px;margin:auto;background:#fff;border-radius:16px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">✏️ تعديل بيانات العامل</h3><button class="btn2" onclick="closeEditModal()">✕</button></div><p style="font-size:12px;color:#666">عدل أي بيانات اتحفظت غلط - التعديل هيتطبق في كل السجلات والكارنيه</p><div class="grid2"><div><label>Code</label><input id="e-code"></div><div><label>National ID</label><input id="e-national" maxlength="14"></div><div style="grid-column:1/-1"><label>Full Name</label><input id="e-name"></div><div><label>Job</label><input id="e-job" list="jobList"></div><div><label>Company</label><input id="e-company" list="companyList"></div><div><label>Start Date</label><input type="date" id="e-date"></div><div><label>Health</label><input id="e-health" list="healthList"></div><div><label>Phone</label><input id="e-phone"></div><div><label>Emergency</label><input id="e-emergency"></div><div><label>relationship</label><input id="e-kin" list="kinList"></div><div><label>Status</label><select id="e-status"><option>Active</option><option>Resigned</option><option>Excluded</option></select></div><div style="grid-column:1/-1"><label>Notes</label><textarea id="e-notes"></textarea></div></div><label>تغيير الصورة (اختياري)</label><input type="file" accept="image/*" onchange="previewEditPhoto(event)"><img id="e-photoPrev" class="photo-preview"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><button class="btn-orange" onclick="saveEditWorker()" style="width:100%;padding:14px">💾 حفظ التعديل</button><button class="btn2" onclick="closeEditModal()" style="padding:14px">إلغاء</button></div></div></div>
 <div id="issueModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;overflow:auto;padding:16px"><div style="max-width:560px;margin:auto;background:#fff;border-radius:16px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🪪 Issue ID Card</h3><button class="btn2" onclick="document.getElementById('issueModal').style.display='none'">✕</button></div><label>Select registered employee</label><select id="issue-select" onchange="fillIssueFromWorker()"></select><p style="text-align:center;color:#888;font-size:13px">— Or write data manually —</p><div class="grid2"><div><label>Name</label><input id="issue-name"></div><div><label>Code</label><input id="issue-code"></div><div><label>National ID</label><input id="issue-national"></div><div><label>Job</label><input id="issue-job"></div><div><label>Company</label><input id="issue-company"></div><div><label>Health</label><input id="issue-health"></div><div><label>Phone</label><input id="issue-phone"></div><div><label>Emergency</label><input id="issue-emergency"></div><div><label>relationship</label><input id="issue-kin"></div><div><label>Start Date</label><input type="date" id="issue-date"></div><div><label>Status</label><select id="issue-status"><option>Active</option><option>Resigned</option><option>Excluded</option></select></div><div><label>Notes</label><input id="issue-notes"></div></div><label>Photo (Optional)</label><input type="file" accept="image/*" onchange="previewIssuePhoto(event)"><button class="btn-red" style="width:100%" onclick="showCardFromIssue()">👁️ Show ID Card Front & Back</button></div></div>
-<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;overflow:auto;padding:16px"><div style="max-width:940px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;color:#0A1F44"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🪪 Employee ID Card - التصميم المعتمد</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div><div style="overflow-x:auto;padding:8px"><div style="display:flex;flex-direction:column;gap:16px;align-items:center;width:100%">
-<div id="cardFront" class="id-card"><div class="id-card-in"></div><div class="id-card-body"><div class="id-head"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small></div><div class="id-head-line"></div><div class="id-front-top"><div class="id-photo-box"><div class="id-photo-frame"><div class="id-photo-frame-in"><img id="c-photo" class="id-photo" src="" style="display:none"><div id="c-photo-ph" class="id-photo-ph">PHOTO<br>150×180</div></div></div></div><div class="id-front-info"><div class="id-name" id="c-name">-</div><div class="id-name-en" id="c-name-en">-</div><div class="id-job-badge" id="c-job">-</div><div class="id-mini-row"><div class="id-field"><b>Start Date</b><span id="c-date">-</span></div><div class="id-field"><b>Phone</b><span id="c-phone">-</span></div></div></div></div><div class="id-grid2"><div class="id-field l"><b>Employee Code</b><span id="c-code">-</span></div><div class="id-field l"><b>Phone</b><span id="c-phone2">-</span></div><div class="id-field l"><b>National ID</b><span id="c-national">-</span></div><div class="id-field l"><b>Emergency</b><span id="c-emergency">-</span></div><div class="id-field l"><b>Company</b><span id="c-company">-</span></div><div class="id-field l"><b>Health &nbsp; <span class="id-pill-green" id="c-health-pill">Healthy</span></b><span class="id-health-row"><span>relationship <b id="c-kin" style="color:#fff">-</b></span><span>Rehabilitation <span class="id-pill-green" id="c-status-pill">Active</span></span></span></div></div></div><div class="id-foot">VALID THROUGH &nbsp;•&nbsp; <span id="c-valid">2028-11-21</span> &nbsp;•&nbsp; GOVERNMENTAL / CONTRACTOR APPROVED</div></div>
+<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;overflow:auto;padding:16px"><div style="max-width:940px;margin:auto;background:#F4F6F9;border-radius:16px;padding:16px;color:#0A1F44"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h3 style="margin:0">🪪 Employee ID Card - التصميم المعتمد + QR</h3><button class="btn2" onclick="document.getElementById('cardModal').style.display='none'">✕ Close</button></div><p id="qrInfo" style="font-size:12px;color:#666;margin:8px 0 0">📱 اعمل Scan للـ QR بالموبايل هيظهرلك ملف العامل كله: بيانات + تدريبات + حوادث + PPE</p><div style="overflow-x:auto;padding:8px"><div style="display:flex;flex-direction:column;gap:16px;align-items:center;width:100%">
+<div id="cardFront" class="id-card"><div class="id-card-in"></div><div class="id-card-body"><div class="id-head"><b>RMED</b><small>HSE MANAGEMENT SYSTEM</small></div><div class="id-head-line"></div><div class="id-front-top"><div class="id-photo-col"><div class="id-photo-frame"><div class="id-photo-frame-in"><img id="c-photo" class="id-photo" src="" style="display:none"><div id="c-photo-ph" class="id-photo-ph">PHOTO<br>150×180</div></div></div><div class="id-qr-box"><div id="c-qr"></div><span class="id-qr-code" id="c-qr-code">-</span><span class="id-qr-label">SCAN FOR FULL FILE</span></div></div><div class="id-front-info"><div class="id-name" id="c-name">-</div><div class="id-name-en" id="c-name-en">-</div><div class="id-job-badge" id="c-job">-</div><div class="id-mini-row"><div class="id-field"><b>Start Date</b><span id="c-date">-</span></div><div class="id-field"><b>Phone</b><span id="c-phone">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Employee Code</b><span id="c-code">-</span></div><div class="id-field"><b>National ID</b><span id="c-national">-</span></div></div><div class="id-mini-row"><div class="id-field"><b>Company</b><span id="c-company">-</span></div><div class="id-field"><b>Emergency</b><span id="c-emergency">-</span></div></div></div></div><div class="id-grid2"><div class="id-field"><b>Health</b><span class="id-health-row"><span class="id-pill-green" id="c-health-pill">Healthy</span></span></div><div class="id-field"><b>Relationship & Status</b><span class="id-health-row"><span>Relationship: <b id="c-kin" style="color:#fff">-</b></span><span class="id-pill-green" id="c-status-pill">Active</span></span></div></div></div><div class="id-foot">RMED &nbsp;•&nbsp; HSE MANAGEMENT SYSTEM &nbsp;•&nbsp; IF FOUND PLEASE RETURN TO RMED</div></div>
 <div id="cardBack" class="id-card"><div class="id-card-in"></div><div class="id-back-body"><div class="id-back-title">تعليمات إدارة السلامة /</div><div class="id-back-sub">HSE Management Instructions</div><div class="id-head-line"></div><div class="id-back-list"><div class="id-back-item"><i>1.</i><div><b>ارتدِ معدات الحماية الشخصية دائمًا</b><small>Wear PPE at all times (helmet, gloves, safety boots, vest)</small></div></div><div class="id-back-item"><i>5.</i><div><b>لا تستخدم المعدات دون تدريب أو تصريح</b><small>Do not operate equipment without training or permit</small></div></div><div class="id-back-item"><i>2.</i><div><b>التزم بإجراءات السلامة قبل بدء العمل</b><small>Follow safety procedures before starting work</small></div></div><div class="id-back-item"><i>6.</i><div><b>استخدم الأدوات والمعدات بالطريقة الصحيحة</b><small>Use tools and equipment properly</small></div></div><div class="id-back-item"><i>3.</i><div><b>الإبلاغ الفوري عن أي خطر أو حادث</b><small>Report any hazard or incident immediately</small></div></div><div class="id-back-item"><i>7.</i><div><b>حافظ على منطقة العمل نظيفة ومنظمة</b><small>Keep the work area clean and organized</small></div></div><div class="id-back-item"><i>4.</i><div><b>التأكد من العزل وقفل مصادر الطاقة عند الصيانة</b><small>Lockout/Tagout energy sources during maintenance</small></div></div><div class="id-back-item"><i>8.</i><div><b>تجنب الجري والتدافع في موقع العمل</b><small>Avoid running or horseplay on site</small></div></div><div class="id-back-item"><i>9.</i><div><b>تعرف على مخارج الطوارئ وخطط الإخلاء</b><small>Know emergency exits and evacuation plans</small></div></div><div class="id-back-item"><i>10.</i><div><b>الالتزام بالسلامة البيئية وإدارة النفايات</b><small>Follow environmental safety and waste management</small></div></div></div><div class="id-back-foot">RMED • Safety • Compliance • Excellence</div></div><div class="id-foot">RMED • HSE MANAGEMENT SYSTEM • THIS CARD IS PROPERTY OF RMED • IF FOUND PLEASE RETURN</div></div>
 </div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><button class="btn-red" onclick="downloadCard()">📥 Download Front & Back</button><button class="btn-orange" onclick="downloadCard('front')">📥 Download Front Only</button></div></div></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -175,7 +182,61 @@ function normDate(v){ if(!v) return ''; if(v.toDate){ try{ return v.toDate().toI
 function normWorker(raw){ return { id: raw.id, _coll: raw._coll||'workers', name: pick(raw,['name','fullName','employeeName']), code: String(pick(raw,['code','employeeCode','empCode'])||''), nationalId: String(pick(raw,['nationalId','nid','idNumber','nationalID','identity'])||''), job: pick(raw,['job','profession','position']), company: pick(raw,['company','companyName','contractor']), hire: normDate(pick(raw,['hire','hireDate','startDate','date','createdAt'])), date: normDate(pick(raw,['date','hire','hireDate','startDate','createdAt'])), health: pick(raw,['health','healthStatus','medical']), phone: pick(raw,['phone','phoneNumber','mobile']), emergency: pick(raw,['emergency','emergencyNumber','emergencyPhone']), kin: pick(raw,['kin','relationship','relation']), status: pick(raw,['status','state']), notes: pick(raw,['notes','note','remarks']), isRehab: !!raw.isRehab, img: pick(raw,['img','photo','image','avatar','photoURL']), photo: pick(raw,['photo','img','image']), createdAt: raw.createdAt||'' }; }
 document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
 function getDisplayList(){ let map=new Map(); let all=[...(DB.workers||[]),...(DB.induction||[])].map(normWorker); all.forEach(w=>{ let key=w.nationalId || w.code || w.name; if(!key) return; if(!map.has(key)){ map.set(key,{...w, _ids:[w]}); } else { let ex=map.get(key); ['name','code','nationalId','job','company','hire','date','health','phone','emergency','kin','status','notes','img','photo'].forEach(k=>{ if(!ex[k] && w[k]) ex[k]=w[k]; }); if(w.isRehab||isRehabNotes(w.notes)) ex.isRehab=true; if(!ex.createdAt && w.createdAt) ex.createdAt=w.createdAt; ex._ids.push(w); } }); return [...map.values()].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||''))); }
-function loadLive(){ try{ let db=firebase.firestore(); ['workers','induction','users','employees'].forEach(coll=>{ db.collection(coll).onSnapshot(snap=>{ caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})); DB.workers=[]; DB.induction=[]; Object.entries(caches).forEach(([c,arr])=>{ if(c==='workers'||c==='users'||c==='employees') DB.workers.push(...arr); else if(c==='induction') DB.induction.push(...arr); }); document.getElementById('loadStatus').textContent='متصل Live ✅'; document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | إجمالي بعد الدمج: '+getDisplayList().length; renderInd(); refreshCode(); }, err=>{ console.log('skip',coll,err.message); }); }); }catch(e){document.getElementById('loadStatus').textContent='خطأ: '+e.message} }
+/* ===== QR: سحب ملف العامل الكامل من كل الكولكشنز - بدون أدوية ===== */
+function matchWorkerDoc(doc, x){
+  let hay = JSON.stringify(doc||{}).toLowerCase();
+  let names = [x.name, x.code, x.nationalId].filter(Boolean).map(s=>String(s).toLowerCase());
+  return names.some(n=> n && n.length>2 && hay.includes(n));
+}
+function shortDoc(d, keys){
+  let parts = keys.map(k=>{ let v=pick(d,[k]); return v? String(v).slice(0,60):''; }).filter(Boolean);
+  return parts.join(' | ');
+}
+function buildWorkerFullText(x){
+  let lines = [];
+  lines.push('=== RMED - EMPLOYEE FILE ===');
+  lines.push('الاسم: '+(x.name||'-'));
+  lines.push('Name: '+((x.nameEn||x.name||'-')).toUpperCase());
+  lines.push('الكود: '+(x.code||'-'));
+  lines.push('الرقم القومي: '+(x.nationalId||'-'));
+  lines.push('الوظيفة: '+(TJob(x.job)||x.job||'-'));
+  lines.push('الشركة: '+(x.company||'-'));
+  lines.push('تاريخ المباشرة: '+(x.hire||x.date||'-'));
+  lines.push('التليفون: '+(x.phone||'-'));
+  lines.push('الطوارئ: '+(x.emergency||'-'));
+  lines.push('الحالة الصحية: '+(THealth(x.health)||x.health||'-'));
+  lines.push('صلة القرابة: '+(TKin(x.kin)||x.kin||'-'));
+  lines.push('الحالة: '+TStatus(x.status));
+  if(x.notes) lines.push('ملاحظات: '+String(x.notes).slice(0,200));
+  // تدريبات
+  let trains = [];
+  ['train','trainings','training','weekly','minutes'].forEach(c=>{ (caches[c]||[]).forEach(d=>{ if(matchWorkerDoc(d,x)){ let t=shortDoc(d,['title','topic','course','type','date','createdAt']); if(t) trains.push(t); } }); });
+  // حوادث / اصابات / near miss / مخالفات
+  let incidents = [];
+  ['accidents','near-miss','nearMiss','employee-violations','violations','safety-observations','ncr','first-aid'].forEach(c=>{ (caches[c]||[]).forEach(d=>{ if(matchWorkerDoc(d,x)){ let t=shortDoc(d,['title','type','description','date','createdAt','location']); if(t) incidents.push(t); } }); });
+  // PPE من المخزن - بدون أدوية
+  let ppe = [];
+  ['store-stock','storeStock','store-transactions','storeTransactions','store','ppe','store-inspection'].forEach(c=>{ (caches[c]||[]).forEach(d=>{ if(matchWorkerDoc(d,x)){ let txt=JSON.stringify(d).toLowerCase(); if(txt.includes('دواء')||txt.includes('medicine')||txt.includes('clinic')) return; let t=shortDoc(d,['item','itemName','ppe','quantity','qty','date','createdAt']); if(t) ppe.push(t); } }); });
+  if(trains.length){ lines.push('--- التدريبات ('+trains.length+') ---'); trains.slice(0,8).forEach((t,i)=>lines.push((i+1)+'. '+t)); }
+  else lines.push('التدريبات: لا يوجد');
+  if(incidents.length){ lines.push('--- الحوادث / الاصابات / المخالفات ('+incidents.length+') ---'); incidents.slice(0,8).forEach((t,i)=>lines.push((i+1)+'. '+t)); }
+  else lines.push('الحوادث / الاصابات: لا يوجد');
+  if(ppe.length){ lines.push('--- مهمات الوقاية PPE من المخزن ('+ppe.length+') ---'); ppe.slice(0,8).forEach((t,i)=>lines.push((i+1)+'. '+t)); }
+  else lines.push('مهمات الوقاية PPE: لا يوجد');
+  let text = lines.join('\n');
+  // QR له حد، لو طويل جدا بنختصره
+  if(text.length>1800) text = text.slice(0,1800)+'\n... Full file in employee-file.html';
+  return text;
+}
+function makeQR(x){
+  let box = document.getElementById('c-qr'); if(!box) return;
+  box.innerHTML='';
+  let txt = buildWorkerFullText(x);
+  try{ new QRCode(box,{text:txt,width:138,height:138,correctLevel:QRCode.CorrectLevel.L}); }catch(e){ box.textContent='QR Error'; }
+  let codeEl=document.getElementById('c-qr-code'); if(codeEl) codeEl.textContent = x.code||'-';
+  let info=document.getElementById('qrInfo'); if(info) info.textContent='📱 اعمل Scan للـ QR - هيظهر ملف '+ (x.name||'') +' كله: بيانات + تدريبات + حوادث + PPE (بدون أدوية)';
+}
+function loadLive(){ try{ let db=firebase.firestore(); let colls=['workers','induction','users','employees','train','trainings','accidents','near-miss','employee-violations','violations','safety-observations','ncr','first-aid','store-stock','store-transactions','store-inspection','weekly','minutes']; colls.forEach(coll=>{ db.collection(coll).onSnapshot(snap=>{ caches[coll]=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})); DB.workers=[]; DB.induction=[]; Object.entries(caches).forEach(([c,arr])=>{ if(c==='workers'||c==='users'||c==='employees') DB.workers.push(...arr); else if(c==='induction') DB.induction.push(...arr); }); document.getElementById('loadStatus').textContent='متصل Live ✅'; document.getElementById('loadStatus2').textContent='✅ Live - Workers: '+DB.workers.length+' | Induction: '+DB.induction.length+' | إجمالي بعد الدمج: '+getDisplayList().length; renderInd(); refreshCode(); }, err=>{ console.log('skip',coll,err.message); }); }); }catch(e){document.getElementById('loadStatus').textContent='خطأ: '+e.message} }
 function codeNum(c){let m=String(c||'').match(/(\d+)\s*$/);return m?parseInt(m[1],10):NaN}
 function nextCode(){let max=1000;getDisplayList().forEach(w=>{let n=codeNum(w.code);if(!isNaN(n)&&n>max)max=n});return 'RM-'+(max+1)}
 function refreshCode(){if(!val('f-code'))setVal('f-code',nextCode())}
@@ -194,7 +255,7 @@ async function saveEditWorker(){ if(!editKey) return; if(!val('e-name')) return 
 function renderInd(){ let q=(document.getElementById('searchInd').value||'').toLowerCase(); let allDisplay=getDisplayList(); let list=allDisplay.filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q)); let total=allDisplay.length,hours=total*0.25,rehab=allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).length,today=new Date().toISOString().slice(0,10),todayCount=allDisplay.filter(x=>x.date===today||(x.createdAt||'').slice(0,10)===today).length; animateNum('k-total',total);document.getElementById('k-hours').textContent=hours.toFixed(2);animateNum('k-rehab',rehab);animateNum('k-today',todayCount);document.getElementById('rehabIcon').classList.toggle('shake',rehab>0); document.getElementById('indTable').innerHTML=list.length?'<table><tr><th>Code</th><th>Name</th><th>National ID</th><th>Job</th><th>Company</th><th>Date</th><th>Status</th><th>Notes</th><th>ID Card</th><th>✏️ Edit</th></tr>'+list.map(x=>`<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td><span class="badge ${TStatus(x.status)==='Active'?'green':'red'}">${escapeHtml(TStatus(x.status))}</span></td><td>${x.isRehab||isRehabNotes(x.notes)?'<span class="badge red">Rehabilitation</span>':escapeHtml(x.notes||'-')}</td><td><button class="btn2" onclick="openCardByKey('${escapeHtml(x.nationalId||x.code)}')">🪪 ID Card</button></td><td><button class="btn2" style="background:#FF6B00" onclick="openEditModal('${escapeHtml(x.nationalId||x.code)}')">✏️ تعديل</button></td></tr>`).join('')+'</table>':'<p style="text-align:center;color:#888">No registered yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>'; let notifs=[...allDisplay.filter(x=>x.isRehab||isRehabNotes(x.notes)).slice(0,3).map(x=>`🔁 إعادة تأهيل: ${x.name} - ${x.code}`),...allDisplay.filter(x=>(x.date||'').slice(0,10)===today).slice(0,3).map(x=>`👤 موظف جديد اليوم: ${x.name}`)]; document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none'; document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات'; }
 let currentCardData=null;
 function setText(id,txt){let el=document.getElementById(id);if(el)el.textContent=txt}
-function fillCardData(x){ currentCardData=x; let photo=document.getElementById('c-photo'); let ph=document.getElementById('c-photo-ph'); let src=x.img||x.photo||issueImgData||''; if(src){ photo.src=src; photo.style.display='block'; ph.style.display='none'; } else { photo.style.display='none'; ph.style.display='block'; } let name=safe(x.name),code=safe(x.code),company=safe(x.company),job=safe(TJob(x.job)||x.job),nat=safe(x.nationalId),phone=safe(x.phone),emerg=safe(x.emergency),health=safe(THealth(x.health)||x.health),kin=safe(TKin(x.kin)||x.kin),status=TStatus(x.status),dateVal=safe(x.hire||x.date||(x.createdAt||'').slice(0,10)); let nameEl=document.getElementById('c-name');nameEl.textContent=name; setText('c-name-en',(x.nameEn||name).toUpperCase()); setText('c-job',job); setText('c-code',code); setText('c-company',company); setText('c-national',nat); setText('c-date',dateVal); setText('c-phone',phone); setText('c-phone2',phone); setText('c-emergency',emerg); setText('c-health-pill',health); setText('c-kin',kin); setText('c-status-pill',status); let d=new Date(dateVal); if(!isNaN(d)){ let v=new Date(d); v.setFullYear(v.getFullYear()+2); setText('c-valid',v.toISOString().slice(0,10)); } document.getElementById('cardModal').style.display='block'; }
+function fillCardData(x){ currentCardData=x; let photo=document.getElementById('c-photo'); let ph=document.getElementById('c-photo-ph'); let src=x.img||x.photo||issueImgData||''; if(src){ photo.src=src; photo.style.display='block'; ph.style.display='none'; } else { photo.style.display='none'; ph.style.display='block'; } let name=safe(x.name),code=safe(x.code),company=safe(x.company),job=safe(TJob(x.job)||x.job),nat=safe(x.nationalId),phone=safe(x.phone),emerg=safe(x.emergency),health=safe(THealth(x.health)||x.health),kin=safe(TKin(x.kin)||x.kin),status=TStatus(x.status),dateVal=safe(x.hire||x.date||(x.createdAt||'').slice(0,10)); let nameEl=document.getElementById('c-name');nameEl.textContent=name; setText('c-name-en',(x.nameEn||name).toUpperCase()); setText('c-job',job); setText('c-code',code); setText('c-company',company); setText('c-national',nat); setText('c-date',dateVal); setText('c-phone',phone); setText('c-emergency',emerg); setText('c-health-pill',health); setText('c-kin',kin); setText('c-status-pill',status); let pill=document.getElementById('c-status-pill'); if(pill){ pill.className = status==='Active' ? 'id-pill-green' : 'id-pill-red'; } makeQR(x); document.getElementById('cardModal').style.display='block'; }
 function openCardByKey(key){let all=getDisplayList();let x=all.find(v=>String(v.nationalId||v.code)===String(key))||all[0];if(!x)return;fillCardData(x)}
 function openLastCard(){let all=getDisplayList();if(!all.length)return alert('Register employee first');fillCardData(all[0])}
 function openIssueCard(){let sel=document.getElementById('issue-select');let all=getDisplayList();sel.innerHTML='<option value="">-- Select employee --</option>'+all.map((x,i)=>`<option value="${i}">${escapeHtml(x.code)} - ${escapeHtml(x.name)}</option>`).join('');document.getElementById('issueModal').style.display='block'}
