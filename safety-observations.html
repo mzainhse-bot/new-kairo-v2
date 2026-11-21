@@ -50,14 +50,33 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 </head>
 <body>
 <div class="hazard"></div>
+
+<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
-<div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
-<div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="stats.html">📈 Reports</a></div>
-<div class="nav-group"><div class="nav-head">👷 WORKERS</div><a href="users.html">👥 Users</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a></div>
-<div class="nav-group"><div class="nav-head">🛡️ SAFETY</div><a href="accidents.html">🚑 Accidents</a><a href="safety-observations.html" class="active">👁️ <span data-i18n="observations">Observations</span></a><a href="ncr.html">📄 NCR</a><a href="permits.html">📄 Permits</a></div>
-<div class="user-card"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b>Mohamed Zain</b><small>HSE Manager • ● Online</small></div></div>
-<a href="#" class="logout">↩ Logout</a>
+  <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
+  <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
+  <div class="nav-group"><div class="nav-head">👷 WORKERS & TRAINING</div><a href="users.html">👥 Users / Employees</a><a href="daily-count.html">🔢 Daily Count</a><a href="induction.html">📋 Induction</a><a href="train.html">🎓 Training</a><a href="weekly.html">📅 Weekly Meeting</a><a href="minutes.html">📝 Minutes of Meeting</a><a href="employee-file.html">📁 Employee Files</a><a href="employee-evaluation.html">🏆 Employee Evaluation</a></div>
+  <div class="nav-group"><div class="nav-head">🛡️ SAFETY & INSPECTIONS</div><a href="accidents.html">🚑 Accidents</a><a href="near-miss.html">⚡ Near Miss</a><a href="ncr.html">📄 NCR</a><a href="safety-observations.html">👁️ <span data-i18n="observations">Observations</span></a><a href="permits.html">📄 Permit to Work</a><a href="scaffolds.html">🪜 Scaffolds</a><a href="first-aid.html">🩹 First Aid</a><a href="power-tools-inspection.html">🔧 Power Tools</a><a href="heavy-equipment.html">🚜 Heavy Equipment</a><a href="lifting-equipment.html">🏗️ Lifting Equipment</a><a href="lifting-accessories.html">🪝 Lifting Accessories</a><a href="safety-harness.html">🦺 Safety Harness</a><a href="vehicles.html">🚐 Vehicles</a><a href="electric-panels.html">⚡ Electric Panels</a><a href="fire-extinguishers.html">🧯 Fire Extinguishers</a><a href="store-inspection.html">🏬 Store Inspection</a></div>
+  <div class="nav-group" id="storeClinicGroup"><div class="nav-head">🏬 STORE & CLINIC</div><a href="store-stock.html">🏬 Store Stock • أرصدة المخازن</a><a href="clinic.html">💊 Clinic • العيادة والأدوية</a></div>
+  <div class="nav-group"><div class="nav-head">⚠️ VIOLATIONS</div><a href="violations.html">⚠️ Contractor Violations</a><a href="employee-violations.html">🚨 Employee Violations</a></div>
+  <div class="nav-group"><div class="nav-head">⚙️ SETTINGS & EVAL</div><a href="contractor-eval.html">🏗️ Contractor Eval</a><a href="login.html">🔑 Login</a><a href="register.html">📝 Register</a></div>
+  <div class="user-card"><img id="sideImg" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><div><b id="sideName">Mohamed Zain</b><small id="sideRole">HSE Manager • ● Online</small></div></div>
+  <a href="#" class="logout" onclick="logoutShared();return false;">↩ Logout</a>
 </aside>
+<script>
+(function(){
+  let current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#sidebar a').forEach(a => { if(a.getAttribute('href') === current) a.classList.add('active'); });
+  let me = null; try{ me = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('safetyUser') || '{}'); }catch(e){}
+  let map = {'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
+  let role = map[String(me?.role || '').trim().toLowerCase()] || map[String(me?.role || '').trim()] || 'Visitor';
+  if(!(role === 'Manager' || role === 'Supervisor')){ let g = document.getElementById('storeClinicGroup'); if(g) g.style.display = 'none'; }
+  if(me?.name){ let n = document.getElementById('sideName'); if(n) n.textContent = me.name; let r = document.getElementById('sideRole'); if(r) r.textContent = role + ' • ● Online'; let img = document.getElementById('sideImg'); if(img && (me.img || me.photo)) img.src = me.img || me.photo; }
+})();
+function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
+</script>
+<!-- ===== END SIDEBAR ===== -->
+
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -74,6 +93,7 @@ img.thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:point
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">ملاحظات السلامة</span> <span style="color:#FF6B00">• Observations</span></h1>
 <p style="color:#666;font-size:13px">Live • V4 Final • الداتا القديمة بتتقرا عادي</p>
+<p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
 
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold">📋</span><div><b id="total">0</b><small data-i18n="total">إجمالي الملاحظات</small></div></div></div>
@@ -121,9 +141,48 @@ const TYPE_MAP={'ظرف غير آمن':'Unsafe Condition','سلوك غير آم�
 const STATUS_MAP={'مفتوح':'Open','مغلق':'Closed'};
 function TType(v){return TYPE_MAP[String(v||'').trim()]||v||'Unsafe Condition'}
 function TStatus(v){return STATUS_MAP[String(v||'').trim()]||v||'Open'}
+function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
+function normDate(v){
+  if(!v) return '';
+  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
+  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
+  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
+  return s;
+}
+function normObs(raw){
+  let st=String(pick(raw,['status','state'])||'Open');
+  if(st.toLowerCase().includes('close')||st.includes('مغلق')) st='Closed'; else st='Open';
+  let ty=String(pick(raw,['type','observationType','category'])||'Unsafe Condition');
+  if(ty.toLowerCase().includes('act')||ty.includes('سلوك')) ty='Unsafe Act'; else ty='Unsafe Condition';
+  return {
+    id: raw.id, _coll: raw._coll||'observations',
+    reporter: pick(raw,['reporter','reporterName','createdBy','author'])||'',
+    date: normDate(pick(raw,['date','createdAt'])),
+    time: pick(raw,['time','incidentTime'])||'',
+    type: ty,
+    place: pick(raw,['place','location','workLocation','site'])||'',
+    status: st,
+    desc: pick(raw,['desc','description','observation','details'])||'',
+    action: pick(raw,['action','correctiveAction','proposedAction','corrective'])||'',
+    img1: pick(raw,['img1','image1','observationImg','photo'])||'',
+    img2: pick(raw,['img2','image2','closingImg','closingPhoto'])||'',
+    createdAt: raw.createdAt||''
+  };
+}
 function loadLive(){
  try{
-  firebase.firestore().collection('observations').onSnapshot(snap=>{let old=data.length;data=snap.docs.map(d=>({id:d.id,...d.data()}));data.sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));if(data.length>old&&old>0)playBeep();render()});
+  let db=firebase.firestore();
+  ['observations','safetyObservations','safety-observations','safety_observations'].forEach(coll=>{
+    db.collection(coll).onSnapshot(snap=>{
+      let arr=snap.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normObs);
+      let merged=[...data].filter(x=>x._coll!==coll); merged=[...merged,...arr];
+      let old=data.length; data=merged;
+      data.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+      if(data.length>old&&old>0)playBeep();
+      document.getElementById('loadStatus').textContent='✅ Live - إجمالي الملاحظات: '+data.length;
+      render();
+    }, err=>{ console.log('skip',coll,err.message); });
+  });
  }catch(e){console.log(e)}
 }
 document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('time').value=new Date().toTimeString().slice(0,5);let _rep=getReporter();if(_rep)document.getElementById('reporter').value=_rep;
@@ -131,7 +190,7 @@ function readFile(file,cb){if(!file){cb('');return}let r=new FileReader();r.onlo
 function addObs(){
  let reporter=document.getElementById('reporter').value.trim()||getReporter();let date=document.getElementById('date').value;let time=document.getElementById('time').value;let type=document.getElementById('type').value;let place=document.getElementById('place').value.trim();let status=document.getElementById('status').value;let desc=document.getElementById('desc').value.trim();let action=document.getElementById('action').value.trim();
  if(!reporter||!date||!place||!desc){alert('Complete name, date, place and description');return}
- readFile(document.getElementById('img1').files[0],async img1=>{readFile(document.getElementById('img2').files[0],async img2=>{let rec={reporter,reporterName:reporter,date,time,type,place,status,desc,action,img1,img2,createdAt:new Date().toISOString()};try{await firebase.firestore().collection('observations').add(rec);playBeep()}catch(e){return alert('Save problem: '+e.message)}document.getElementById('desc').value='';document.getElementById('action').value='';document.getElementById('place').value='';document.getElementById('img1').value='';document.getElementById('img2').value='';let _r=getReporter();if(_r)document.getElementById('reporter').value=_r;render();alert('Observation saved ✅')})});
+ readFile(document.getElementById('img1').files[0],async img1=>{readFile(document.getElementById('img2').files[0],async img2=>{let rec={reporter,reporterName:reporter,date,time,type,observationType:type,place,location:place,status,state:status,desc,description:desc,observation:desc,action,correctiveAction:action,img1,img2,createdAt:new Date().toISOString()};try{await firebase.firestore().collection('observations').add(rec);playBeep()}catch(e){return alert('Save problem: '+e.message)}document.getElementById('desc').value='';document.getElementById('action').value='';document.getElementById('place').value='';document.getElementById('img1').value='';document.getElementById('img2').value='';let _r=getReporter();if(_r)document.getElementById('reporter').value=_r;render();alert('Observation saved ✅')})});
 }
 function drawDonut(closed,open){let c=document.getElementById('obsChart');if(!c)return;let ctx=c.getContext('2d');ctx.clearRect(0,0,150,150);let total=closed+open;if(!total){ctx.fillStyle='#EEE';ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.fill();return}let aClosed=(closed/total)*Math.PI*2;ctx.strokeStyle='#FFD54F';ctx.lineWidth=10;ctx.beginPath();ctx.arc(75,75,68,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#2E7D32';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2,-Math.PI/2+aClosed);ctx.closePath();ctx.fill();ctx.fillStyle='#FF9800';ctx.beginPath();ctx.moveTo(75,75);ctx.arc(75,75,62,-Math.PI/2+aClosed,-Math.PI/2+Math.PI*2);ctx.closePath();ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(75,75,40,0,Math.PI*2);ctx.fill()}
 function render(){
@@ -140,20 +199,19 @@ function render(){
  animateNum('total',data.length);let cCond=data.filter(d=>TType(d.type)=='Unsafe Condition').length;let cAct=data.filter(d=>TType(d.type)=='Unsafe Act').length;let cOpen=data.filter(d=>TStatus(d.status)=='Open').length;let cClosed=data.filter(d=>TStatus(d.status)=='Closed').length;
  document.getElementById('cCond').textContent=cCond;document.getElementById('cAct').textContent=cAct;animateNum('cOpen',cOpen);animateNum('cClosed',cClosed);
  let closeP=data.length?Math.round(cClosed/data.length*100):0;let openP=data.length?Math.round(cOpen/data.length*100):0;document.getElementById('donut-p').textContent=closeP+'%';document.getElementById('leg-closed').textContent=cClosed;document.getElementById('leg-closed-p').textContent=closeP+'%';document.getElementById('leg-open').textContent=cOpen;document.getElementById('leg-open-p').textContent=openP+'%';document.getElementById('leg-cond').textContent=cCond;document.getElementById('leg-act').textContent=cAct;document.getElementById('bar-closed').style.width=closeP+'%';document.getElementById('bar-open').style.width=openP+'%';drawDonut(cClosed,cOpen);document.getElementById('openIcon').classList.toggle('shake',cOpen>0);
- function topLow(arr,key){if(!arr.length)return['-','-'];let c={};arr.forEach(d=>{c[d[key]]=(c[d[key]]||0)+1});let sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);return[sorted[0][0]+' ('+sorted[0][1]+')',sorted[sorted.length-1][0]+' ('+sorted[sorted.length-1][1]+')']}
+ function topLow(arr,key){if(!arr.length)return['-','-'];let c={};arr.forEach(d=>{if(!d[key])return;c[d[key]]=(c[d[key]]||0)+1});let sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);return[sorted[0][0]+' ('+sorted[0][1]+')',sorted[sorted.length-1][0]+' ('+sorted[sorted.length-1][1]+')']}
  let [tLoc,lLoc]=topLow(data,'place');let [tPer,lPer]=topLow(data,'reporter');document.getElementById('topLoc').textContent=tLoc;document.getElementById('lowLoc').textContent=lLoc;document.getElementById('topPerson').textContent=tPer;document.getElementById('lowPerson').textContent=lPer;document.getElementById('best-place').textContent=tLoc;
- let byRep={};data.forEach(d=>{if(!byRep[d.reporter])byRep[d.reporter]={total:0,closed:0};byRep[d.reporter].total++;if(TStatus(d.status)==='Closed')byRep[d.reporter].closed++});
+ let byRep={};data.forEach(d=>{let r=d.reporter||'Unknown';if(!byRep[r])byRep[r]={total:0,closed:0};byRep[r].total++;if(TStatus(d.status)==='Closed')byRep[r].closed++});
  let bestArr=Object.entries(byRep).map(([name,v])=>({name,total:v.total,closed:v.closed,closeP:v.total?Math.round(v.closed/v.total*100):0})).sort((a,b)=>b.closeP-a.closeP||b.total-a.total).slice(0,3);
  document.getElementById('bestList').innerHTML=bestArr.length?bestArr.map((v,i)=>{let cls=i===0?'gold':i===1?'silver':'bronze';let txt=i===0?'🥇':i===1?'🥈':'🥉';return `<div class="best-row"><span class="medal ${cls}">${txt}</span><div style="flex:1"><b style="font-size:13px">${escapeHtml(v.name)}</b><br><small style="color:#999">${v.total} reports • ${v.closed} closed</small></div><b style="color:#2E7D32">${v.closeP}%</b><small style="color:#999"> Closed</small></div>`}).join(''):'<p style="text-align:center;color:#999">No reporters yet</p>';
- document.getElementById('tbody').innerHTML=filtered.map(d=>`<tr><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.time)}</td><td>${escapeHtml(d.reporter)}</td><td>${escapeHtml(TType(d.type))}</td><td>${escapeHtml(d.place)}</td><td style="text-align:left;max-width:200px">${escapeHtml(d.desc)}</td><td style="text-align:left;max-width:200px">${escapeHtml(d.action)}</td><td><span class="badge ${TStatus(d.status)=='Open'?'open':'closed'}" onclick="toggle(${data.indexOf(d)})">${escapeHtml(TStatus(d.status))}</span></td><td>${d.img1?`<a href="${d.img1}" target="_blank"><img class="thumb" src="${d.img1}"></a>`:''} ${d.img2?`<a href="${d.img2}" target="_blank"><img class="thumb" src="${d.img2}"></a>`:''}</td><td><button class="del" onclick="delObs(${data.indexOf(d)})">Delete</button></td></tr>`).join('')||'<tr><td colspan="10">No observations yet</td></tr>';
- let notifs=data.filter(d=>TStatus(d.status)=='Open').slice(0,3).map(d=>`👁️ ملاحظة مفتوحة: ${d.place} - ${d.reporter} - ${(d.desc||'').slice(0,40)}`);
+ document.getElementById('tbody').innerHTML=filtered.map(d=>`<tr><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.time)}</td><td>${escapeHtml(d.reporter)}</td><td>${escapeHtml(TType(d.type))}</td><td>${escapeHtml(d.place)}</td><td style="text-align:left;max-width:200px">${escapeHtml(d.desc)}</td><td style="text-align:left;max-width:200px">${escapeHtml(d.action)}</td><td><span class="badge ${TStatus(d.status)=='Open'?'open':'closed'}" onclick="toggle(${data.indexOf(d)})">${escapeHtml(TStatus(d.status))}</span></td><td>${d.img1?`<a href="${d.img1}" target="_blank"><img class="thumb" src="${d.img1}"></a>`:''} ${d.img2?`<a href="${d.img2}" target="_blank"><img class="thumb" src="${d.img2}"></a>`:''}</td><td><button class="del" onclick="delObs(${data.indexOf(d)})">Delete</button></td></tr>`).join('')||'<tr><td colspan="10">No observations yet - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</td></tr>';
+ let notifs=data.filter(d=>TStatus(d.status)=='Open').slice(0,3).map(d=>`👁️ ملاحظة مفتوحة: ${d.place} - ${d.reporter} - ${String(d.desc||'').slice(0,40)}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
- if(notifs.length) playBeep();
 }
-async function toggle(i){let rec=data[i];let newStatus=TStatus(rec.status)=='Open'?'Closed':'Open';try{await firebase.firestore().collection('observations').doc(rec.id).update({status:newStatus})}catch(e){}rec.status=newStatus;render();if(newStatus==='Closed')playBeep()}
-async function delObs(i){if(!confirm('Are you sure to delete observation?'))return;let rec=data[i];try{await firebase.firestore().collection('observations').doc(rec.id).delete()}catch(e){}data.splice(i,1);render()}
-function exportExcel(){let csv='\uFEFFDate,Time,Reporter,Type,Place,Description,Corrective Action,Status\n';data.forEach(d=>{csv+=`"${d.date}","${d.time}","${d.reporter}","${TType(d.type)}","${d.place}","${d.desc}","${d.action}","${TStatus(d.status)}"\n`});let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='safety-observations.csv';a.click()}
+async function toggle(i){let rec=data[i];let newStatus=TStatus(rec.status)=='Open'?'Closed':'Open';try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'observations'; await firebase.firestore().collection(coll).doc(realId).update({status:newStatus,state:newStatus})}catch(e){}rec.status=newStatus;render();if(newStatus==='Closed')playBeep()}
+async function delObs(i){if(!confirm('Are you sure to delete observation?'))return;let rec=data[i];try{let realId=String(rec.id).includes(':')?String(rec.id).split(':').slice(1).join(':'):rec.id; let coll=rec._coll||'observations'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}data.splice(i,1);render()}
+function exportExcel(){let csv='\uFEFFDate,Time,Reporter,Type,Place,Description,Corrective Action,Status\n';data.forEach(d=>{csv+=`"${d.date}","${d.time}","${d.reporter}","${TType(d.type)}","${d.place}","${String(d.desc||'').replace(/"/g,'""')}","${String(d.action||'').replace(/"/g,'""')}","${TStatus(d.status)}"\n`});let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='safety-observations.csv';a.click()}
 loadLive();
 </script>
 </body>
