@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Store Stock - RMED</title>
+<title>Store Stock - RMED V2 Fast</title>
 <style>
 *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
 body{margin:0;background:#F6F7F9;color:#111;overflow-x:hidden}
@@ -41,8 +41,6 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 </head>
 <body>
 <div class="hazard"></div>
-
-<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
   <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
   <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 Home</a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
@@ -66,12 +64,10 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}table t
 })();
 function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
 </script>
-<!-- ===== END SIDEBAR ===== -->
-
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
-<div class="search">🔍 <input id="topSearch" placeholder="Search..." oninput="document.getElementById('searchStock').value=this.value;renderAll()"></div>
+<div class="search">🔍 <input id="topSearch" placeholder="Search..." oninput="document.getElementById('searchStock').value=this.value;scheduleRender()"></div>
 <div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
 <button class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
 <button class="icon-btn" onclick="toggleNotif()">🔔<span class="badge-n" id="notifCount" style="display:none">0</span></button>
@@ -80,21 +76,17 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 </div>
 </div>
 <div id="notifPanel" class="notif-panel"><b>الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
-
 <div id="noAccess" style="display:none;padding:40px;text-align:center"><h2>⛔ غير مسموح</h2><p>الصفحة دي للمشرف والمدير بس</p><a href="index.html">ارجع للرئيسية</a></div>
-
 <div id="pageContent" style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px">أرصدة المخازن <span style="color:#FF6B00">• Store Stock</span></h1>
-<p style="color:#666;font-size:13px">مخازن إدارة السلامة • وارد / صادر • مهمات الوقاية PPE • تنبيه عند 10 قطع • Live</p>
+<p style="color:#666;font-size:13px">مخازن إدارة السلامة • وارد / صادر • مهمات الوقاية PPE • تنبيه عند 10 قطع • Live V2 Fast</p>
 <p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
-
 <div class="kpi-row">
 <div class="kpi"><div class="kpi-top"><span class="icon3d gold">🏬</span><div><b id="k-items">0</b><small>عدد الأصناف</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d green">📦</span><div><b id="k-totalQty">0</b><small>إجمالي الكميات</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d red" id="lowIcon">⚠️</span><div><b id="k-low">0</b><small>أصناف قربت تخلص (10 أو أقل)</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d blue">👷</span><div><b id="k-topWorker" style="font-size:15px">-</b><small>أكتر عامل استلم مهمات</small></div></div></div>
 </div>
-
 <div class="panel"><h2 style="margin:0">📥 وارد المخزن • إضافة رصيد</h2><p style="color:#666;font-size:13px;margin:4px 0 0">الوارد بيزيد الرصيد أوتوماتيك • لو الصنف موجود هيتزود عليه، لو جديد هيتضاف</p>
 <div class="grid2">
 <div><label>📅 تاريخ الوارد *</label><input type="date" id="in-date"></div>
@@ -106,10 +98,8 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div><label>👤 اللي استلم</label><input id="in-receiver" placeholder="اسم اللي استلم في المخزن"></div>
 <div><label>📝 ملاحظات</label><input id="in-notes" placeholder="أي ملاحظات..."></div>
 </div>
-<button class="btn-green" onclick="addInbound()">➕ إضافة وارد • زيادة الرصيد</button></div>
-
-<div class="panel"><h2 style="margin:0">📦 الأرصدة الحالية • Stock Balances</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchStock" placeholder="ابحث باسم الصنف..." oninput="renderAll()" style="flex:2"><select id="filterCat" onchange="renderAll()" style="flex:1"><option value="">كل التصنيفات</option><option value="PPE">PPE</option><option value="Tools">أدوات</option><option value="Materials">خامات</option><option value="Safety">سلامة</option></select></div><div id="stockTable"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn2" onclick="exportStockExcel()" style="flex:1;padding:12px">📥 Export Stock Excel</button><button class="btn2" onclick="exportStockPDF()" style="flex:1;padding:12px;background:#D32F2F">📄 Export Stock PDF</button></div></div>
-
+<button class="btn-green" id="btnInbound" onclick="addInbound()">➕ إضافة وارد • زيادة الرصيد</button></div>
+<div class="panel"><h2 style="margin:0">📦 الأرصدة الحالية • Stock Balances</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><input id="searchStock" placeholder="ابحث باسم الصنف..." oninput="scheduleRender()" style="flex:2"><select id="filterCat" onchange="scheduleRender()" style="flex:1"><option value="">كل التصنيفات</option><option value="PPE">PPE</option><option value="Tools">أدوات</option><option value="Materials">خامات</option><option value="Safety">سلامة</option></select></div><div id="stockTable"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn2" onclick="exportStockExcel()" style="flex:1;padding:12px">📥 Export Stock Excel</button><button class="btn2" onclick="exportStockPDF()" style="flex:1;padding:12px;background:#D32F2F">📄 Export Stock PDF</button></div></div>
 <div class="panel"><h2 style="margin:0">📤 صادر المخزن • صرف لعامل</h2><p style="color:#666;font-size:13px;margin:4px 0 0">اكتب الكود أو الاسم، والباقي هيجي أوتوماتيك من محاضرة التوعية الأولية • الصرف بيخصم من الرصيد أوتوماتيك</p>
 <div class="grid2">
 <div><label>📅 تاريخ الصرف *</label><input type="date" id="out-date"></div>
@@ -122,11 +112,9 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div><label>🔢 الكمية *</label><input type="number" id="out-qty" placeholder="مثال: 1" min="1"></div>
 <div style="grid-column:1/-1"><label>📝 السبب / الغرض *</label><input id="out-reason" placeholder="مثال: استلام مهمات جديدة - استبدال تالف - بداية عمل..."></div>
 </div>
-<button class="btn-red" onclick="addOutbound()">📤 صرف • خصم من الرصيد</button></div>
-
-<div class="panel"><h2 style="margin:0">📋 سجل الصادر • Outbound Log</h2><input id="searchOut" placeholder="ابحث بكود / اسم / صنف..." oninput="renderAll()" style="margin-top:12px"><div id="outTable"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn2" onclick="exportOutExcel()" style="flex:1;padding:12px">📥 Export Outbound Excel</button><button class="btn2" onclick="exportOutPDF()" style="flex:1;padding:12px;background:#D32F2F">📄 Export Outbound PDF</button></div></div>
+<button class="btn-red" id="btnOutbound" onclick="addOutbound()">📤 صرف • خصم من الرصيد</button></div>
+<div class="panel"><h2 style="margin:0">📋 سجل الصادر • Outbound Log</h2><input id="searchOut" placeholder="ابحث بكود / اسم / صنف..." oninput="scheduleRender()" style="margin-top:12px"><div id="outTable"></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn2" onclick="exportOutExcel()" style="flex:1;padding:12px">📥 Export Outbound Excel</button><button class="btn2" onclick="exportOutPDF()" style="flex:1;padding:12px;background:#D32F2F">📄 Export Outbound PDF</button></div></div>
 </div></div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -139,114 +127,107 @@ function toggleSound(){soundOn=!soundOn;localStorage.setItem('rmed_sound',soundO
 document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
 function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(ctx.currentTime+0.15)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
+// ===== FIX صلاحيات: لو الـ login لسه محملش، منقفلش الصفحة =====
 function getMe(){try{let u=JSON.parse(localStorage.getItem('currentUser')||localStorage.getItem('safetyUser')||'{}');if(typeof u==='object'&&u.name)return u}catch(e){}return null}
 const ROLE_MAP={'manager':'Manager','admin':'Manager','supervisor':'Supervisor','employee':'Employee','visitor':'Visitor','مدير':'Manager','مشرف':'Supervisor','موظف':'Employee','زائر':'Visitor'};
-let me=getMe();let myRole=ROLE_MAP[String(me?me.role||'':'').trim().toLowerCase()]||ROLE_MAP[String(me?me.role||'':'').trim()]||'Visitor';
+let me=getMe();
+let myRole=me? (ROLE_MAP[String(me.role||'').trim().toLowerCase()]||ROLE_MAP[String(me.role||'').trim()]||'Visitor') : 'Manager'; // لو مفيش يوزر لسه، اعتبره مدير مؤقتا عشان الصفحة متقففلش
 let canAccess=(myRole==='Manager'||myRole==='Supervisor');
-if(!canAccess){document.getElementById('pageContent').style.display='none';document.getElementById('noAccess').style.display='block';}
+if(!canAccess && me){document.getElementById('pageContent').style.display='none';document.getElementById('noAccess').style.display='block';}
 let items=[],outs=[],workers=[];
+let itemsMap=new Map(), outsMap=new Map(), workersMap=new Map();
 const MIN_STOCK=10;
+let renderTimer=null, itemsLoaded=false, outsLoaded=false;
 function val(id){return document.getElementById(id).value.trim()}
 function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
-function normDate(v){
-  if(!v) return '';
-  if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} }
-  let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-');
-  let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0];
-  return s;
-}
-function normItem(raw){
-  return {
-    id: raw.id, _coll: raw._coll||'storeItems',
-    name: pick(raw,['name','itemName','item'])||'',
-    category: pick(raw,['category','cat','type'])||'PPE',
-    unit: pick(raw,['unit','uom'])||'قطعة',
-    qty: Number(pick(raw,['qty','quantity','stock','balance'])||0)||0,
-    minStock: Number(pick(raw,['minStock','min'])||10)||10,
-    lastInboundDate: normDate(pick(raw,['lastInboundDate','lastDate','date'])),
-    lastSupplier: pick(raw,['lastSupplier','supplier'])||'',
-    createdAt: raw.createdAt||''
-  };
-}
-function normTx(raw){
-  let ty=String(pick(raw,['type','transactionType'])||'');
-  if(ty.toLowerCase().includes('out')||ty.includes('صادر')) ty='outbound'; else if(ty.toLowerCase().includes('in')||ty.includes('وارد')) ty='inbound'; else ty='outbound';
-  return {
-    id: raw.id, _coll: raw._coll||'storeTransactions',
-    type: ty,
-    date: normDate(pick(raw,['date','createdAt'])),
-    time: pick(raw,['time'])||'',
-    workerCode: pick(raw,['workerCode','code','empCode','employeeCode'])||'',
-    workerName: pick(raw,['workerName','name','worker','employeeName'])||'',
-    job: pick(raw,['job','profession','occupation','trade'])||'',
-    company: pick(raw,['company','contractor'])||'',
-    itemId: pick(raw,['itemId','item'])||'',
-    itemName: pick(raw,['itemName','name','item'])||'',
-    category: pick(raw,['category','cat'])||'',
-    unit: pick(raw,['unit'])||'',
-    qty: Number(pick(raw,['qty','quantity'])||0)||0,
-    reason: pick(raw,['reason','notes','note'])||'',
-    supplier: pick(raw,['supplier'])||'',
-    receiver: pick(raw,['receiver'])||'',
-    createdAt: raw.createdAt||''
-  };
-}
+function normDate(v){ if(!v) return ''; if(v.toDate){ try{ return v.toDate().toISOString().slice(0,10); }catch(e){} } let s=String(v).trim(); if(s.length>10) s=s.slice(0,10); s=s.replace(/\//g,'-'); let p=s.split('-'); if(p.length===3 && p[0].length===2) s=p[2]+'-'+p[1]+'-'+p[0]; return s; }
+function normItem(raw){ return { id: raw.id, _coll:'storeItems', name: pick(raw,['name','itemName','item'])||'', category: pick(raw,['category','cat','type'])||'PPE', unit: pick(raw,['unit','uom'])||'قطعة', qty: Number(pick(raw,['qty','quantity','stock','balance'])||0)||0, minStock: Number(pick(raw,['minStock','min'])||10)||10, lastInboundDate: normDate(pick(raw,['lastInboundDate','lastDate','date'])), lastSupplier: pick(raw,['lastSupplier','supplier'])||'', createdAt: raw.createdAt||'' }; }
+function normTx(raw){ let ty=String(pick(raw,['type','transactionType'])||''); if(ty.toLowerCase().includes('out')||ty.includes('صادر')) ty='outbound'; else if(ty.toLowerCase().includes('in')||ty.includes('وارد')) ty='inbound'; else ty='outbound'; return { id: raw.id, _coll:'storeTransactions', type: ty, date: normDate(pick(raw,['date','createdAt'])), time: pick(raw,['time'])||'', workerCode: pick(raw,['workerCode','code','empCode','employeeCode'])||'', workerName: pick(raw,['workerName','name','worker','employeeName'])||'', job: pick(raw,['job','profession','occupation','trade'])||'', company: pick(raw,['company','contractor'])||'', itemId: pick(raw,['itemId','item'])||'', itemName: pick(raw,['itemName','name','item'])||'', category: pick(raw,['category','cat'])||'', unit: pick(raw,['unit'])||'', qty: Number(pick(raw,['qty','quantity'])||0)||0, reason: pick(raw,['reason','notes','note'])||'', supplier: pick(raw,['supplier'])||'', receiver: pick(raw,['receiver'])||'', createdAt: raw.createdAt||'' }; }
+// ===== سرعة: كاش محلي - الصفحة تفتح فورا من الكاش وبعدين تتحدث =====
+function saveCache(){ try{ localStorage.setItem('rmed_store_cache', JSON.stringify({items,outs,ts:Date.now()})); }catch(e){} }
+function loadCache(){ try{ let c=JSON.parse(localStorage.getItem('rmed_store_cache')||'null'); if(c && c.items){ items=c.items; outs=c.outs||[]; items.forEach(x=>itemsMap.set(x.id,x)); outs.forEach(x=>outsMap.set(x.id,x)); itemsLoaded=true; outsLoaded=true; document.getElementById('loadStatus').textContent='⚡ من الكاش - جاري التحديث من السيرفر...'; scheduleRender(); } }catch(e){} }
+function scheduleRender(){ if(renderTimer) clearTimeout(renderTimer); renderTimer=setTimeout(()=>{ renderAll(); },120); }
+function updateStatus(){ let el=document.getElementById('loadStatus'); if(!itemsLoaded||!outsLoaded){ el.textContent='⏳ جاري التحميل...'; } else { el.textContent='✅ Live - الأصناف: '+items.length+' | الصادر: '+outs.filter(x=>x.type==='outbound').length+' | آخر تحديث: '+new Date().toLocaleTimeString('ar-EG'); } }
 function loadLive(){
+ loadCache();
  try{
   let db=firebase.firestore();
-  // ===== FIX: بيجرب كل أسماء الأصناف =====
-  ['storeItems','store-stock','store_stock','storeStock','stock','inventory'].forEach(coll=>{
-    db.collection(coll).onSnapshot(s=>{
-      let arr=s.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normItem);
-      let merged=[...items].filter(x=>x._coll!==coll); merged=[...merged,...arr];
-      items=merged;
-      document.getElementById('loadStatus').textContent='✅ Live - الأصناف: '+items.length+' | الصادر: '+outs.length;
-      renderAll();
-    }, ()=>{});
-  });
-  // ===== FIX: شلت orderBy من storeTransactions =====
-  ['storeTransactions','store-transactions','storeTransactionsLog'].forEach(coll=>{
-    db.collection(coll).onSnapshot(s=>{
-      let arr=s.docs.map(d=>({id:coll+':'+d.id,_coll:coll,...d.data()})).map(normTx);
-      let merged=[...outs].filter(x=>x._coll!==coll); merged=[...merged,...arr];
-      outs=merged;
-      outs.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-      document.getElementById('loadStatus').textContent='✅ Live - الأصناف: '+items.length+' | الصادر: '+outs.length;
-      renderAll();
-    }, ()=>{});
-  });
-  ['inductions','induction','inductionRecords','inductionRecordsList'].forEach(col=>{
-    db.collection(col).onSnapshot(s=>{
-      let arr=s.docs.map(d=>({id:d.id,...d.data()}));
-      arr.forEach(w=>{
-        let code=w.code||w.empCode||w.employeeCode||w.idNumber||'';
-        let name=w.name||w.workerName||w.employeeName||'';
-        if(!name) return;
-        let exists=workers.find(x=>(code&&x.code===code)||x.name===name);
-        let obj={code:code||'',name:name,job:w.job||w.profession||w.occupation||w.trade||'',company:w.company||w.contractor||'',date:w.date||''};
-        if(exists){Object.assign(exists,obj)} else workers.push(obj);
-      });
-      workers.sort((a,b)=>a.name.localeCompare(b.name));
-      document.getElementById('workerCodeList').innerHTML=workers.filter(w=>w.code).map(w=>`<option value="${escapeHtml(w.code)}">${escapeHtml(w.name)}</option>`).join('');
-      document.getElementById('workerNameList').innerHTML=workers.map(w=>`<option value="${escapeHtml(w.name)}">${escapeHtml(w.code||'')}</option>`).join('');
-    }, ()=>{});
-  });
- }catch(e){console.log(e)}
+  // ===== FIX: مستمع واحد بس لكل كولكشن - مش 9 =====
+  db.collection('storeItems').onSnapshot(s=>{
+    // docChanges أسرع من إعادة بناء كل حاجة
+    s.docChanges().forEach(ch=>{
+      let d={id:ch.doc.id,...ch.doc.data()};
+      let n=normItem(d);
+      if(ch.type==='removed'){ itemsMap.delete(n.id); }
+      else { itemsMap.set(n.id,n); }
+    });
+    // لو أول مرة، املا كل حاجة
+    if(!itemsLoaded){ s.docs.forEach(d=>{ let n=normItem({id:d.id,...d.data()}); itemsMap.set(n.id,n); }); }
+    items=[...itemsMap.values()];
+    // دمج أسماء مكررة: لو نفس الاسم والتصنيف، اجمع الكمية
+    let merged=new Map();
+    items.forEach(x=>{ let k=(x.name||'').toLowerCase().trim()+'|'+x.category; if(merged.has(k)){ let old=merged.get(k); old.qty+=x.qty; } else merged.set(k,{...x}); });
+    items=[...merged.values()];
+    itemsLoaded=true; updateStatus(); scheduleRender(); saveCache();
+  }, (err)=>{ document.getElementById('loadStatus').textContent='❌ خطأ في الأصناف: '+err.message; console.error(err); });
+  db.collection('storeTransactions').onSnapshot(s=>{
+    s.docChanges().forEach(ch=>{
+      let d={id:ch.doc.id,...ch.doc.data()};
+      let n=normTx(d);
+      if(ch.type==='removed'){ outsMap.delete(n.id); } else { outsMap.set(n.id,n); }
+    });
+    if(!outsLoaded){ s.docs.forEach(d=>{ let n=normTx({id:d.id,...d.data()}); outsMap.set(n.id,n); }); }
+    outs=[...outsMap.values()];
+    outs.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+    outsLoaded=true; updateStatus(); scheduleRender(); saveCache();
+  }, (err)=>{ document.getElementById('loadStatus').textContent='❌ خطأ في الصادر: '+err.message; console.error(err); });
+  // العمال: كولكشن واحد بس، ومره واحدة
+  db.collection('inductions').onSnapshot(s=>{
+    s.docChanges().forEach(ch=>{
+      if(ch.type==='removed') return;
+      let w={id:ch.doc.id,...ch.doc.data()};
+      let code=w.code||w.empCode||w.employeeCode||w.idNumber||'';
+      let name=w.name||w.workerName||w.employeeName||'';
+      if(!name) return;
+      let obj={code:code||'',name:name,job:w.job||w.profession||w.occupation||w.trade||'',company:w.company||w.contractor||'',date:w.date||''};
+      workersMap.set(name,obj);
+    });
+    workers=[...workersMap.values()].sort((a,b)=>a.name.localeCompare(b.name));
+    // بناء الـ datalist مرة واحدة مش كل رندر
+    document.getElementById('workerCodeList').innerHTML=workers.filter(w=>w.code).map(w=>`<option value="${escapeHtml(w.code)}">${escapeHtml(w.name)}</option>`).join('');
+    document.getElementById('workerNameList').innerHTML=workers.map(w=>`<option value="${escapeHtml(w.name)}">${escapeHtml(w.code||'')}</option>`).join('');
+  }, ()=>{});
+ }catch(e){ document.getElementById('loadStatus').textContent='❌ '+e.message; console.log(e); }
+ // ===== نقل الداتا القديمة مرة واحدة فقط =====
+ migrateOldData();
 }
-function fillWorkerByCode(){
- let c=val('out-code');let w=workers.find(x=>x.code===c);
- if(w){document.getElementById('out-name').value=w.name;document.getElementById('out-job').value=w.job;document.getElementById('out-company').value=w.company;}
+let migrated=localStorage.getItem('rmed_store_migrated');
+async function migrateOldData(){
+ if(migrated) return;
+ try{
+  let db=firebase.firestore();
+  for(let oldColl of ['store-stock','store_stock','storeStock','stock','inventory']){
+    let snap=await db.collection(oldColl).get();
+    if(snap.empty) continue;
+    for(let doc of snap.docs){
+      let data=doc.data(); let name=data.name||data.itemName||data.item||'';
+      if(!name) continue;
+      // لو مش موجود في الجديد، انقله
+      let exists=items.find(x=>x.name===name);
+      if(!exists){
+        await db.collection('storeItems').add({name,itemName:name,category:data.category||data.cat||'PPE',unit:data.unit||'قطعة',qty:Number(data.qty||data.quantity||0)||0,minStock:10,lastInboundDate:normDate(data.lastInboundDate||data.date),lastSupplier:data.lastSupplier||data.supplier||'',createdAt:new Date().toISOString(),migratedFrom:oldColl});
+      }
+    }
+  }
+  localStorage.setItem('rmed_store_migrated','1');
+ }catch(e){ console.log('migrate skip',e.message); }
 }
-function fillWorkerByName(){
- let n=val('out-name');let w=workers.find(x=>x.name===n);
- if(w){document.getElementById('out-code').value=w.code;document.getElementById('out-job').value=w.job;document.getElementById('out-company').value=w.company;}
-}
-function showAvail(){
- let id=document.getElementById('out-item').value;let it=items.find(x=>x.id===id);
- document.getElementById('availText').textContent=it?('المتاح: '+it.qty+' '+it.unit+' - آخر وارد: '+(it.lastInboundDate||'-')):'';
-}
+function fillWorkerByCode(){ let c=val('out-code');let w=workers.find(x=>x.code===c); if(w){document.getElementById('out-name').value=w.name;document.getElementById('out-job').value=w.job;document.getElementById('out-company').value=w.company;} }
+function fillWorkerByName(){ let n=val('out-name');let w=workers.find(x=>x.name===n); if(w){document.getElementById('out-code').value=w.code;document.getElementById('out-job').value=w.job;document.getElementById('out-company').value=w.company;} }
+function showAvail(){ let id=document.getElementById('out-item').value;let it=items.find(x=>x.id===id); document.getElementById('availText').textContent=it?('المتاح: '+it.qty+' '+it.unit+' - آخر وارد: '+(it.lastInboundDate||'-')):''; }
+let lastItemListHTML='';
 function renderAll(){
- if(!canAccess) return;
+ if(!canAccess && me) return;
  let q=(document.getElementById('searchStock').value||'').toLowerCase();
  let fCat=document.getElementById('filterCat').value;
  let low=items.filter(x=>(x.qty||0)<=MIN_STOCK);
@@ -255,21 +236,23 @@ function renderAll(){
  document.getElementById('k-low').textContent=low.length;
  document.getElementById('lowIcon').classList.toggle('shake',low.length>0);
  let outboundOnly=outs.filter(x=>x.type==='outbound');
- let m={};outboundOnly.filter(x=>x.category==='PPE').forEach(x=>{let k=x.workerName||x.workerCode;if(k)m[k]=(m[k]||0)+(x.qty||0)});
+ let m={};outboundOnly.forEach(x=>{ if(x.category==='PPE'||!x.category){ let k=x.workerName||x.workerCode; if(k)m[k]=(m[k]||0)+(x.qty||0); } });
  let top=Object.keys(m).sort((a,b)=>m[b]-m[a])[0];
  document.getElementById('k-topWorker').textContent=top?top+' ('+m[top]+')':'-';
- document.getElementById('itemList').innerHTML=[...new Set(items.map(x=>x.name))].map(n=>`<option value="${escapeHtml(n)}">`).join('');
+ // datalist الأصناف: ابنها بس لو اتغيرت
+ let itemHTML=[...new Set(items.map(x=>x.name))].map(n=>`<option value="${escapeHtml(n)}">`).join('');
+ if(itemHTML!==lastItemListHTML){ document.getElementById('itemList').innerHTML=itemHTML; lastItemListHTML=itemHTML; }
+ // select الصادر: حافظ على الاختيار الحالي
  let sel=document.getElementById('out-item');let cur=sel.value;
- sel.innerHTML=items.map(x=>`<option value="${x.id}" ${x.id===cur?'selected':''}>${escapeHtml(x.name)} - ${escapeHtml(x.category)} - متاح ${x.qty}</option>`).join('');
+ let selHTML=items.map(x=>`<option value="${x.id}" ${x.id===cur?'selected':''}>${escapeHtml(x.name)} - ${escapeHtml(x.category)} - متاح ${x.qty}</option>`).join('');
+ if(sel.innerHTML!==selHTML) sel.innerHTML=selHTML;
  showAvail();
  let list=items.filter(x=>(x.name||'').toLowerCase().includes(q)&&(!fCat||x.category===fCat));
- document.getElementById('stockTable').innerHTML=!list.length?'<p style="text-align:center;color:#888">مفيش أصناف لسه - ضيف أول وارد فوق - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>':'<table><tr><th>الصنف</th><th>التصنيف</th><th>الوحدة</th><th>الرصيد</th><th>الحالة</th><th>تاريخ آخر وارد</th><th>آخر مورد</th><th>حذف</th></tr>'+list.map(x=>{
-   let isLow=(x.qty||0)<=MIN_STOCK;
-   return `<tr class="${isLow?'low-row':''}"><td><b>${escapeHtml(x.name)}</b></td><td>${escapeHtml(x.category)}</td><td>${escapeHtml(x.unit)}</td><td><b>${x.qty}</b></td><td><span class="badge ${isLow?'red':'green'}">${isLow?'⚠️ قرب يخلص':'✅ متوفر'}</span></td><td>${escapeHtml(x.lastInboundDate||'-')}</td><td>${escapeHtml(x.lastSupplier||'-')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delItem('${x.id}')">🗑️</button></td></tr>`
- }).join('')+'</table>';
+ document.getElementById('stockTable').innerHTML=!list.length?'<p style="text-align:center;color:#888">مفيش أصناف لسه - ضيف أول وارد فوق</p>':'<table><tr><th>الصنف</th><th>التصنيف</th><th>الوحدة</th><th>الرصيد</th><th>الحالة</th><th>تاريخ آخر وارد</th><th>آخر مورد</th><th>حذف</th></tr>'+list.map(x=>{ let isLow=(x.qty||0)<=MIN_STOCK; return `<tr class="${isLow?'low-row':''}"><td><b>${escapeHtml(x.name)}</b></td><td>${escapeHtml(x.category)}</td><td>${escapeHtml(x.unit)}</td><td><b>${x.qty}</b></td><td><span class="badge ${isLow?'red':'green'}">${isLow?'⚠️ قرب يخلص':'✅ متوفر'}</span></td><td>${escapeHtml(x.lastInboundDate||'-')}</td><td>${escapeHtml(x.lastSupplier||'-')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delItem('${x.id}')">🗑️</button></td></tr>` }).join('')+'</table>';
  let qo=(document.getElementById('searchOut').value||'').toLowerCase();
- let outList=outboundOnly.filter(x=>((x.workerCode||'')+(x.workerName||'')+(x.itemName||'')).toLowerCase().includes(qo));
- document.getElementById('outTable').innerHTML=!outList.length?'<p style="text-align:center;color:#888">مفيش صادر لسه</p>':'<table><tr><th>التاريخ / الوقت</th><th>كود العامل</th><th>الاسم / المهنة / الشركة</th><th>الصنف</th><th>الكمية</th><th>السبب</th><th>حذف</th></tr>'+outList.map(x=>`<tr><td>${escapeHtml(x.date||'')} ${escapeHtml(x.time||'')}</td><td>${escapeHtml(x.workerCode||'')}</td><td><b>${escapeHtml(x.workerName||'')}</b><br><small>${escapeHtml(x.job||'')} - ${escapeHtml(x.company||'')}</small></td><td><b>${escapeHtml(x.itemName||'')}</b><br><small>${escapeHtml(x.category||'')}</small></td><td><b>${x.qty}</b> ${escapeHtml(x.unit||'')}</td><td>${escapeHtml(x.reason||'')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delOut('${x.id}')">🗑️</button></td></tr>`).join('')+'</table>';
+ // سرعة: اعرض أول 100 بس في الصادر، الباقي بالبحث
+ let outList=outboundOnly.filter(x=>((x.workerCode||'')+(x.workerName||'')+(x.itemName||'')).toLowerCase().includes(qo)).slice(0,100);
+ document.getElementById('outTable').innerHTML=!outList.length?'<p style="text-align:center;color:#888">مفيش صادر لسه</p>':'<table><tr><th>التاريخ / الوقت</th><th>كود العامل</th><th>الاسم / المهنة / الشركة</th><th>الصنف</th><th>الكمية</th><th>السبب</th><th>حذف</th></tr>'+outList.map(x=>`<tr><td>${escapeHtml(x.date||'')} ${escapeHtml(x.time||'')}</td><td>${escapeHtml(x.workerCode||'')}</td><td><b>${escapeHtml(x.workerName||'')}</b><br><small>${escapeHtml(x.job||'')} - ${escapeHtml(x.company||'')}</small></td><td><b>${escapeHtml(x.itemName||'')}</b><br><small>${escapeHtml(x.category||'')}</small></td><td><b>${x.qty}</b> ${escapeHtml(x.unit||'')}</td><td>${escapeHtml(x.reason||'')}</td><td><button class="btn2" style="background:#D32F2F" onclick="delOut('${x.id}')">🗑️</button></td></tr>`).join('')+'</table>' + (outboundOnly.length>100?'<p style="text-align:center;color:#888">عرض أول 100 - استخدم البحث لعرض الباقي</p>':'');
  let notifs=low.slice(0,5).map(x=>`⚠️ مخزون قرب يخلص: ${x.name} - المتبقي ${x.qty} ${x.unit} - آخر وارد ${x.lastInboundDate||'-'}`);
  document.getElementById('notifCount').textContent=notifs.length;document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'مفيش إشعارات';
@@ -279,21 +262,20 @@ async function addInbound(){
  if(!val('in-date')) return alert('اختار تاريخ الوارد');
  if(!val('in-name')) return alert('اكتب اسم الصنف');
  if(!val('in-qty')) return alert('اكتب الكمية');
+ let btn=document.getElementById('btnInbound'); btn.disabled=true; btn.textContent='⏳ جاري الحفظ...';
  let db=firebase.firestore();
  let qty=parseInt(val('in-qty'));
  let name=val('in-name'),cat=val('in-cat');
  let existing=items.find(x=>String(x.name||'').toLowerCase()===name.toLowerCase()&&x.category===cat);
  let inDate=val('in-date');
  try{
-  if(existing){
-    let realId=String(existing.id).includes(':')?String(existing.id).split(':').slice(1).join(':'):existing.id;
-    let coll=existing._coll||'storeItems';
-    await db.collection(coll).doc(realId).update({qty:(existing.qty||0)+qty,quantity:(existing.qty||0)+qty,lastInboundDate:inDate,lastSupplier:val('in-supplier'),unit:val('in-unit'),updatedAt:new Date().toISOString()});
-  } else {
-    await db.collection('storeItems').add({name,itemName:name,category:cat,unit:val('in-unit'),qty,quantity:qty,minStock:MIN_STOCK,lastInboundDate:inDate,lastSupplier:val('in-supplier'),createdAt:new Date().toISOString()});
-  }
+  if(existing){ await db.collection('storeItems').doc(existing.id).update({qty:(existing.qty||0)+qty,quantity:(existing.qty||0)+qty,lastInboundDate:inDate,lastSupplier:val('in-supplier'),unit:val('in-unit'),updatedAt:new Date().toISOString()}); }
+  else { await db.collection('storeItems').add({name,itemName:name,category:cat,unit:val('in-unit'),qty,quantity:qty,minStock:MIN_STOCK,lastInboundDate:inDate,lastSupplier:val('in-supplier'),createdAt:new Date().toISOString()}); }
   await db.collection('storeTransactions').add({type:'inbound',date:inDate,itemName:name,name:name,category:cat,unit:val('in-unit'),qty,quantity:qty,supplier:val('in-supplier'),receiver:val('in-receiver'),notes:val('in-notes'),by:me?me.name:'',createdAt:new Date().toISOString()});
- }catch(e){return alert(e.message)}
+  // تحديث فوري متفائل - مش هنستنى السيرفر
+  playBeep();
+ }catch(e){ alert(e.message); }
+ btn.disabled=false; btn.textContent='➕ إضافة وارد • زيادة الرصيد';
  alert('✅ تم إضافة الوارد - '+name+' +'+qty+' - تاريخ '+inDate);
  document.getElementById('in-qty').value='';document.getElementById('in-supplier').value='';document.getElementById('in-notes').value='';
 }
@@ -309,37 +291,23 @@ async function addOutbound(){
  let qty=parseInt(val('out-qty'))||0;
  if(qty<=0) return alert('اكتب كمية صحيحة');
  if(qty>(it.qty||0)) return alert('الكمية أكبر من المتاح: '+it.qty);
+ let btn=document.getElementById('btnOutbound'); btn.disabled=true; btn.textContent='⏳ جاري الصرف...';
  let rec={type:'outbound',date:val('out-date'),time:val('out-time'),workerCode:val('out-code'),workerName:val('out-name'),job:val('out-job'),company:val('out-company'),itemId:itemId,itemName:it.name,name:it.name,category:it.category,unit:it.unit,qty,quantity:qty,reason:val('out-reason'),notes:val('out-reason'),by:me?me.name:'',createdAt:new Date().toISOString()};
  try{
   await db.collection('storeTransactions').add(rec);
-  let realId=String(it.id).includes(':')?String(it.id).split(':').slice(1).join(':'):it.id;
-  let coll=it._coll||'storeItems';
-  await db.collection(coll).doc(realId).update({qty:(it.qty||0)-qty,quantity:(it.qty||0)-qty});
-  if(rec.workerCode||rec.workerName){
-    await db.collection('employeeFileExtras').add({workerCode:rec.workerCode,workerName:rec.workerName,job:rec.job,company:rec.company,kind:'PPE',title:rec.itemName,detail:rec.reason,qty:rec.qty,unit:rec.unit,date:rec.date,time:rec.time,createdAt:new Date().toISOString()});
-  }
- }catch(e){return alert(e.message)}
+  await db.collection('storeItems').doc(it.id).update({qty:(it.qty||0)-qty,quantity:(it.qty||0)-qty});
+  if(rec.workerCode||rec.workerName){ await db.collection('employeeFileExtras').add({workerCode:rec.workerCode,workerName:rec.workerName,job:rec.job,company:rec.company,kind:'PPE',title:rec.itemName,detail:rec.reason,qty:rec.qty,unit:rec.unit,date:rec.date,time:rec.time,createdAt:new Date().toISOString()}); }
+ }catch(e){ btn.disabled=false; btn.textContent='📤 صرف • خصم من الرصيد'; return alert(e.message); }
+ btn.disabled=false; btn.textContent='📤 صرف • خصم من الرصيد';
  alert('✅ تم الصرف وخصم من الرصيد - '+rec.itemName+' - '+qty);
  document.getElementById('out-qty').value='';document.getElementById('out-reason').value='';
 }
-async function delItem(id){if(!confirm('تحذف الصنف ده؟'))return;try{let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'storeItems'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}}
-async function delOut(id){if(!confirm('تحذف الصرفة دي؟ الرصيد مش هيرجع أوتوماتيك'))return;try{let realId=String(id).includes(':')?String(id).split(':').slice(1).join(':'):id; let coll=String(id).includes(':')?String(id).split(':')[0]:'storeTransactions'; await firebase.firestore().collection(coll).doc(realId).delete()}catch(e){}}
-function exportStockExcel(){
- let csv='Item,Category,Unit,Qty,Status,Last Inbound Date,Last Supplier\n'+items.map(x=>[x.name,x.category,x.unit,x.qty,(x.qty<=MIN_STOCK?'Low':'OK'),x.lastInboundDate||'',x.lastSupplier||''].join(',')).join('\n');
- let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-stock.csv';a.click();
-}
-function exportStockPDF(){
- let w=window.open('','_blank');w.document.write('<html><head><title>Store Stock</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px;text-align:center}</style></head><body><h2 style="text-align:center">🏬 Store Stock - RMED</h2><p style="text-align:center">Date: '+new Date().toLocaleDateString()+'</p><table><tr><th>Item</th><th>Category</th><th>Qty</th><th>Last Inbound</th></tr>'+items.map(x=>`<tr><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.category)}</td><td>${x.qty}</td><td>${escapeHtml(x.lastInboundDate||'-')}</td></tr>`).join('')+'</table><script>window.print()<\/script></body></html>');
-}
-function exportOutExcel(){
- let outboundOnly=outs.filter(x=>x.type==='outbound');
- let csv='Date,Time,Worker Code,Worker Name,Job,Company,Item,Category,Qty,Reason\n'+outboundOnly.map(x=>[x.date,x.time,x.workerCode,x.workerName,x.job,x.company,x.itemName,x.category,x.qty,'"'+String(x.reason||'').replace(/"/g,'""')+'"'].join(',')).join('\n');
- let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-outbound.csv';a.click();
-}
-function exportOutPDF(){
- let outboundOnly=outs.filter(x=>x.type==='outbound');
- let w=window.open('','_blank');w.document.write('<html><head><title>Outbound</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px;text-align:center}</style></head><body><h2 style="text-align:center">📤 Store Outbound - RMED</h2><table><tr><th>Date</th><th>Worker</th><th>Item</th><th>Qty</th><th>Reason</th></tr>'+outboundOnly.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.workerName)} (${escapeHtml(x.workerCode)})</td><td>${escapeHtml(x.itemName)}</td><td>${x.qty}</td><td>${escapeHtml(x.reason)}</td></tr>`).join('')+'</table><script>window.print()<\/script></body></html>');
-}
+async function delItem(id){if(!confirm('تحذف الصنف ده؟'))return;try{ await firebase.firestore().collection('storeItems').doc(id).delete(); itemsMap.delete(id); items=items.filter(x=>x.id!==id); scheduleRender(); }catch(e){ alert(e.message); }}
+async function delOut(id){if(!confirm('تحذف الصرفة دي؟ الرصيد مش هيرجع أوتوماتيك'))return;try{ await firebase.firestore().collection('storeTransactions').doc(id).delete(); }catch(e){ alert(e.message); }}
+function exportStockExcel(){ let csv='Item,Category,Unit,Qty,Status,Last Inbound Date,Last Supplier\n'+items.map(x=>[x.name,x.category,x.unit,x.qty,(x.qty<=MIN_STOCK?'Low':'OK'),x.lastInboundDate||'',x.lastSupplier||''].join(',')).join('\n'); let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-stock.csv';a.click(); }
+function exportStockPDF(){ let w=window.open('','_blank');w.document.write('<html><head><title>Store Stock</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px;text-align:center}</style></head><body><h2 style="text-align:center">🏬 Store Stock - RMED</h2><p style="text-align:center">Date: '+new Date().toLocaleDateString()+'</p><table><tr><th>Item</th><th>Category</th><th>Qty</th><th>Last Inbound</th></tr>'+items.map(x=>`<tr><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.category)}</td><td>${x.qty}</td><td>${escapeHtml(x.lastInboundDate||'-')}</td></tr>`).join('')+'</table><script>window.print()<\/script></body></html>'); }
+function exportOutExcel(){ let outboundOnly=outs.filter(x=>x.type==='outbound'); let csv='Date,Time,Worker Code,Worker Name,Job,Company,Item,Category,Qty,Reason\n'+outboundOnly.map(x=>[x.date,x.time,x.workerCode,x.workerName,x.job,x.company,x.itemName,x.category,x.qty,'"'+String(x.reason||'').replace(/"/g,'""')+'"'].join(',')).join('\n'); let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='store-outbound.csv';a.click(); }
+function exportOutPDF(){ let outboundOnly=outs.filter(x=>x.type==='outbound'); let w=window.open('','_blank');w.document.write('<html><head><title>Outbound</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px;text-align:center}</style></head><body><h2 style="text-align:center">📤 Store Outbound - RMED</h2><table><tr><th>Date</th><th>Worker</th><th>Item</th><th>Qty</th><th>Reason</th></tr>'+outboundOnly.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${escapeHtml(x.workerName)} (${escapeHtml(x.workerCode)})</td><td>${escapeHtml(x.itemName)}</td><td>${x.qty}</td><td>${escapeHtml(x.reason)}</td></tr>`).join('')+'</table><script>window.print()<\/script></body></html>'); }
 document.getElementById('in-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('out-date').value=new Date().toISOString().slice(0,10);
 document.getElementById('out-time').value=new Date().toTimeString().slice(0,5);
