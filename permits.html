@@ -54,18 +54,16 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 .permit-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
 .permit-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px}
 .permit-card.open:before{background:#4CAF50}.permit-card.closed:before{background:#9E9E9E}.permit-card.cancel:before{background:#E53935}.permit-card.delivered:before{background:#7B1FA2}
-.badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:900}.badge.open{background:#E8F5E9;color:#2E7D32}.badge.closed{background:#eee;color:#555}.badge.cancel{background:#FFEBEE;color:#D32F2F}.badge.delivered{background:#F3E5F5;color:#6A1B9A}
+.badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:900}.badge.open{background:#E8F5E9;color:#2E7D32}.badge.closed{background:#eee;color:#555}.badge.cancel{background:#FFEBEE;color:#D32F2F}.badge.delivered{background:#F3E5F5;color:#6A1B9A}.badge.gold{background:#FFF8E1;color:#8a6d00}
 .notif-panel{position:fixed;top:70px;left:20px;width:360px;max-width:90vw;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:200;display:none;padding:14px}.notif-panel.show{display:block}
 .type-scroll{display:flex;gap:8px;overflow-x:auto;padding:6px 2px}.type-chip{flex-shrink:0;background:#F8F9FA;border:1px solid #eee;border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:center;min-width:140px}
 .bottom-nav{margin-top:14px;background:#fff;border:1px solid #eee;border-radius:16px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
-.bottom-nav a{text-align:center;color:#999;text-decoration:none;font-size:11px;font-weight:800;padding:10px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px}.bottom-nav a.active{background:#E8F5E9;color:#2E7D32}
+.bottom-nav a{text-align:center;color:#999;text-decoration:none;font-size:11px;font-weight:800;padding:10px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px}.bottom-nav a.active{background:#E8F5F9;color:#2E7D32}
 @media(max-width:900px){.sidebar{display:none}.main{margin:0}.kpi-grid{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.search{display:none}}
 </style>
 </head>
 <body>
 <div class="hazard"></div>
-
-<!-- ===== SIDEBAR - جوه الصفحة ===== -->
 <aside class="sidebar" id="sidebar">
   <div class="logo-box"><b>RMED</b><br><small>HSE MANAGEMENT SYSTEM</small><br><em>Safety Today ... A Better Tomorrow</em></div>
   <div class="nav-group"><div class="nav-head">📊 MAIN</div><a href="index.html">🏠 <span data-i18n="home">Home</span></a><a href="dashboard.html">📊 Dashboard</a><a href="supervisor-dashboard.html">👨‍💼 Supervisor Dashboard</a><a href="stats.html">📈 Reports</a></div>
@@ -89,8 +87,6 @@ label{display:block;font-size:12px;font-weight:800;margin:10px 0 5px}input,selec
 })();
 function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.removeItem('safetyUser'); location.href = 'login.html'; }
 </script>
-<!-- ===== END SIDEBAR ===== -->
-
 <div class="main">
 <div class="topbar">
 <button class="menu-btn" onclick="document.getElementById('sidebar').style.display=document.getElementById('sidebar').style.display==='none'?'flex':'none'">☰</button>
@@ -103,16 +99,13 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 </div>
 </div>
 <div id="notifPanel" class="notif-panel"><b data-i18n="notifications">الإشعارات</b><div id="notifList" style="margin-top:10px"></div></div>
-
 <div style="padding:16px 20px">
 <h1 style="margin:0;font-size:26px"><span data-i18n="title">التصاريح</span> <span style="color:#FF6B00">• Permits</span></h1>
 <p style="color:#666;font-size:13px" data-i18n="subtitle">Work Permits • V4 Final - Live</p>
 <p id="loadStatus" style="font-size:12px;color:#888;margin:0">⏳ Loading...</p>
-
 <div class="card" style="border:2px solid #2E7D32"><h3 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small green">🟢</span> <span data-i18n="activeToday">شغال النهارده - Active Today</span> <span id="activeCount" style="background:#2E7D32;color:#fff;padding:2px 10px;border-radius:99px;font-size:12px">0</span></h3>
 <p style="font-size:12px;color:#666">ده القسم اللي بيظهر في إحصائيات العمال - لو اتقفل أو اتلغى بيتشال أوتوماتيك</p>
 <div id="activePermits"></div></div>
-
 <div class="card"><h3 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small blue">📊</span> Overview</h3>
 <div class="kpi-grid" style="margin-top:12px">
 <div class="kpi"><div class="kpi-top"><span class="icon3d blue">📋</span><div><b id="k-total">0</b><small data-i18n="total">إجمالي التصاريح</small></div></div></div>
@@ -122,9 +115,7 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div class="kpi"><div class="kpi-top"><span class="icon3d red">⚠️</span><div><b id="k-cancel">0</b><small>Cancelled</small></div></div></div>
 <div class="kpi"><div class="kpi-top"><span class="icon3d orange">👷</span><div><b id="k-workers">0</b><small data-i18n="workersInPermits">عمال في التصاريح</small></div></div></div>
 </div></div>
-
 <div class="card"><h3 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small teal">🔍</span> Count by Type</h3><div class="type-scroll" id="typeStats" style="margin-top:10px"></div></div>
-
 <div class="card"><h2 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small blue">📝</span> <span data-i18n="add">تسجيل تصريح جديد</span></h2>
 <div class="grid" style="margin-top:10px">
 <div><label data-i18n="permitNum">رقم التصريح</label><div class="permit-num" id="p-num">PRM-2026-0001</div></div>
@@ -133,7 +124,7 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div><label data-i18n="endDate">End Date *</label><input type="date" id="p-end-date"></div>
 <div><label>Start Time *</label><input type="time" id="p-start-time" value="08:00"></div>
 <div><label>End Time *</label><input type="time" id="p-end-time" value="17:00"></div>
-<div><label data-i18n="type">Permit Type *</label><select id="p-type"><option value="">-- Select --</option><option>Cold</option><option>Hot</option><option>Work at Height</option><option>Lifting Works</option><option>Confined Spaces</option><option>Concrete Pouring</option><option>Excavation</option><option>Night Shift</option></select></div>
+<div><label data-i18n="type">Permit Type *</label><select id="p-type"><option value="">-- Select --</option><option>Cold</option><option>Hot</option><option>Work at Height</option><option>Lifting Works</option><option>Confined Spaces</option><option>Concrete Pouring</option><option>Excavation</option><option>Night Shift</option><option value="Risk Analysis Card">🟡 كارت تحليل المخاطر - Risk Analysis Card</option></select></div>
 <div><label>Supervisor *</label><input id="p-supervisor" placeholder="Name"></div>
 <div><label>Engineer *</label><input id="p-engineer" placeholder="Name"></div>
 <div><label>Safety Officer *</label><input id="p-safety" placeholder="Name"></div>
@@ -144,13 +135,11 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 </div>
 <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn red" onclick="addPermit('Open')" style="flex:2">💾 <span data-i18n="save">Save Permit</span></button><button class="btn purple" onclick="addPermit('Delivered')" style="flex:1">📦 Save as Delivered</button></div>
 <p id="saveMsg" style="text-align:center;color:#2E7D32;font-weight:700"></p></div>
-
 <div class="card"><h2 style="margin:0;display:flex;gap:8px;align-items:center"><span class="icon3d small blue">📋</span> <span data-i18n="records">سجل التصاريح</span></h2>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><input id="searchP" placeholder="Search..." oninput="renderPermits()" style="flex:2"><select id="filterStatus" onchange="renderPermits()" style="flex:1"><option value="">All</option><option>Open</option><option>Delivered</option><option>Closed</option><option>Cancelled</option></select></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><input id="searchP" placeholder="Search..." oninput="renderPermits()" style="flex:2"><select id="filterStatus" onchange="renderPermits()" style="flex:1"><option value="">All</option><option>Open</option><option>Delivered</option><option>Closed</option><option>Cancelled</option></select><select id="filterType" onchange="renderPermits()" style="flex:1"><option value="">All Types - كل الأنواع</option><option>Cold</option><option>Hot</option><option>Work at Height</option><option>Lifting Works</option><option>Confined Spaces</option><option>Concrete Pouring</option><option>Excavation</option><option>Night Shift</option><option value="Risk Analysis Card">🟡 كارت تحليل المخاطر</option></select></div>
 <div id="permitsTable" style="margin-top:12px"></div>
 <button class="btn2" onclick="exportPermits()" style="margin-top:10px">📥 Export Excel</button></div>
 </div></div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -227,19 +216,20 @@ async function addPermit(force){
  try{await firebase.firestore().collection('permits').add(rec);document.getElementById('saveMsg').textContent='✅ Saved - '+rec.num;playBeep()}catch(e){alert('Save error: '+e.message)}
  ['p-supervisor','p-engineer','p-safety','p-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-workers').value='0';
 }
+function getTypeLabel(t){ if(t==='Risk Analysis Card') return '🟡 كارت تحليل المخاطر'; return t; }
 function renderPermits(){
- let q=(document.getElementById('searchP').value||'').toLowerCase(), fs=document.getElementById('filterStatus').value||'';
- let list=permits.filter(x=>((x.num||'')+' '+(x.type||'')+' '+(x.company||'')+' '+(x.location||'')+' '+(x.supervisor||'')).toLowerCase().includes(q) && (!fs||x.status===fs));
+ let q=(document.getElementById('searchP').value||'').toLowerCase(), fs=document.getElementById('filterStatus').value||'', ft=document.getElementById('filterType')?.value||'';
+ let list=permits.filter(x=>((x.num||'')+' '+(x.type||'')+' '+(x.company||'')+' '+(x.location||'')+' '+(x.supervisor||'')).toLowerCase().includes(q) && (!fs||x.status===fs) && (!ft||x.type===ft));
  animateNum('k-total',permits.length); animateNum('k-open',permits.filter(x=>x.status==='Open').length); animateNum('k-delivered',permits.filter(x=>x.status==='Delivered').length); animateNum('k-closed',permits.filter(x=>x.status==='Closed').length); animateNum('k-cancel',permits.filter(x=>x.status==='Cancelled').length); animateNum('k-workers',permits.filter(x=>x.status==='Open'||x.status==='Delivered').reduce((s,x)=>s+(Number(x.workersCount||x.workers||0)),0));
  let today=new Date().toISOString().slice(0,10);
  let active=permits.filter(x=>(x.status==='Open'||x.status==='Delivered') && (x.startDate===today || (!x.endDate || x.endDate>=today)));
  document.getElementById('activeCount').textContent=active.length;
- document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(x.type)}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
- let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Excavation','Night Shift'];
- let icons={Cold:'🧊',Hot:'🔥','Work at Height':'🪜','Lifting Works':'🏗️','Confined Spaces':'🚪','Concrete Pouring':'🧱',Excavation:'⛏️','Night Shift':'🌙'};
- document.getElementById('typeStats').innerHTML=types.map(t=>`<div class="type-chip"><span class="icon3d mini blue">${icons[t]||'📄'}</span><div><small>${t}</small><br><b>${permits.filter(x=>x.type===t).length}</b></div></div>`).join('');
+ document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(getTypeLabel(x.type))}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
+ let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Excavation','Night Shift','Risk Analysis Card'];
+ let icons={Cold:'🧊',Hot:'🔥','Work at Height':'🪜','Lifting Works':'🏗️','Confined Spaces':'🚪','Concrete Pouring':'🧱',Excavation:'⛏️','Night Shift':'🌙','Risk Analysis Card':'🟡'};
+ document.getElementById('typeStats').innerHTML=types.map(t=>`<div class="type-chip" style="${t==='Risk Analysis Card'?'border:2px solid #FFB300;background:#FFF8E1':''}"><span class="icon3d mini ${t==='Risk Analysis Card'?'gold':'blue'}">${icons[t]||'📄'}</span><div><small>${t==='Risk Analysis Card'?'🟡 كارت تحليل المخاطر':t}</small><br><b>${permits.filter(x=>x.type===t).length}</b></div></div>`).join('');
  document.getElementById('permitsTable').innerHTML=list.length?list.map(x=>{let cls=x.status==='Open'?'open':x.status==='Closed'?'closed':x.status==='Delivered'?'delivered':'cancel';let shake=(x.status==='Open'&&x.endDate&& (new Date(x.endDate)-new Date())/3600000<2)?'shake pulse':'';
-  return `<div class="permit-card ${cls.toLowerCase()}"><span class="icon3d small blue ${shake}">${icons[x.type]||'📄'}</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.type)}</b> <span class="badge ${cls}">${escapeHtml(x.status)}</span><br><small>📍 ${escapeHtml(x.location||x.workLocation||'')} • 🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل</small><br><small>${escapeHtml(x.startDate)} ${escapeHtml(x.startTime||'')} - ${escapeHtml(x.endDate)} ${escapeHtml(x.endTime||'')} • ${escapeHtml(x.supervisor)}</small></div><select onchange="changeStatus('${x.id}',this.value)" style="width:auto"><option ${x.status==='Open'?'selected':''}>Open</option><option ${x.status==='Delivered'?'selected':''}>Delivered</option><option ${x.status==='Closed'?'selected':''}>Closed</option><option ${x.status==='Cancelled'?'selected':''}>Cancelled</option></select><button class="btn2" style="color:#E53935" onclick="delPermit('${x.id}')">🗑️</button></div>`}).join(''):'<p style="text-align:center;color:#999">No permits yet</p>';
+  return `<div class="permit-card ${cls.toLowerCase()}"><span class="icon3d small ${x.type==='Risk Analysis Card'?'gold':'blue'} ${shake}">${icons[x.type]||'📄'}</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(getTypeLabel(x.type))}</b> ${x.type==='Risk Analysis Card'?'<span class="badge gold">🟡 كارت تحليل المخاطر</span>':''} <span class="badge ${cls}">${escapeHtml(x.status)}</span><br><small>📍 ${escapeHtml(x.location||x.workLocation||'')} • 🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل</small><br><small>${escapeHtml(x.startDate)} ${escapeHtml(x.startTime||'')} - ${escapeHtml(x.endDate)} ${escapeHtml(x.endTime||'')} • ${escapeHtml(x.supervisor)}</small></div><select onchange="changeStatus('${x.id}',this.value)" style="width:auto"><option ${x.status==='Open'?'selected':''}>Open</option><option ${x.status==='Delivered'?'selected':''}>Delivered</option><option ${x.status==='Closed'?'selected':''}>Closed</option><option ${x.status==='Cancelled'?'selected':''}>Cancelled</option></select><button class="btn2" style="color:#E53935" onclick="delPermit('${x.id}')">🗑️</button></div>`}).join(''):'<p style="text-align:center;color:#999">No permits yet</p>';
  let notifs=permits.filter(x=>x.status==='Open'&&x.endDate&& (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())/3600000<2 && (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())>0).map(x=>`⚠️ تصريح ${x.num} هينتهي بعد ساعتين - ${x.location}`);
  document.getElementById('notifCount').textContent=notifs.length; document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
