@@ -306,29 +306,41 @@ function rebuildDB(){
   if(!DB.induction.length && trainDocs.length) DB.induction = trainInd.length ? trainInd : trainDocs;
   if(!DB.induction.length && DB.workers.length) DB.induction = [...DB.workers];
 }
-let rebuildTimer=null;
+let rebuildTimer=null; const TOTAL_COLLS=18; let loadedColls=new Set();
+/* throttle: أول بيانات توصل بتترسم بعد 150ms، ومش بتتأجل لو باقي الكولكشنز لسه بتوصل */
 function scheduleRebuild(){
-  clearTimeout(rebuildTimer);
+  if(rebuildTimer) return;
   rebuildTimer=setTimeout(()=>{
+    rebuildTimer=null;
     rebuildDB();
-    document.getElementById('loadStatus').textContent='متصل Live ✅';
+    let done=loadedColls.size>=TOTAL_COLLS;
+    document.getElementById('loadStatus').textContent=done?'متصل Live ✅':'متصل ✅ - جاري تحميل باقي البيانات ('+loadedColls.size+'/'+TOTAL_COLLS+')';
     document.getElementById('loadStatus2').textContent='✅ Live - عمال: '+getDisplayList().length+' | سجل محاضرات: '+getInductionList().length;
     updateDebugCounts();
     renderInd(); refreshCode();
-  },200);
+  },150);
 }
 function loadLive(){
   try{
     let db=firebase.firestore();
-    let ALL_COLLS = ['workers','induction','users','employees','train','training','inductions','employee','staff','personnel','attendance','inductionRecords','allWorkers','workersList','Trainings','registrations','employeeFile','induction_records'];
-    ALL_COLLS.forEach(coll=>{
+    /* كاش محلي في المتصفح: أول مرة بتنزّل، وبعد كده الداتا القديمة بتظهر فوراً من الكاش وبعدها بيتحدث من السيرفر */
+    try{ db.enablePersistence({synchronizeTabs:true}).catch(e=>console.log('persistence skip',e&&e.code)); }catch(e){}
+    const CORE=['workers','induction','train'];
+    const REST=['users','employees','training','inductions','employee','staff','personnel','attendance','inductionRecords','allWorkers','workersList','Trainings','registrations','employeeFile','induction_records'];
+    let restStarted=false;
+    const startRest=()=>{ if(restStarted) return; restStarted=true; REST.forEach(listen); };
+    function listen(coll){
       db.collection(coll).limit(1000).onSnapshot(snap=>{
-        collCounts[coll]=snap.size;
+        collCounts[coll]=snap.size; loadedColls.add(coll);
         /* id المركّب بييجي بعد data() عشان أي حقل اسمه id جوه المستند ميمسحوش - والقيمة الأصلية محفوظة في _dataId */
         caches[coll]=snap.docs.map(d=>{ let data=d.data(); return {...data,_dataId:data.id,id:coll+':'+d.id,_coll:coll}; });
         scheduleRebuild();
-      }, err=>{ console.log('skip',coll,err.message); });
-    });
+        /* باقي الكولكشنز بتبدأ بعد ما workers + induction يوصلوا عشان متزاحمش عليهم النت */
+        if(loadedColls.has('workers') && loadedColls.has('induction')) startRest();
+      }, err=>{ loadedColls.add(coll); console.log('skip',coll,err.message); scheduleRebuild(); });
+    }
+    CORE.forEach(listen);
+    setTimeout(startRest,3000);
   }catch(e){ document.getElementById('loadStatus').textContent='خطأ: '+e.message; }
 }
 function codeNum(c){let m=String(c||'').match(/(\d+)\s*$/);return m?parseInt(m[1],10):NaN}
