@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ملف العامل - RMED</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial}
+body{margin:0;background:#F6F7F9;color:#111;padding:0}
+.hazard{height:10px;background:repeating-linear-gradient(45deg,#FFD700 0 18px,#111 18px 36px)}
+.wrap{max-width:920px;margin:auto;padding:16px}
+.top{background:#0F2A4D;color:#fff;border-radius:16px;padding:18px;display:flex;gap:16px;align-items:center}
+.top img{width:90px;height:110px;object-fit:cover;border-radius:12px;border:3px solid #C9A227;background:#fff}
+.top h1{margin:0;font-size:26px;color:#D4AF37;line-height:1.2}
+.top p{margin:4px 0 0;color:#CBD5E1;font-size:13px}
+.badge{display:inline-block;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800}
+.badge.green{background:#E8F5E9;color:#2E7D32}.badge.red{background:#FFEBEE;color:#D32F2F}.badge.gold{background:#FFF8E1;color:#8a6d00}
+.card{background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;margin-top:14px}
+.card h2{margin:0 0 12px;font-size:17px;border-bottom:2px solid #FF6B00;padding-bottom:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{background:#F8F9FA;border:1px solid #eee;border-radius:10px;padding:10px}
+.field b{display:block;font-size:11px;color:#888}
+.field span{display:block;font-weight:800;margin-top:3px;word-break:break-word}
+table{width:100%;border-collapse:collapse;font-size:12px}
+table th{background:#0F2A4D;color:#fff;padding:8px}
+table td{padding:8px;border-bottom:1px solid #eee;text-align:center}
+.empty{color:#888;text-align:center;padding:12px;font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tab{border:1px solid #ddd;background:#fff;padding:9px 14px;border-radius:99px;font-weight:800;cursor:pointer;font-size:13px}
+.tab.active{background:#111;color:#fff}
+.btn{width:100%;background:#FF6B00;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:12px}
+.qrbox{text-align:center}
+.qrbox canvas,.qrbox img{width:140px!important;height:140px!important}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.top{flex-direction:column;text-align:center}.top h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="wrap">
+  <div id="loading" style="text-align:center;padding:40px">⏳ جاري تجميع ملف العامل من الكلاود...</div>
+
+  <div id="fileBox" style="display:none">
+    <div class="top">
+      <img id="f-photo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+      <div style="flex:1">
+        <h1 id="f-name">-</h1>
+        <p id="f-job">-</p>
+        <p><span class="badge gold" id="f-code">-</span> <span class="badge green" id="f-status">-</span> <span class="badge gold" id="f-company">-</span></p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('data',this)">👤 البيانات</button>
+      <button class="tab" onclick="showTab('permits',this)">📄 التصاريح <span id="c-permits"></span></button>
+      <button class="tab" onclick="showTab('violations',this)">⚠️ المخالفات <span id="c-violations"></span></button>
+      <button class="tab" onclick="showTab('ppe',this)">🦺 المخزن <span id="c-ppe"></span></button>
+      <button class="tab" onclick="showTab('train',this)">🎓 التدريبات <span id="c-train"></span></button>
+    </div>
+
+    <!-- البيانات -->
+    <div id="tab-data" class="card">
+      <h2>👤 بيانات العامل - Employee Data</h2>
+      <div class="grid" id="dataGrid"></div>
+      <div class="qrbox" style="margin-top:14px">
+        <div id="qrBox"></div>
+        <div id="qrCodeText" style="font-weight:900;margin-top:6px"></div>
+        <small style="color:#888">اعمل Scan للـ QR لفتح نفس الملف ده</small>
+      </div>
+    </div>
+
+    <!-- التصاريح -->
+    <div id="tab-permits" class="card" style="display:none">
+      <h2>📄 التصاريح - Permits</h2>
+      <div id="permitsList"></div>
+    </div>
+
+    <!-- المخالفات -->
+    <div id="tab-violations" class="card" style="display:none">
+      <h2>⚠️ المخالفات - Violations</h2>
+      <div id="violationsList"></div>
+    </div>
+
+    <!-- المخزن -->
+    <div id="tab-ppe" class="card" style="display:none">
+      <h2>🦺 مهمات المخزن - PPE / Store</h2>
+      <div id="ppeList"></div>
+    </div>
+
+    <!-- التدريبات -->
+    <div id="tab-train" class="card" style="display:none">
+      <h2>🎓 التدريبات - Trainings</h2>
+      <div id="trainList"></div>
+    </div>
+
+    <button class="btn" onclick="window.print()">🖨️ طباعة الملف</button>
+    <p id="debug" style="font-size:11px;color:#888;text-align:center;margin-top:10px"></p>
+  </div>
+
+  <div id="notFound" style="display:none;text-align:center;padding:40px;background:#fff;border-radius:16px">
+    <h2>❌ العامل مش موجود</h2>
+    <p id="notFoundText" style="color:#666"></p>
+    <button class="btn" onclick="location.href='induction.html'">ارجع للـ Induction</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+// ===== أدوات مساعدة =====
+function safe(v){let s=String(v??'').trim();return s?s:'-'}
+function pick(o,keys){for(let k of keys){if(o[k]!==undefined&&o[k]!==null&&o[k]!=='')return o[k]}return ''}
+function normDate(v){if(!v)return '';if(v.toDate){try{return v.toDate().toISOString().slice(0,10)}catch(e){}}return String(v).slice(0,10)}
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  ['data','permits','violations','ppe','train'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display = t===id ? 'block':'none';
+  });
+}
+function renderTable(list, cols){
+  if(!list.length) return '<div class="empty">لا توجد بيانات - No Data</div>';
+  let head = cols.map(c=>'<th>'+c.label+'</th>').join('');
+  let rows = list.map(r=>{
+    return '<tr>'+cols.map(c=>{
+      let v = pick(r, c.keys);
+      if(c.isDate) v = normDate(v);
+      return '<td>'+safe(v)+'</td>';
+    }).join('')+'</tr>';
+  }).join('');
+  return '<table><tr>'+head+'</tr>'+rows+'</table>';
+}
+
+// ===== دي أهم حتة: بنجرب كل أسماء الكولكشنز المحتملة =====
+async function tryQuery(colls, fieldNames, code){
+  let db = firebase.firestore();
+  for(let coll of colls){
+    for(let field of fieldNames){
+      try{
+        let snap = await db.collection(coll).where(field,'==',code).limit(100).get();
+        if(!snap.empty){
+          return snap.docs.map(d=>({id:d.id,_coll:coll,...d.data()}));
+        }
+      }catch(e){
+        // لو الكولكشن مش موجود أو محتاج Index، بنكمل للي بعده
+        console.log('skip',coll,field,e.message);
+      }
+    }
+  }
+  return [];
+}
+
+async function loadFile(){
+  let params = new URLSearchParams(location.search);
+  let code = params.get('id') || params.get('code') || params.get('workerCode') || '';
+  code = decodeURIComponent(code||'').trim();
+  if(!code){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('notFound').style.display='block';
+    document.getElementById('notFoundText').textContent = 'مفيش كود في اللينك - افتح من الـ QR أو من Induction';
+    return;
+  }
+
+  try{
+    let db = firebase.firestore();
+
+    // بنجيب الـ 5 حاجات في نفس الوقت - مش واحد ورا واحد
+    let [workerArr, permits, violations, ppe, trainings] = await Promise.all([
+      // 1. بيانات العامل
+      tryQuery(['workers','users','employees','employeeFile'], ['code','workerCode','employeeCode','nationalId'], code),
+      // 2. التصاريح
+      tryQuery(['permits','permit','permitsList'], ['workerCode','code','workerId','employeeCode'], code),
+      // 3. المخالفات
+      tryQuery(['violations','employeeViolations','contractorViolations','employee-violations'], ['workerCode','code','workerId','employeeCode'], code),
+      // 4. المخزن / PPE
+      tryQuery(['storeTransactions','store-stock','storeStock','store','ppe','safety-harness'], ['workerCode','code','workerId','employeeCode'], code),
+      // 5. التدريبات + Induction
+      tryQuery(['train','training','trainings','induction','inductions'], ['workerCode','code','workerName','employeeCode'], code),
+    ]);
+
+    if(!workerArr.length){
+      document.getElementById('loading').style.display='none';
+      document.getElementById('notFound').style.display='block';
+      document.getElementById('notFoundText').textContent = 'مفيش عامل بالكود: ' + code + ' - اتأكد انه متسجل في workers';
+      return;
+    }
+
+    let w = workerArr[0];
+    // لو التدريبات فيها Induction، هنفصلها
+    let inductionList = trainings.filter(t=>String(t.type||t.title||'').toLowerCase().includes('induction'));
+    let otherTrain = trainings.filter(t=>!String(t.type||t.title||'').toLowerCase().includes('induction'));
+
+    // ===== عرض البيانات =====
+    document.getElementById('f-name').textContent = safe(pick(w,['name','fullName','employeeName','workerName']));
+    document.getElementById('f-job').textContent = safe(pick(w,['job','profession','position','jobTitle'])) + ' • ' + safe(pick(w,['company','companyName','contractor']));
+    document.getElementById('f-code').textContent = 'Code: ' + safe(pick(w,['code','workerCode']));
+    document.getElementById('f-status').textContent = safe(pick(w,['status'])) || 'Active';
+    document.getElementById('f-company').textContent = safe(pick(w,['company','companyName']));
+    let photo = pick(w,['photo','img','image','photoURL','avatar']);
+    if(photo) document.getElementById('f-photo').src = photo;
+
+    let fields = [
+      ['الاسم الكامل','name','fullName','employeeName'],
+      ['الكود','code','workerCode','employeeCode'],
+      ['الرقم القومي','nationalId','nid','idNumber'],
+      ['الوظيفة','job','profession','position'],
+      ['الشركة','company','companyName','contractor'],
+      ['تاريخ المباشرة','hire','hireDate','startDate','date'],
+      ['التليفون','phone','phoneNumber','mobile'],
+      ['رقم الطوارئ','emergency','emergencyNumber','emergencyPhone'],
+      ['صلة القرابة','kin','relationship','relation'],
+      ['الحالة الصحية','health','healthStatus'],
+      ['الحالة','status'],
+      ['ملاحظات','notes','note','remarks'],
+    ];
+    document.getElementById('dataGrid').innerHTML = fields.map(f=>{
+      let label = f[0]; let keys = f.slice(1);
+      let v = pick(w, keys);
+      if(label.includes('تاريخ')) v = normDate(v);
+      return '<div class="field"><b>'+label+'</b><span>'+safe(v)+'</span></div>';
+    }).join('');
+
+    // ===== العدادات =====
+    document.getElementById('c-permits').textContent = '('+permits.length+')';
+    document.getElementById('c-violations').textContent = '('+violations.length+')';
+    document.getElementById('c-ppe').textContent = '('+ppe.length+')';
+    document.getElementById('c-train').textContent = '('+trainings.length+')';
+
+    // ===== الجداول =====
+    document.getElementById('permitsList').innerHTML = renderTable(permits, [
+      {label:'النوع', keys:['type','permitType','title']},
+      {label:'التاريخ', keys:['date','createdAt'], isDate:true},
+      {label:'الحالة', keys:['status']},
+      {label:'ملاحظات', keys:['notes','note']},
+    ]);
+    document.getElementById('violationsList').innerHTML = renderTable(violations, [
+      {label:'النوع', keys:['type','violationType','title']},
+      {label:'التاريخ', keys:['date','createdAt'], isDate:true},
+      {label:'الوصف', keys:['description','notes','details']},
+      {label:'الحالة', keys:['status']},
+    ]);
+    document.getElementById('ppeList').innerHTML = renderTable(ppe, [
+      {label:'المهمة', keys:['item','itemName','ppe','name']},
+      {label:'الكمية', keys:['qty','quantity','count']},
+      {label:'التاريخ', keys:['date','createdAt'], isDate:true},
+      {label:'الحالة', keys:['status']},
+    ]);
+    document.getElementById('trainList').innerHTML = renderTable(trainings, [
+      {label:'الدورة', keys:['title','topic','course','trainingType','type']},
+      {label:'التاريخ', keys:['date','createdAt'], isDate:true},
+      {label:'الساعات', keys:['hours','hoursPer','totalHours']},
+      {label:'النتيجة', keys:['status','result']},
+    ]);
+
+    // ===== QR خفيف باللينك القصير =====
+    let shortLink = location.origin + location.pathname + '?id=' + encodeURIComponent(pick(w,['code','workerCode']) || code);
+    document.getElementById('qrCodeText').textContent = pick(w,['code','workerCode']) || code;
+    document.getElementById('qrBox').innerHTML = '';
+    try{ new QRCode(document.getElementById('qrBox'), {text: shortLink, width:140, height:140, correctLevel: QRCode.CorrectLevel.M}); }catch(e){}
+
+    document.getElementById('debug').textContent = 'ملف: ' + code + ' | تصاريح: ' + permits.length + ' | مخالفات: ' + violations.length + ' | مخزن: ' + ppe.length + ' | تدريبات: ' + trainings.length + ' | من الكلاود Live';
+
+    document.getElementById('loading').style.display='none';
+    document.getElementById('fileBox').style.display='block';
+
+  }catch(e){
+    document.getElementById('loading').innerHTML = '❌ مشكلة: ' + e.message + '<br><small>اتأكد ان firebase-config.js موجود جنب الملف</small>';
+  }
+}
+loadFile();
+</script>
+</body>
+</html>
