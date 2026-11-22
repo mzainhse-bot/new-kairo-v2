@@ -140,6 +140,32 @@ function logoutShared(){ localStorage.removeItem('currentUser'); localStorage.re
 <div id="permitsTable" style="margin-top:12px"></div>
 <button class="btn2" onclick="exportPermits()" style="margin-top:10px">📥 Export Excel</button></div>
 </div></div>
+
+<!-- ✅ مودال تعديل التصريح -->
+<div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:16px">
+<div style="max-width:620px;margin:auto;background:#fff;border-radius:16px;padding:18px">
+<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">✏️ تعديل بيانات التصريح - <span id="e-title-num" style="color:#D32F2F"></span></h3><button class="btn2" onclick="closeEditPermit()">✕</button></div>
+<p style="font-size:12px;color:#666;margin:6px 0 0">عدل أي بيانات نسيتها، ودوس حفظ، هيتعدل في Firebase على طول</p>
+<div class="grid" style="margin-top:10px">
+<div><label>Permit Number</label><input id="e-num" readonly style="background:#F1F3F5;font-weight:900"></div>
+<div><label>Company *</label><input id="e-company"></div>
+<div><label>Date *</label><input type="date" id="e-start-date"></div>
+<div><label>End Date *</label><input type="date" id="e-end-date"></div>
+<div><label>Start Time</label><input type="time" id="e-start-time"></div>
+<div><label>End Time</label><input type="time" id="e-end-time"></div>
+<div><label>Permit Type *</label><select id="e-type"><option>Cold</option><option>Hot</option><option>Work at Height</option><option>Lifting Works</option><option>Confined Spaces</option><option>Concrete Pouring</option><option>Excavation</option><option>Night Shift</option><option value="Risk Analysis Card">🟡 كارت تحليل المخاطر - Risk Analysis Card</option></select></div>
+<div><label>Supervisor *</label><input id="e-supervisor"></div>
+<div><label>Engineer</label><input id="e-engineer"></div>
+<div><label>Safety Officer</label><input id="e-safety"></div>
+<div><label>Work Location *</label><input id="e-location"></div>
+<div><label>Workers Count *</label><input type="number" min="0" id="e-workers"></div>
+<div><label>Status</label><select id="e-status"><option>Open</option><option>Delivered</option><option>Closed</option><option>Cancelled</option></select></div>
+<div><label>Notes</label><input id="e-notes"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><button class="btn red" onclick="saveEditPermit()" style="margin:0">💾 حفظ التعديل</button><button class="btn2" onclick="closeEditPermit()" style="padding:14px;justify-content:center">إلغاء</button></div>
+</div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -154,6 +180,7 @@ document.getElementById('soundBtn').textContent=soundOn?'🔊':'🔇';
 function playBeep(){if(!soundOn) return; try{let ctx=new (window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.value=0.15;o.start();o.stop(ctx.currentTime+0.2)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 let permits=[];
+let editPermitId='';
 function pick(o,keys){ for(let k of keys){ if(o[k]!==undefined && o[k]!==null && o[k]!=='') return o[k]; } return ''; }
 function normDate(v){
   if(!v) return '';
@@ -210,6 +237,7 @@ function loadLive(){
  }catch(e){console.log(e)}
 }
 function val(id){return document.getElementById(id).value.trim()}
+function setVal(id,v){document.getElementById(id).value=v||''}
 async function addPermit(force){
  if(!val('p-company')||!val('p-start-date')||!val('p-type')||!val('p-supervisor')) return alert('املأ الحقول المطلوبة *');
  let rec={num:document.getElementById('p-num').textContent,permitNumber:document.getElementById('p-num').textContent,company:val('p-company'),companyName:val('p-company'),startDate:val('p-start-date'),date:val('p-start-date'),endDate:val('p-end-date')||val('p-start-date'),startTime:val('p-start-time')||'08:00',endTime:val('p-end-time')||'17:00',type:val('p-type'),permitType:val('p-type'),supervisor:val('p-supervisor'),engineer:val('p-engineer'),safety:val('p-safety'),location:val('p-location')||'Zone A',workLocation:val('p-location')||'Zone A',workersCount:parseInt(document.getElementById('p-workers').value)||0,workers:parseInt(document.getElementById('p-workers').value)||0,status:force||val('p-status')||'Open',state:force||val('p-status')||'Open',notes:val('p-notes'),createdAt:new Date().toISOString()};
@@ -217,6 +245,52 @@ async function addPermit(force){
  ['p-supervisor','p-engineer','p-safety','p-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('p-workers').value='0';
 }
 function getTypeLabel(t){ if(t==='Risk Analysis Card') return '🟡 كارت تحليل المخاطر'; return t; }
+function openEditPermit(id){
+  let x=permits.find(p=>String(p.id)===String(id));
+  if(!x) return alert('التصريح مش موجود');
+  editPermitId=id;
+  document.getElementById('e-title-num').textContent=x.num||'';
+  setVal('e-num',x.num);
+  setVal('e-company',x.company);
+  setVal('e-start-date',x.startDate);
+  setVal('e-end-date',x.endDate);
+  setVal('e-start-time',x.startTime||'08:00');
+  setVal('e-end-time',x.endTime||'17:00');
+  setVal('e-type',x.type);
+  setVal('e-supervisor',x.supervisor);
+  setVal('e-engineer',x.engineer);
+  setVal('e-safety',x.safety);
+  setVal('e-location',x.location||x.workLocation);
+  setVal('e-workers',x.workersCount||x.workers||0);
+  setVal('e-status',x.status);
+  setVal('e-notes',x.notes);
+  document.getElementById('editModal').style.display='block';
+}
+function closeEditPermit(){ document.getElementById('editModal').style.display='none'; editPermitId=''; }
+async function saveEditPermit(){
+  if(!editPermitId) return;
+  if(!val('e-company')||!val('e-start-date')||!val('e-type')||!val('e-supervisor')) return alert('املأ الحقول المطلوبة *');
+  let updated={
+    num:val('e-num'), permitNumber:val('e-num'),
+    company:val('e-company'), companyName:val('e-company'),
+    startDate:val('e-start-date'), date:val('e-start-date'),
+    endDate:val('e-end-date')||val('e-start-date'),
+    startTime:val('e-start-time')||'08:00', endTime:val('e-end-time')||'17:00',
+    type:val('e-type'), permitType:val('e-type'),
+    supervisor:val('e-supervisor'), engineer:val('e-engineer'), safety:val('e-safety'),
+    location:val('e-location')||'Zone A', workLocation:val('e-location')||'Zone A',
+    workersCount:parseInt(document.getElementById('e-workers').value)||0, workers:parseInt(document.getElementById('e-workers').value)||0,
+    status:val('e-status'), state:val('e-status'),
+    notes:val('e-notes'), updatedAt:new Date().toISOString()
+  };
+  try{
+    let {coll,realId}=getCollAndId(editPermitId);
+    await firebase.firestore().collection(coll).doc(realId).update(updated);
+    playBeep();
+    closeEditPermit();
+    alert('✅ تم تعديل التصريح '+updated.num);
+  }catch(e){ alert('Update error: '+e.message); }
+}
 function renderPermits(){
  let q=(document.getElementById('searchP').value||'').toLowerCase(), fs=document.getElementById('filterStatus').value||'', ft=document.getElementById('filterType')?.value||'';
  let list=permits.filter(x=>((x.num||'')+' '+(x.type||'')+' '+(x.company||'')+' '+(x.location||'')+' '+(x.supervisor||'')).toLowerCase().includes(q) && (!fs||x.status===fs) && (!ft||x.type===ft));
@@ -224,12 +298,12 @@ function renderPermits(){
  let today=new Date().toISOString().slice(0,10);
  let active=permits.filter(x=>(x.status==='Open'||x.status==='Delivered') && (x.startDate===today || (!x.endDate || x.endDate>=today)));
  document.getElementById('activeCount').textContent=active.length;
- document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(getTypeLabel(x.type))}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
+ document.getElementById('activePermits').innerHTML=active.length?active.map(x=>`<div style="display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid #eee"><span class="icon3d mini green">📄</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(x.location||x.workLocation||'')}</b><br><small>${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل • ${escapeHtml(getTypeLabel(x.type))}</small></div><span class="badge open">${escapeHtml(x.status)}</span><button class="btn2" onclick="openEditPermit('${x.id}')" style="background:#FFF3E0">✏️ تعديل</button><button class="btn2" onclick="closePermit('${x.id}')">🔒 Close</button><button class="btn2" onclick="cancelPermit('${x.id}')" style="color:#E53935">❌ Cancel</button></div>`).join(''):'<p style="color:#888;text-align:center">لا توجد تصاريح شغالة النهارده - لو عندك داتا قديمة هتظهر هنا أوتوماتيك</p>';
  let types=['Cold','Hot','Work at Height','Lifting Works','Confined Spaces','Concrete Pouring','Excavation','Night Shift','Risk Analysis Card'];
  let icons={Cold:'🧊',Hot:'🔥','Work at Height':'🪜','Lifting Works':'🏗️','Confined Spaces':'🚪','Concrete Pouring':'🧱',Excavation:'⛏️','Night Shift':'🌙','Risk Analysis Card':'🟡'};
  document.getElementById('typeStats').innerHTML=types.map(t=>`<div class="type-chip" style="${t==='Risk Analysis Card'?'border:2px solid #FFB300;background:#FFF8E1':''}"><span class="icon3d mini ${t==='Risk Analysis Card'?'gold':'blue'}">${icons[t]||'📄'}</span><div><small>${t==='Risk Analysis Card'?'🟡 كارت تحليل المخاطر':t}</small><br><b>${permits.filter(x=>x.type===t).length}</b></div></div>`).join('');
  document.getElementById('permitsTable').innerHTML=list.length?list.map(x=>{let cls=x.status==='Open'?'open':x.status==='Closed'?'closed':x.status==='Delivered'?'delivered':'cancel';let shake=(x.status==='Open'&&x.endDate&& (new Date(x.endDate)-new Date())/3600000<2)?'shake pulse':'';
-  return `<div class="permit-card ${cls.toLowerCase()}"><span class="icon3d small ${x.type==='Risk Analysis Card'?'gold':'blue'} ${shake}">${icons[x.type]||'📄'}</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(getTypeLabel(x.type))}</b> ${x.type==='Risk Analysis Card'?'<span class="badge gold">🟡 كارت تحليل المخاطر</span>':''} <span class="badge ${cls}">${escapeHtml(x.status)}</span><br><small>📍 ${escapeHtml(x.location||x.workLocation||'')} • 🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل</small><br><small>${escapeHtml(x.startDate)} ${escapeHtml(x.startTime||'')} - ${escapeHtml(x.endDate)} ${escapeHtml(x.endTime||'')} • ${escapeHtml(x.supervisor)}</small></div><select onchange="changeStatus('${x.id}',this.value)" style="width:auto"><option ${x.status==='Open'?'selected':''}>Open</option><option ${x.status==='Delivered'?'selected':''}>Delivered</option><option ${x.status==='Closed'?'selected':''}>Closed</option><option ${x.status==='Cancelled'?'selected':''}>Cancelled</option></select><button class="btn2" style="color:#E53935" onclick="delPermit('${x.id}')">🗑️</button></div>`}).join(''):'<p style="text-align:center;color:#999">No permits yet</p>';
+  return `<div class="permit-card ${cls.toLowerCase()}"><span class="icon3d small ${x.type==='Risk Analysis Card'?'gold':'blue'} ${shake}">${icons[x.type]||'📄'}</span><div style="flex:1"><b>${escapeHtml(x.num)} • ${escapeHtml(getTypeLabel(x.type))}</b> ${x.type==='Risk Analysis Card'?'<span class="badge gold">🟡 كارت تحليل المخاطر</span>':''} <span class="badge ${cls}">${escapeHtml(x.status)}</span><br><small>📍 ${escapeHtml(x.location||x.workLocation||'')} • 🏢 ${escapeHtml(x.company)} • 👷 ${x.workersCount||x.workers||0} عامل</small><br><small>${escapeHtml(x.startDate)} ${escapeHtml(x.startTime||'')} - ${escapeHtml(x.endDate)} ${escapeHtml(x.endTime||'')} • ${escapeHtml(x.supervisor)} • 👷 ${escapeHtml(x.engineer||'')} • 🦺 ${escapeHtml(x.safety||'')}</small>${x.notes?`<br><small style="color:#666">📝 ${escapeHtml(x.notes)}</small>`:''}</div><div style="display:flex;flex-direction:column;gap:6px"><select onchange="changeStatus('${x.id}',this.value)" style="width:auto"><option ${x.status==='Open'?'selected':''}>Open</option><option ${x.status==='Delivered'?'selected':''}>Delivered</option><option ${x.status==='Closed'?'selected':''}>Closed</option><option ${x.status==='Cancelled'?'selected':''}>Cancelled</option></select><button class="btn2" onclick="openEditPermit('${x.id}')" style="background:#FFF3E0;border-color:#FFB300;justify-content:center">✏️ تعديل</button><button class="btn2" style="color:#E53935;justify-content:center" onclick="delPermit('${x.id}')">🗑️ حذف</button></div></div>`}).join(''):'<p style="text-align:center;color:#999">No permits yet</p>';
  let notifs=permits.filter(x=>x.status==='Open'&&x.endDate&& (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())/3600000<2 && (new Date(x.endDate+'T'+(x.endTime||'17:00'))-new Date())>0).map(x=>`⚠️ تصريح ${x.num} هينتهي بعد ساعتين - ${x.location}`);
  document.getElementById('notifCount').textContent=notifs.length; document.getElementById('notifCount').style.display=notifs.length?'flex':'none';
  document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px;border-bottom:1px solid #eee">${escapeHtml(n)}</div>`).join('')||'لا توجد إشعارات';
