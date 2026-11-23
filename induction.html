@@ -353,16 +353,27 @@ function isIndDoc(d){
 let _normWorkers=[],_normInduction=[],_normTrain=[];
 function rebuildDB(){
   DB.workers=[]; DB.induction=[]; DB.train=[];
-  let trainDocs=[];
+  let indDocs=[],trainDocs=[];
   Object.values(caches).flat().forEach(doc=>{
     let c=String(doc._coll||'').toLowerCase();
-    if(c.includes('induction')) DB.induction.push(doc);
+    if(c.includes('induction')) indDocs.push(doc);
     else if(c.includes('train')) trainDocs.push(doc);
     else DB.workers.push(doc);
   });
-  let trainInd=trainDocs.filter(isIndDoc);
+  /* سجلات القديم المحفوظة في train: بتدخل في سجل المحاضرات لو شكلها سجل induction أو سجل بسيط من غير موضوع تدريب،
+     ونسخة train المكررة من نفس محاضرة induction (نفس العامل ونفس اليوم) بتتشال عشان متتعدش مرتين. */
+  const keyOf=d=>{ let w=normWorker(d); return String(w.nationalId||w.code||w.name||d.id)+'|'+String(w.date||dayOf(w.createdAt)||''); };
+  const seen=new Set(indDocs.map(keyOf));
+  const isPlain=d=>!(d.type||d.topic||d.course||d.title||d.trainingType);
+  const extra=[]; const trainInd=[];
+  trainDocs.forEach(d=>{
+    if(!(isIndDoc(d)||isPlain(d))) return;
+    trainInd.push(d);
+    const k=keyOf(d); if(seen.has(k)) return; seen.add(k); extra.push(d);
+  });
+  DB.induction=[...indDocs,...extra];
   DB.train=trainInd;
-  if(!DB.induction.length&&trainDocs.length) DB.induction=trainInd.length?trainInd:trainDocs;
+  if(!DB.induction.length&&trainDocs.length) DB.induction=trainDocs;
   if(!DB.induction.length&&DB.workers.length) DB.induction=[...DB.workers];
   _normWorkers=DB.workers.map(normWorker);
   _normInduction=DB.induction.map(normWorker);
@@ -398,12 +409,16 @@ function getInductionList(){
   if(!rawInd.length){_indCache=getDisplayList().map(w=>({...w,_isFallback:true}));return _indCache;}
   let workersMap=new Map();
   _normWorkers.forEach(w=>{ let k=w.nationalId||w.code; if(k) workersMap.set(k,w); });
-  _indCache=rawInd.map(rec=>{
+  let mapped=rawInd.map(rec=>{
     let k=rec.nationalId||rec.code; let w=workersMap.get(k);
     if(w){['name','job','company','phone','emergency','kin','health','status','img','photo','dob','gender','birthGov','birthGovAr','birthGovEn'].forEach(f=>{ if(!rec[f]&&w[f]) rec[f]=w[f]; });}
     if(!rec.name&&rec.code) rec.name='عامل - '+rec.code;
     return rec;
-  }).sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
+  });
+  /* موظفين قدام مسجلين (workers / employees / users...) ومالهمش سجل محاضرة: بيظهروا في الجدول بعلامة "سجل قديم" ومبيتحسبوش في الإحصائيات */
+  let have=new Set(); mapped.forEach(r=>{ if(r.nationalId) have.add(String(r.nationalId)); if(r.code) have.add(String(r.code)); });
+  let legacy=getDisplayList().filter(w=>{ let ids=[w.nationalId,w.code].filter(Boolean).map(String); return ids.length&&!ids.some(i=>have.has(i)); }).map(w=>({...w,_legacy:true,hoursPer:0}));
+  _indCache=[...mapped,...legacy].sort((a,b)=>String(b.createdAt||b.date||'').localeCompare(String(a.createdAt||a.date||'')));
   return _indCache;
 }
 let rebuildTimer=null; const TOTAL_COLLS=3; let loadedColls=new Set();
@@ -417,36 +432,28 @@ function scheduleRebuild(){
     renderInd(); refreshCode();
   },180);
 }
-let _db=null,_legacyDone=false;
+let _db=null;
 const OLD_COLLS=['users','employees','employee','staff','personnel','allWorkers','workersList','registrations','employeeFile','attendance','training','inductions','inductionRecords','Trainings','induction_records'];
-/* fallback: لو الكولكشنز التلاتة فاضيين، نجرب القديم مرة واحدة بـ get() مش onSnapshot */
-function maybeLegacy(){
-  if(_legacyDone||!_db) return;
-  if(!LIGHT_COLLS.every(c=>loadedColls.has(c))) return;
-  if(LIGHT_COLLS.some(c=>(caches[c]||[]).length)) return;
-  _legacyDone=true;
-  (async()=>{
-    for(let coll of OLD_COLLS){
-      try{
-        let snap=await _db.collection(coll).limit(200).get();
-                 collCounts[coll]=snap.size;
-        caches[coll]=snap.docs.map(d=>{ let data=d.data(); return {...data,_dataId:data.id,id:coll+':'+d.id,_coll:coll}; });
-        _dirty=true; scheduleRebuild();
-      }catch(e){ console.log('legacy skip',coll,e&&e.message); }
-    }
-  })();
+function _ingest(coll,snap){
+  collCounts[coll]=snap.size; loadedColls.add(coll);
+  caches[coll]=snap.docs.map(d=>{ let data=d.data(); return {...data,_dataId:data.id,id:coll+':'+d.id,_coll:coll}; });
+  _dirty=true; scheduleRebuild();
+}
+/* الكولكشنز القديمة: بتتقرا مرة واحدة (get) في الخلفية دايماً - مش بس لو الأساسية فاضية */
+async function loadLegacyAll(){
+  const queue=[...OLD_COLLS];
+  const run=async()=>{ while(queue.length){ const c=queue.shift(); try{ const snap=await _db.collection(c).limit(5000).get(); if(snap.size) _ingest(c,snap); else loadedColls.add(c); }catch(e){ console.log('legacy skip',c,e&&e.message); } } };
+  await Promise.all([run(),run(),run(),run()]);
 }
 function loadLive(){
   try{
     let db=firebase.firestore(); _db=db;
     try{ db.enablePersistence({synchronizeTabs:true}).catch(()=>{}); }catch(e){}
+    /* الأساسي (workers / induction / train): live وبدون limit عشان كل الداتا القديمة ترجع */
     LIGHT_COLLS.forEach(coll=>{
-      db.collection(coll).limit(1000).onSnapshot(snap=>{
-        collCounts[coll]=snap.size; loadedColls.add(coll);
-        caches[coll]=snap.docs.map(d=>{ let data=d.data(); return {...data,_dataId:data.id,id:coll+':'+d.id,_coll:coll}; });
-        _dirty=true; scheduleRebuild(); maybeLegacy();
-      },err=>{ loadedColls.add(coll); console.log('skip',coll,err&&err.message); scheduleRebuild(); maybeLegacy(); });
+      db.collection(coll).onSnapshot(snap=>_ingest(coll,snap),err=>{ loadedColls.add(coll); console.log('skip',coll,err&&err.message); scheduleRebuild(); });
     });
+    loadLegacyAll();
   }catch(e){ document.getElementById('loadStatus').textContent='خطأ: '+e.message; }
 }
 function codeNum(c){let m=String(c||'').match(/(\d+)\s*$/);return m?parseInt(m[1],10):NaN}
@@ -602,11 +609,12 @@ function renderInd(){
   let allInd=getInductionList();
   let filtered=allInd.filter(x=>((x.name||'')+(x.code||'')+(x.nationalId||'')+(x.company||'')).toLowerCase().includes(q));
   let list=showAll?filtered:filtered.slice(0,50);
-  let total=allInd.length;
-  let hours=allInd.reduce((s,x)=>s+(parseFloat(x.hoursPer)||0.25),0);
+  let realInd=allInd.filter(x=>!x._legacy);
+  let total=realInd.length;
+  let hours=realInd.reduce((s,x)=>s+(parseFloat(x.hoursPer)||0.25),0);
   let rehab=allWorkers.filter(x=>x.isRehab||isRehabNotes(x.notes)).length;
   let today=todayLocal();
-  let todayCount=allInd.filter(x=>(x.date||'').slice(0,10)===today||dayOf(x.createdAt)===today).length;
+  let todayCount=realInd.filter(x=>(x.date||'').slice(0,10)===today||dayOf(x.createdAt)===today).length;
   document.getElementById('k-total').textContent=total;
   document.getElementById('k-hours').textContent=hours.toFixed(2);
   document.getElementById('k-rehab').textContent=rehab;
@@ -621,7 +629,8 @@ function renderInd(){
     let gen=x.gender==='Male'?t('male'):(x.gender==='Female'?t('female'):'-');
     let gov=currentLang==='ar'?(x.birthGovAr||x.birthGov||''):(x.birthGovEn||x.birthGov||'');
     let note=(x.isRehab||isRehabNotes(x.notes))?'<span class="badge red">'+t('rehabilitation')+'</span>':escapeHtml(x.notes||'-');
-    return `<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(x.dob||'-')}</td><td>${gen}</td><td>${escapeHtml(gov||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td>${(parseFloat(x.hoursPer)||0.25)}h</td><td><span class="badge ${st==='Active'?'green':'red'}">${t(stKey)}</span></td><td>${note}</td><td><button class="btn2" data-key="${key}" onclick="openCardByKey(this.dataset.key)">🪪 ${t('idCard')}</button></td><td><button class="btn2" style="background:#FF6B00" data-key="${key}" onclick="openEditModal(this.dataset.key)">✏️ ${t('edit')}</button></td></tr>`;
+    if(x._legacy) note='<span class="badge" style="background:#FFF3E0;color:#E65100">'+(currentLang==='ar'?'سجل قديم - بدون محاضرة':'Legacy - no induction record')+'</span>'+((x.isRehab||isRehabNotes(x.notes))?' '+note:'');
+    return `<tr><td>${escapeHtml(x.code)}</td><td>${escapeHtml(x.name)}</td><td>${escapeHtml(x.nationalId||'-')}</td><td>${escapeHtml(x.dob||'-')}</td><td>${gen}</td><td>${escapeHtml(gov||'-')}</td><td>${escapeHtml(TJob(x.job)||'-')}</td><td>${escapeHtml(x.company||'-')}</td><td>${escapeHtml(x.date||(x.createdAt||'').slice(0,10)||'-')}</td><td>${x._legacy?'-':(parseFloat(x.hoursPer)||0.25)+'h'}</td><td><span class="badge ${st==='Active'?'green':'red'}">${t(stKey)}</span></td><td>${note}</td><td><button class="btn2" data-key="${key}" onclick="openCardByKey(this.dataset.key)">🪪 ${t('idCard')}</button></td><td><button class="btn2" style="background:#FF6B00" data-key="${key}" onclick="openEditModal(this.dataset.key)">✏️ ${t('edit')}</button></td></tr>`;
   }).join('');
   let info='<p style="font-size:12px;color:#666">'+t('showing')+' '+list.length+' '+t('of')+' '+filtered.length+' '+t('record')+' — '+t('totalHours')+': '+hours.toFixed(2)+'h</p>';
   document.getElementById('indTable').innerHTML=list.length?info+'<div style="overflow-x:auto"><table>'+head+rows+'</table></div>':'<p style="text-align:center;color:#888">'+t('noRecords')+'</p>';
