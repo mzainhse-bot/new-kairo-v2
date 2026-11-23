@@ -258,7 +258,6 @@ document.querySelectorAll('button').forEach(b=>{
 let qi=document.getElementById('qrInfo'); if(qi){qi.dataset.ar='📱 اعمل Scan للـ QR بالموبايل هيفتح ملف العامل من Firebase';qi.dataset.en='📱 Scan the QR with a mobile phone to open the employee file from Firebase';}
 applyLang(currentLang);
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-/* تاريخ اليوم بتوقيت الجهاز (مش UTC) */
 function todayLocal(){return new Date().toLocaleDateString('en-CA')}
 function dayOf(v){
   if(!v) return '';
@@ -275,7 +274,6 @@ let audioCtx=null;
 function playBeep(){if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=880;g.gain.value=0.12;o.start();o.stop(audioCtx.currentTime+0.15)}catch(e){}}
 function toggleNotif(){document.getElementById('notifPanel').classList.toggle('show')}
 let DB={workers:[],induction:[],train:[]};let caches={};let showAll=false;let collCounts={};let lastSavedNum=0;
-/* كاش جديد: الداتا تتحول مرة واحدة بعد كل تحديث بدل 5-6 مرات */
 let _dirty=true,_displayCache=null,_indCache=null;
 const LIGHT_COLLS=['workers','induction','train'];
 let SHEET_URL="https://script.google.com/macros/s/AKfycbxgL8-3W3x7Zr81V5zM7JpLGTkhvYUoHN6jOsFUdVQdXvLrN7jp_ssbKEMzhOUOzaV4/exec";
@@ -312,7 +310,6 @@ function normWorker(raw){
   let nationalId = toLatinDigits(String(pick(raw,['nationalId','nid','idNumber','nationalID','identity','NationalID','national_number','nationalnumber','national_id','الرقم القومي','الرقم_القومي'])||'')).replace(/\D/g,'');
   if(!nationalId && docId && /^\d{14}$/.test(docId)) nationalId = docId;
 
-  /* استخراج تاريخ الميلاد والنوع والمحافظة تلقائياً من الرقم القومي لو كانت ناقصة في السجلات القديمة */
   let dob = normDate(pick(raw,['dob','birthDate','birthdate','dateOfBirth','birth','تاريخ الميلاد','تاريخ_الميلاد']));
   let gender = pick(raw,['gender','sex','النوع']);
   let birthGov = pick(raw,['birthGov','birthGovernorate','birthPlace','محافظة الميلاد','محافظة_الميلاد']);
@@ -378,9 +375,6 @@ function updateDebugCounts(){
   let summary=Object.entries(collCounts).filter(([,v])=>v>0).map(([k,v])=>k+': '+v).join(' | ');
   el.textContent='📊 الكولكشنز المحمّلة: '+(summary||'لا يوجد بعد');
 }
-/* ===== تقسيم الداتا =====
-   - الإحصائيات وسجل المحاضرات بتعتمد على كولكشن induction (عشان نفس المحاضرة اللي بتتسجل في induction + train مش تتعد مرتين)
-   - لو induction فاضي، بنرجع لسجلات train الخاصة بالـ induction، وبعدها لباقي train، وبعدها للعمال (زي النسخة القديمة) */
 function isIndDoc(d){
   return String(d.source||'').toLowerCase()==='induction' || /induction|تعريف/i.test([d.type,d.topic,d.course,d.trainingType,d.title].join(' '));
 }
@@ -452,7 +446,6 @@ function getInductionList(){
     if(!rec.name&&rec.code) rec.name='عامل - '+rec.code;
     return rec;
   });
-  /* موظفين قدام مسجلين (workers / employees / users / sheet...) ومالهمش سجل محاضرة: بيظهروا في الجدول بعلامة "سجل قديم" */
   let have=new Set();
   mapped.forEach(r=>{
     if(r.nationalId) have.add('nid:'+String(r.nationalId));
@@ -482,7 +475,6 @@ function scheduleRebuild(){
   },180);
 }
 let _db=null;
-/* قائمة شاملة بأسماء الكولكشنز القديمة المحتملة في Firestore */
 const OLD_COLLS=[
   'users','employees','employee','staff','personnel','allWorkers','workersList','registrations',
   'employeeFile','employeeFiles','attendance','training','inductions','inductionRecords',
@@ -494,7 +486,6 @@ function _ingest(coll,snap){
   caches[coll]=snap.docs.map(d=>{ let data=d.data(); return {...data,_dataId:data.id,id:coll+':'+d.id,_coll:coll}; });
   _dirty=true; scheduleRebuild();
 }
-/* قراءة كل الكولكشنز القديمة بدون limit(5000) عشان مفيش داتا قديمة تقع */
 async function loadLegacyAll(){
   const queue=[...OLD_COLLS];
   const run=async()=>{
@@ -511,7 +502,6 @@ async function loadLegacyAll(){
   };
   await Promise.all([run(),run(),run(),run()]);
 }
-/* جلب أي داتا قديمة من Google Sheet كاحتياطي إضافي */
 async function loadFromSheetBackup(){
   if(!SHEET_URL) return;
   try{
@@ -534,7 +524,6 @@ function loadLive(){
   try{
     let db=firebase.firestore(); _db=db;
     try{ db.enablePersistence({synchronizeTabs:true}).catch(()=>{}); }catch(e){}
-    /* الأساسي (workers / induction / train): live وبدون limit عشان كل الداتا القديمة ترجع */
     LIGHT_COLLS.forEach(coll=>{
       db.collection(coll).onSnapshot(snap=>_ingest(coll,snap),err=>{
         loadedColls.add(coll);
@@ -560,7 +549,6 @@ function reloadAllData(){
 function codeNum(c){let m=String(c||'').match(/(\d+)\s*$/);return m?parseInt(m[1],10):NaN}
 function nextCode(){let max=Math.max(1000,lastSavedNum);getDisplayList().forEach(w=>{let n=codeNum(w.code);if(!isNaN(n)&&n>max)max=n});return 'RM-'+(max+1)}
 function refreshCode(){if(!val('f-code'))setVal('f-code',nextCode())}
-/* ===== الصور: تصغير قبل الحفظ (أقصى 400px) عشان حد 1MB للمستند ===== */
 function compressImage(file,cb,max){
   max=max||260;
   let r=new FileReader();
@@ -585,7 +573,7 @@ let issueImgData='';
 function previewIssuePhoto(e){let f=e.target.files[0];if(!f)return;compressImage(f,d=>{issueImgData=d})}
 let rehabCodeSet=false;
 const GOV_CODES={'01':['القاهرة','Cairo'],'02':['الإسكندرية','Alexandria'],'03':['بورسعيد','Port Said'],'04':['السويس','Suez'],'11':['دمياط','Damietta'],'12':['الدقهلية','Dakahlia'],'13':['الشرقية','Sharqia'],'14':['القليوبية','Qalyubia'],'15':['كفر الشيخ','Kafr El Sheikh'],'16':['الغربية','Gharbia'],'17':['المنوفية','Menoufia'],'18':['البحيرة','Beheira'],'19':['الإسماعيلية','Ismailia'],'21':['الجيزة','Giza'],'22':['بني سويف','Beni Suef'],'23':['الفيوم','Fayoum'],'24':['المنيا','Minya'],'25':['أسيوط','Assiut'],'26':['سوهاج','Sohag'],'27':['قنا','Qena'],'28':['أسوان','Aswan'],'29':['الأقصر','Luxor'],'31':['البحر الأحمر','Red Sea'],'32':['الوادي الجديد','New Valley'],'33':['مطروح','Matrouh'],'34':['شمال سيناء','North Sinai'],'35':['جنوب سيناء','South Sinai'],'88':['خارج الجمهورية','Outside Egypt']};
-function toLatinDigits(s){return String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));}
+function toLatinDigits(s){return String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶٧٨٩'.indexOf(d));}
 function isoDate(y,m,d){return String(y).padStart(4,'0')+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
 function parseNationalId(raw){
   let n=toLatinDigits(raw).replace(/\D/g,'');
